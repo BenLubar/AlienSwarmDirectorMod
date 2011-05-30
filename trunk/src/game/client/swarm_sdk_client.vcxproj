@@ -5,6 +5,10 @@
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Release_Laptop|Win32">
+      <Configuration>Release_Laptop</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
@@ -19,6 +23,10 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
@@ -27,6 +35,9 @@
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
@@ -44,19 +55,30 @@
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</GenerateManifest>
     <PostBuildEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</PostBuildEventUseInBuild>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\Release_swarm\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">.\Release_Laptop\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\Release_swarm\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">.\Release_Laptop\</IntDir>
     <PreBuildEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</PreBuildEventUseInBuild>
+    <PreBuildEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">true</PreBuildEventUseInBuild>
     <PreLinkEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</PreLinkEventUseInBuild>
+    <PreLinkEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">true</PreLinkEventUseInBuild>
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreImportLibrary>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">true</IgnoreImportLibrary>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">false</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</GenerateManifest>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">false</GenerateManifest>
     <PostBuildEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</PostBuildEventUseInBuild>
+    <PostBuildEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">true</PostBuildEventUseInBuild>
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'" />
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <PreBuildEvent>
@@ -242,6 +264,99 @@ exit 1
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+    <PreBuildEvent>
+      <Command>if EXIST "D:\Program Files (x86)\Steam\SteamApps\sourcemods\alienswarmdirectormod\bin\.\$(TargetFileName)" for /f "delims=" %%A in (%27attrib "D:\Program Files (x86)\Steam\SteamApps\sourcemods\alienswarmdirectormod\bin\.\$(TargetFileName)"%27) do set valveTmpIsReadOnly="%%A"
+set valveTmpIsReadOnlyLetter=%valveTmpIsReadOnly:~6,1%
+if "%valveTmpIsReadOnlyLetter%"=="R" del /q "$(TargetDir)"$(TargetFileName)
+if exist ..\..\devtools\bin\vpccrccheck.exe ..\..\devtools\bin\vpccrccheck.exe -crc2 test_swarm.vcproj
+if ERRORLEVEL 1 exit 1</Command>
+    </PreBuildEvent>
+    <ClCompile>
+      <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <AdditionalIncludeDirectories>.\hl2;.\swarm;.\swarm\vgui;..\statemachine;..\..\game\shared\multiplayer;..\..\game\shared\swarm;.\;..\..\common;..\..\public;..\..\public\tier0;..\..\public\tier1;..\..\game\shared;.\game_controls;$(IntDir);..\..\game\client\swarm\gameui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WIN32;NDEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;DLLNAME=client;VPCGAME=swarm;VPCGAMECAPS=SWARM;_DLL_EXT=.dll;COMPILER_MSVC32;VPCGAME=swarm;VPCGAMECAPS=SWARM;_DLL_EXT=.dll;COMPILER_MSVC;MEMOVERRIDE_MODULE=client;_DLL_EXT=.dll;VPCGAME=swarm;VPCGAMECAPS=SWARM;_DLL_EXT=.dll;DLLNAME=client;VPCGAME=swarm;VPCGAMECAPS=SWARM;_DLL_EXT=.dll;NO_STRING_T;CLIENT_DLL;VECTOR;VERSION_SAFE_STEAM_API_INTERFACES;PROTECTED_THINGS_ENABLE;strncpy=use_Q_strncpy_instead;_snprintf=use_Q_snprintf_instead;VPCGAME=swarm;VPCGAMECAPS=SWARM;_DLL_EXT=.dll;ENABLE_HTMLWINDOW;fopen=dont_use_fopen;VPCGAME=swarm;VPCGAMECAPS=SWARM;_DLL_EXT=.dll;INFESTED_DLL;SWARM_DLL;INFESTED_PARTICLES;GAMEUI_EMBEDDED;GAMEUI_EXPORTS;VERSION_SAFE_STEAM_API_INTERFACES;VPCGAME=swarm;VPCGAMECAPS=SWARM;_DLL_EXT=.dll;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>cbase.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)client.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ProgramDataBaseFileName>$(IntDir)</ProgramDataBaseFileName>
+      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
+      <BrowseInformation>
+      </BrowseInformation>
+      <BrowseInformationFile>$(IntDir)</BrowseInformationFile>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ErrorReporting>Prompt</ErrorReporting>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ShowProgress>NotSet</ShowProgress>
+      <OutputFile>$(OutDir)client.dll</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>..\..\lib\common\.;..\..\lib\public\.;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>libc;libcd;libcmtd;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapFileName>$(IntDir)$(TargetName).map</MapFileName>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <BaseAddress>
+      </BaseAddress>
+      <TargetMachine>MachineX86</TargetMachine>
+      <LinkErrorReporting>PromptImmediately</LinkErrorReporting>
+    </Link>
+    <Manifest>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Manifest>
+    <Xdcmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Xdcmake>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>$(OutDir)client.bsc</OutputFile>
+    </Bscmake>
+    <PostBuildEvent>
+      <Message>Publishing to D:\Program Files (x86)\Steam\SteamApps\sourcemods\alienswarmdirectormod\bin\.</Message>
+      <Command>if exist "D:\Program Files (x86)\Steam\SteamApps\sourcemods\alienswarmdirectormod\bin\." goto ValveStart
+mkdir "D:\Program Files (x86)\Steam\SteamApps\sourcemods\alienswarmdirectormod\bin\."
+:ValveStart
+copy "$(TargetDir)"$(TargetFileName) "D:\Program Files (x86)\Steam\SteamApps\sourcemods\alienswarmdirectormod\bin\.\$(TargetFileName)"
+if ERRORLEVEL 1 goto BuildEventFailed
+if exist "$(TargetDir)"$(TargetName).map copy "$(TargetDir)"$(TargetName).map "D:\Program Files (x86)\Steam\SteamApps\sourcemods\alienswarmdirectormod\bin\.\$(TargetName).map"
+copy "$(TargetDir)"$(TargetName).pdb "D:\Program Files (x86)\Steam\SteamApps\sourcemods\alienswarmdirectormod\bin\.\$(TargetName).pdb"
+if ERRORLEVEL 1 goto BuildEventFailed
+goto BuildEventOK
+:BuildEventFailed
+echo *** ERROR! PostBuildStep FAILED for $(ProjectName)! EXE or DLL is probably running. ***
+del /q "$(TargetDir)"$(TargetFileName)
+exit 1
+:BuildEventOK
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="client_base.vpc" />
     <None Include="client_swarm.vpc" />
@@ -384,6 +499,8 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="client_factorylist.cpp" />
     <ClCompile Include="client_thinklist.cpp" />
@@ -399,12 +516,16 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\shared\collisionproperty.cpp" />
     <ClCompile Include="..\..\public\collisionutils.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="colorcorrectionmgr.cpp" />
@@ -414,12 +535,16 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="convarproxy.cpp" />
     <ClCompile Include="..\..\public\crtmemdebug.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="cycleproxy.cpp" />
@@ -428,6 +553,8 @@ exit 1
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\shared\debugoverlay_shared.cpp" />
@@ -438,17 +565,23 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\..\public\dt_utlvector_common.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\..\public\dt_utlvector_recv.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="dummyproxy.cpp" />
@@ -465,6 +598,8 @@ exit 1
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="flashlighteffect.cpp" />
@@ -508,6 +643,8 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="hud_locator_target.cpp" />
     <ClCompile Include="hud_msg.cpp" />
@@ -523,11 +660,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="in_trackir.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="initializer.cpp" />
@@ -537,12 +678,16 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="IsNPCProxy.cpp" />
     <ClCompile Include="..\..\public\jigglebones.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="lampbeamproxy.cpp" />
@@ -556,6 +701,8 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="message.cpp" />
@@ -568,6 +715,8 @@ exit 1
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="object_motion_blur_effect.cpp" />
@@ -592,6 +741,8 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="physics.cpp" />
     <ClCompile Include="physics_main_client.cpp" />
@@ -606,6 +757,8 @@ exit 1
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\shared\precache_register.cpp" />
@@ -626,12 +779,16 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="recvproxy.cpp" />
     <ClCompile Include="rendertexture.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="replaycamera.cpp" />
@@ -641,6 +798,8 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\shared\saverestore.cpp" />
     <ClCompile Include="..\shared\sceneentity_shared.cpp" />
@@ -649,11 +808,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\..\public\ScratchPadUtils.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="ScreenSpaceEffects.cpp" />
@@ -662,6 +825,8 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\shared\sequence_Transitioner.cpp" />
     <ClCompile Include="..\shared\sheetsimulator.cpp">
@@ -669,12 +834,16 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="simple_keys.cpp" />
     <ClCompile Include="..\..\public\simple_physics.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\shared\simtimer.cpp" />
@@ -693,11 +862,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\..\public\studio.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\shared\studio_shared.cpp" />
@@ -717,6 +890,8 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\shared\vehicle_viewblend_shared.cpp" />
     <ClCompile Include="vgui_avatarimage.cpp" />
@@ -731,6 +906,8 @@ exit 1
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="vgui_debugoverlaypanel.cpp" />
@@ -768,6 +945,7 @@ exit 1
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="c_basetempentity.cpp" />
     <ClCompile Include="c_effects.cpp" />
@@ -964,11 +1142,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\basesavegamedialog.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\bitmapimagepanel.cpp">
@@ -976,11 +1158,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\commandcheckbutton.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\contentcontroldialog.cpp">
@@ -988,11 +1174,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\createmultiplayergamebotpage.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\createmultiplayergamedialog.cpp">
@@ -1000,11 +1190,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\createmultiplayergamegameplaypage.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\createmultiplayergameserverpage.cpp">
@@ -1012,11 +1206,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\customtabexplanationdialog.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\cvarnegatecheckbutton.cpp">
@@ -1024,11 +1222,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\cvarslider.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\cvartextentry.cpp">
@@ -1036,11 +1238,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\cvartogglecheckbutton.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\gameconsole.cpp">
@@ -1048,11 +1254,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\gameconsoledialog.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\gameui_interface.cpp">
@@ -1060,11 +1270,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\gameui_util.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\keytogglecheckbutton.cpp">
@@ -1072,11 +1286,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\labeledcommandcombobox.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\loadingdialog.cpp">
@@ -1084,11 +1302,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\loadingtippanel.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\logofile.cpp">
@@ -1096,11 +1318,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\modinfo.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\mousemessageforwardingpanel.cpp">
@@ -1108,11 +1334,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\multiplayeradvanceddialog.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\optionsdialog.cpp">
@@ -1120,11 +1350,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\optionssubaudio.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\optionssubdifficulty.cpp">
@@ -1132,11 +1366,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\optionssubgame.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\optionssubkeyboard.cpp">
@@ -1144,11 +1382,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\optionssubmouse.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\optionssubmultiplayer.cpp">
@@ -1156,11 +1398,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\optionssubportal.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\optionssubvideo.cpp">
@@ -1168,11 +1414,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\optionssubvoice.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\panellistpanel.cpp">
@@ -1180,11 +1430,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\playerlistdialog.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\rungameengine.cpp">
@@ -1192,11 +1446,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\scriptobject.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\sys_utils.cpp">
@@ -1204,11 +1462,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\textentrybox.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\urlbutton.cpp">
@@ -1216,11 +1478,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\vcontrolslistpanel.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\vguisystemmoduleloader.cpp">
@@ -1228,11 +1494,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\..\common\language.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\basemodframe.cpp">
@@ -1240,11 +1510,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\basemodpanel.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\gamemodes.cpp">
@@ -1252,11 +1526,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\uigamedata.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\uigamedata_invite.cpp">
@@ -1264,11 +1542,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\uigamedata_storage.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vachievements.cpp">
@@ -1276,11 +1558,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vattractscreen.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vaudio.cpp">
@@ -1288,11 +1574,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vaudiovideo.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vcontrolleroptions.cpp">
@@ -1300,11 +1590,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vcontrolleroptionsbuttons.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vcontrolleroptionssticks.cpp">
@@ -1312,11 +1606,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vdropdownmenu.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vflyoutmenu.cpp">
@@ -1324,11 +1622,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vfooterpanel.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vfoundgames.cpp">
@@ -1336,11 +1638,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vfoundgroupgames.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vfoundpublicgames.cpp">
@@ -1348,11 +1654,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vgamelobby.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vgamelobbychat.cpp">
@@ -1360,11 +1670,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vgameoptions.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vgamesettings.cpp">
@@ -1372,11 +1686,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vgenericconfirmation.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vgenericpanellist.cpp">
@@ -1384,11 +1702,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vgenericwaitscreen.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vhybridbutton.cpp">
@@ -1396,11 +1718,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vingamechapterselect.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vingamedifficultyselect.cpp">
@@ -1408,11 +1734,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vingamekickplayerlist.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vingamemainmenu.cpp">
@@ -1420,11 +1750,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vleaderboard.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vloadingprogress.cpp">
@@ -1432,11 +1766,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vmainmenu.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vmenubackground.cpp">
@@ -1444,11 +1782,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vmultiplayer.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\voptions.cpp">
@@ -1456,11 +1798,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vpasswordentry.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vquickjoin.cpp">
@@ -1468,11 +1814,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vquickjoingroups.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vsignindialog.cpp">
@@ -1480,11 +1830,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vslidercontrol.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vspinnercontrol.cpp">
@@ -1492,11 +1846,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vtransitionscreen.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vvideo.cpp">
@@ -1504,11 +1862,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vvoteoptions.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\uiavatarimage.cpp">
@@ -1516,11 +1878,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vaddonassociation.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vaddons.cpp">
@@ -1528,11 +1894,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vcloud.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vcustomcampaigns.cpp">
@@ -1540,11 +1910,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vdownloadcampaign.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vdownloads.cpp">
@@ -1552,11 +1926,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vgetlegacydata.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vjukebox.cpp">
@@ -1564,11 +1942,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vkeyboard.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vkeyboardmouse.cpp">
@@ -1576,11 +1958,15 @@ exit 1
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
+      </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\gameui\swarm\vsteamcloudconfirmation.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="swarm\vgui\asw_build_map_frame.cpp" />
