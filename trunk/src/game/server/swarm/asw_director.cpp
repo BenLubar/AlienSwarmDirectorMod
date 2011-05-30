@@ -524,6 +524,8 @@ void CASW_Director::UpdateMarineInsideEscapeRoom( CASW_Marine *pMarine )
 
 void CASW_Director::OnMissionStarted()
 {
+	Msg("Holy fuck balls!\n");
+
 	// if we have wanders turned on, spawn a couple of encounters
 	if ( asw_wanderer_override.GetBool() && ASWGameRules() )
 	{
