@@ -441,6 +441,7 @@ void CLayoutSystem::OnStateChanged( const CTilegenState *pOldState )
 
 void CLayoutSystem::BeginGeneration( CMapLayout *pMapLayout ) 
 { 
+	Msg("\nPJ: Begin Geneartion\n");
 	if ( m_States.GetStateCount() == 0 )
 	{
 		Log_Warning( LOG_TilegenLayoutSystem, "No states in layout system!\n" );

@@ -1042,6 +1042,7 @@ CTilegenAction_LoadLayout::CTilegenAction_LoadLayout()
 
 bool CTilegenAction_LoadLayout::LoadFromKeyValues( KeyValues *pKeyValues )
 {
+	Msg("PJ-LoadLayout\n");
 	const char *pFilename = pKeyValues->GetString( "filename", NULL );
 	if ( pFilename == NULL )
 	{

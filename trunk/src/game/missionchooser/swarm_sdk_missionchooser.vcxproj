@@ -351,6 +351,7 @@ exit 1
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="..\..\vpc_scripts\loadaddress.vpc" />
+    <None Include="TileGen.cd" />
     <None Include="missionchooser_swarm.vpc" />
     <None Include="..\..\vpc_scripts\source_dll_win32_base.vpc" />
     <None Include="..\..\vpc_scripts\source_dll_win32_debug.vpc" />

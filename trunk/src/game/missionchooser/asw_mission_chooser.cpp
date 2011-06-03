@@ -86,11 +86,13 @@ IASW_Map_Builder *CASW_Mission_Chooser::MapBuilder()
 
 IASWSpawnSelection *CASW_Mission_Chooser::SpawnSelection()
 {
+	Msg("Spawn 1\n");
 	return &g_SpawnSelection;
 }
 
 CASW_Spawn_Selection* SpawnSelection()
 {
+	Msg("Spawn 2\n");
 	return &g_SpawnSelection;
 }
 
