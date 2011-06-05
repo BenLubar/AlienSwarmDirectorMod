@@ -707,6 +707,7 @@ exit 1
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="message.cpp" />
     <ClCompile Include="modelrendersystem.cpp" />
+    <ClCompile Include="mod_buildAndLaunchRandomLevel.cpp" />
     <ClCompile Include="movehelper_client.cpp" />
     <ClCompile Include="..\shared\movevars_shared.cpp" />
     <ClCompile Include="..\shared\mp_shareddefs.cpp" />
@@ -2261,6 +2262,7 @@ exit 1
     <ClInclude Include="..\shared\point_bonusmaps_accessor.h" />
     <ClInclude Include="..\shared\postprocess_shared.h" />
     <ClInclude Include="..\shared\sharedvar.h" />
+    <ClInclude Include="mod_buildAndLaunchRandomLevel.h" />
     <ClInclude Include="spatialentitymgr.h" />
     <ClInclude Include="vgui_avatarimage.h" />
     <ClInclude Include="viewdebug.h" />

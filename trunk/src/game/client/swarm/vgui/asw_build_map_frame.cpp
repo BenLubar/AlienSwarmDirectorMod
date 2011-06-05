@@ -171,10 +171,7 @@ void CC_ASW_Build_Map( const CCommand &args )
 static ConCommand asw_build_map("asw_build_map", CC_ASW_Build_Map, 0 );
 
 void CC_ASW_TileGen( const CCommand &args )
-{
-	Msg("PJ: Hello World\n");
-	return;
-
+{	
 	if ( !missionchooser || !missionchooser->RandomMissions() )
 		return;
 
@@ -187,21 +184,3 @@ void CC_ASW_TileGen( const CCommand &args )
 }
 static ConCommand asw_tilegen("asw_tilegen", CC_ASW_TileGen, "Experimental tile based level generator.", FCVAR_CHEAT );
 
-
-/*
- void MyFunction_f( void )
- {
-     Msg("PJ: This is my function\n");
- }
- 
- ConCommand my_function( "my_function", MyFunction_f, "Shows a message.", FCVAR_CHEAT );
-
- 
-void MOD_BuildAndLaunchRandomLevel(const CCommand &args)
-{
-	Msg("PJ: Hello World\n");
-}
-
-static ConCommand MOD_BuildAndLaunchRandomLevel2("mod_BuildAndLaunchRandomLevel", MOD_BuildAndLaunchRandomLevel, "PJ - First Server Command.", FCVAR_CHEAT );
-
- */

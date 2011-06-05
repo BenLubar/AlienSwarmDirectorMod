@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Client", "trunk\src\game\cl
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MissionChooser", "trunk\src\game\missionchooser\swarm_sdk_missionchooser.vcxproj", "{23DDA8C6-EA96-472B-99E7-BC37DFA2F562}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tilegen", "trunk\tilegen\tilegen.vcxproj", "{506742D7-ECF2-46F7-A2AA-3920A4175BB6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -36,6 +38,12 @@ Global
 		{23DDA8C6-EA96-472B-99E7-BC37DFA2F562}.Release_Laptop|Win32.Build.0 = Release_Laptop|Win32
 		{23DDA8C6-EA96-472B-99E7-BC37DFA2F562}.Release|Win32.ActiveCfg = Release|Win32
 		{23DDA8C6-EA96-472B-99E7-BC37DFA2F562}.Release|Win32.Build.0 = Release|Win32
+		{506742D7-ECF2-46F7-A2AA-3920A4175BB6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{506742D7-ECF2-46F7-A2AA-3920A4175BB6}.Debug|Win32.Build.0 = Debug|Win32
+		{506742D7-ECF2-46F7-A2AA-3920A4175BB6}.Release_Laptop|Win32.ActiveCfg = Release|Win32
+		{506742D7-ECF2-46F7-A2AA-3920A4175BB6}.Release_Laptop|Win32.Build.0 = Release|Win32
+		{506742D7-ECF2-46F7-A2AA-3920A4175BB6}.Release|Win32.ActiveCfg = Release|Win32
+		{506742D7-ECF2-46F7-A2AA-3920A4175BB6}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

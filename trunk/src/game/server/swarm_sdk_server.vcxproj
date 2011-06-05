@@ -729,7 +729,6 @@ exit 1
     <ClCompile Include="message_entity.cpp" />
     <ClCompile Include="modelentities.cpp" />
     <ClCompile Include="..\shared\ModelSoundsCache.cpp" />
-    <ClCompile Include="mod_buildAndLaunchRandomLevel.cpp" />
     <ClCompile Include="monstermaker.cpp" />
     <ClCompile Include="movehelper_server.cpp" />
     <ClCompile Include="movement.cpp" />
@@ -1517,7 +1516,6 @@ exit 1
     <ClInclude Include="maprules.h" />
     <ClInclude Include="..\..\public\mathlib\mathlib.h" />
     <ClInclude Include="..\..\public\model_types.h" />
-    <ClInclude Include="mod_buildAndLaunchRandomLevel.h" />
     <ClInclude Include="monstermaker.h" />
     <ClInclude Include="movehelper_server.h" />
     <ClInclude Include="movie_explosion.h" />

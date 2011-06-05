@@ -5,6 +5,13 @@
 #include "filesystem.h"
 #include "Room.h"
 
+#include "layout_system\tilegen_layout_system.h"
+#include "layout_system/tilegen_mission_preprocessor.h"
+#include "asw_key_values_database.h"
+#include "cdll_int.h"  //needed for access to engine
+#include "asw_map_builder.h"
+
+
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
@@ -171,4 +178,103 @@ bool CASW_Random_Missions::CheckAndCleanDirtyLayout( void )
 	m_bDirtyLayoutForMinimap = false;
 
 	return bDirty;
+}
+
+//Added for MOD:
+
+extern IVEngineClient *engine;
+void CASW_Random_Missions::BuildAndLaunchRandomLevel(){
+	Msg("CASW_Random_Missions::BuildAndLaunchRandomLevel\n");
+	
+	/*Code taken from TileGenDialog.cpp*/
+
+	const char * szMissionFile = "tilegen\\new_missions\\mod_escapeOnly.txt";
+	const char * szOutputLayout = "maps/output.layout";
+
+	KeyValues *pGenerationOptions = new KeyValues("EmptyOptions");
+	pGenerationOptions->Clear();
+	pGenerationOptions->LoadFromFile(g_pFullFileSystem, szMissionFile, "GAME");	
+
+	CLayoutSystem *pLayoutSystem = new CLayoutSystem();
+
+	CTilegenMissionPreprocessor *pMissionPreprocessor = new CTilegenMissionPreprocessor();
+
+	CASW_KeyValuesDatabase *pRulesDatabase = new CASW_KeyValuesDatabase();
+	pRulesDatabase->LoadFiles( "tilegen/rules/" );
+	for ( int i = 0; i < pRulesDatabase->GetFileCount(); ++ i )
+	{
+		pMissionPreprocessor->ParseAndStripRules( pRulesDatabase->GetFile( i ) );
+	}
+
+
+
+	if (pMissionPreprocessor->SubstituteRules(pGenerationOptions) )
+	{
+		KeyValues *pMissionSettings = pGenerationOptions->FindKey( "mission_settings" ); 
+
+		if ( pMissionSettings == NULL )
+		{
+			Warning("Mission is missing a Global Options Block!\n");
+			return;
+		}
+
+		// Copy the filename key over
+		pMissionSettings->SetString( "Filename", pGenerationOptions->GetString( "Filename", "invalid_filename" ) );
+					
+		AddListeners( pLayoutSystem );
+		if ( !pLayoutSystem->LoadFromKeyValues( pGenerationOptions ) )
+		{
+			Warning("Failed to load mission from pre-processed key-values.");			
+			return;
+		}
+
+		pLayoutSystem->BeginGeneration(new CMapLayout( pMissionSettings->MakeCopy() ));
+
+		int safetyCounter = 0;
+		while (pLayoutSystem->IsGenerating())
+		{
+			pLayoutSystem->ExecuteIteration();
+
+			safetyCounter++;
+
+			if (safetyCounter > 1000)
+			{
+				Warning("Safety Counter has prevented executing pLayoutSystem->ExecuteIteration() over 1000 times.\n");
+				break;
+			}
+		}
+				
+		CMapLayout *pMapLayout = pLayoutSystem->GetMapLayout();
+		pMapLayout->SaveMapLayout( szOutputLayout );
+				
+		/*
+		CASW_Map_Builder *pMapBuilder = new CASW_Map_Builder();
+		pMapBuilder->ScheduleMapBuild(pMapBuilder, 0.0f);
+		
+		while (pMapBuilder->IsBuildingMission())
+		{
+			pMapBuilder->Update();
+		}
+		*/
+		
+		if (engine)
+		{
+			char buffer[512];
+			Q_snprintf(buffer, sizeof(buffer), "asw_spawning_enabled 0;  asw_build_map %s", "output.layout" );
+			Msg("Executing: [%s]", buffer);
+			engine->ClientCmd_Unrestricted( buffer );
+		}
+		else
+		{
+			Warning("No Engine!!");
+			return;
+		}		
+	}
+	else
+	{
+		Warning("Failed Initializting Mission Preprocessor\n");
+		return;
+	}	
+	
+	Msg("Finish CASW_Random_Missions::BuildAndLaunchRandomLevel\n");
 }

@@ -30,6 +30,9 @@ public:
 
 	virtual bool CheckAndCleanDirtyLayout( void );
 
+	//Added for MOD:
+	virtual void BuildAndLaunchRandomLevel();
+
 private:
 	CMapLayout *m_pCurrentMapLayout;
 	

@@ -725,6 +725,8 @@ void CTileGenDialog::OnFileSelected( const char *fullpath )
 
 void CTileGenDialog::GenerateMission( const char *szMissionFile )
 {
+	Msg("PJ: Begin Generating Mission\n");
+
 	m_pPropertySheet->SetActivePage( m_pPropertySheet->GetPage( 0 ) );
 	m_pGenerationOptions->Clear();
 	m_pGenerationOptions->LoadFromFile( g_pFullFileSystem, szMissionFile, "GAME" );

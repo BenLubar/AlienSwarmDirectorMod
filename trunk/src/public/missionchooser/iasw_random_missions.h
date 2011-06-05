@@ -89,6 +89,9 @@ public:
 	virtual IASW_Encounter* GetEncounter( int i ) = 0;
 
 	virtual bool CheckAndCleanDirtyLayout( void ) = 0;
+
+	//Added for MOD:
+	virtual void BuildAndLaunchRandomLevel() = 0;
 };
 
 #endif // _INCLUDED_IASW_RANDOM_MISSIONS_H
