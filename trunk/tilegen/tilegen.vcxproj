@@ -59,12 +59,17 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>if exist "C:\Program Files\Steam\steamapps\common\alien swarm\swarm\tilegen\." goto ValveStart
-del /q "C:\Program Files\Steam\steamapps\common\alien swarm\swarm\tilegen\."
-:ValveStart
-copy "C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\"*.* "C:\Program Files\Steam\steamapps\common\alien swarm\swarm\tilegen"
-if ERRORLEVEL 1 exit 1</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>rmdir /S /Q "C:\Program Files\Steam\steamapps\common\alien swarm\swarm\tilegen\"
+if ERRORLEVEL 1 exit 1
+mkdir "C:\Program Files\Steam\steamapps\common\alien swarm\swarm\tilegen\"
+if ERRORLEVEL 1 exit 1
+xcopy /S /Y "C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\"*.* "C:\Program Files\Steam\steamapps\common\alien swarm\swarm\tilegen"
+if ERRORLEVEL 1 exit 1</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="gameinfo.txt" />
