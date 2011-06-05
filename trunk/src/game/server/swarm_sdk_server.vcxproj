@@ -729,6 +729,7 @@ exit 1
     <ClCompile Include="message_entity.cpp" />
     <ClCompile Include="modelentities.cpp" />
     <ClCompile Include="..\shared\ModelSoundsCache.cpp" />
+    <ClCompile Include="mod_dynamicDifficultyModifierTrigger.cpp" />
     <ClCompile Include="monstermaker.cpp" />
     <ClCompile Include="movehelper_server.cpp" />
     <ClCompile Include="movement.cpp" />
