@@ -42,7 +42,7 @@ BEGIN_DATADESC (CModDynamicDifficultyModifierTrigger)
 	DEFINE_FIELD(m_bDifficultyThresholdReached, FIELD_BOOLEAN),
 
 	//Link Member Variable to a Hammer keyvalue
-	DEFINE_KEYFIELD(m_MinDifficultyThreshold, FIELD_INTEGER, "minDifficultyThreshold"),
+	DEFINE_KEYFIELD(m_iMinDifficultyThreshold, FIELD_INTEGER, "minDifficultyThreshold"),
 	DEFINE_KEYFIELD(m_iMaxDifficultyThreshold, FIELD_INTEGER, "maxDifficultyThreshold"),
 
 	//Links out input name from Hammer to our input member
@@ -60,7 +60,9 @@ void  CModDynamicDifficultyModifierTrigger::ParseDifficultyThreshold()
 		//TODO: Actually check AI system instead of using random
 		int marinesPerformance = (rand() % 3) + 1;
 
-		m_bDifficultyThresholdReached = (m_iDifficultyThreshold <= marinesPerformance);
+		Msg("Marines Performance: [%i]\n", marinesPerformance);
+		
+		m_bDifficultyThresholdReached = ((m_iMaxDifficultyThreshold <= marinesPerformance) && (m_iMinDifficultyThreshold >= marinesPerformance));
 
 		m_bHasCheckedDifficulty = true;
 	}
