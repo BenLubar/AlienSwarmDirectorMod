@@ -40,8 +40,8 @@ Global
 		{23DDA8C6-EA96-472B-99E7-BC37DFA2F562}.Release|Win32.Build.0 = Release|Win32
 		{506742D7-ECF2-46F7-A2AA-3920A4175BB6}.Debug|Win32.ActiveCfg = Debug|Win32
 		{506742D7-ECF2-46F7-A2AA-3920A4175BB6}.Debug|Win32.Build.0 = Debug|Win32
-		{506742D7-ECF2-46F7-A2AA-3920A4175BB6}.Release_Laptop|Win32.ActiveCfg = Release|Win32
-		{506742D7-ECF2-46F7-A2AA-3920A4175BB6}.Release_Laptop|Win32.Build.0 = Release|Win32
+		{506742D7-ECF2-46F7-A2AA-3920A4175BB6}.Release_Laptop|Win32.ActiveCfg = Release_Laptop|Win32
+		{506742D7-ECF2-46F7-A2AA-3920A4175BB6}.Release_Laptop|Win32.Build.0 = Release_Laptop|Win32
 		{506742D7-ECF2-46F7-A2AA-3920A4175BB6}.Release|Win32.ActiveCfg = Release|Win32
 		{506742D7-ECF2-46F7-A2AA-3920A4175BB6}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
