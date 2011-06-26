@@ -1,6 +1,6 @@
 @include "base.fgd"
 
-@PointClass base(Targetname) = mod_dynaimic_difficulty_modifier_trigger: "Fires only if the Marines have reached the Difficulty Threshold"
+@SolidClass base(trigger_multiple) = mod_dynaimic_difficulty_modifier_trigger: "Fires only if the Marines have reached the Difficulty Threshold"
 [
 	minDifficultyThreshold(integer) : "Minimum Difficulty Threshold" : 1 : "Min Threshold value."
 	maxDifficultyThreshold((integer) : "Maximum Difficulty Threshold" : 3 : "Max Threshold value."
