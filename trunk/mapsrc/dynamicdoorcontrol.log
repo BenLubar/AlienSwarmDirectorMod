@@ -396,3 +396,136 @@ Level flags = 2
 Total triangle count: 691
 Writing d:\program files (x86)\steam\steamapps\sourcemods\alienswarmdirectormod\maps\dynamicDoorControl.bsp
 5 seconds elapsed
+
+
+
+materialPath: d:\program files (x86)\steam\steamapps\common\alien swarm\swarm\materials
+Loading D:\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\mapsrc\dynamicDoorControl.vmf
+fixing up env_cubemap materials on brush sides...
+0...1...2...3...4...5...6...7...8...9...100...1...2...3...4...5...6...7...8...9...10Processing areas...done (0)
+Building Faces...done (0)
+Chop Details...done (0)
+Find Visible Detail Sides...
+Merged 22 detail faces...done (0)
+Merging details...done (0)
+FixTjuncs...
+PruneNodes...
+WriteBSP...
+done (0)
+writing D:\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\mapsrc\dynamicDoorControl.prt...Building visibility clusters...
+done (0)
+Finding displacement neighbors...
+Finding lightmap sample positions...
+Displacement Alpha : 0...1...2...3...4...5...6...7...8...9...10
+Building Physics collision data...
+done (0) (20820 bytes)
+Placing detail props : 0...1...2...3...4...5...6...7...8...9...10
+Compacting texture/material tables...
+Reduced 163 texinfos to 80
+Reduced 24 texdatas to 19 (1120 bytes to 940)
+Writing D:\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\mapsrc\dynamicDoorControl.bsp
+0 seconds elapsed
+
+
+
+2 threads
+reading d:\documents\visual studio 2010\projects\alienswarmdirectormod\trunk\mapsrc\dynamicDoorControl.bsp
+reading d:\documents\visual studio 2010\projects\alienswarmdirectormod\trunk\mapsrc\dynamicDoorControl.prt
+  12 portalclusters
+  17 numportals
+0...1...2...3...4...5...6...7...8...9...100...1...2...3...4...5...6...7...8...9...10Optimized: 0 visible clusters (0.00%)
+Total clusters visible: 144
+Average clusters visible: 12
+Building PAS...
+Average clusters audible: 12
+visdatasize:148  compressed from 192
+writing d:\documents\visual studio 2010\projects\alienswarmdirectormod\trunk\mapsrc\dynamicDoorControl.bsp
+0 seconds elapsed
+
+
+
+[Reading texlights from 'lights.rad']
+[45 texlights parsed from 'lights.rad']
+
+Loading d:\documents\visual studio 2010\projects\alienswarmdirectormod\trunk\mapsrc\dynamicDoorControl.bsp
+Loaded alpha texture materials\Metal\metalrail013c.vtf
+276 faces
+280851 square feet [40442604.00 square inches]
+0 Displacements
+0 Square Feet [0.00 Square Inches]
+276 patches before subdivision
+7668 patches after subdivision
+15 direct lights
+0...1...2...3...4...5...6...7...8...9...100...1...2...3...4...5...6...7...8...9...10transfers 417539, max 244
+transfer lists:   3.2 megs
+0...1...2...3...4...5...6...7...8...9...10	Bounce #1 added RGB(1105, 1377, 1132)
+0...1...2...3...4...5...6...7...8...9...10	Bounce #2 added RGB(103, 122, 87)
+0...1...2...3...4...5...6...7...8...9...10	Bounce #3 added RGB(10, 11, 7)
+0...1...2...3...4...5...6...7...8...9...10	Bounce #4 added RGB(1, 1, 1)
+0...1...2...3...4...5...6...7...8...9...10	Bounce #5 added RGB(0, 0, 0)
+Build Patch/Sample Hash Table(s).....Done<0.0104 sec>
+0...1...2...3...4...5...6...7...8...9...10FinalLightFace Done
+0 of 0 (0% of) surface lights went in leaf ambient cubes.
+0...1...2...3...4...5...6...7...8...9...10Writing leaf ambient...done
+Computing static prop lighting : 00...1...2...3...4...5...6...7...8...9...10
+Ready to Finish
+
+Object names       Objects/Maxobjs  Memory / Maxmem  Fullness 
+------------       ---------------  ---------------  -------- 
+models                   9/1024          432/49152    ( 0.9%) 
+brushes                 46/8192          552/98304    ( 0.6%) 
+brushsides             281/65536        2248/524288   ( 0.4%) 
+planes                 300/65536        6000/1310720  ( 0.5%) 
+vertexes               492/65536        5904/786432   ( 0.8%) 
+nodes                  118/65536        3776/2097152  ( 0.2%) 
+texinfos                80/12288        5760/884736   ( 0.7%) 
+texdata                 19/2048          608/65536    ( 0.9%) 
+dispinfos                0/0               0/0        ( 0.0%) 
+disp_verts               0/0               0/0        ( 0.0%) 
+disp_tris                0/0               0/0        ( 0.0%) 
+disp_multiblend          0/0               0/0        ( 0.0%) 
+disp_lmsamples           0/0               0/0        ( 0.0%) 
+faces                  276/65536       15456/3670016  ( 0.4%) 
+hdr faces              276/65536       15456/3670016  ( 0.4%) 
+origfaces              183/65536       10248/3670016  ( 0.3%) 
+leaves                 128/65536        4096/2097152  ( 0.2%) 
+leaffaces              364/65536         728/131072   ( 0.6%) 
+leafbrushes            103/65536         206/131072   ( 0.2%) 
+areas                    2/256            16/2048     ( 0.8%) 
+surfedges             1987/512000       7948/2048000  ( 0.4%) 
+edges                 1211/256000       4844/1024000  ( 0.5%) 
+LDR worldlights          0/8192            0/819200   ( 0.0%) 
+HDR worldlights         15/8192         1500/819200   ( 0.2%) 
+leafwaterdata            0/32768           0/393216   ( 0.0%) 
+waterstrips             13/32768         130/327680   ( 0.0%) 
+waterverts               0/65536           0/786432   ( 0.0%) 
+waterindices           204/65536         408/131072   ( 0.3%) 
+cubemapsamples           8/1024          128/16384    ( 0.8%) 
+overlays                 0/512             0/180224   ( 0.0%) 
+LDR lightdata         [variable]           0/0        ( 0.0%) 
+HDR lightdata         [variable]      776312/0        ( 0.0%) 
+visdata               [variable]         148/16777216 ( 0.0%) 
+entdata               [variable]       21666/393216   ( 5.5%) 
+LDR ambient table      128/65536         512/262144   ( 0.2%) 
+HDR ambient table      128/65536         512/262144   ( 0.2%) 
+LDR leaf ambient       128/65536        3584/1835008  ( 0.2%) 
+HDR leaf ambient       521/65536       14588/1835008  ( 0.8%) 
+occluders                0/0               0/0        ( 0.0%) 
+occluder polygons        0/0               0/0        ( 0.0%) 
+occluder vert ind        0/0               0/0        ( 0.0%) 
+Prop Hull Verts          0/0               0/0        ( 0.0%) 
+Prop Hull Blob           0/0               0/0        ( 0.0%) 
+Prop Hull Lists          0/0               0/0        ( 0.0%) 
+Prop Hulls               0/0               0/0        ( 0.0%) 
+Prop Hull trilist        0/0               0/0        ( 0.0%) 
+detail props          [variable]           1/12       ( 8.3%) 
+static props          [variable]           1/658      ( 0.2%) 
+pakfile               [variable]      722976/0        ( 0.0%) 
+physics               [variable]       20820/4194304  ( 0.5%) 
+physics terrain       [variable]           2/1048576  ( 0.0%) 
+
+Level flags = 2
+
+Total triangle count: 703
+Writing d:\documents\visual studio 2010\projects\alienswarmdirectormod\trunk\mapsrc\dynamicDoorControl.bsp
+6 seconds elapsed

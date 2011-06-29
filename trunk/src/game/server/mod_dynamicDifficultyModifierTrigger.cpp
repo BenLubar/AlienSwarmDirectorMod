@@ -4,10 +4,10 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-class CModDynamicDifficultyModifierTrigger : public CLogicalEntity
+class CModDynamicDifficultyModifierTrigger : public CBaseTrigger
 {
 public:
-	DECLARE_CLASS ( CModDynamicDifficultyModifierTrigger, CLogicalEntity);
+	DECLARE_CLASS ( CModDynamicDifficultyModifierTrigger, CBaseTrigger);
 
 	DECLARE_DATADESC();
 
