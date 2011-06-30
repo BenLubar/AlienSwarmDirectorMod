@@ -3,7 +3,10 @@
 @SolidClass base(trigger_multiple) = mod_dynaimic_difficulty_modifier_trigger: "Fires only if the Marines have reached the Difficulty Threshold"
 [
 	minDifficultyThreshold(integer) : "Minimum Difficulty Threshold" : 1 : "Min Threshold value."
-	maxDifficultyThreshold((integer) : "Maximum Difficulty Threshold" : 3 : "Max Threshold value."
-	input CheckDifficulty(void) : "Checks the Difficulty Threshold."
-	output OnGetDifficultyThreshold(void) : "Difficulty Threshold was hit."
+	maxDifficultyThreshold(integer) : "Maximum Difficulty Threshold" : 3 : "Max Threshold value."
+
+	output OnAlwaysTriggerEasy(void) : "Fires if the marine(s) are at an Easy difficulty level.  Only fires once."
+	output OnAlwaysTriggerMedium(void) : "Fires if the marine(s) are at an Medium difficulty level.  Only fires once."
+	output OnAlwaysTriggerHard(void) : "Fires if the marine(s) are at an Hard difficulty level.  Only fires once."
+	
 ]
