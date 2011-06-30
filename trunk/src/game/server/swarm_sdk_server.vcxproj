@@ -1517,6 +1517,7 @@ exit 1
     <ClInclude Include="maprules.h" />
     <ClInclude Include="..\..\public\mathlib\mathlib.h" />
     <ClInclude Include="..\..\public\model_types.h" />
+    <ClInclude Include="mod_dynamicDifficultyModifierTrigger.h" />
     <ClInclude Include="monstermaker.h" />
     <ClInclude Include="movehelper_server.h" />
     <ClInclude Include="movie_explosion.h" />
