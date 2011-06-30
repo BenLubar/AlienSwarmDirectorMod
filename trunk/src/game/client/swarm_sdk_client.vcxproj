@@ -436,6 +436,7 @@ exit 1
     <ClCompile Include="c_func_conveyor.cpp" />
     <ClCompile Include="c_func_dust.cpp" />
     <ClCompile Include="c_func_lod.cpp" />
+    <ClCompile Include="c_mod_dynamic_door_area.cpp" />
     <ClCompile Include="hl2\C_Func_Monitor.cpp" />
     <ClCompile Include="c_func_movelinear.cpp" />
     <ClCompile Include="c_func_occluder.cpp" />
@@ -2245,6 +2246,7 @@ exit 1
     <ClInclude Include="c_env_ambient_light.h" />
     <ClInclude Include="c_env_projectedtexture.h" />
     <ClInclude Include="c_gameinstructor.h" />
+    <ClInclude Include="c_mod_dynamic_door_area.h" />
     <ClInclude Include="c_physics_prop_statue.h" />
     <ClInclude Include="c_postprocesscontroller.h" />
     <ClInclude Include="c_props.h" />

@@ -122,7 +122,7 @@ void CMOD_Dynamic_Difficulty_Modifier_Trigger::MultiWaitOver( void )
 
 int CMOD_Dynamic_Difficulty_Modifier_Trigger::GetDifficultyLevelOfMarines( void )
 {
-	return 2;
+	return 3;
 }
 
 bool CMOD_Dynamic_Difficulty_Modifier_Trigger::PerformDifficultyCheck( void )
@@ -131,8 +131,8 @@ bool CMOD_Dynamic_Difficulty_Modifier_Trigger::PerformDifficultyCheck( void )
 		return true;
 	else if (m_iMaxDifficultyThreshold <= 0 && m_iMinDifficultyThreshold <= m_iDifficultyLevelOfMarines)
 		return true;
-	else if (m_iMinDifficultyThreshold <= m_iDifficultyLevelOfMarines
-			&& m_iMaxDifficultyThreshold >= m_iDifficultyLevelOfMarines)
+	else if (m_iDifficultyLevelOfMarines >= m_iMinDifficultyThreshold &&
+		m_iDifficultyLevelOfMarines <= m_iMaxDifficultyThreshold)	
 		return true;	
 	else
 		return false;
