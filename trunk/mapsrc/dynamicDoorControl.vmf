@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "32"
+	"mapversion" "43"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "32"
+	"mapversion" "43"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -5499,11 +5499,14 @@ entity
 entity
 {
 	"id" "222"
-	"classname" "trigger_asw_door_area"
+	"classname" "mod_dynamic_door_area"
+	"maxDifficultyThreshold" "1"
+	"minDifficultyThreshold" "1"
 	"origin" "0 -356 82"
 	"playersrequired" "1"
 	"spawnflags" "2"
 	"StartDisabled" "0"
+	"targetname" "door_01_trigger"
 	"usetargetname" "door_01"
 	"wait" "1"
 	solid
@@ -5793,11 +5796,14 @@ entity
 entity
 {
 	"id" "6434"
-	"classname" "trigger_asw_door_area"
-	"origin" "289 -351 82"
+	"classname" "mod_dynamic_door_area"
+	"maxDifficultyThreshold" "3"
+	"minDifficultyThreshold" "3"
+	"origin" "280 -375 82"
 	"playersrequired" "1"
 	"spawnflags" "2"
 	"StartDisabled" "0"
+	"targetname" "door_02_trigger"
 	"usetargetname" "door_02"
 	"wait" "1"
 	solid
@@ -5806,10 +5812,10 @@ entity
 		side
 		{
 			"id" "1464"
-			"plane" "(193 -483 162) (193 -219 162) (385 -219 162)"
+			"plane" "(184 -487 162) (184 -263 162) (376 -263 162)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[1 0 0 60] 0.25"
-			"vaxis" "[0 -1 0 20] 0.25"
+			"uaxis" "[1 0 0 32] 0.25"
+			"vaxis" "[0 -1 0 24] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
 			"smoothing_groups" "0"
@@ -5817,10 +5823,10 @@ entity
 		side
 		{
 			"id" "1463"
-			"plane" "(193 -219 2) (193 -483 2) (385 -483 2)"
+			"plane" "(184 -263 2) (184 -487 2) (376 -487 2)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[1 0 0 60] 0.25"
-			"vaxis" "[0 -1 0 20] 0.25"
+			"uaxis" "[1 0 0 32] 0.25"
+			"vaxis" "[0 -1 0 24] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
 			"smoothing_groups" "0"
@@ -5828,9 +5834,9 @@ entity
 		side
 		{
 			"id" "1462"
-			"plane" "(193 -483 2) (193 -219 2) (193 -219 162)"
+			"plane" "(184 -487 2) (184 -263 2) (184 -263 162)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[0 1 0 -20] 0.25"
+			"uaxis" "[0 1 0 -24] 0.25"
 			"vaxis" "[0 0 -1 33.239] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
@@ -5839,9 +5845,9 @@ entity
 		side
 		{
 			"id" "1461"
-			"plane" "(385 -219 2) (385 -483 2) (385 -483 162)"
+			"plane" "(376 -263 2) (376 -487 2) (376 -487 162)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[0 1 0 -20] 0.25"
+			"uaxis" "[0 1 0 -24] 0.25"
 			"vaxis" "[0 0 -1 33.239] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
@@ -5850,9 +5856,9 @@ entity
 		side
 		{
 			"id" "1460"
-			"plane" "(193 -219 2) (385 -219 2) (385 -219 162)"
+			"plane" "(184 -263 2) (376 -263 2) (376 -263 162)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[1 0 0 60] 0.25"
+			"uaxis" "[1 0 0 32] 0.25"
 			"vaxis" "[0 0 -1 33.239] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
@@ -5861,9 +5867,9 @@ entity
 		side
 		{
 			"id" "1459"
-			"plane" "(385 -483 2) (193 -483 2) (193 -483 162)"
+			"plane" "(376 -487 2) (184 -487 2) (184 -487 162)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[1 0 0 60] 0.25"
+			"uaxis" "[1 0 0 32] 0.25"
 			"vaxis" "[0 0 -1 33.239] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
@@ -6022,24 +6028,48 @@ entity
 }
 entity
 {
-	"id" "6728"
+	"id" "6736"
+	"classname" "env_instructor_hint"
+	"hint_allow_nodraw_target" "1"
+	"hint_caption" "Fuck ya angie!!"
+	"hint_color" "255 255 255"
+	"hint_icon_offscreen" "icon_tip"
+	"hint_icon_onscreen" "icon_tip"
+	"hint_timeout" "2"
+	"targetname" "modHint"
+	"origin" "5 1085 80"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 1000]"
+	}
+}
+entity
+{
+	"id" "6977"
 	"classname" "mod_dynaimic_difficulty_modifier_trigger"
+	"DesiredFacing" "0"
 	"maxDifficultyThreshold" "3"
 	"minDifficultyThreshold" "1"
 	"origin" "9 1011 72"
 	"spawnflags" "16"
 	"StartDisabled" "0"
+	"Tolerance" "45"
 	"wait" "1"
 	connections
 	{
-		"OnGetDifficultyThreshold" "modHintShowHint0-1"
+		"OnAlwaysTriggerEasy" "modEasyShowHint0-1"
+		"OnAlwaysTriggerHard" "modHardShowHint0-1"
+		"OnAlwaysTriggerMedium" "modMediumShowHint0-1"
 	}
 	solid
 	{
 		"id" "6726"
 		side
 		{
-			"id" "1512"
+			"id" "1518"
 			"plane" "(-143 1075 172) (161 1075 172) (161 947 172)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[1 0 0 0] 0.25"
@@ -6050,7 +6080,7 @@ entity
 		}
 		side
 		{
-			"id" "1511"
+			"id" "1517"
 			"plane" "(-143 947 -28) (161 947 -28) (161 1075 -28)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[1 0 0 0] 0.25"
@@ -6061,7 +6091,7 @@ entity
 		}
 		side
 		{
-			"id" "1510"
+			"id" "1516"
 			"plane" "(-143 1075 172) (-143 947 172) (-143 947 -28)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[0 1 0 0] 0.25"
@@ -6072,7 +6102,7 @@ entity
 		}
 		side
 		{
-			"id" "1509"
+			"id" "1515"
 			"plane" "(161 1075 -28) (161 947 -28) (161 947 172)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[0 1 0 0] 0.25"
@@ -6083,7 +6113,7 @@ entity
 		}
 		side
 		{
-			"id" "1508"
+			"id" "1514"
 			"plane" "(161 1075 172) (-143 1075 172) (-143 1075 -28)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[1 0 0 0] 0.25"
@@ -6094,7 +6124,7 @@ entity
 		}
 		side
 		{
-			"id" "1507"
+			"id" "1513"
 			"plane" "(161 947 -28) (-143 947 -28) (-143 947 172)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[1 0 0 0] 0.25"
@@ -6115,21 +6145,61 @@ entity
 		"color" "220 30 220"
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
-		"logicalpos" "[0 500]"
+		"logicalpos" "[0 0]"
 	}
 }
 entity
 {
-	"id" "6736"
+	"id" "7228"
 	"classname" "env_instructor_hint"
 	"hint_allow_nodraw_target" "1"
-	"hint_caption" "Fuck ya angie!!"
+	"hint_caption" "Medium"
 	"hint_color" "255 255 255"
 	"hint_icon_offscreen" "icon_tip"
 	"hint_icon_onscreen" "icon_tip"
-	"hint_timeout" "10"
-	"targetname" "modHint"
-	"origin" "5 1085 80"
+	"hint_timeout" "2"
+	"targetname" "modMedium"
+	"origin" "5 1201 78"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 1000]"
+	}
+}
+entity
+{
+	"id" "7232"
+	"classname" "env_instructor_hint"
+	"hint_allow_nodraw_target" "1"
+	"hint_caption" "Easy"
+	"hint_color" "255 255 255"
+	"hint_icon_offscreen" "icon_tip"
+	"hint_icon_onscreen" "icon_tip"
+	"hint_timeout" "2"
+	"targetname" "modEasy"
+	"origin" "-55 1200 78"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 1000]"
+	}
+}
+entity
+{
+	"id" "7234"
+	"classname" "env_instructor_hint"
+	"hint_allow_nodraw_target" "1"
+	"hint_caption" "Hard"
+	"hint_color" "255 255 255"
+	"hint_icon_offscreen" "icon_tip"
+	"hint_icon_onscreen" "icon_tip"
+	"hint_timeout" "2"
+	"targetname" "modHard"
+	"origin" "124 1202 78"
 	editor
 	{
 		"color" "220 30 220"
