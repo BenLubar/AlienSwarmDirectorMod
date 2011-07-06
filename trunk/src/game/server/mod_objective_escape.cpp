@@ -18,11 +18,33 @@ END_DATADESC()
 
 CMOD_Objective_Escape::CMOD_Objective_Escape() : CASW_Objective_Escape()
 {	
-	int a;
+	
 }
 
 
 CMOD_Objective_Escape::~CMOD_Objective_Escape()
 {	
 	g_aEscapeObjectives.FindAndRemove( this );
+}
+
+void CMOD_Objective_Escape::CheckEscapeStatus()
+{
+	BaseClass::CheckEscapeStatus();
+	
+}
+
+bool CMOD_Objective_Escape::OtherObjectivesComplete(){
+	return BaseClass::OtherObjectivesComplete();
+}
+bool CMOD_Objective_Escape::AllLiveMarinesInExit()
+{
+	return BaseClass::AllLiveMarinesInExit();
+}
+void CMOD_Objective_Escape::InputMarineInEscapeArea( inputdata_t &inputdata ){
+	BaseClass::InputMarineInEscapeArea(inputdata);
+}
+
+CBaseTrigger* CMOD_Objective_Escape::GetTrigger()
+{
+	return BaseClass::GetTrigger();
 }

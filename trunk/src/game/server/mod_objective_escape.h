@@ -10,17 +10,15 @@ public:
 	DECLARE_DATADESC();
 
 	CMOD_Objective_Escape();
-	virtual ~CMOD_Objective_Escape();
+	~CMOD_Objective_Escape();
 	 
-	/*
 	void CheckEscapeStatus();
 	bool OtherObjectivesComplete();
 	bool AllLiveMarinesInExit();
 	void InputMarineInEscapeArea( inputdata_t &inputdata );
 
 	CBaseTrigger* GetTrigger();
-	EHANDLE m_hTrigger;
-	*/
+	EHANDLE m_hTrigger;	
 };
 
 

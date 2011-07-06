@@ -35,7 +35,7 @@ CMOD_Dynamic_Door_Area::CMOD_Dynamic_Door_Area()
 }
 
 void CMOD_Dynamic_Door_Area::ActivateMultiTrigger(CBaseEntity *pActivator)
-{
+{ 
 	if (GetNextThink() > gpGlobals->curtime)
 		return;         // still waiting for reset time
 
@@ -57,7 +57,7 @@ void CMOD_Dynamic_Door_Area::ActivateMultiTrigger(CBaseEntity *pActivator)
 
 int CMOD_Dynamic_Door_Area::GetDifficultyLevelOfMarines( void )
 {	
-	return 1;
+	return 3;
 }
 
 bool CMOD_Dynamic_Door_Area::PerformDifficultyCheck( void )

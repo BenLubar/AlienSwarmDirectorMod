@@ -729,7 +729,7 @@ exit 1
     <ClCompile Include="message_entity.cpp" />
     <ClCompile Include="modelentities.cpp" />
     <ClCompile Include="..\shared\ModelSoundsCache.cpp" />
-    <ClCompile Include="mod_dynamicDifficultyModifierTrigger.cpp" />
+    <ClCompile Include="mod_dynamic_difficulty_modifier_trigger.cpp" />
     <ClCompile Include="mod_dynamic_door_area.cpp" />
     <ClCompile Include="mod_objective_escape.cpp" />
     <ClCompile Include="monstermaker.cpp" />
@@ -1519,7 +1519,7 @@ exit 1
     <ClInclude Include="maprules.h" />
     <ClInclude Include="..\..\public\mathlib\mathlib.h" />
     <ClInclude Include="..\..\public\model_types.h" />
-    <ClInclude Include="mod_dynamicDifficultyModifierTrigger.h" />
+    <ClInclude Include="mod_dynamic_difficulty_modifier_trigger.h" />
     <ClInclude Include="mod_dynamic_door_area.h" />
     <ClInclude Include="mod_objective_escape.h" />
     <ClInclude Include="monstermaker.h" />

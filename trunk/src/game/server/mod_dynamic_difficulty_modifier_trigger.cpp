@@ -1,5 +1,5 @@
 #include "cbase.h"
-#include "mod_dynamicDifficultyModifierTrigger.h"
+#include "mod_dynamic_difficulty_modifier_trigger.h"
 #include "asw_marine.h"
 #include "asw_game_resource.h"
 #include "asw_marine_resource.h"
