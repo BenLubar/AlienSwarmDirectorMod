@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "46"
+	"mapversion" "50"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "46"
+	"mapversion" "50"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -5364,7 +5364,7 @@ entity
 entity
 {
 	"id" "5711"
-	"classname" "asw_marker"
+	"classname" "mod_marker"
 	"mapheight" "380"
 	"mapwidth" "440"
 	"objectivename" "objective_escape"
@@ -5382,7 +5382,7 @@ entity
 entity
 {
 	"id" "4709"
-	"classname" "mod_objective_escape"
+	"classname" "asw_objective_escape"
 	"mapmarkings" "BRACKETS 564 10 77 79"
 	"objectivedescription1" "Get to the exit"
 	"objectiveimage" "obrydbergexit"

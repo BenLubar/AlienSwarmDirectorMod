@@ -1,4 +1,5 @@
 1) mod_dynamic_door_area does not work with prop_dynamic (door lock thingee).  Looks like prop_dynamic can open doors.
 2) mod_objective_escape - trigger level end, and spawn new map.
+	2 a) create mod_marker instead of mod_objective_escape?
 3) create a new trigger area that begins generating the next level on the map
 4) plug mod_dynamic_door_area and mod_dynamic_difficulty_modifier_trigger into AI director.

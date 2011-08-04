@@ -731,6 +731,7 @@ exit 1
     <ClCompile Include="..\shared\ModelSoundsCache.cpp" />
     <ClCompile Include="mod_dynamic_difficulty_modifier_trigger.cpp" />
     <ClCompile Include="mod_dynamic_door_area.cpp" />
+    <ClCompile Include="mod_marker.cpp" />
     <ClCompile Include="mod_objective_escape.cpp" />
     <ClCompile Include="monstermaker.cpp" />
     <ClCompile Include="movehelper_server.cpp" />
@@ -1521,6 +1522,7 @@ exit 1
     <ClInclude Include="..\..\public\model_types.h" />
     <ClInclude Include="mod_dynamic_difficulty_modifier_trigger.h" />
     <ClInclude Include="mod_dynamic_door_area.h" />
+    <ClInclude Include="mod_marker.h" />
     <ClInclude Include="mod_objective_escape.h" />
     <ClInclude Include="monstermaker.h" />
     <ClInclude Include="movehelper_server.h" />

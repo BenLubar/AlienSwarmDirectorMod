@@ -1,17 +1,20 @@
 #ifndef _INCLUDED_MOD_OBJECTIVE_ESCAPE_H
 #define _INCLUDED_MOD_OBJECTIVE_ESCAPE_H
 
-#include "asw_objective_escape.h"
+#include "asw_objective.h"
 
-class CMOD_Objective_Escape : public CASW_Objective_Escape
+class CBaseTrigger;
+
+class CMOD_Objective_Escape : public CASW_Objective
 {
 public:
-	DECLARE_CLASS( CMOD_Objective_Escape, CASW_Objective_Escape );
+	DECLARE_CLASS( CMOD_Objective_Escape, CASW_Objective );
 	DECLARE_DATADESC();
 
 	CMOD_Objective_Escape();
 	~CMOD_Objective_Escape();
 	 
+	void Spawn();
 	void CheckEscapeStatus();
 	bool OtherObjectivesComplete();
 	bool AllLiveMarinesInExit();
@@ -21,5 +24,6 @@ public:
 	EHANDLE m_hTrigger;	
 };
 
+extern CUtlVector<CMOD_Objective_Escape*> g_aEscapeObjectives;
 
 #endif /* _INCLUDED_MOD_OBJECTIVE_ESCAPE_H */
