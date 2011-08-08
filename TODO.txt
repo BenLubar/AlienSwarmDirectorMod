@@ -4,3 +4,8 @@
 3) create a new trigger area that begins generating the next level on the map
 	3 a) How can a level generated on a server be downloaded to the client?
 4) plug mod_dynamic_door_area and mod_dynamic_difficulty_modifier_trigger into AI director.
+
+
+Notes:
+
+-asw_gamerules.cpp - CAlienSwarm:MissionComplete() - calculates XP.

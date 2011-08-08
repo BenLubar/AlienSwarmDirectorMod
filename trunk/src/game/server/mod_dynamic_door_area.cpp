@@ -8,6 +8,7 @@
 #include "asw_weapon.h"
 #include "asw_util_shared.h"
 #include "asw_melee_system.h"
+#include "mod_player_performance.h"
 /*
 #include "asw_door.h"
 #include "asw_marine.h"
@@ -57,7 +58,13 @@ void CMOD_Dynamic_Door_Area::ActivateMultiTrigger(CBaseEntity *pActivator)
 
 int CMOD_Dynamic_Door_Area::GetDifficultyLevelOfMarines( void )
 {	
-	return 3;
+	if (!CMOD_Player_Performance::PlayerPerformance())
+	{
+		Msg("Failed to get player performance from CMOD_Player_Performance.  Using default");
+		return 1;
+	}
+	
+	return CMOD_Player_Performance::PlayerPerformance()->CalculatePerformance();
 }
 
 bool CMOD_Dynamic_Door_Area::PerformDifficultyCheck( void )

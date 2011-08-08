@@ -13,6 +13,7 @@
 #include "asw_objective_escape.h"
 #include "asw_director_control.h"
 #include "asw_mission_manager.h"
+#include "../mod_player_performance.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -119,6 +120,9 @@ void CASW_Director::FrameUpdatePostEntityThink()
 	// only think when we're in-game
 	if ( !ASWGameRules() || ASWGameRules()->GetGameState() != ASW_GS_INGAME )
 		return;
+
+	//PJ - Hook in mod_player_performance
+	CMOD_Player_Performance::PlayerPerformance()->FrameUpdatePostEntityThink();
 
 	UpdateIntensity();
 
@@ -524,7 +528,8 @@ void CASW_Director::UpdateMarineInsideEscapeRoom( CASW_Marine *pMarine )
 
 void CASW_Director::OnMissionStarted()
 {
-	Msg("Holy fuck balls!  From VM.  Updated on laptop.\n");
+	//PJ - Hook in mod_player_performance
+	CMOD_Player_Performance::PlayerPerformance()->OnMissionStarted();
 
 	// if we have wanders turned on, spawn a couple of encounters
 	if ( asw_wanderer_override.GetBool() && ASWGameRules() )
