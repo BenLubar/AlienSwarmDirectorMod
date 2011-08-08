@@ -2,4 +2,5 @@
 2) mod_objective_escape - trigger level end, and spawn new map.
 	2 a) create mod_marker instead of mod_objective_escape?
 3) create a new trigger area that begins generating the next level on the map
+	3 a) How can a level generated on a server be downloaded to the client?
 4) plug mod_dynamic_door_area and mod_dynamic_difficulty_modifier_trigger into AI director.
