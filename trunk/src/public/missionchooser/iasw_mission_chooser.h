@@ -14,6 +14,7 @@ class KeyValues;
 class CUniformRandomStream;
 class Color;
 class IASWSpawnSelection;
+class IMOD_Level_Builder;
 
 class IASW_Location;
 
@@ -128,6 +129,8 @@ public:
 	virtual IASW_Mission_Text_Database *MissionTextDatabase() = 0;
 	virtual IASW_Map_Builder *MapBuilder() = 0;
 	virtual IASWSpawnSelection *SpawnSelection() = 0;
+
+	virtual IMOD_Level_Builder *modLevel_Builder() = 0;
 };
 
 #define ASW_MISSION_CHOOSER_VERSION		"VASWMissionChooser001"

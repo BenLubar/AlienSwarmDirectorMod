@@ -11,6 +11,8 @@
 #include "asw_map_builder.h"
 #include "ienginevgui.h"
 
+#include "mod_level_builder.h"
+
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
@@ -20,6 +22,8 @@ CASW_MissionTextDB g_MissionTextDatabase;
 CASW_Location_Grid *g_pLocationGrid = NULL;
 CASW_Map_Builder *g_pMapBuilder = NULL;
 CASW_Spawn_Selection g_SpawnSelection;
+
+MOD_Level_Builder *g_pModLevelBuilder;
 
 char	g_gamedir[1024];
 char	g_layoutsdir[1024];
@@ -95,6 +99,20 @@ CASW_Spawn_Selection* SpawnSelection()
 	Msg("Spawn 2\n");
 	return &g_SpawnSelection;
 }
+
+//-----------------------------------------------------------------------------
+// MOD
+//-----------------------------------------------------------------------------
+IMOD_Level_Builder *CASW_Mission_Chooser::modLevel_Builder()
+{
+	if (!g_pModLevelBuilder)
+	{
+		g_pModLevelBuilder = new MOD_Level_Builder();
+	}
+
+	return g_pModLevelBuilder;
+}
+
 
 //-----------------------------------------------------------------------------
 // Connect, disconnect

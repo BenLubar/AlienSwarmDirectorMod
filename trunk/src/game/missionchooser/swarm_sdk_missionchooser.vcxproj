@@ -180,7 +180,7 @@ if ERRORLEVEL 1 exit 1
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>..\..\common;..\..\public;..\..\public\tier0;..\..\public\tier1;.;vgui;vgui\dialogs;TileSource;keyvalues_editor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\common;..\..\public;..\..\public\tier0;..\..\public\tier1;.;vgui;vgui\dialogs;TileSource;keyvalues_editor;mod;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WIN32;NDEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;DLLNAME=missionchooser;VPCGAME=swarm;VPCGAMECAPS=SWARM;_DLL_EXT=.dll;COMPILER_MSVC32;VPCGAME=swarm;VPCGAMECAPS=SWARM;_DLL_EXT=.dll;COMPILER_MSVC;MEMOVERRIDE_MODULE=missionchooser;_DLL_EXT=.dll;VPCGAME=swarm;VPCGAMECAPS=SWARM;_DLL_EXT=.dll;DLLNAME=missionchooser;VPCGAME=swarm;VPCGAMECAPS=SWARM;_DLL_EXT=.dll;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>
@@ -386,6 +386,7 @@ exit 1
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="mod_level_builder.cpp" />
     <ClCompile Include="tile_check.cpp" />
     <ClCompile Include="VMFExporter.cpp" />
     <ClCompile Include="TileSource\LevelTheme.cpp" />
@@ -436,6 +437,7 @@ exit 1
     <ClCompile Include="vgui\dialogs\TileGenDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\public\missionchooser\iasw_map_builder.h" />
     <ClInclude Include="asw_key_values_database.h" />
     <ClInclude Include="asw_location_grid.h" />
     <ClInclude Include="asw_map_builder.h" />
@@ -446,6 +448,8 @@ exit 1
     <ClInclude Include="asw_random_missions.h" />
     <ClInclude Include="asw_spawn_selection.h" />
     <ClInclude Include="asw_system.h" />
+    <ClInclude Include="imod_level_builder.h" />
+    <ClInclude Include="mod_level_builder.h" />
     <ClInclude Include="tile_check.h" />
     <ClInclude Include="tilegen_core.h" />
     <ClInclude Include="VMFExporter.h" />

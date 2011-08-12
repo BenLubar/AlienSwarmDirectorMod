@@ -9,3 +9,9 @@
 Notes:
 
 -asw_gamerules.cpp - CAlienSwarm:MissionComplete() - calculates XP.
+
+-build map:
+	- m_pMapLayout->SaveMapLayout( "maps/output.layout" ); (TileGenDialog.cpp 274)
+	- engine->ClientCmd_Unrestricted( "asw_spawning_enabled 1;  asw_build_map output.layout"); (TileGenDialog.cpp 284)
+	- this may be important: asw_build_map_frame.cpp - CASW_Build_Map_Frame::OnThink() - tells game to load level (i think?)
+	- can the IASW_Map_Builder be used?

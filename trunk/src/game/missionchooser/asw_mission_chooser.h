@@ -34,6 +34,8 @@ public:
 	virtual IASW_Mission_Text_Database* MissionTextDatabase();
 	virtual IASW_Map_Builder *MapBuilder();
 	virtual IASWSpawnSelection *SpawnSelection();
+
+	virtual IMOD_Level_Builder *modLevel_Builder();
 };
 
 CASW_Location_Grid *LocationGrid();

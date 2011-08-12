@@ -24,15 +24,17 @@ using namespace std;
 
 #define FRIENDLYFIRE_MULTIPLIER 3
 
-#define MAX_DIRECTOR_STRESS_HISTORY_SIZE 256
+#define MAX_DIRECTOR_STRESS_HISTORY_SIZE 2024
+
+//This counters that effect of stress, end of levels
+//usually have 'finales' which result in the players
+//being 100% stressed. This reduces the overall impact
+//of prolonged high stress on performance metrics.
+#define STRESS_MULTIPLIER 0.5
 
 ConVar mod_player_performance_debug("mod_player_performance_debug", "0", FCVAR_CHEAT, "Displays modPlayerPerformance status on screen");
 
 CMOD_Player_Performance* CMOD_Player_Performance::g_PlayerPerformanceSingleton = 0;
-
-//vector<double>* CMOD_Player_Performance::g_directorStressHistory; 
-	// =new vector<double>(MAX_DIRECTOR_STRESS_HISTORY_SIZE);
-
 
 CMOD_Player_Performance* CMOD_Player_Performance::PlayerPerformance()
 {	
@@ -42,8 +44,6 @@ CMOD_Player_Performance* CMOD_Player_Performance::PlayerPerformance()
 	}
 
 	return g_PlayerPerformanceSingleton;
-	
-	return NULL;
 }
 
 CMOD_Player_Performance::CMOD_Player_Performance( void ) : CAutoGameSystemPerFrame( "CMOD_Player_Performance" )
@@ -106,9 +106,9 @@ int CMOD_Player_Performance::CalculatePerformance()
 
 	engine->Con_NPrintf(7,"Players Total Rating: %d", totalRating);
 
-	if (totalRating > 66)
+	if (totalRating > 75)
 		return 3;
-	else if (totalRating > 33)
+	else if (totalRating > 55)
 		return 2;
 	else 
 		return 1;	
@@ -216,8 +216,10 @@ int CMOD_Player_Performance::CalculateDirectorStress(CASW_Game_Resource *pGameRe
 		if ( !pMR )
 			continue;
 
-		averageStressOfPlayers += (pMR->GetIntensity()->GetCurrent() * 100.0);
+		averageStressOfPlayers += (pMR->GetIntensity()->GetCurrent() * 100.0 * STRESS_MULTIPLIER);
 	}
+	averageStressOfPlayers /= pGameResource->GetMaxMarineResources();
+
 	engine->Con_NPrintf(17,"Average stress: %f", averageStressOfPlayers);
 	g_directorStressHistory->push_back(averageStressOfPlayers);
 
@@ -227,6 +229,7 @@ int CMOD_Player_Performance::CalculateDirectorStress(CASW_Game_Resource *pGameRe
 		averageStressHistory += g_directorStressHistory->at(i);
 	}
 
-	averageStressHistory /= g_directorStressHistory->size();	
+	averageStressHistory /= g_directorStressHistory->size();
+	engine->Con_NPrintf(18,"Average historical stress: %f", averageStressHistory);
 	return 100 - (int)averageStressHistory;
 }
