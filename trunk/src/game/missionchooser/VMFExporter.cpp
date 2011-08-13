@@ -6,6 +6,7 @@
 #include "TileSource/LevelTheme.h"
 #include "TileSource/MapLayout.h"
 #include "TileGenDialog.h"
+#include "asw_mission_chooser.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include <tier0/memdbgon.h>
@@ -222,6 +223,8 @@ bool VMFExporter::ExportVMF( CMapLayout* pLayout, const char *mapname, bool bPop
 
 	// save out the export keys
 	char filename[512];
+	char fullpath[1024];
+
 	Q_snprintf( filename, sizeof(filename), "maps\\%s", mapname );
 	Q_SetExtension( filename, "vmf", sizeof( filename ) );
 	CUtlBuffer buf( 0, 0, CUtlBuffer::TEXT_BUFFER );
@@ -229,9 +232,14 @@ bool VMFExporter::ExportVMF( CMapLayout* pLayout, const char *mapname, bool bPop
 	{
 		pKey->RecursiveSaveToFile( buf, 0 );			
 	}
-	if ( !g_pFullFileSystem->WriteFile( filename, "GAME", buf ) )
+
+	strcat(fullpath, g_gamedir);
+	strcat(fullpath, filename);
+
+	Msg("\nSaving file %s\n\n", fullpath);
+	if ( !g_pFullFileSystem->WriteFile( fullpath, "GAME", buf ) )
 	{
-		Msg( "Failed to SaveToFile %s\n", filename );
+		Msg( "Failed to SaveToFile %s\n", fullpath );
 		return false;
 	}
 	

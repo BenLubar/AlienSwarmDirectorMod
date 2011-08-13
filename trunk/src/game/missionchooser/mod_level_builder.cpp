@@ -12,6 +12,8 @@
 #include "asw_map_builder.h"
 #include "asw_key_values_database.h"
 #include "cdll_int.h"  //needed for access to engine
+#include "strtools.h"
+#include "asw_mission_chooser.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -130,10 +132,15 @@ void MOD_Level_Builder::BuildLevel( const char *szMissionFile, const int iDiffic
 				break;
 			}
 		}
-				
-		CMapLayout *pMapLayout = pLayoutSystem->GetMapLayout();
-		pMapLayout->SaveMapLayout( szOutputFile );		
 		
+		CMapLayout *pMapLayout = pLayoutSystem->GetMapLayout();
+
+		char fullPath[1024];
+		strcat(fullPath, g_gamedir);
+		strcat(fullPath, szOutputFile);
+
+		Q_strcpy(pMapLayout->m_szFilename, fullPath);	
+		pMapLayout->SaveMapLayout( fullPath );			
 	}
 	else
 	{
@@ -215,7 +222,7 @@ void MOD_Level_Builder::CompileAndExecuteLevel(const char * szLayoutFile)
 	if (engine)
 	{
 		char buffer[512];
-		Q_snprintf(buffer, sizeof(buffer), "asw_spawning_enabled 0;  asw_build_map %s", "output.layout" );
+		Q_snprintf(buffer, sizeof(buffer), "asw_spawning_enabled 0;  asw_build_map %s", szLayoutFile );
 		Msg("Executing: [%s]", buffer);
 		engine->ClientCmd_Unrestricted( buffer );
 	}

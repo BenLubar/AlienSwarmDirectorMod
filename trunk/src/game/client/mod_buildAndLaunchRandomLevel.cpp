@@ -2,6 +2,7 @@
 
 #include "mod_buildAndLaunchRandomLevel.h"
 #include "../missionchooser/mod_level_builder.h"
+#include "missionchooser/iasw_map_builder.h"
 
 #include "convar.h"
 #include <vgui_controls/Frame.h>
@@ -21,10 +22,12 @@ extern void BuildLevel( const char *szMissionFile, const int iDifficultLevel, co
 
 void MOD_BuildAndLaunchRandomLevel(const CCommand &args)
 {	
-	const char * layoutFile = "maps/customOuput.layout";
+	const char * layoutFile = "\\maps\\customOuput.layout";
 
 	missionchooser->modLevel_Builder()->BuildLevel("tilegen\\new_missions\\mod_escapeOnly.txt",3,layoutFile);
+	//missionchooser->MapBuilder()->ScheduleMapBuild(layoutFile, 0.6f);
 	missionchooser->modLevel_Builder()->CompileAndExecuteLevel(layoutFile);
+	//missionchooser->modLevel_Builder()->CompileAndExecuteLevel("C:\\Program Files\\Steam\\steamapps\\sourcemods\\alienswarmdirectormod\\maps\\customoutput.layout");
 
 	//missionchooser->RandomMissions()->BuildAndLaunchRandomLevel
 	//	->BuildAndLaunchRandomLevel();
