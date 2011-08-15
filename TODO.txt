@@ -15,3 +15,10 @@ Notes:
 	- engine->ClientCmd_Unrestricted( "asw_spawning_enabled 1;  asw_build_map output.layout"); (TileGenDialog.cpp 284)
 	- this may be important: asw_build_map_frame.cpp - CASW_Build_Map_Frame::OnThink() - tells game to load level (i think?)
 	- can the IASW_Map_Builder be used?
+
+-building the correct next map, ie what mission am in?
+	- CAlienSwarm::CampaignMissionsLeft(): 
+		//CASW_Campaign_Info *pCampaign = GetCampaignInfo();  
+		CASW_Campaign_Save *pSave = GetCampaignSave();
+		//new code
+		int iNextMission = pSave->m_iNumMissionsComplete;
