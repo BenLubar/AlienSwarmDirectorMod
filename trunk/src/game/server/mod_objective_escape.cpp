@@ -117,7 +117,7 @@ bool CMOD_Objective_Escape::AllLiveMarinesInExit()
 	return true;
 }
 
-void MOD_Level_Builder::BuildMapForNextMission()
+void CMOD_Objective_Escape::BuildMapForNextMission()
 {
 	CASW_Campaign_Info *pCampaign = CAlienSwarm::GetCampaignInfo();
 	if (!pCampaign)
