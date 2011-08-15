@@ -436,6 +436,7 @@ exit 1
     <ClCompile Include="c_func_conveyor.cpp" />
     <ClCompile Include="c_func_dust.cpp" />
     <ClCompile Include="c_func_lod.cpp" />
+    <ClCompile Include="c_mod_build_map.cpp" />
     <ClCompile Include="c_mod_dynamic_door_area.cpp" />
     <ClCompile Include="c_mod_marker.cpp" />
     <ClCompile Include="hl2\C_Func_Monitor.cpp" />

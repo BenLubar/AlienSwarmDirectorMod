@@ -20,6 +20,8 @@ public:
 	bool AllLiveMarinesInExit();
 	void InputMarineInEscapeArea( inputdata_t &inputdata );
 
+	void BuildMapForNextMission();
+
 	CBaseTrigger* GetTrigger();
 	EHANDLE m_hTrigger;	
 };

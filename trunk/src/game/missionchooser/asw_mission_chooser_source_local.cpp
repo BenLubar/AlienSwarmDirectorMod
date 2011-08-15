@@ -190,13 +190,13 @@ void CASW_Mission_Chooser_Source_Local::Think()
 	{
 		if (m_pszMapFind)
 		{
-			//Msg("Adding map: %s\n", m_pszMapFind);
+			Msg("Adding map: %s\n", m_pszMapFind);
 			AddToMapList(m_pszMapFind);
 			m_pszMapFind = Sys_FindNext(g_hmapfind, NULL, 0);
 		}
 		else
 		{
-			//Msg("Ending search for maps\n");
+			Msg("Ending search for maps\n");
 			Sys_FindClose(g_hmapfind);
 			m_bBuildingMapList = false;
 			m_bBuiltMapList= true;
@@ -207,13 +207,13 @@ void CASW_Mission_Chooser_Source_Local::Think()
 	{
 		if (m_pszCampaignFind)
 		{
-			//Msg("Adding campaign: %s\n", m_pszCampaignFind);
+			Msg("Adding campaign: %s\n", m_pszCampaignFind);
 			AddToCampaignList(m_pszCampaignFind);
 			m_pszCampaignFind = Sys_FindNext(g_hcampaignfind, NULL, 0);
 		}
 		else
 		{
-			//Msg("Ending search for campaigns\n");
+			Msg("Ending search for campaigns\n");
 			Sys_FindClose(g_hcampaignfind);
 			m_bBuildingCampaignList = false;
 			m_bBuiltCampaignList= true;
@@ -224,13 +224,13 @@ void CASW_Mission_Chooser_Source_Local::Think()
 	{
 		if (m_pszSavedFind)
 		{
-			//Msg("Adding saved campaign: %s\n", m_pszSavedFind);
+			Msg("Adding saved campaign: %s\n", m_pszSavedFind);
 			AddToSavedCampaignList(m_pszSavedFind);
 			m_pszSavedFind = Sys_FindNext(g_hsavedfind, NULL, 0);
 		}
 		else
 		{
-			//Msg("Ending search for saved campaigns\n");
+			Msg("Ending search for saved campaigns\n");
 			Sys_FindClose(g_hsavedfind);
 			m_bBuildingSavedCampaignList = false;
 			m_bBuiltSavedCampaignList= true;

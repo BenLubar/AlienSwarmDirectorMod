@@ -165,9 +165,7 @@ void CC_ASW_Build_Map( const CCommand &args )
 			GASWLoadingPanel()->SetLoadingMapName( args[1] );
 		}
 	}
-
-	//This line would prevent the map from loading.
-	//pFrame->SetRunMapAfterBuild( false );
+		
 	pFrame->GetMapBuilder()->ScheduleMapBuild( args[1], Plat_FloatTime() + 0.6f );	// give some time for the window to open and appear
 }
 static ConCommand asw_build_map("asw_build_map", CC_ASW_Build_Map, 0 );

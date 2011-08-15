@@ -22,9 +22,9 @@ public:
 	~MOD_Level_Builder();
 
 	virtual bool IsBuildingLevel();
-	virtual void BuildLevel( const char *szMissionFile, const int iDifficultLevel, const char *szThemeName, const char * szOutputFile);
-	virtual void BuildLevel( const char *szMissionFile, const int iDifficultLevel, const char * szOutputFile);
-	virtual void CompileAndExecuteLevel(const char * szLayoutFile);
+	virtual void BuildMapForMissionFromLayoutFile( const char *szMissionName, const int iDifficultLevel);
+	virtual void BuildMapFromLayoutFile( const char *szMissionRuleFile, const char *szOutputLayoutFile, const char *szThemeName);	
+	virtual void CompileLevel(const char * szLayoutFile);
 	
 };
 

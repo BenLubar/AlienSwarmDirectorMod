@@ -13,7 +13,9 @@
 #include "asw_key_values_database.h"
 #include "cdll_int.h"  //needed for access to engine
 #include "strtools.h"
+
 #include "asw_mission_chooser.h"
+
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -23,6 +25,11 @@
 //I'm not sure what this is, but it is hardcoded
 //in the example files I looked at (TileGenDialog.cpp)
 #define GAME_DIRECTORY "GAME"
+
+#define LAYOUT_DIRECTORY "\\maps\\"
+#define LAYOUT_EXTENSION ".layout"
+#define MISSION_RULES_DIRECTORY "tilegen\\new_missions\\"
+#define MISSION_RULE_EXTENSION ".txt"
 
 CLayoutSystem *g_pLayoutSystem;
 CTilegenLayoutSystemPage *g_pLayoutSystemPage;
@@ -69,14 +76,30 @@ void MOD_Level_Builder::SetIsBuildingLevel(bool value)
 	g_IsBuildingLevel = value;
 }
 
-void MOD_Level_Builder::BuildLevel( const char *szMissionFile, const int iDifficultLevel, const char * szOutputFile)
+
+void MOD_Level_Builder::BuildMapForMissionFromLayoutFile( const char *szMissionName, const int iDifficultLevel)
 {
-	BuildLevel(szMissionFile, iDifficultLevel, DEFAULT_THEME, szOutputFile);
+	//format: tilegen\\new_missions\\Mission1_2.txt
+	char missionRuleFileNameBuffer[1024];
+	Q_snprintf(missionRuleFileNameBuffer, sizeof(missionRuleFileNameBuffer), "%s%s_%d%s",
+		MISSION_RULES_DIRECTORY,
+		szMissionName,
+		iDifficultLevel,
+		MISSION_RULE_EXTENSION);
+
+	//format: \\maps\\Mission1.layout
+	char layoutFileNameBuffer[1024];
+	Q_snprintf(layoutFileNameBuffer, sizeof(layoutFileNameBuffer), "%s%s%s",
+		LAYOUT_DIRECTORY,
+		szMissionName,
+		LAYOUT_EXTENSION);			
+
+	BuildMapFromLayoutFile(missionRuleFileNameBuffer, layoutFileNameBuffer, DEFAULT_THEME);
 }
 
 //Logic from CASW_Random_Missions::BuildAndLaunchRandomLevel
-void MOD_Level_Builder::BuildLevel( const char *szMissionFile, const int iDifficultLevel, const char *szThemeName, const char * szOutputFile)
-{	
+void MOD_Level_Builder::BuildMapFromLayoutFile( const char *szMissionRuleFile, const char *szOutputLayoutFile, const char *szThemeName)
+{
 	if (IsBuildingLevel())
 	{
 		Msg("mod_level_builder is already building a level!");
@@ -86,7 +109,7 @@ void MOD_Level_Builder::BuildLevel( const char *szMissionFile, const int iDiffic
 	/*Code taken from TileGenDialog.cpp*/
 	KeyValues *pGenerationOptions = new KeyValues("EmptyOptions");
 	pGenerationOptions->Clear();
-	pGenerationOptions->LoadFromFile(g_pFullFileSystem, szMissionFile, GAME_DIRECTORY);	
+	pGenerationOptions->LoadFromFile(g_pFullFileSystem, szMissionRuleFile, GAME_DIRECTORY);	
 
 	CLayoutSystem *pLayoutSystem = new CLayoutSystem();
 
@@ -137,14 +160,33 @@ void MOD_Level_Builder::BuildLevel( const char *szMissionFile, const int iDiffic
 
 		char fullPath[1024];
 		strcat(fullPath, g_gamedir);
-		strcat(fullPath, szOutputFile);
+		strcat(fullPath, szOutputLayoutFile);
 
 		Q_strcpy(pMapLayout->m_szFilename, fullPath);	
-		pMapLayout->SaveMapLayout( fullPath );			
+		pMapLayout->SaveMapLayout( fullPath );	
+
+		CompileLevel(szOutputLayoutFile);
 	}
 	else
 	{
 		Warning("Failed Initializting Mission Preprocessor\n");
+		return;
+	}		
+}
+
+void MOD_Level_Builder::CompileLevel(const char * szLayoutFile)
+{
+	if (engine)
+	{
+		char buffer[512];
+		//Q_snprintf(buffer, sizeof(buffer), "asw_build_map %s connecting", szLayoutFile );
+		Q_snprintf(buffer, sizeof(buffer), "mod_build_map %s", szLayoutFile );
+		Msg("Executing: [%s]", buffer);
+		engine->ClientCmd_Unrestricted( buffer );
+	}
+	else
+	{
+		Warning("No Engine!!");
 		return;
 	}		
 }
@@ -216,19 +258,3 @@ void MOD_Level_Builder::BuildLevel( const char *szMissionFile, const int iDiffic
 */
 
 
-
-void MOD_Level_Builder::CompileAndExecuteLevel(const char * szLayoutFile)
-{
-	if (engine)
-	{
-		char buffer[512];
-		Q_snprintf(buffer, sizeof(buffer), "asw_spawning_enabled 0;  asw_build_map %s", szLayoutFile );
-		Msg("Executing: [%s]", buffer);
-		engine->ClientCmd_Unrestricted( buffer );
-	}
-	else
-	{
-		Warning("No Engine!!");
-		return;
-	}		
-}

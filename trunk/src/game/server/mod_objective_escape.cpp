@@ -7,6 +7,8 @@
 #include "triggers.h"
 #include "mod_player_performance.h"
 
+#include "missionchooser/iasw_random_missions.h"
+
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
@@ -60,6 +62,9 @@ void CMOD_Objective_Escape::CheckEscapeStatus()
 {
 	if (OtherObjectivesComplete() && AllLiveMarinesInExit())
 	{
+		//Dynamically build the map for the next mission.
+		BuildMapForNextMission();
+
 		//Fires ASW_Objective::OnObjectiveComplete
 		Msg("Setting Objective to Complete\n");
 		SetComplete(true);
@@ -112,6 +117,36 @@ bool CMOD_Objective_Escape::AllLiveMarinesInExit()
 	return true;
 }
 
+void MOD_Level_Builder::BuildMapForNextMission()
+{
+	CASW_Campaign_Info *pCampaign = CAlienSwarm::GetCampaignInfo();
+	if (!pCampaign)
+	{
+		Msg("Failed to load Campaign with CAlienSwarm::GetCampaignInfo()\n");
+		return;
+	}
+
+	CASW_Campaign_Save *pSave = CAlienSwarm::GetCampaignInfoGetCampaignSave();
+	if (!pSave)
+	{
+		Msg("Failed to load Campaign Save with CAlienSwarm::GetCampaignInfoGetCampaignSave()\n");
+		return;
+	}
+
+	int iNextMission = pSave->m_iNumMissionsComplete;
+	CASW_Campaign_Mission_t* pNextMission = pCampaign->GetMission(iNextMission);
+	if (!pNextMission)
+	{
+		Msg("Failed to load next campaign mission with pCampaign->GetMission(iNextMission)\n");
+		return;
+	}
+	
+	int iPlayerPerformance =  CMOD_Player_Performance::PlayerPerformance()->CalculatePerformance();	
+
+	missionchooser->modLevel_Builder()->BuildMapForMissionFromLayoutFile(
+		pNextMission->m_MapName.ToCStr(), iPlayerPerformance);
+
+}
 
 CBaseTrigger* CMOD_Objective_Escape::GetTrigger()
 {
