@@ -1,0 +1,430 @@
+﻿Build started 6/5/2011 4:48:02 PM.
+     1>Project "C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\tilegen.vcxproj" on node 2 (rebuild target(s)).
+     1>_PrepareForClean:
+         Deleting file "Release\tilegen.lastbuildstate".
+       InitializeBuildStatus:
+         Creating "Release\tilegen.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       PreBuildEvent:
+         rmdir /S /Q "C:\Program Files\Steam\steamapps\common\alien swarm\swarm\tilegen\"
+         if ERRORLEVEL 1 exit 1
+         mkdir "C:\Program Files\Steam\steamapps\common\alien swarm\swarm\tilegen\"
+         if ERRORLEVEL 1 exit 1
+         xcopy /S /Y "C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\"*.* "C:\Program Files\Steam\steamapps\common\alien swarm\swarm\tilegen"
+         if ERRORLEVEL 1 exit 1
+         :VCEnd
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\gameinfo.txt
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\missions_english.txt
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\tilegen.vcxproj
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\tilegen.vcxproj.filters
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\tilegen.vcxproj.user
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\tilegen_english.txt
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\unique_keys.txt
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\new_missions\example_200.txt
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\new_missions\mod_easy.txt
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\new_missions\mod_escapeOnly.txt
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\new_missions\mod_medium.txt
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\Release\tilegen.lastbuildstate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\Release\tilegen.log
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\Release\tilegen.unsuccessfulbuild
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\resource\icon_vconfig.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\exiteast.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\exitnorth.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\exitsouth.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\exitwest.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\gridsquare.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\levelcontainer.vmf.no_func_detail
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\maplayoutgrid.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\playerstart.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\unknownfloorplan.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corner_northeast.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corner_northeast.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corner_northeast.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corner_northwest.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corner_northwest.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corner_northwest.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corner_southeast.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corner_southeast.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corner_southeast.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corner_southwest.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corner_southwest.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corner_southwest.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corridor_capeast.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corridor_capeast.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corridor_capeast.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corridor_capnorth.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corridor_capnorth.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corridor_capnorth.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corridor_capsouth.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corridor_capsouth.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corridor_capsouth.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corridor_capwest.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corridor_capwest.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corridor_capwest.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corridor_eastwest.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corridor_eastwest.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corridor_eastwest.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corridor_northsouth.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corridor_northsouth.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_corridor_northsouth.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_crossroads.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_crossroads.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_crossroads.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_tjunction_east.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_tjunction_east.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_tjunction_east.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_tjunction_north.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_tjunction_north.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_tjunction_north.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_tjunction_south.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_tjunction_south.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_tjunction_south.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_tjunction_west.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_tjunction_west.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\1x1_tjunction_west.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\2x2_room1.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\2x2_room1.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\2x2_room1.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\2x2_room2_displacement.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\2x2_room2_displacement.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\2x2_room2_displacement.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\2x2_room3_funcdetail.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\2x2_room3_funcdetail.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\2x2_room3_funcdetail.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\dev\2x5_corridorns.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_corner_northeast.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_corner_northeast.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_corner_northeast.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_corner_northwest.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_corner_northwest.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_corner_northwest.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_corner_southeast.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_corner_southeast.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_corner_southeast.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_corner_southwest.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_corner_southwest.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_corner_southwest.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_corridor_eastwest.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_corridor_eastwest.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_corridor_eastwest.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_corridor_northsouth.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_corridor_northsouth.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_corridor_northsouth.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_crossroads.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_crossroads.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_crossroads.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_tjunction_east.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_tjunction_east.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_tjunction_east.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_tjunction_north.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_tjunction_north.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_tjunction_north.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_tjunction_south.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_tjunction_south.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_tjunction_south.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_tjunction_west.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_tjunction_west.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\1x1_rooms\1x1_tjunction_west.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\corridors\1x1_nesw.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\corridors\1x1_nesw.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\corridors\1x1_nesw.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\corridors\1x4_corridor_door.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\corridors\1x4_corridor_door.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\corridors\1x4_corridor_door.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\corridors\2x1_corridor_ew.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\corridors\2x1_corridor_ew.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\corridors\2x1_corridor_ew.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\corridors\2x4_corridor_door.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\corridors\2x4_corridor_door.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\corridors\2x4_corridor_door.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_allcap.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_allcap.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap1_e.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap1_e.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap1_e.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap1_n.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap1_n.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap1_n.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap1_w.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap1_w.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap1_w.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap2_e.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap2_e.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap2_e.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap2_n.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap2_n.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap2_n.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap2_w.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap2_w.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap2_w.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap3_e.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap3_e.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap3_e.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap3_n.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap3_n.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap3_n.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap3_w.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap3_w.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap3_w.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap_es.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap_es.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap_ne.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap_ne.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap_s.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap_s.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap_s.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap_sw.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap_sw.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap_wn.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\end_caps\1x1_endcap_wn.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\exit\7x8_exit.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\exit\7x8_exit.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\exit\7x8_exit.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\exit\7x8_exit.vmx
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\rooms\3x4_server_room_1.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\rooms\3x4_server_room_1.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\rooms\3x4_server_room_1.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\rooms\3x5_chokepoint.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\rooms\3x5_chokepoint.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\rooms\3x5_chokepoint.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\rooms\4x3_server_room_1.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\rooms\4x3_server_room_1.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\rooms\4x3_server_room_1.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\rooms\5x5_office_crossing.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\rooms\5x5_office_crossing.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\rooms\5x5_office_crossing.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\start_area\2x3_start_area.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\start_area\2x3_start_area.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example\start_area\2x3_start_area.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_corner_northeast.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_corner_northeast.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_corner_northeast.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_corner_northwest.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_corner_northwest.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_corner_northwest.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_corner_southeast.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_corner_southeast.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_corner_southeast.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_corner_southwest.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_corner_southwest.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_corner_southwest.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_corridor_eastwest.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_corridor_eastwest.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_corridor_eastwest.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_corridor_northsouth.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_corridor_northsouth.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_corridor_northsouth.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_crossroads.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_crossroads.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_crossroads.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_tjunction_east.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_tjunction_east.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_tjunction_east.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_tjunction_north.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_tjunction_north.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_tjunction_north.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_tjunction_south.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_tjunction_south.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_tjunction_south.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_tjunction_west.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_tjunction_west.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\1x1_rooms\1x1_tjunction_west.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\corridors\1x1_nesw.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\corridors\1x1_nesw.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\corridors\1x1_nesw.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\corridors\1x4_corridor_door.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\corridors\1x4_corridor_door.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\corridors\1x4_corridor_door.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\corridors\2x1_corridor_ew.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\corridors\2x1_corridor_ew.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\corridors\2x1_corridor_ew.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\corridors\2x4_corridor_door.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\corridors\2x4_corridor_door.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\corridors\2x4_corridor_door.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_allcap.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_allcap.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap1_e.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap1_e.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap1_e.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap1_n.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap1_n.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap1_n.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap1_w.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap1_w.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap1_w.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap2_e.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap2_e.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap2_e.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap2_n.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap2_n.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap2_n.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap2_w.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap2_w.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap2_w.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap3_e.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap3_e.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap3_e.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap3_n.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap3_n.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap3_n.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap3_w.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap3_w.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap3_w.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap_es.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap_es.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap_ne.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap_ne.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap_s.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap_s.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap_s.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap_sw.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap_sw.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap_wn.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\end_caps\1x1_endcap_wn.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\exit\7x8_exit.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\exit\7x8_exit.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\exit\7x8_exit.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\rooms\3x4_server_room_1.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\rooms\3x4_server_room_1.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\rooms\3x4_server_room_1.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\rooms\3x5_chokepoint.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\rooms\3x5_chokepoint.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\rooms\3x5_chokepoint.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\rooms\4x3_server_room_1.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\rooms\4x3_server_room_1.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\rooms\4x3_server_room_1.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\rooms\5x5_office_crossing.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\rooms\5x5_office_crossing.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\rooms\5x5_office_crossing.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\start_area\2x3_start_area.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\start_area\2x3_start_area.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\example .backup\start_area\2x3_start_area.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_corner_northeast.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_corner_northeast.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_corner_northeast.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_corner_northwest.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_corner_northwest.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_corner_northwest.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_corner_southeast.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_corner_southeast.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_corner_southeast.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_corner_southwest.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_corner_southwest.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_corner_southwest.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_corridor_eastwest.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_corridor_eastwest.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_corridor_eastwest.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_corridor_northsouth.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_corridor_northsouth.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_corridor_northsouth.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_crossroads.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_crossroads.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_crossroads.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_tjunction_east.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_tjunction_east.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_tjunction_east.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_tjunction_north.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_tjunction_north.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_tjunction_north.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_tjunction_south.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_tjunction_south.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_tjunction_south.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_tjunction_west.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_tjunction_west.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\1x1_rooms\1x1_tjunction_west.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\corridors\1x1_nesw.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\corridors\1x1_nesw.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\corridors\1x1_nesw.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\corridors\1x4_corridor_door.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\corridors\1x4_corridor_door.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\corridors\1x4_corridor_door.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\corridors\2x1_corridor_ew.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\corridors\2x1_corridor_ew.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\corridors\2x1_corridor_ew.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\corridors\2x4_corridor_door.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\corridors\2x4_corridor_door.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\corridors\2x4_corridor_door.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_allcap.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_allcap.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap1_e.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap1_e.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap1_e.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap1_n.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap1_n.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap1_n.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap1_w.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap1_w.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap1_w.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap2_e.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap2_e.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap2_e.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap2_n.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap2_n.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap2_n.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap2_w.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap2_w.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap2_w.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap3_e.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap3_e.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap3_e.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap3_n.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap3_n.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap3_n.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap3_w.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap3_w.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap3_w.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap_es.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap_es.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap_ne.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap_ne.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap_s.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap_s.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap_s.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap_sw.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap_sw.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap_wn.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\end_caps\1x1_endcap_wn.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\exit\7x8_exit_escapeOnly.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\exit\7x8_exit_escapeOnly.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\exit\7x8_exit_escapeOnly.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\exit\7x8_exit_escapeOnly.vmx
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\rooms\3x4_server_room_1.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\rooms\3x4_server_room_1.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\rooms\3x4_server_room_1.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\rooms\3x5_chokepoint.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\rooms\3x5_chokepoint.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\rooms\3x5_chokepoint.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\rooms\4x3_server_room_1.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\rooms\4x3_server_room_1.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\rooms\4x3_server_room_1.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\rooms\5x5_office_crossing.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\rooms\5x5_office_crossing.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\rooms\5x5_office_crossing.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\start_area\2x3_start_area.roomtemplate
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\start_area\2x3_start_area.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\roomtemplates\mod\start_area\2x3_start_area.vmf
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\rules\basic_actions.txt
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\rules\basic_conditions.txt
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\rules\border_cap_level.txt
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\rules\candidate_filters.txt
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\rules\cap_level.txt
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\rules\escape_rooms.txt
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\rules\global_options.txt
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\rules\instance_spawn.txt
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\rules\layout_override.txt
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\rules\objectives.txt
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\rules\place_room_reliably.txt
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\rules\start_rooms.txt
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\tags\taglist.txt
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\themes\dev.tga
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\themes\dev.theme
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\themes\example.theme
+         C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\themes\mod.theme
+         407 File(s) copied
+       FinalizeBuildStatus:
+         Deleting file "Release\tilegen.unsuccessfulbuild".
+         Touching "Release\tilegen.lastbuildstate".
+     1>Done Building Project "C:\Users\ppittle\Documents\Visual Studio 2010\Projects\AlienSwarmDirectorMod\trunk\tilegen\tilegen.vcxproj" (rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.78
