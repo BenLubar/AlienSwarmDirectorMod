@@ -5,9 +5,11 @@
 #include "asw_marine_resource.h"
 #include "asw_marine.h"
 #include "triggers.h"
+#include "baseentity.h"
 #include "mod_player_performance.h"
 
 #include "missionchooser/iasw_random_missions.h"
+#include "../missionchooser/imod_level_builder.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -16,7 +18,7 @@ LINK_ENTITY_TO_CLASS( mod_objective_escape, CMOD_Objective_Escape );
 
 BEGIN_DATADESC( CMOD_Objective_Escape )
 	DEFINE_FIELD( m_hTrigger, FIELD_EHANDLE ),
-	DEFINE_INPUTFUNC( FIELD_VOID, "MarineInEscapeArea", InputMarineInEscapeArea ),
+	DEFINE_INPUTFUNC( FIELD_VOID, "MarineInEscapeArea", InputMarineInEscapeArea ),	
 END_DATADESC()
 
 CUtlVector<CMOD_Objective_Escape*> g_aEscapeObjectives;
@@ -119,33 +121,25 @@ bool CMOD_Objective_Escape::AllLiveMarinesInExit()
 
 void CMOD_Objective_Escape::BuildMapForNextMission()
 {
-	CASW_Campaign_Info *pCampaign = CAlienSwarm::GetCampaignInfo();
-	if (!pCampaign)
+	if (engine)
 	{
-		Msg("Failed to load Campaign with CAlienSwarm::GetCampaignInfo()\n");
-		return;
-	}
+		int iPlayerPerformance = CMOD_Player_Performance::PlayerPerformance()->CalculatePerformance();
 
-	CASW_Campaign_Save *pSave = CAlienSwarm::GetCampaignInfoGetCampaignSave();
-	if (!pSave)
-	{
-		Msg("Failed to load Campaign Save with CAlienSwarm::GetCampaignInfoGetCampaignSave()\n");
-		return;
-	}
+		
+		IMOD_Level_Builder *levelBuilder;
+		levelBuilder->BuildMapForMissionFromLayoutFile("", 2);
 
-	int iNextMission = pSave->m_iNumMissionsComplete;
-	CASW_Campaign_Mission_t* pNextMission = pCampaign->GetMission(iNextMission);
-	if (!pNextMission)
-	{
-		Msg("Failed to load next campaign mission with pCampaign->GetMission(iNextMission)\n");
-		return;
-	}
-	
-	int iPlayerPerformance =  CMOD_Player_Performance::PlayerPerformance()->CalculatePerformance();	
+		char commandBuffer[256];
+		Q_snprintf(commandBuffer, sizeof(commandBuffer), "mod_build_mission_map_for_next_mission %d",
+			iPlayerPerformance);
 
-	missionchooser->modLevel_Builder()->BuildMapForMissionFromLayoutFile(
-		pNextMission->m_MapName.ToCStr(), iPlayerPerformance);
-
+		Msg("Executing: [%s]", commandBuffer);
+		
+		engine->ClientCommand( edict(), "mod_build_mission_map_for_next_mission %d",
+			iPlayerPerformance);
+	}else{
+		Warning("CMOD_Objective_Escape: No engine!!" );
+	}	
 }
 
 CBaseTrigger* CMOD_Objective_Escape::GetTrigger()

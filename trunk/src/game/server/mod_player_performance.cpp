@@ -32,7 +32,7 @@ using namespace std;
 //of prolonged high stress on performance metrics.
 #define STRESS_MULTIPLIER 0.5
 
-ConVar mod_player_performance_debug("mod_player_performance_debug", "0", FCVAR_CHEAT, "Displays modPlayerPerformance status on screen");
+ConVar mod_player_performance_debug("mod_player_performance_debug", "0", 0, "Displays modPlayerPerformance status on screen");
 
 CMOD_Player_Performance* CMOD_Player_Performance::g_PlayerPerformanceSingleton = 0;
 
