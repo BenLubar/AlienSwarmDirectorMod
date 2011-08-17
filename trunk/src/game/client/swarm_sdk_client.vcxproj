@@ -440,6 +440,7 @@ exit 1
     <ClCompile Include="c_mod_build_mission_map_for_next_mission.cpp" />
     <ClCompile Include="c_mod_dynamic_door_area.cpp" />
     <ClCompile Include="c_mod_marker.cpp" />
+    <ClCompile Include="c_mod_objective_escape.cpp" />
     <ClCompile Include="hl2\C_Func_Monitor.cpp" />
     <ClCompile Include="c_func_movelinear.cpp" />
     <ClCompile Include="c_func_occluder.cpp" />
@@ -2251,6 +2252,7 @@ exit 1
     <ClInclude Include="c_gameinstructor.h" />
     <ClInclude Include="c_mod_dynamic_door_area.h" />
     <ClInclude Include="c_mod_marker.h" />
+    <ClInclude Include="c_mod_objective_escape.h" />
     <ClInclude Include="c_physics_prop_statue.h" />
     <ClInclude Include="c_postprocesscontroller.h" />
     <ClInclude Include="c_props.h" />

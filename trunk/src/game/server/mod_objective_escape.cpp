@@ -17,9 +17,14 @@
 LINK_ENTITY_TO_CLASS( mod_objective_escape, CMOD_Objective_Escape );
 
 BEGIN_DATADESC( CMOD_Objective_Escape )
+	DEFINE_FIELD( m_iPlayerPerformance, FIELD_INTEGER ),
 	DEFINE_FIELD( m_hTrigger, FIELD_EHANDLE ),
 	DEFINE_INPUTFUNC( FIELD_VOID, "MarineInEscapeArea", InputMarineInEscapeArea ),	
 END_DATADESC()
+
+IMPLEMENT_SERVERCLASS_ST(CMOD_Objective_Escape, DT_MOD_Objective_Escape)
+	SendPropInt		(SENDINFO(m_iPlayerPerformance)),
+END_SEND_TABLE()
 
 CUtlVector<CMOD_Objective_Escape*> g_aEscapeObjectives;
 
@@ -57,7 +62,7 @@ void CMOD_Objective_Escape::InputMarineInEscapeArea( inputdata_t &inputdata ){
 	}
 	m_hTrigger = pTrig;
 
-	CheckEscapeStatus();
+ 	CheckEscapeStatus();
 }
 
 void CMOD_Objective_Escape::CheckEscapeStatus()
@@ -65,11 +70,15 @@ void CMOD_Objective_Escape::CheckEscapeStatus()
 	if (OtherObjectivesComplete() && AllLiveMarinesInExit())
 	{
 		//Dynamically build the map for the next mission.
-		BuildMapForNextMission();
+		//BuildMapForNextMission();
 
 		//Fires ASW_Objective::OnObjectiveComplete
 		Msg("Setting Objective to Complete\n");
 		SetComplete(true);
+
+		//update m_iPlayerPerformance.  Engine will broadcast to clients
+		m_iPlayerPerformance = CMOD_Player_Performance::PlayerPerformance()->CalculatePerformance();
+
 	}
 }
 
@@ -119,6 +128,7 @@ bool CMOD_Objective_Escape::AllLiveMarinesInExit()
 	return true;
 }
 
+/*
 void CMOD_Objective_Escape::BuildMapForNextMission()
 {
 	if (engine)
@@ -141,7 +151,7 @@ void CMOD_Objective_Escape::BuildMapForNextMission()
 		Warning("CMOD_Objective_Escape: No engine!!" );
 	}	
 }
-
+*/
 CBaseTrigger* CMOD_Objective_Escape::GetTrigger()
 {
 	return dynamic_cast<CBaseTrigger*>(m_hTrigger.Get());

@@ -9,6 +9,7 @@ class CMOD_Objective_Escape : public CASW_Objective
 {
 public:
 	DECLARE_CLASS( CMOD_Objective_Escape, CASW_Objective );
+	DECLARE_SERVERCLASS();
 	DECLARE_DATADESC();
 
 	CMOD_Objective_Escape();
@@ -20,7 +21,8 @@ public:
 	bool AllLiveMarinesInExit();
 	void InputMarineInEscapeArea( inputdata_t &inputdata );
 
-	void BuildMapForNextMission();
+	//void BuildMapForNextMission();
+	CNetworkVar(int, m_iPlayerPerformance);
 
 	CBaseTrigger* GetTrigger();
 	EHANDLE m_hTrigger;	
