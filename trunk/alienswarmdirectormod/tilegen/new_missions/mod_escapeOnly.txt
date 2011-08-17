@@ -87,7 +87,7 @@
 		{
 			"rule_instance"
 			{
-				"name"		"GlobalTheme"
+				"name"		"Mod"
 			}
 		}
 	}
