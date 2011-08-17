@@ -12,14 +12,14 @@ GAME
 	"briefingmaterial" 	"vgui/swarm/missionpics/unknownmissionpic"			// example: "vgui/swarm/Overviews/landingbay02briefingOverview"
 
 	// Title of the mission
-	"missiontitle"		"Example Mission 3"
+	"missiontitle"		"Mission 4"
 	// Description text shown for the mission
-	"description"		"Example text 3."
+	"description"		"This is the last mission of the campaign. Good luck!"
 	
 	// Mission image that shows when selecting this mission
 	"image"			"swarm/MissionPics/UnknownMissionPic"  			//must be under "vgui" - dont include vgui in the path
 
 	"version"		"1.0"
-	"author"		"Valve"
-	"website"		"http://www.alienswarm.com/"
+	"author"		"Philip Pittle"
+	"website"		""
 }

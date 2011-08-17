@@ -1,10 +1,10 @@
 GAME
 {
 	// identifier for this campaign
-	"CampaignName" "Example Campaign"
+	"CampaignName" "Alien Swarm Director Mod Campaign"
 	
 	// description shown on the main menu when choosing which campaign to play
-	"CampaignDescription" "IAF command would like to welcome you to the Example Campaign.  Please use this example to make us proud."
+	"CampaignDescription" "This campagin dynamically creates mission maps based on player performance.  Use the server command 'mod_mod_player_performance_debug 1' to monitor performance scores."
 	
 	// texture used on the main menu when choosing which campaign to play
 	"ChooseCampaignTexture" "swarm/campaign/jacob_galacticmap"
@@ -47,7 +47,7 @@ GAME
 		"LocationX"		"330"
 		"LocationY"		"780"
 		"DifficultyModifier" 	"-2"
-		"Links"			"example_map_1" 
+		"Links"			"mission1" 
 		"LocationDescription"  	"Home Base"
 		"ShortBriefing"  	"Dropship Bloodhound will enter atmosphere at these co-ordinates and proceed to primary objective."
 	}
@@ -55,40 +55,54 @@ GAME
 	// each mission listed
 	"MISSION"
 	{
-		"MissionName"		"Example Mission 1"		// name used on the map screen, etc.
-		"MapName"		"example_map_1"		// name of the map file
+		"MissionName"		"Mission 1"		// name used on the map screen, etc.
+		"MapName"		"mission1"		// name of the map file
 		"LocationX"		"525"				// location of the dot on the map
 		"LocationY"		"700"				// (from 0 to 1023, on the above texture)
 		"ThreatString" 		"1"    				// Threat level string to help players decide where to go next
-		"Links"			"start_area example_map_2"	// map names of neighbours
-		"LocationDescription" 	"Example Mission 1"
-		"ShortBriefing"  	"An example of interactive objects in Alien Swarm.  Proceed to the exit to gain access to the next mission."
+		"Links"			"start_area mission2"	// map names of neighbours
+		"LocationDescription" 	"Mission 1"
+		"ShortBriefing"  	"Fight through the horde and proceed to the exit to gain access to the next mission."
 		"AlwaysVisible"		"1"
 		"NeedsMoreThanOneMarine" "0"				// If set to 1, two players need to be connected to play (no solo play)
 	}
 	"MISSION"
 	{
-		"MissionName"		"Example Mission 2"		// name used on the map screen, etc.
-		"MapName"		"example_map_2"			// name of the map file
+		"MissionName"		"Mission 2"		// name used on the map screen, etc.
+		"MapName"		"mission2"			// name of the map file
 		"LocationX"		"360"				// location of the dot on the map
 		"LocationY"		"506"				// (from 0 to 1023, on the above texture)
 		"ThreatString" 		"1"    				// Threat level string to help players decide where to go next
-		"Links"			"example_map_1 example_map_3"	// map names of neighbours
-		"LocationDescription" 	"Example Mission 2"
-		"ShortBriefing"  	"This map shows various methods of spawning aliens.  Proceed to the exit to gain access to the next mission."
+		"Links"			"mission1 mission3"	// map names of neighbours
+		"LocationDescription" 	"Mission 2"
+		"ShortBriefing"  	"Keep fighting through the horde and proceed to the exit to continue to the next mission."
 		"AlwaysVisible"		"1"
 		"NeedsMoreThanOneMarine" "0"				// If set to 1, two players need to be connected to play (no solo play)
 	}
 	"MISSION"
 	{
-		"MissionName"		"Example Mission 3"		// name used on the map screen, etc.
-		"MapName"		"example_map_3"			// name of the map file
+		"MissionName"		"Mission 3"		// name used on the map screen, etc.
+		"MapName"		"mission3"			// name of the map file
 		"LocationX"		"820"				// location of the dot on the map
 		"LocationY"		"200"				// (from 0 to 1023, on the above texture)
 		"ThreatString" 		"1"    				// Threat level string to help players decide where to go next
-		"Links"			"example_map_2"	// map names of neighbours
-		"LocationDescription" 	"Example Mission 3"
-		"ShortBriefing"  	"Creating objectives in Alien Swarm.  Proceed to the exit to complete the campaign."
+		"Links"			"mission2 mission4"	// map names of neighbours
+		"LocationDescription" 	"Mission 3"
+		"ShortBriefing"  	"You are half way through.  Good luck against the horde."
+		"AlwaysVisible"		"1"
+		"NeedsMoreThanOneMarine" "0"				// If set to 1, two players need to be connected to play (no solo play)
+	}
+
+	"MISSION"
+	{
+		"MissionName"		"Mission 4"		// name used on the map screen, etc.
+		"MapName"		"mission4"			// name of the map file
+		"LocationX"		"360"				// location of the dot on the map
+		"LocationY"		"200"				// (from 0 to 1023, on the above texture)
+		"ThreatString" 		"1"    				// Threat level string to help players decide where to go next
+		"Links"			"mission3"	// map names of neighbours
+		"LocationDescription" 	"Mission 4"
+		"ShortBriefing"  	"Fight through the horde and proceed to the exit to complete this campaign."
 		"AlwaysVisible"		"1"
 		"NeedsMoreThanOneMarine" "0"				// If set to 1, two players need to be connected to play (no solo play)
 	}

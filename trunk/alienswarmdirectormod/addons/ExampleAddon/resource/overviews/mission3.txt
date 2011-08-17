@@ -9,17 +9,17 @@ GAME
 	"material" 		"vgui/swarm/Computer/ComputerScan"  			// example: "vgui/swarm/Overviews/landingbay02Overview"
 
 	// material used for the briefing map (shown before the mission starts)
-	"briefingmaterial" 	"vgui/swarm/MissionPics/UnknownMissionPic"		// example: "vgui/swarm/Overviews/landingbay02briefingOverview"
+	"briefingmaterial" 	"vgui/swarm/missionpics/unknownmissionpic"			// example: "vgui/swarm/Overviews/landingbay02briefingOverview"
 
 	// Title of the mission
-	"missiontitle"		"Example Mission 1"
+	"missiontitle"		"Mission 3"
 	// Description text shown for the mission
-	"description"		"Example text 1."
+	"description"		"You are half way through the campaign.  Prepare for more dynamically generated fun!"
 	
 	// Mission image that shows when selecting this mission
 	"image"			"swarm/MissionPics/UnknownMissionPic"  			//must be under "vgui" - dont include vgui in the path
 
 	"version"		"1.0"
-	"author"		"Valve"
-	"website"		"http://www.alienswarm.com/"
+	"author"		"Philip Pittle"
+	"website"		""
 }
