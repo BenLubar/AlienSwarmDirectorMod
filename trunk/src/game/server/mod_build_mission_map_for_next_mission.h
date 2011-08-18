@@ -16,7 +16,7 @@ public:
 
 	CNetworkVar(int, m_iPlayerPerformance);
 
-	void ActivateMultiTrigger(CBaseEntity *pActivator);
+	void Activate(inputdata_t &inputData);
 };
 
 #endif

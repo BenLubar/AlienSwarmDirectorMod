@@ -22,7 +22,10 @@ C_MOD_Build_Mission_Map_For_Next_Mission::C_MOD_Build_Mission_Map_For_Next_Missi
 
 void C_MOD_Build_Mission_Map_For_Next_Mission::OnDataChanged(DataUpdateType_t updateType)
 {
-	BuildMissionMapForNextMission(m_iPlayerPerformance);
+	Msg("C_MOD_Build_Mission_Map_For_Next_Mission received player performance.  Building next map for next mission.\n\n");
+
+	Msg("C_MOD_Build_Mission_Map_For_Next_Mission has been disabled in code.\n");
+	//BuildMissionMapForNextMission(m_iPlayerPerformance);
 	
 	BaseClass::OnDataChanged(updateType);
 }
@@ -69,12 +72,20 @@ void CC_MOD_Build_Mission_Map_For_Next_Mission( const CCommand &args )
 {
 	if ( args.ArgC() < 2 )
 	{
-		Msg("Usage: mod_build_map <player performance>");
+		Msg("Usage: mod_build_mission_map_for_next_mission <player performance> <map name>");
 		return;
 	}
 
-	C_MOD_Build_Mission_Map_For_Next_Mission * pBuilder = new C_MOD_Build_Mission_Map_For_Next_Mission();
-	pBuilder->BuildMissionMapForNextMission(atoi(args.Arg(1)));	
+	if (args.ArgC() == 2)
+	{
+		C_MOD_Build_Mission_Map_For_Next_Mission * pBuilder = new C_MOD_Build_Mission_Map_For_Next_Mission();
+		pBuilder->BuildMissionMapForNextMission(atoi(args.Arg(1)));	
+	}
+	else 
+	{
+		missionchooser->modLevel_Builder()->BuildMapForMissionFromLayoutFile(
+			args.Arg(2), atoi(args.Arg(1)));
+	}		
 }
 
 static ConCommand asw_build_map("mod_build_mission_map_for_next_mission", CC_MOD_Build_Mission_Map_For_Next_Mission, 0 );

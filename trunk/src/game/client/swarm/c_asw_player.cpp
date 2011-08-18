@@ -98,6 +98,9 @@
 #include "missionchooser/iasw_mission_chooser.h"
 #include "missionchooser/iasw_random_missions.h"
 
+//MOD
+#include "../c_mod_build_mission_map_for_next_mission.h"
+
 #if defined( CASW_Player )
 	#undef CASW_Player
 #endif
@@ -794,6 +797,10 @@ void C_ASW_Player::LaunchMissionCompleteFrame(bool bSuccess)
 	// create the basic frame which holds our briefing panels
 	if (!GetClientModeASW())
 		return;
+
+	Msg("PJ - Can I build the dynamic level here and pull in params (bBuildLevel and iPlayerPerformance from client side Convars?");
+	C_MOD_Build_Mission_Map_For_Next_Mission * pBuilder = new C_MOD_Build_Mission_Map_For_Next_Mission();
+	pBuilder->BuildMissionMapForNextMission(3);
 
 	GetClientModeASW()->m_hMissionCompleteFrame = new MissionCompleteFrame( bSuccess, GetClientMode()->GetViewport(), "m_MissionCompleteFrame" );	
 }

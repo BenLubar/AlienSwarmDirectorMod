@@ -105,6 +105,9 @@ void MOD_Level_Builder::BuildMapFromLayoutFile( const char *szMissionRuleFile, c
 		Msg("mod_level_builder is already building a level!");
 		return;
 	}
+	
+	Msg("Building Map.  MR File: [%s], Layout File: [%s], Theme: [%s]\n\n", 
+		szMissionRuleFile, szOutputLayoutFile, szThemeName);
 
 	/*Code taken from TileGenDialog.cpp*/
 	KeyValues *pGenerationOptions = new KeyValues("EmptyOptions");
@@ -181,7 +184,7 @@ void MOD_Level_Builder::CompileLevel(const char * szLayoutFile)
 		char buffer[512];
 		//Q_snprintf(buffer, sizeof(buffer), "asw_build_map %s connecting", szLayoutFile );
 		Q_snprintf(buffer, sizeof(buffer), "mod_build_map %s", szLayoutFile );
-		Msg("Executing: [%s]", buffer);
+		Msg("Executing: [%s]\n", buffer);
 		engine->ClientCmd_Unrestricted( buffer );
 	}
 	else
