@@ -36,3 +36,9 @@
 	
 	input SetComplete(void) : "Mark as complete."
 ]
+
+@PointClass base(Targetname) iconsprite("editor/asw_objective_dummy.vmt") = mod_build_mission_map_for_next_mission: 
+	"Builds the mission map for the next mission"
+[	
+	input Activate(void) : "Begins building the mission map for the next mission."
+]

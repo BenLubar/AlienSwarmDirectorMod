@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "98"
+	"mapversion" "101"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "98"
+	"mapversion" "101"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -13034,6 +13034,7 @@ entity
 	"wait" "1"
 	connections
 	{
+		"OnTrigger" "@map_builder_for_next_missionActivate01"
 		"OnTrigger" "@objective_escapeMarineInEscapeArea0-1"
 	}
 	solid
@@ -13123,7 +13124,7 @@ entity
 entity
 {
 	"id" "12900"
-	"classname" "mod_objective_escape"
+	"classname" "asw_objective_escape"
 	"objectivedescription1" "Get to the exit!!"
 	"objectivetitle" "Escaoe"
 	"targetname" "@objective_escape"
@@ -16194,6 +16195,21 @@ entity
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
 		"logicalpos" "[-6768 8500]"
+	}
+}
+entity
+{
+	"id" "19188"
+	"classname" "mod_build_mission_map_for_next_mission"
+	"StartDisabled" "0"
+	"targetname" "@map_builder_for_next_mission"
+	"origin" "784 1616 352"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
 	}
 }
 cameras
