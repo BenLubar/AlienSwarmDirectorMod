@@ -16,8 +16,25 @@ IMPLEMENT_CLIENTCLASS_DT(C_MOD_Build_Mission_Map_For_Next_Mission, DT_MOD_Build_
 	RecvPropInt		(RECVINFO(m_iPlayerPerformance)),	
 END_RECV_TABLE()
 
+ConVar mod_player_performance_debug("mod_player_performance_value", "0", 0, "Stores the players performance.");
+
 C_MOD_Build_Mission_Map_For_Next_Mission::C_MOD_Build_Mission_Map_For_Next_Mission()
 {
+	
+}
+
+void C_MOD_Build_Mission_Map_For_Next_Mission::OnMissionComplete()
+{
+	Msg("C_MOD_Build_Mission_Map_For_Next_Mission::OnMissionComplete() called...");
+	if (mod_player_performance_debug.GetInt() > 0)
+	{
+		Msg("will build map.\n");
+		BuildMissionMapForNextMission(mod_player_performance_debug.GetInt());
+	}
+	else
+	{
+		Msg("will NOT build map.\n");
+	}
 }
 
 void C_MOD_Build_Mission_Map_For_Next_Mission::OnDataChanged(DataUpdateType_t updateType)
@@ -27,6 +44,8 @@ void C_MOD_Build_Mission_Map_For_Next_Mission::OnDataChanged(DataUpdateType_t up
 	Msg("C_MOD_Build_Mission_Map_For_Next_Mission has been disabled in code.\n");
 	//BuildMissionMapForNextMission(m_iPlayerPerformance);
 	
+	mod_player_performance_debug.SetValue(m_iPlayerPerformance);
+
 	BaseClass::OnDataChanged(updateType);
 }
 

@@ -9,12 +9,14 @@ public:
 	DECLARE_CLASS( C_MOD_Build_Mission_Map_For_Next_Mission, C_BaseEntity );
 	DECLARE_CLIENTCLASS();
 
-	CNetworkVar(int, m_iPlayerPerformance);
+	int  m_iPlayerPerformance;
 
 	C_MOD_Build_Mission_Map_For_Next_Mission();
 
+	void OnMissionComplete();
 	virtual void OnDataChanged(DataUpdateType_t updateType);
 	void BuildMissionMapForNextMission(int playerPerformance);
+	
 };
 
 #endif // _INCLUDED_C_MOD_BUILD_MISSION_MAP_FOR_NEXT_MISSION_H

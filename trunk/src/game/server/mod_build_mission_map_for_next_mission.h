@@ -17,6 +17,7 @@ public:
 	CNetworkVar(int, m_iPlayerPerformance);
 
 	void Activate(inputdata_t &inputData);
+	int UpdateTransmitState();
 };
 
 #endif
