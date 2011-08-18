@@ -54,7 +54,7 @@ void C_MOD_Build_Mission_Map_For_Next_Mission::BuildMissionMapForNextMission(int
 		return;
 	}
 
-	int iNextMission = pSave->m_iNumMissionsComplete + 1;	
+	int iNextMission = pSave->m_iNumMissionsComplete + 2;	
 	CASW_Campaign_Info::CASW_Campaign_Mission_t* pNextMission = 
 		pCampaign->GetMission(iNextMission);
 	if (!pNextMission)
