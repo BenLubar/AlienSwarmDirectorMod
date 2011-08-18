@@ -2250,6 +2250,7 @@ exit 1
     <ClInclude Include="c_env_ambient_light.h" />
     <ClInclude Include="c_env_projectedtexture.h" />
     <ClInclude Include="c_gameinstructor.h" />
+    <ClInclude Include="c_mod_build_mission_map_for_next_mission.h" />
     <ClInclude Include="c_mod_dynamic_door_area.h" />
     <ClInclude Include="c_mod_marker.h" />
     <ClInclude Include="c_mod_objective_escape.h" />

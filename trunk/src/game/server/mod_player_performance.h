@@ -1,6 +1,7 @@
 #ifndef _INCLUDED_MOD_PLAYER_PERFORMANCE_H
 #define _INCLUDED_MOD_PLAYER_PERFORMANCE_H
 
+#include "asw_game_resource.h"
 #include <vector>
 using namespace std;
 

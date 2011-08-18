@@ -729,6 +729,7 @@ exit 1
     <ClCompile Include="message_entity.cpp" />
     <ClCompile Include="modelentities.cpp" />
     <ClCompile Include="..\shared\ModelSoundsCache.cpp" />
+    <ClCompile Include="mod_build_mission_map_for_next_mission.cpp" />
     <ClCompile Include="mod_dynamic_difficulty_modifier_trigger.cpp" />
     <ClCompile Include="mod_dynamic_door_area.cpp" />
     <ClCompile Include="mod_marker.cpp" />
@@ -1521,6 +1522,7 @@ exit 1
     <ClInclude Include="maprules.h" />
     <ClInclude Include="..\..\public\mathlib\mathlib.h" />
     <ClInclude Include="..\..\public\model_types.h" />
+    <ClInclude Include="mod_build_mission_map_for_next_mission.h" />
     <ClInclude Include="mod_dynamic_difficulty_modifier_trigger.h" />
     <ClInclude Include="mod_dynamic_door_area.h" />
     <ClInclude Include="mod_marker.h" />
