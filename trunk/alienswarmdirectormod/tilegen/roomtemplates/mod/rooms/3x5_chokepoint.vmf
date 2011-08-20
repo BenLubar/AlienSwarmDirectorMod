@@ -1,8 +1,8 @@
 versioninfo
 {
 	"editorversion" "400"
-	"editorbuild" "4961"
-	"mapversion" "48"
+	"editorbuild" "5032"
+	"mapversion" "50"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "48"
+	"mapversion" "50"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -5325,10 +5325,10 @@ entity
 	"angles" "0 270 0"
 	"ClearCheck" "1"
 	"HealthScale" "1"
-	"InfiniteAliens" "1"
+	"InfiniteAliens" "0"
 	"MaxLiveAliens" "1"
 	"NearDistance" "740"
-	"NumAliens" "1"
+	"NumAliens" "4"
 	"SpawnerState" "1"
 	"spawnflags" "0"
 	"SpawnIfMarinesAreNear" "1"
@@ -5382,10 +5382,10 @@ entity
 	"angles" "0 270 0"
 	"ClearCheck" "1"
 	"HealthScale" "1"
-	"InfiniteAliens" "1"
+	"InfiniteAliens" "0"
 	"MaxLiveAliens" "1"
 	"NearDistance" "740"
-	"NumAliens" "1"
+	"NumAliens" "3"
 	"SpawnerState" "1"
 	"spawnflags" "0"
 	"SpawnIfMarinesAreNear" "1"
@@ -5623,38 +5623,6 @@ entity
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
 		"logicalpos" "[0 0]"
-	}
-}
-entity
-{
-	"id" "2531"
-	"classname" "asw_spawner"
-	"AlienClass" "6"
-	"AlienOrders" "0"
-	"angles" "0 0 0"
-	"ClearCheck" "0"
-	"HealthScale" "1"
-	"InfiniteAliens" "0"
-	"LongRange" "0"
-	"MaxLiveAliens" "2"
-	"MaxSkillLevel" "0"
-	"MinSkillLevel" "0"
-	"NearDistance" "512"
-	"NumAliens" "2"
-	"SpawnerState" "1"
-	"SpawnIfMarinesAreNear" "1"
-	"SpawnInterval" "0"
-	"SpawnIntervalJitter" "25"
-	"SpeedScale" "1"
-	"StartBurrowed" "0"
-	"targetname" "chokepoint_harvester_spawner"
-	"origin" "64 1152 1.00001"
-	editor
-	{
-		"color" "0 0 255"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[0 1000]"
 	}
 }
 entity

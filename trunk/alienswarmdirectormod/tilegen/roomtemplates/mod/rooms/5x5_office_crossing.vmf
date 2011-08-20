@@ -1,8 +1,8 @@
 versioninfo
 {
 	"editorversion" "400"
-	"editorbuild" "4961"
-	"mapversion" "27"
+	"editorbuild" "5032"
+	"mapversion" "28"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "27"
+	"mapversion" "28"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -17218,7 +17218,7 @@ entity
 	"angles" "0 0 0"
 	"ClearCheck" "1"
 	"HealthScale" "1"
-	"InfiniteAliens" "1"
+	"InfiniteAliens" "0"
 	"LongRange" "0"
 	"MaxLiveAliens" "1"
 	"MaxSkillLevel" "0"
@@ -17250,7 +17250,7 @@ entity
 	"angles" "0 270 0"
 	"ClearCheck" "1"
 	"HealthScale" "1"
-	"InfiniteAliens" "1"
+	"InfiniteAliens" "0"
 	"LongRange" "0"
 	"MaxLiveAliens" "1"
 	"MaxSkillLevel" "0"
@@ -17282,7 +17282,7 @@ entity
 	"angles" "0 270 0"
 	"ClearCheck" "1"
 	"HealthScale" "1"
-	"InfiniteAliens" "1"
+	"InfiniteAliens" "0"
 	"LongRange" "0"
 	"MaxLiveAliens" "2"
 	"MaxSkillLevel" "0"
@@ -17314,7 +17314,7 @@ entity
 	"angles" "0 180 0"
 	"ClearCheck" "1"
 	"HealthScale" "1"
-	"InfiniteAliens" "1"
+	"InfiniteAliens" "0"
 	"LongRange" "0"
 	"MaxLiveAliens" "2"
 	"MaxSkillLevel" "0"
@@ -17361,70 +17361,6 @@ entity
 	"StartBurrowed" "0"
 	"targetname" "boomers_01"
 	"origin" "656 1201 1.00001"
-	editor
-	{
-		"color" "0 0 255"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[500 5000]"
-	}
-}
-entity
-{
-	"id" "14472"
-	"classname" "asw_spawner"
-	"AlienClass" "9"
-	"AlienOrders" "3"
-	"angles" "0 0 0"
-	"ClearCheck" "1"
-	"HealthScale" "1"
-	"InfiniteAliens" "0"
-	"LongRange" "0"
-	"MaxLiveAliens" "1"
-	"MaxSkillLevel" "0"
-	"MinSkillLevel" "0"
-	"NearDistance" "740"
-	"NumAliens" "1"
-	"SpawnerState" "1"
-	"SpawnIfMarinesAreNear" "0"
-	"SpawnInterval" "4"
-	"SpawnIntervalJitter" "25"
-	"SpeedScale" "1"
-	"StartBurrowed" "0"
-	"targetname" "boomers_01"
-	"origin" "48 622 1.00001"
-	editor
-	{
-		"color" "0 0 255"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[500 5000]"
-	}
-}
-entity
-{
-	"id" "14474"
-	"classname" "asw_spawner"
-	"AlienClass" "9"
-	"AlienOrders" "3"
-	"angles" "0 0 0"
-	"ClearCheck" "1"
-	"HealthScale" "1"
-	"InfiniteAliens" "0"
-	"LongRange" "0"
-	"MaxLiveAliens" "1"
-	"MaxSkillLevel" "0"
-	"MinSkillLevel" "0"
-	"NearDistance" "740"
-	"NumAliens" "1"
-	"SpawnerState" "1"
-	"SpawnIfMarinesAreNear" "0"
-	"SpawnInterval" "4"
-	"SpawnIntervalJitter" "25"
-	"SpeedScale" "1"
-	"StartBurrowed" "0"
-	"targetname" "boomers_01"
-	"origin" "1227 628 1.00001"
 	editor
 	{
 		"color" "0 0 255"

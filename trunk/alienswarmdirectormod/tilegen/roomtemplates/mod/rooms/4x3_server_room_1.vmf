@@ -1,8 +1,8 @@
 versioninfo
 {
 	"editorversion" "400"
-	"editorbuild" "4961"
-	"mapversion" "9"
+	"editorbuild" "5032"
+	"mapversion" "11"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "9"
+	"mapversion" "11"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -3755,7 +3755,7 @@ entity
 	"spawnflags" "16"
 	"StartDisabled" "0"
 	"TriggerChance" "0.3"
-	"wait" "8"
+	"wait" "-1"
 	connections
 	{
 		"OnTrigger" "serverroom_case_03PickRandom0-1"
@@ -3851,7 +3851,7 @@ entity
 	"origin" "592 384 34.5"
 	"spawnflags" "16"
 	"StartDisabled" "0"
-	"TriggerChance" "0.1"
+	"TriggerChance" "0.3"
 	"wait" "-1"
 	connections
 	{

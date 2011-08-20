@@ -1,8 +1,8 @@
 versioninfo
 {
 	"editorversion" "400"
-	"editorbuild" "4961"
-	"mapversion" "17"
+	"editorbuild" "5032"
+	"mapversion" "18"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "17"
+	"mapversion" "18"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -3237,7 +3237,7 @@ entity
 	"spawnflags" "16"
 	"StartDisabled" "0"
 	"TriggerChance" "0.4"
-	"wait" "10"
+	"wait" "-1"
 	connections
 	{
 		"OnTrigger" "serverroom_case_01PickRandom0-1"
