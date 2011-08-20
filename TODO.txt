@@ -23,3 +23,5 @@ Notes:
 		CASW_Campaign_Save *pSave = GetCampaignSave();
 		//new code
 		int iNextMission = pSave->m_iNumMissionsComplete;
+
+IMPORTANT !!! asw_show_all_singleplayer_maps 1
