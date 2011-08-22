@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "105"
+	"mapversion" "112"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "105"
+	"mapversion" "112"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -4741,94 +4741,6 @@ entity
 		{
 			"id" "61"
 			"plane" "(320 7.32422e-005 -32) (1408 7.32422e-005 -32) (1408 256 -32)"
-			"material" "TOOLS/TOOLSNODRAW"
-			"uaxis" "[0 1 0 -16] 1"
-			"vaxis" "[-1 0 0 -24] 1"
-			"rotation" "0"
-			"lightmapscale" "256"
-			"smoothing_groups" "0"
-		}
-		editor
-		{
-			"color" "0 180 0"
-			"visgroupshown" "1"
-			"visgroupautoshown" "1"
-		}
-	}
-	editor
-	{
-		"color" "0 180 0"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[10000 15000]"
-	}
-}
-entity
-{
-	"id" "197"
-	"classname" "func_detail"
-	solid
-	{
-		"id" "198"
-		side
-		{
-			"id" "78"
-			"plane" "(1792 6.02722e-005 0) (1792 6.02722e-005 -32) (1408 6.02722e-005 -32)"
-			"material" "TOOLS/TOOLSNOLIGHT"
-			"uaxis" "[1 0 0 0] 1"
-			"vaxis" "[0 0 -1 0] 1"
-			"rotation" "0"
-			"lightmapscale" "256"
-			"smoothing_groups" "0"
-		}
-		side
-		{
-			"id" "77"
-			"plane" "(1792 1344 0) (1792 1344 -32) (1792 6.02722e-005 -32)"
-			"material" "TOOLS/TOOLSNOLIGHT"
-			"uaxis" "[0 1 0 -5] 0.25"
-			"vaxis" "[0 0 -1 0] 0.25"
-			"rotation" "0"
-			"lightmapscale" "256"
-			"smoothing_groups" "0"
-		}
-		side
-		{
-			"id" "76"
-			"plane" "(1408 1344 0) (1408 1344 -32) (1792 1344 -32)"
-			"material" "TOOLS/TOOLSNODRAW"
-			"uaxis" "[-1 0 0 -16] 1"
-			"vaxis" "[0 0 -1 -24] 1"
-			"rotation" "0"
-			"lightmapscale" "256"
-			"smoothing_groups" "0"
-		}
-		side
-		{
-			"id" "75"
-			"plane" "(1408 6.02722e-005 0) (1408 6.02722e-005 -32) (1408 1344 -32)"
-			"material" "TOOLS/TOOLSNODRAW"
-			"uaxis" "[0 -1 0 -16] 1"
-			"vaxis" "[0 0 -1 -24] 1"
-			"rotation" "0"
-			"lightmapscale" "256"
-			"smoothing_groups" "0"
-		}
-		side
-		{
-			"id" "74"
-			"plane" "(1792 6.02722e-005 0) (1408 6.02722e-005 0) (1408 1344 0)"
-			"material" "CONCRETE/CONCRETEFLOOR051A"
-			"uaxis" "[0 1 0 -417] 0.15"
-			"vaxis" "[1 0 0 414] 0.15"
-			"rotation" "0"
-			"lightmapscale" "8"
-			"smoothing_groups" "0"
-		}
-		side
-		{
-			"id" "73"
-			"plane" "(1408 6.02722e-005 -32) (1792 6.02722e-005 -32) (1792 1344 -32)"
 			"material" "TOOLS/TOOLSNODRAW"
 			"uaxis" "[0 1 0 -16] 1"
 			"vaxis" "[-1 0 0 -24] 1"
@@ -13125,7 +13037,7 @@ entity
 	"id" "12900"
 	"classname" "asw_objective_escape"
 	"objectivedescription1" "Get to the exit!!"
-	"objectivetitle" "Escaoe"
+	"objectivetitle" "Escape"
 	"targetname" "@objective_escape"
 	"Visible" "1"
 	"origin" "704 1664 345.326"
@@ -14615,8 +14527,8 @@ entity
 {
 	"id" "13244"
 	"classname" "asw_spawner"
-	"AlienClass" "11"
-	"AlienOrders" "2"
+	"AlienClass" "0"
+	"AlienOrders" "3"
 	"AlienOrderTargetName" "mortarbug_target"
 	"angles" "0 0 0"
 	"ClearCheck" "1"
@@ -15440,36 +15352,6 @@ entity
 }
 entity
 {
-	"id" "14356"
-	"classname" "env_instructor_hint"
-	"hint_activator_caption" "Kill 200 drones first. Then the door will open."
-	"hint_allow_nodraw_target" "1"
-	"hint_alphaoption" "0"
-	"hint_caption" "Kill 200 drones first. Then the door will open."
-	"hint_color" "255 255 255"
-	"hint_forcecaption" "1"
-	"hint_icon_offscreen" "icon_tip"
-	"hint_icon_offset" "0"
-	"hint_icon_onscreen" "icon_tip"
-	"hint_local_player_only" "1"
-	"hint_nooffscreen" "0"
-	"hint_pulseoption" "0"
-	"hint_range" "0"
-	"hint_shakeoption" "0"
-	"hint_static" "1"
-	"hint_timeout" "3"
-	"targetname" "message_disable_beacon"
-	"origin" "728 1292 220"
-	editor
-	{
-		"color" "220 30 220"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[0 11000]"
-	}
-}
-entity
-{
 	"id" "14402"
 	"classname" "trigger_asw_button_area"
 	"disableafteruse" "0"
@@ -15481,7 +15363,7 @@ entity
 	"panelpropname" "exit_gate_panel"
 	"playersrequired" "1"
 	"spawnflags" "16"
-	"StartDisabled" "1"
+	"StartDisabled" "0"
 	"targetname" "@trigger_button_disabled"
 	"useafterhack" "0"
 	"usetargetname" "holdout_gate_mover"
@@ -15490,8 +15372,7 @@ entity
 	"wirerows" "2"
 	connections
 	{
-		"OnButtonActivated" "message_disable_beaconShowHint1-1"
-		"OnButtonActivated" "@directorStartFinale01"
+		"OnButtonActivated" "@directorDisable01"
 		"OnButtonActivated" "finale_musicStartMusic01"
 		"OnButtonActivated" "finale_spawningTrigger01"
 	}
@@ -15741,14 +15622,14 @@ entity
 	"HealthScale" "1"
 	"InfiniteAliens" "0"
 	"LongRange" "0"
-	"MaxLiveAliens" "3"
+	"MaxLiveAliens" "2"
 	"MaxSkillLevel" "0"
 	"MinSkillLevel" "0"
 	"NearDistance" "740"
 	"NumAliens" "6"
 	"SpawnerState" "1"
 	"SpawnIfMarinesAreNear" "1"
-	"SpawnInterval" "4"
+	"SpawnInterval" "10"
 	"SpawnIntervalJitter" "25"
 	"SpeedScale" "1"
 	"StartBurrowed" "1"
@@ -15773,14 +15654,14 @@ entity
 	"HealthScale" "1"
 	"InfiniteAliens" "0"
 	"LongRange" "0"
-	"MaxLiveAliens" "3"
+	"MaxLiveAliens" "2"
 	"MaxSkillLevel" "0"
 	"MinSkillLevel" "0"
 	"NearDistance" "740"
 	"NumAliens" "6"
 	"SpawnerState" "1"
 	"SpawnIfMarinesAreNear" "1"
-	"SpawnInterval" "4"
+	"SpawnInterval" "8"
 	"SpawnIntervalJitter" "25"
 	"SpeedScale" "1"
 	"StartBurrowed" "1"
@@ -15805,14 +15686,14 @@ entity
 	"HealthScale" "1"
 	"InfiniteAliens" "0"
 	"LongRange" "0"
-	"MaxLiveAliens" "6"
+	"MaxLiveAliens" "1"
 	"MaxSkillLevel" "0"
 	"MinSkillLevel" "0"
 	"NearDistance" "740"
-	"NumAliens" "3"
+	"NumAliens" "2"
 	"SpawnerState" "1"
 	"SpawnIfMarinesAreNear" "1"
-	"SpawnInterval" "4"
+	"SpawnInterval" "10"
 	"SpawnIntervalJitter" "25"
 	"SpeedScale" "1"
 	"StartBurrowed" "1"
@@ -15844,7 +15725,7 @@ entity
 	"NumAliens" "6"
 	"SpawnerState" "1"
 	"SpawnIfMarinesAreNear" "1"
-	"SpawnInterval" "4"
+	"SpawnInterval" "10"
 	"SpawnIntervalJitter" "25"
 	"SpeedScale" "1"
 	"StartBurrowed" "1"
@@ -15869,14 +15750,14 @@ entity
 	"HealthScale" "1"
 	"InfiniteAliens" "0"
 	"LongRange" "0"
-	"MaxLiveAliens" "3"
+	"MaxLiveAliens" "1"
 	"MaxSkillLevel" "0"
 	"MinSkillLevel" "0"
 	"NearDistance" "740"
-	"NumAliens" "6"
+	"NumAliens" "2"
 	"SpawnerState" "1"
 	"SpawnIfMarinesAreNear" "1"
-	"SpawnInterval" "4"
+	"SpawnInterval" "7"
 	"SpawnIntervalJitter" "25"
 	"SpeedScale" "1"
 	"StartBurrowed" "1"
@@ -16118,10 +15999,7 @@ entity
 	connections
 	{
 		"OnTrigger" "drone_burrowedStartSpawning0-1"
-		"OnTrigger" "exit_window_spawnersStartSpawning10-1"
-		"OnTrigger" "exit_boomersSpawnOneAlien15-1"
-		"OnTrigger" "exit_boomersSpawnOneAlien28-1"
-		"OnTrigger" "exit_boomersSpawnOneAlien35-1"
+		"OnTrigger" "exit_window_spawnersStartSpawning4-1"
 	}
 	"origin" "800 1248 272.326"
 	editor
@@ -16242,6 +16120,94 @@ entity
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
 		"logicalpos" "[0 2500]"
+	}
+}
+entity
+{
+	"id" "20899"
+	"classname" "func_detail"
+	solid
+	{
+		"id" "198"
+		side
+		{
+			"id" "1526"
+			"plane" "(1792 6.02722e-005 0) (1792 6.02722e-005 -32) (1408 6.02722e-005 -32)"
+			"material" "TOOLS/TOOLSNOLIGHT"
+			"uaxis" "[1 0 0 0] 1"
+			"vaxis" "[0 0 -1 0] 1"
+			"rotation" "0"
+			"lightmapscale" "256"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "1525"
+			"plane" "(1792 1344 0) (1792 1344 -32) (1792 6.02722e-005 -32)"
+			"material" "TOOLS/TOOLSNOLIGHT"
+			"uaxis" "[0 1 0 -5] 0.25"
+			"vaxis" "[0 0 -1 0] 0.25"
+			"rotation" "0"
+			"lightmapscale" "256"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "1524"
+			"plane" "(1408 1344 0) (1408 1344 -32) (1792 1344 -32)"
+			"material" "TOOLS/TOOLSNODRAW"
+			"uaxis" "[-1 0 0 -16] 1"
+			"vaxis" "[0 0 -1 -24] 1"
+			"rotation" "0"
+			"lightmapscale" "256"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "1523"
+			"plane" "(1408 6.02722e-005 0) (1408 6.02722e-005 -32) (1408 1344 -32)"
+			"material" "TOOLS/TOOLSNODRAW"
+			"uaxis" "[0 -1 0 -16] 1"
+			"vaxis" "[0 0 -1 -24] 1"
+			"rotation" "0"
+			"lightmapscale" "256"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "1522"
+			"plane" "(1792 6.02722e-005 0) (1408 6.02722e-005 0) (1408 1344 0)"
+			"material" "CONCRETE/BLENDSEWERS_FLOOR"
+			"uaxis" "[0 1 0 -417] 0.15"
+			"vaxis" "[1 0 0 414] 0.15"
+			"rotation" "0"
+			"lightmapscale" "8"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "1521"
+			"plane" "(1408 6.02722e-005 -32) (1792 6.02722e-005 -32) (1792 1344 -32)"
+			"material" "TOOLS/TOOLSNODRAW"
+			"uaxis" "[0 1 0 -16] 1"
+			"vaxis" "[-1 0 0 -24] 1"
+			"rotation" "0"
+			"lightmapscale" "256"
+			"smoothing_groups" "0"
+		}
+		editor
+		{
+			"color" "0 180 0"
+			"visgroupshown" "1"
+			"visgroupautoshown" "1"
+		}
+	}
+	editor
+	{
+		"color" "0 180 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
 	}
 }
 cameras

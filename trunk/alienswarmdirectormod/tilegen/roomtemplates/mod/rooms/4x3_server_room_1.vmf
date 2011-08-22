@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "11"
+	"mapversion" "12"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "11"
+	"mapversion" "12"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -3671,7 +3671,7 @@ entity
 	"InfiniteAliens" "0"
 	"MaxLiveAliens" "2"
 	"NearDistance" "740"
-	"NumAliens" "4"
+	"NumAliens" "5"
 	"SpawnerState" "1"
 	"spawnflags" "0"
 	"SpawnIfMarinesAreNear" "1"
@@ -3958,6 +3958,7 @@ entity
 	"NearDistance" "740"
 	"NumAliens" "2"
 	"SpawnerState" "1"
+	"spawnflags" "0"
 	"SpawnIfMarinesAreNear" "1"
 	"SpawnInterval" "4"
 	"SpawnIntervalJitter" "25"
@@ -4034,7 +4035,7 @@ entity
 {
 	"id" "2965"
 	"classname" "asw_spawner"
-	"AlienClass" "2"
+	"AlienClass" "0"
 	"AlienOrders" "3"
 	"angles" "0 0 0"
 	"ClearCheck" "1"
@@ -4047,6 +4048,7 @@ entity
 	"NearDistance" "740"
 	"NumAliens" "3"
 	"SpawnerState" "1"
+	"spawnflags" "0"
 	"SpawnIfMarinesAreNear" "0"
 	"SpawnInterval" "1"
 	"SpawnIntervalJitter" "25"
@@ -4064,7 +4066,12 @@ entity
 }
 cameras
 {
-	"activecamera" "-1"
+	"activecamera" "0"
+	camera
+	{
+		"position" "[50.6568 761.57 262.486]"
+		"look" "[51.0125 760.934 261.801]"
+	}
 }
 cordons
 {

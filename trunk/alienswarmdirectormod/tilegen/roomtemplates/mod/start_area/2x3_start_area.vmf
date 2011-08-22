@@ -1,8 +1,8 @@
 versioninfo
 {
 	"editorversion" "400"
-	"editorbuild" "4961"
-	"mapversion" "23"
+	"editorbuild" "5032"
+	"mapversion" "25"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "23"
+	"mapversion" "25"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -3160,8 +3160,9 @@ entity
 {
 	"id" "3030"
 	"classname" "asw_director_control"
-	"hordes" "1"
+	"hordes" "0"
 	"targetname" "@director"
+	"wanderers" "0"
 	"origin" "315.554 190.209 9"
 	editor
 	{

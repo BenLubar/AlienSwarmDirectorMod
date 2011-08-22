@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "50"
+	"mapversion" "55"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "50"
+	"mapversion" "55"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -797,7 +797,7 @@ entity
 	"hacklevel" "5"
 	"locked" "1"
 	"nopower" "0"
-	"numwires" "3"
+	"numwires" "1"
 	"origin" "475 455 104.93"
 	"panelpropname" "panel_02"
 	"playersrequired" "1"
@@ -807,7 +807,7 @@ entity
 	"usetargetname" "door_02"
 	"wait" "-1"
 	"wirecolumns" "5"
-	"wirerows" "3"
+	"wirerows" "1"
 	connections
 	{
 		"OnButtonHackCompleted" "door_02EnableAutoOpen0-1"
@@ -2649,7 +2649,7 @@ entity
 	"classname" "asw_egg"
 	"angles" "0 345 0"
 	"FixedJumpDir" "0"
-	"ParasiteClass" "asw_parasite"
+	"ParasiteClass" "asw_none"
 	"SkipEggChatter" "0"
 	connections
 	{
@@ -2754,7 +2754,7 @@ entity
 	"classname" "asw_egg"
 	"angles" "0 15 0"
 	"FixedJumpDir" "0"
-	"ParasiteClass" "asw_parasite"
+	"ParasiteClass" "asw_none"
 	"SkipEggChatter" "0"
 	connections
 	{
@@ -2775,7 +2775,7 @@ entity
 	"classname" "asw_egg"
 	"angles" "0 315 0"
 	"FixedJumpDir" "0"
-	"ParasiteClass" "asw_parasite"
+	"ParasiteClass" "asw_none"
 	"SkipEggChatter" "0"
 	connections
 	{
@@ -5193,7 +5193,7 @@ entity
 	"classname" "asw_egg"
 	"angles" "0 0 0"
 	"FixedJumpDir" "0"
-	"ParasiteClass" "asw_parasite"
+	"ParasiteClass" "asw_none"
 	"SkipEggChatter" "0"
 	connections
 	{
@@ -5326,9 +5326,9 @@ entity
 	"ClearCheck" "1"
 	"HealthScale" "1"
 	"InfiniteAliens" "0"
-	"MaxLiveAliens" "1"
+	"MaxLiveAliens" "2"
 	"NearDistance" "740"
-	"NumAliens" "4"
+	"NumAliens" "3"
 	"SpawnerState" "1"
 	"spawnflags" "0"
 	"SpawnIfMarinesAreNear" "1"
@@ -5383,7 +5383,7 @@ entity
 	"ClearCheck" "1"
 	"HealthScale" "1"
 	"InfiniteAliens" "0"
-	"MaxLiveAliens" "1"
+	"MaxLiveAliens" "2"
 	"NearDistance" "740"
 	"NumAliens" "3"
 	"SpawnerState" "1"
@@ -5562,86 +5562,6 @@ entity
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
 		"logicalpos" "[0 2000]"
-	}
-}
-entity
-{
-	"id" "2405"
-	"classname" "logic_relay"
-	"spawnflags" "0"
-	"targetname" "chokepoint_boomer_relay"
-	connections
-	{
-		"OnTrigger" "chokepoint_boomer_spawnerSpawnOneAlien0-1"
-	}
-	"origin" "704 288 208"
-	editor
-	{
-		"color" "220 30 220"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[0 1500]"
-	}
-}
-entity
-{
-	"id" "2407"
-	"classname" "logic_relay"
-	"spawnflags" "0"
-	"targetname" "chokepoint_parasite_relay"
-	connections
-	{
-		"OnTrigger" "chokepoint_parasite_spawnerSpawnOneAlien0-1"
-	}
-	"origin" "704 312 208"
-	editor
-	{
-		"color" "220 30 220"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[0 1500]"
-	}
-}
-entity
-{
-	"id" "2425"
-	"classname" "logic_case"
-	"Case01" "1"
-	"Case02" "2"
-	"Case03" "3"
-	"targetname" "chokepoint_case_02"
-	connections
-	{
-		"OnCase01" "chokepoint_parasite_relayTrigger0-1"
-		"OnCase02" "chokepoint_boomer_relayTrigger0-1"
-		"OnCase03" "chokepoint_harvester_relayTrigger0-1"
-	}
-	"origin" "672 288 208"
-	editor
-	{
-		"color" "220 30 220"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[0 0]"
-	}
-}
-entity
-{
-	"id" "2545"
-	"classname" "logic_relay"
-	"spawnflags" "0"
-	"targetname" "chokepoint_harvester_relay"
-	connections
-	{
-		"OnTrigger" "chokepoint_harvester_spawnerSpawnOneAlien0-1"
-	}
-	"origin" "704 264 208"
-	editor
-	{
-		"color" "220 30 220"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[0 1500]"
 	}
 }
 entity
