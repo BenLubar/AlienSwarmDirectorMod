@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "115"
+	"mapversion" "116"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "115"
+	"mapversion" "116"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -15673,7 +15673,7 @@ entity
 {
 	"id" "17686"
 	"classname" "math_counter"
-	"max" "2"
+	"max" "1"
 	"min" "0"
 	"StartDisabled" "0"
 	"startvalue" "0"
@@ -15893,23 +15893,6 @@ entity
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
 		"logicalpos" "[0 0]"
-	}
-}
-entity
-{
-	"id" "21748"
-	"classname" "asw_objective_kill_eggs"
-	"NumEggs" "6"
-	"objectivedescription1" "Get to the exit!!"
-	"targetname" "@objective_egg"
-	"Visible" "1"
-	"origin" "704 1640 345.326"
-	editor
-	{
-		"color" "220 30 220"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[0 13000]"
 	}
 }
 entity
@@ -16300,6 +16283,27 @@ entity
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
 		"logicalpos" "[0 6500]"
+	}
+}
+entity
+{
+	"id" "22009"
+	"classname" "asw_objective_kill_eggs"
+	"NumEggs" "11"
+	"objectivedescription1" "Destroy all eggs"
+	"targetname" "@objective_eggs"
+	"Visible" "1"
+	connections
+	{
+		"OnObjectiveComplete" "objectives_counterAdd10-1"
+	}
+	"origin" "689.194 1688 344"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 500]"
 	}
 }
 cameras
