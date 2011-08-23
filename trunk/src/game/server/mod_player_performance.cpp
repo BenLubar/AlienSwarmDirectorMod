@@ -26,11 +26,14 @@ using namespace std;
 
 #define MAX_DIRECTOR_STRESS_HISTORY_SIZE 2024
 
+//Couldn't get bots or multiplayer to work properly, so change how score is calculated
+#define SINGLE_PLAYER_MODE true
+
 //This counters that effect of stress, end of levels
 //usually have 'finales' which result in the players
 //being 100% stressed. This reduces the overall impact
 //of prolonged high stress on performance metrics.
-#define STRESS_MULTIPLIER 0.5
+#define STRESS_MULTIPLIER 0.3
 
 ConVar mod_player_performance_debug("mod_player_performance_debug", "0", 0, "Displays modPlayerPerformance status on screen");
 
@@ -101,9 +104,17 @@ int CMOD_Player_Performance::CalculatePerformance()
 	directorStressRating = CalculateDirectorStress(pGameResource);
 	engine->Con_NPrintf(5,"Players Director Stress Rating: %d", directorStressRating);
 
-	totalRating = healthRating + accuracyRating + friendlyFireRating + directorStressRating;
-	totalRating /= 4;
-
+	if (SINGLE_PLAYER_MODE)
+	{
+		totalRating = healthRating + accuracyRating + directorStressRating;
+		totalRating /= 3;
+	}
+	else
+	{
+		totalRating = healthRating + accuracyRating + friendlyFireRating + directorStressRating;
+		totalRating /= 4;
+	}
+	
 	engine->Con_NPrintf(7,"Players Total Rating: %d", totalRating);
 
 	if (totalRating > 75)
@@ -132,7 +143,11 @@ int CMOD_Player_Performance::CalculateHealthRating(CASW_Game_Resource *pGameReso
 		averageHealth += pMarine->GetHealth();
 	}
 
-	return averageHealth / pGameResource->GetMaxMarineResources();
+	if (!SINGLE_PLAYER_MODE)
+	{
+		averageHealth /= pGameResource->GetMaxMarineResources();
+	}
+	return averageHealth;
 }
 
 int CMOD_Player_Performance::CalculateAccuracyRating(CASW_Game_Resource *pGameResource){
@@ -218,7 +233,10 @@ int CMOD_Player_Performance::CalculateDirectorStress(CASW_Game_Resource *pGameRe
 
 		averageStressOfPlayers += (pMR->GetIntensity()->GetCurrent() * 100.0 * STRESS_MULTIPLIER);
 	}
-	averageStressOfPlayers /= pGameResource->GetMaxMarineResources();
+	if (!SINGLE_PLAYER_MODE)
+	{
+		averageStressOfPlayers /= pGameResource->GetMaxMarineResources();
+	}
 
 	engine->Con_NPrintf(17,"Average stress: %f", averageStressOfPlayers);
 	g_directorStressHistory->push_back(averageStressOfPlayers);

@@ -76,7 +76,13 @@ void CTilegenKVEditorPage::OnCommand( const char *command )
 	if ( !Q_stricmp( command, "Save" ) )
 	{
 		KeyValues *pKV = GetKeyValues();
-		if ( pKV != NULL && !pKV->SaveToFile( g_pFullFileSystem, m_szFilename, "GAME" ) )
+						
+		char fullFilePathBuffer [512];
+		Q_snprintf(fullFilePathBuffer, sizeof(fullFilePathBuffer),"C:\\Program Files\\Steam\\steamapps\\sourcemods\\alienswarmdirectormod\\%s", m_szFilename);
+		Msg("Saving to [%s]", fullFilePathBuffer);
+
+		//if ( pKV != NULL && !pKV->SaveToFile( g_pFullFileSystem, m_szFilename, "GAME" ) )
+		if ( pKV != NULL && !pKV->SaveToFile( g_pFullFileSystem, fullFilePathBuffer ) )
 		{
 			if ( p4 )
 			{
