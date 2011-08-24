@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "116"
+	"mapversion" "118"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "116"
+	"mapversion" "118"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -4741,8 +4741,8 @@ entity
 			"id" "62"
 			"plane" "(1408 7.32422e-005 0) (320 7.32422e-005 0) (320 256 0)"
 			"material" "CONCRETE/CONCRETEFLOOR051A"
-			"uaxis" "[0 1 0 -416.994] 0.15"
-			"vaxis" "[1 0 0 413.667] 0.15"
+			"uaxis" "[0 1 0 -417] 0.15"
+			"vaxis" "[1 0 0 414] 0.15"
 			"rotation" "0"
 			"lightmapscale" "8"
 			"smoothing_groups" "0"
@@ -15809,94 +15809,6 @@ entity
 }
 entity
 {
-	"id" "20899"
-	"classname" "func_detail"
-	solid
-	{
-		"id" "198"
-		side
-		{
-			"id" "1526"
-			"plane" "(1792 6.02722e-005 0) (1792 6.02722e-005 -32) (1408 6.02722e-005 -32)"
-			"material" "TOOLS/TOOLSNOLIGHT"
-			"uaxis" "[1 0 0 0] 1"
-			"vaxis" "[0 0 -1 0] 1"
-			"rotation" "0"
-			"lightmapscale" "256"
-			"smoothing_groups" "0"
-		}
-		side
-		{
-			"id" "1525"
-			"plane" "(1792 1344 0) (1792 1344 -32) (1792 6.02722e-005 -32)"
-			"material" "TOOLS/TOOLSNOLIGHT"
-			"uaxis" "[0 1 0 -5] 0.25"
-			"vaxis" "[0 0 -1 0] 0.25"
-			"rotation" "0"
-			"lightmapscale" "256"
-			"smoothing_groups" "0"
-		}
-		side
-		{
-			"id" "1524"
-			"plane" "(1408 1344 0) (1408 1344 -32) (1792 1344 -32)"
-			"material" "TOOLS/TOOLSNODRAW"
-			"uaxis" "[-1 0 0 -16] 1"
-			"vaxis" "[0 0 -1 -24] 1"
-			"rotation" "0"
-			"lightmapscale" "256"
-			"smoothing_groups" "0"
-		}
-		side
-		{
-			"id" "1523"
-			"plane" "(1408 6.02722e-005 0) (1408 6.02722e-005 -32) (1408 1344 -32)"
-			"material" "TOOLS/TOOLSNODRAW"
-			"uaxis" "[0 -1 0 -16] 1"
-			"vaxis" "[0 0 -1 -24] 1"
-			"rotation" "0"
-			"lightmapscale" "256"
-			"smoothing_groups" "0"
-		}
-		side
-		{
-			"id" "1522"
-			"plane" "(1792 6.02722e-005 0) (1408 6.02722e-005 0) (1408 1344 0)"
-			"material" "CONCRETE/BLENDSEWERS_FLOOR"
-			"uaxis" "[0 1 0 -417] 0.15"
-			"vaxis" "[1 0 0 414] 0.15"
-			"rotation" "0"
-			"lightmapscale" "8"
-			"smoothing_groups" "0"
-		}
-		side
-		{
-			"id" "1521"
-			"plane" "(1408 6.02722e-005 -32) (1792 6.02722e-005 -32) (1792 1344 -32)"
-			"material" "TOOLS/TOOLSNODRAW"
-			"uaxis" "[0 1 0 -16] 1"
-			"vaxis" "[-1 0 0 -24] 1"
-			"rotation" "0"
-			"lightmapscale" "256"
-			"smoothing_groups" "0"
-		}
-		editor
-		{
-			"color" "0 180 0"
-			"visgroupshown" "1"
-			"visgroupautoshown" "1"
-		}
-	}
-	editor
-	{
-		"color" "0 180 0"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[0 0]"
-	}
-}
-entity
-{
 	"id" "21809"
 	"classname" "logic_relay"
 	"spawnflags" "0"
@@ -15964,9 +15876,6 @@ entity
 	connections
 	{
 		"OnButtonActivated" "message_disable_beaconShowHint1-1"
-		"OnButtonActivated" "@directorStartFinale01"
-		"OnButtonActivated" "finale_musicStartMusic01"
-		"OnButtonActivated" "finale_spawningTrigger01"
 	}
 	solid
 	{
@@ -16078,6 +15987,8 @@ entity
 		"OnButtonActivated" "Room14_relay_door_01Trigger0-1"
 		"OnButtonActivated" "exit_linkTurnOn1-1"
 		"OnButtonActivated" "gate_start_soundPlaySound0-1"
+		"OnButtonActivated" "finale_musicStartMusic0-1"
+		"OnButtonActivated" "finale_spawningTrigger0-1"
 	}
 	solid
 	{
@@ -16304,6 +16215,135 @@ entity
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
 		"logicalpos" "[0 500]"
+	}
+}
+entity
+{
+	"id" "22058"
+	"classname" "asw_pickup_ammo_bag"
+	"angles" "0 0 0"
+	"disableshadows" "0"
+	"fademaxdist" "0"
+	"fademindist" "-1"
+	"fadescale" "1"
+	"FreezePickup" "No"
+	"origin" "951.131 1296.29 149.326"
+	editor
+	{
+		"color" "0 0 200"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 500]"
+	}
+}
+entity
+{
+	"id" "22067"
+	"classname" "asw_pickup_medkit"
+	"angles" "0 0 0"
+	"BulletsInGun" "1"
+	"Clips" "0"
+	"disableshadows" "0"
+	"fademaxdist" "0"
+	"fademindist" "-1"
+	"fadescale" "1"
+	"FreezePickup" "No"
+	"SecondaryBullets" "0"
+	"origin" "984 1296 149.326"
+	editor
+	{
+		"color" "0 0 200"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 500]"
+	}
+}
+entity
+{
+	"id" "22080"
+	"classname" "func_detail"
+	solid
+	{
+		"id" "198"
+		side
+		{
+			"id" "1556"
+			"plane" "(1792 6.02722e-005 0) (1792 6.02722e-005 -32) (1408 6.02722e-005 -32)"
+			"material" "TOOLS/TOOLSNOLIGHT"
+			"uaxis" "[1 0 0 0] 1"
+			"vaxis" "[0 0 -1 0] 1"
+			"rotation" "0"
+			"lightmapscale" "256"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "1555"
+			"plane" "(1792 1344 0) (1792 1344 -32) (1792 6.02722e-005 -32)"
+			"material" "TOOLS/TOOLSNOLIGHT"
+			"uaxis" "[0 1 0 -5] 0.25"
+			"vaxis" "[0 0 -1 0] 0.25"
+			"rotation" "0"
+			"lightmapscale" "256"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "1554"
+			"plane" "(1408 1344 0) (1408 1344 -32) (1792 1344 -32)"
+			"material" "TOOLS/TOOLSNODRAW"
+			"uaxis" "[-1 0 0 -16] 1"
+			"vaxis" "[0 0 -1 -24] 1"
+			"rotation" "0"
+			"lightmapscale" "256"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "1553"
+			"plane" "(1408 6.02722e-005 0) (1408 6.02722e-005 -32) (1408 1344 -32)"
+			"material" "TOOLS/TOOLSNODRAW"
+			"uaxis" "[0 -1 0 -16] 1"
+			"vaxis" "[0 0 -1 -24] 1"
+			"rotation" "0"
+			"lightmapscale" "256"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "1552"
+			"plane" "(1792 6.02722e-005 0) (1408 6.02722e-005 0) (1408 1344 0)"
+			"material" "CONCRETE/CONCRETEFLOOR051A"
+			"uaxis" "[0 1 0 -417] 0.15"
+			"vaxis" "[1 0 0 414] 0.15"
+			"rotation" "0"
+			"lightmapscale" "8"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "1551"
+			"plane" "(1408 6.02722e-005 -32) (1792 6.02722e-005 -32) (1792 1344 -32)"
+			"material" "TOOLS/TOOLSNODRAW"
+			"uaxis" "[0 1 0 -16] 1"
+			"vaxis" "[-1 0 0 -24] 1"
+			"rotation" "0"
+			"lightmapscale" "256"
+			"smoothing_groups" "0"
+		}
+		editor
+		{
+			"color" "0 180 0"
+			"visgroupshown" "1"
+			"visgroupautoshown" "1"
+		}
+	}
+	editor
+	{
+		"color" "0 180 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 1000]"
 	}
 }
 cameras

@@ -76,6 +76,12 @@
 						"$RoomName"		"mod\rooms\4x3_server_room_1"
 						"$Fraction"		"0.200000"
 					}
+					"rule_instance"
+					{
+						"name"		"SingleComponentRoom"
+						"$RoomName"		"mod\corridors\2x4_corridor_door"
+						"$Fraction"		"0.1"
+					}
 				}
 			}
 		}
@@ -88,6 +94,17 @@
 			"rule_instance"
 			{
 				"name"		"GlobalTheme"
+			}
+		}
+		"$RoomCandidateFilters"
+		{
+			"param"
+			{
+				"rule_instance"
+				{
+					"name"		"SpecificRoom"
+					"$RoomName"		"mod\exit\7x8_exit_killeggs"
+				}
 			}
 		}
 	}
