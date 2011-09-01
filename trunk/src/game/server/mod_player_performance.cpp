@@ -37,6 +37,8 @@ using namespace std;
 
 ConVar mod_player_performance_debug("mod_player_performance_debug", "0", 0, "Displays modPlayerPerformance status on screen");
 
+ConVar mod_player_performance_force_value("mod_player_performance_force_value", "0", 0, "Permantently sets modPlayerPerformance, overriding the calculated value.");
+
 CMOD_Player_Performance* CMOD_Player_Performance::g_PlayerPerformanceSingleton = 0;
 
 CMOD_Player_Performance* CMOD_Player_Performance::PlayerPerformance()
@@ -69,11 +71,12 @@ void CMOD_Player_Performance::OnMissionStarted(){
 //Couldn't figure out how to nativally hook into this event, 
 //so asw_director.cpp calls 
 void CMOD_Player_Performance::FrameUpdatePostEntityThink()
-{
+{	
 	if ( mod_player_performance_debug.GetInt() > 0 )
 	{
-		engine->Con_NPrintf(1,"Players Performance: %d", CalculatePerformance());
-	}
+		CalculatePerformance();
+		PrintDebug();
+	}	
 }
 
 
@@ -82,9 +85,12 @@ int CMOD_Player_Performance::CalculatePerformance()
 	//Performance is 25% health, 25% accuracy, 
 	//25% friendly fire, 25% average director stress 
 
-	CASW_Game_Resource *pGameResource = ASWGameResource();
+	//if (mod_player_performance_force_value.GetInt() > 0)
+	//{
+		//Don't return here, go ahead and calculate the value in case debug is on.
+	//}
 
-	int totalRating, healthRating, accuracyRating, friendlyFireRating, directorStressRating = 0;
+	CASW_Game_Resource *pGameResource = ASWGameResource();
 
 	if (!pGameResource)
 	{
@@ -92,37 +98,37 @@ int CMOD_Player_Performance::CalculatePerformance()
 		return DEFAULT_PERFORMANCE;
 	}
 
-	healthRating = CalculateHealthRating(pGameResource);
-	engine->Con_NPrintf(2,"Players Health Rating: %d", healthRating);
-
-	accuracyRating = CalculateAccuracyRating(pGameResource);
-	engine->Con_NPrintf(3,"Players Accuracy Rating: %d", accuracyRating);
-
-	friendlyFireRating = CalculateFriendFireRating(pGameResource);
-	engine->Con_NPrintf(4,"Players Friendly Fire Rating: %d", friendlyFireRating);
-
-	directorStressRating = CalculateDirectorStress(pGameResource);
-	engine->Con_NPrintf(5,"Players Director Stress Rating: %d", directorStressRating);
-
+	m_healthRating = CalculateHealthRating(pGameResource);	
+	m_accuracyRating = CalculateAccuracyRating(pGameResource);	
+	m_friendlyFireRating = CalculateFriendFireRating(pGameResource);	
+	m_directorStressRating = CalculateDirectorStress(pGameResource);
+	
 	if (SINGLE_PLAYER_MODE)
 	{
-		totalRating = healthRating + accuracyRating + directorStressRating;
-		totalRating /= 3;
+		m_totalRating = m_totalRating + m_accuracyRating + m_directorStressRating;
+		m_totalRating /= 3;
 	}
 	else
 	{
-		totalRating = healthRating + accuracyRating + friendlyFireRating + directorStressRating;
-		totalRating /= 4;
+		m_totalRating = m_totalRating + m_accuracyRating + m_friendlyFireRating + m_directorStressRating;
+		m_totalRating /= 4;
 	}
 	
-	engine->Con_NPrintf(7,"Players Total Rating: %d", totalRating);
-
-	if (totalRating > 75)
-		return 3;
-	else if (totalRating > 55)
-		return 2;
+	if (m_totalRating > 75)
+		m_weightedRating = 3;
+	else if (m_totalRating > 55)
+		m_weightedRating = 2;
 	else 
-		return 1;	
+		m_weightedRating = 1;	
+
+	if (mod_player_performance_force_value.GetInt() > 0)
+	{
+		return mod_player_performance_force_value.GetInt();
+	}
+	else
+	{
+		return m_weightedRating;
+	}
 }
 
 //Return the average health of all players
@@ -250,4 +256,26 @@ int CMOD_Player_Performance::CalculateDirectorStress(CASW_Game_Resource *pGameRe
 	averageStressHistory /= g_directorStressHistory->size();
 	engine->Con_NPrintf(18,"Average historical stress: %f", averageStressHistory);
 	return 100 - (int)averageStressHistory;
+}
+
+void CMOD_Player_Performance::PrintDebug()
+{
+	engine->Con_NPrintf(1,"Players Performance: %d", m_weightedRating);
+	engine->Con_NPrintf(2,"Players Health Rating: %d", m_healthRating);
+	engine->Con_NPrintf(3,"Players Accuracy Rating: %d", m_accuracyRating);
+	if (!SINGLE_PLAYER_MODE)
+	{
+		engine->Con_NPrintf(4,"Players Friendly Fire Rating: %d", m_friendlyFireRating);
+	}
+	engine->Con_NPrintf(5,"Players Director Stress Rating: %d", m_directorStressRating);
+	engine->Con_NPrintf(7,"Players Total Rating: %d", m_totalRating);	
+
+	if (mod_player_performance_force_value.GetInt() > 0)
+	{
+		engine->Con_NPrintf(8,"Player Forced Rating: ON [%d]", mod_player_performance_force_value.GetInt());
+	}
+	else
+	{
+		engine->Con_NPrintf(8,"Player Forced Rating: OFF");
+	}	
 }

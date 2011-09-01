@@ -17,6 +17,8 @@ public:
 	//Singleton accessor
 	static CMOD_Player_Performance* PlayerPerformance();
 
+	int m_totalRating, m_weightedRating, m_healthRating, m_accuracyRating, m_friendlyFireRating, m_directorStressRating;
+
 	virtual void FrameUpdatePostEntityThink();
 
 	int CalculatePerformance();
@@ -25,6 +27,7 @@ public:
 	int CalculateAccuracyRating(CASW_Game_Resource *pGameResource);
 	int CalculateFriendFireRating(CASW_Game_Resource *pGameResource);
 	int CalculateDirectorStress(CASW_Game_Resource *pGameResource);	
+	void PrintDebug();
 
 	//Called by asw_director
 	void OnMissionStarted();

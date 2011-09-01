@@ -26,7 +26,7 @@
 //in the example files I looked at (TileGenDialog.cpp)
 #define GAME_DIRECTORY "GAME"
 
-#define LAYOUT_DIRECTORY "\\maps\\"
+#define LAYOUT_DIRECTORY "maps\\"
 #define LAYOUT_EXTENSION ".layout"
 #define MISSION_RULES_DIRECTORY "tilegen\\new_missions\\"
 #define MISSION_RULE_EXTENSION ".txt"

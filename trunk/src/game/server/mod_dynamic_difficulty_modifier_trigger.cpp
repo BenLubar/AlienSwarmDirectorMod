@@ -8,7 +8,7 @@
 #include "asw_weapon.h"
 #include "asw_util_shared.h"
 #include "asw_melee_system.h"
-
+#include "mod_player_performance.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -122,7 +122,13 @@ void CMOD_Dynamic_Difficulty_Modifier_Trigger::MultiWaitOver( void )
 
 int CMOD_Dynamic_Difficulty_Modifier_Trigger::GetDifficultyLevelOfMarines( void )
 {
-	return 3;
+	if (!CMOD_Player_Performance::PlayerPerformance())
+	{
+		Msg("Failed to get player performance from CMOD_Player_Performance.  Using default");
+		return 1;
+	}
+	
+	return CMOD_Player_Performance::PlayerPerformance()->CalculatePerformance();
 }
 
 bool CMOD_Dynamic_Difficulty_Modifier_Trigger::PerformDifficultyCheck( void )
