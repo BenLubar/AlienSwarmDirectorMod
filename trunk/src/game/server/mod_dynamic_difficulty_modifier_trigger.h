@@ -20,13 +20,18 @@ public:
 	//float m_fDesiredFacing;
 	//float m_fTolerance;
 
-	bool m_bHasCheckedDifficulty;
-	bool m_bDifficultyThresholdReached;
+	
 	//0 = none, 1 = easy, 2 = medium, 3 = hard
 	int m_iMinDifficultyThreshold;
 	int m_iMaxDifficultyThreshold;
 
 	int m_iDifficultyLevelOfMarines;
+	//Maximum number of times to fire triggers.
+	//This is will fire all triggers m_iMaxTriggerRecalculatePerformanceAndFire
+	//times.  Performance is recalcualated for each trigger fire.
+	int m_iMaxTriggerRecalculatePerformanceAndFire;
+
+	int m_iTriggerFireCount;
 
 	
 
@@ -34,9 +39,15 @@ public:
 	COutputEvent m_OnTrigger;
 	//COutputEvent m_OnMarineInPosition;
 	//COutputEvent m_OnMarineOutOfPosition;
-	COutputEvent m_OnAlwaysTriggerEasy;
-	COutputEvent m_OnAlwaysTriggerMedium;
-	COutputEvent m_OnAlwaysTriggerHard;
+	COutputEvent m_TriggerEasy;
+	COutputEvent m_TriggerMedium;
+	COutputEvent m_TriggerHard;
+	//Fired if Performance is at least 1
+	COutputEvent m_TriggerAtleastEasy;
+	//Fired if Performance is at least 2
+	COutputEvent m_TriggerAtleastMedium;
+	//Fired if Performance is at least 3
+	COutputEvent m_TriggerAtleastHard;
 
 	EHANDLE m_hMarine;
 private:

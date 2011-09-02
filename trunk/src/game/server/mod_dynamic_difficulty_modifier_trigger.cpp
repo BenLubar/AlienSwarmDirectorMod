@@ -22,6 +22,8 @@ BEGIN_DATADESC( CMOD_Dynamic_Difficulty_Modifier_Trigger )
 	//DEFINE_FIELD(m_bDifficultyThresholdReached, FIELD_BOOLEAN),
 	DEFINE_KEYFIELD(m_iMinDifficultyThreshold, FIELD_INTEGER, "minDifficultyThreshold"),
 	DEFINE_KEYFIELD(m_iMaxDifficultyThreshold, FIELD_INTEGER, "maxDifficultyThreshold"),
+	DEFINE_KEYFIELD(m_iMaxTriggerRecalculatePerformanceAndFire, FIELD_INTEGER, "maxTriggerRecalculatePerformanceAndFire"),
+	
 	// Function Pointers
 	DEFINE_FUNCTION(PositionTouch),
 	DEFINE_FUNCTION(MultiWaitOver ),
@@ -30,9 +32,12 @@ BEGIN_DATADESC( CMOD_Dynamic_Difficulty_Modifier_Trigger )
 	DEFINE_OUTPUT(m_OnTrigger, "OnTrigger"),
 	//DEFINE_OUTPUT(m_OnMarineInPosition, "MarineInPosition"),
 	//DEFINE_OUTPUT(m_OnMarineOutOfPosition, "MarineOutOfPosition"),	
-	DEFINE_OUTPUT(m_OnAlwaysTriggerEasy, "OnAlwaysTriggerEasy"),
-	DEFINE_OUTPUT(m_OnAlwaysTriggerMedium, "OnAlwaysTriggerMedium"),
-	DEFINE_OUTPUT(m_OnAlwaysTriggerHard, "OnAlwaysTriggerHard")
+	DEFINE_OUTPUT(m_TriggerEasy, "OnTriggerEasy"),
+	DEFINE_OUTPUT(m_TriggerMedium, "OnTriggerMedium"),
+	DEFINE_OUTPUT(m_TriggerHard, "OnTriggerHard"),
+	DEFINE_OUTPUT(m_TriggerAtleastEasy, "OnTriggerAtleastEasy"),
+	DEFINE_OUTPUT(m_TriggerAtleastMedium, "OnTriggerAtleastMedium"),
+	DEFINE_OUTPUT(m_TriggerAtleastHard, "OnTriggerAtleastHard")
 	
 END_DATADESC()
 
@@ -47,9 +52,7 @@ void CMOD_Dynamic_Difficulty_Modifier_Trigger::Spawn( void )
 		m_flWait = 0.2;
 	}
 
-
-	m_bHasCheckedDifficulty = false;
-	m_bDifficultyThresholdReached = false;
+	m_iTriggerFireCount = 0;
 	m_iDifficultyLevelOfMarines = -1;
 	m_hMarine = NULL;
 
@@ -72,33 +75,45 @@ void CMOD_Dynamic_Difficulty_Modifier_Trigger::PositionTouch(CBaseEntity *pOther
 
 void CMOD_Dynamic_Difficulty_Modifier_Trigger::ActivatePositionTrigger(CBaseEntity *pActivator)
 {
+	if (m_bDisabled)
+		return;
+
 	if (GetNextThink() > gpGlobals->curtime)
 		return;         // still waiting for reset time
 
+	//Enforce Trigger Fire limits
+	if (m_iMaxTriggerRecalculatePerformanceAndFire > 0 &&
+		m_iTriggerFireCount < m_iMaxTriggerRecalculatePerformanceAndFire)
+		return;
+
+	m_iTriggerFireCount++;
+
 	m_hActivator = pActivator;
 
-	if (!m_bHasCheckedDifficulty)
+	m_iDifficultyLevelOfMarines = GetDifficultyLevelOfMarines();
+		
+	if (PerformDifficultyCheck())		
+		m_OnTrigger.FireOutput(m_hActivator, this);	
+
+	switch (m_iDifficultyLevelOfMarines)
 	{
-		m_bHasCheckedDifficulty = true;
-		m_iDifficultyLevelOfMarines = GetDifficultyLevelOfMarines();
-		m_bDifficultyThresholdReached = PerformDifficultyCheck();
-
-		if (m_bDifficultyThresholdReached)		
-			m_OnTrigger.FireOutput(m_hActivator, this);	
-
-		switch (m_iDifficultyLevelOfMarines)
-		{
-			case 1: 
-				m_OnAlwaysTriggerEasy.FireOutput(m_hActivator, this);					
-				break;
-			case 2:
-				m_OnAlwaysTriggerMedium.FireOutput(m_hActivator, this);	
-				break;
-			case 3:
-				m_OnAlwaysTriggerHard.FireOutput(m_hActivator, this);	
-				break;
-		}		
-	}
+		case 1: 
+			m_TriggerEasy.FireOutput(m_hActivator, this);	
+			m_TriggerAtleastEasy.FireOutput(m_hActivator, this);		
+			break;
+		case 2:
+			m_TriggerMedium.FireOutput(m_hActivator, this);	
+			m_TriggerAtleastEasy.FireOutput(m_hActivator, this);		
+			m_TriggerAtleastMedium.FireOutput(m_hActivator, this);		
+			break;
+		case 3:
+			m_TriggerHard.FireOutput(m_hActivator, this);
+			m_TriggerAtleastEasy.FireOutput(m_hActivator, this);		
+			m_TriggerAtleastMedium.FireOutput(m_hActivator, this);		
+			m_TriggerAtleastHard.FireOutput(m_hActivator, this);		
+			break;
+	}		
+	
 			
 	SetThink( &CMOD_Dynamic_Difficulty_Modifier_Trigger::MultiWaitOver );
 	SetNextThink( gpGlobals->curtime + 0.1f );	

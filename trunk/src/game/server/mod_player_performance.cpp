@@ -250,7 +250,7 @@ int CMOD_Player_Performance::CalculateDirectorStress(CASW_Game_Resource *pGameRe
 	g_directorStressHistory->push_back(averageStressOfPlayers);
 
 	double averageStressHistory = 0;
-	for (int i = 0; i < g_directorStressHistory->size(); i++)
+	for (unsigned int i = 0; i < g_directorStressHistory->size(); i++)
 	{
 		averageStressHistory += g_directorStressHistory->at(i);
 	}
