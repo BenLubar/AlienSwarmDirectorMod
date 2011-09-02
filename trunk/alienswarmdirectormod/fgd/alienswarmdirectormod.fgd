@@ -4,10 +4,14 @@
 [
 	minDifficultyThreshold(integer) : "Minimum Difficulty Threshold" : 1 : "Min Threshold value."
 	maxDifficultyThreshold(integer) : "Maximum Difficulty Threshold" : 3 : "Max Threshold value."
+	maxTriggerRecalculatePerformanceAndFire(integer) : "Maximum Trigger Fire Count" : 1 : "Maximum number of times the trigger will recalculate player performance and fire a set of triggers.  Set to -1 to trigger infinetly"
 
-	output OnAlwaysTriggerEasy(void) : "Fires if the marine(s) are at an Easy difficulty level.  Only fires once."
-	output OnAlwaysTriggerMedium(void) : "Fires if the marine(s) are at an Medium difficulty level.  Only fires once."
-	output OnAlwaysTriggerHard(void) : "Fires if the marine(s) are at an Hard difficulty level.  Only fires once."
+	output OnTriggerEasy(void) : "Fires if the marine(s) are at an Easy difficulty level."
+	output OnTriggerMedium(void) : "Fires if the marine(s) are at an Medium difficulty level."
+	output OnTriggerHard(void) : "Fires if the marine(s) are at an Hard difficulty level."
+	output OnTriggerAtleastEasy(void) : "Fires if the marine(s) are atleast at an Easy difficulty level. Ie, always fires."
+	output OnTriggerAtleastMedium(void) : "Fires if the marine(s) are atleast at an Medium difficulty level. Ie fires when performance is 2 or 3."
+	output OnTriggerAtleastHard(void) : "Fires if the marine(s) are atleast at an Hard difficulty level.  Ie, fires when performance is 3."
 	
 ]
 
