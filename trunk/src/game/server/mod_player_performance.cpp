@@ -17,14 +17,16 @@ using namespace std;
 
 //Multiplies the average accuracy.  If averageAccuracy is 25% and ACCURACY_MODIFIER is 4
 //CalculateAccuracyRating will return a 100 (perfect score)
-#define ACCURACY_MODIFIER 1.5
+#define ACCURACY_MODIFIER 1
 
 //Amount of Friendly Fire per Marine that's allowed before a penalty
 #define FRIENDLYFIRE_HANDICAP 10.0
 
-#define FRIENDLYFIRE_MULTIPLIER 3
+#define FRIENDLYFIRE_MULTIPLIER 3.0
 
 #define MAX_DIRECTOR_STRESS_HISTORY_SIZE 2024
+
+#define DIRECTOR_STRESS_MULTIPLIER 4.5
 
 //Couldn't get bots or multiplayer to work properly, so change how score is calculated
 #define SINGLE_PLAYER_MODE true
@@ -114,9 +116,9 @@ int CMOD_Player_Performance::CalculatePerformance()
 		m_totalRating /= 4;
 	}
 	
-	if (m_totalRating > 75)
+	if (m_totalRating > 80)
 		m_weightedRating = 3;
-	else if (m_totalRating > 55)
+	else if (m_totalRating > 60)
 		m_weightedRating = 2;
 	else 
 		m_weightedRating = 1;	
@@ -176,7 +178,7 @@ int CMOD_Player_Performance::CalculateAccuracyRating(CASW_Game_Resource *pGameRe
 
 				averageAccuracy += acc;
 
-				playersThatHaveFired++;
+				playersThatHaveFired++;			
 		}
 	}
 
@@ -255,7 +257,7 @@ int CMOD_Player_Performance::CalculateDirectorStress(CASW_Game_Resource *pGameRe
 
 	averageStressHistory /= g_directorStressHistory->size();
 	engine->Con_NPrintf(18,"Average historical stress: %f", averageStressHistory);
-	return 100 - (int)averageStressHistory;
+	return 100 - (int)(averageStressHistory * DIRECTOR_STRESS_MULTIPLIER);
 }
 
 void CMOD_Player_Performance::PrintDebug()
