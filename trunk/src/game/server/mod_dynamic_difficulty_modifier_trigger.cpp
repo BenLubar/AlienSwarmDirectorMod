@@ -83,7 +83,7 @@ void CMOD_Dynamic_Difficulty_Modifier_Trigger::ActivatePositionTrigger(CBaseEnti
 
 	//Enforce Trigger Fire limits
 	if (m_iMaxTriggerRecalculatePerformanceAndFire > 0 &&
-		m_iTriggerFireCount < m_iMaxTriggerRecalculatePerformanceAndFire)
+		m_iTriggerFireCount >= m_iMaxTriggerRecalculatePerformanceAndFire)
 		return;
 
 	m_iTriggerFireCount++;
