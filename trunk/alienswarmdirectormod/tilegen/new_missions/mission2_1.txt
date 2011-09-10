@@ -23,22 +23,7 @@
 	"rule_instance"
 	{
 		"name"		"GenerationStep"
-		"$Size"		"7"
-		"$ExitFilters"
-		{
-			"param"
-			{
-				"rule_instance"
-				{
-					"name"		"DisallowSouthGrowing"
-				}
-			}
-		}
-	}
-	"rule_instance"
-	{
-		"name"		"GenerationStep"
-		"$Size"		"150"
+		"$Size"		"75"
 		"$Theme"
 		{
 			"rule_instance"
@@ -48,14 +33,6 @@
 		}
 		"$RoomTemplateFilters"
 		{
-			"param"
-			{
-				"rule_instance"
-				{
-					"name"		"Disallow1x1"
-				}
-				"disabled"		"1"
-			}
 			"param"
 			{
 				"rule_instance"
@@ -103,37 +80,7 @@
 					{
 						"name"		"SingleComponentRoom"
 						"$RoomName"		"mod\corridors\2x4_corridor_door"
-						"$Fraction"		"0.100000"
-					}
-					"rule_instance"
-					{
-						"name"		"SingleComponentRoom"
-						"$RoomName"		"mod\corridors\2x4_corridor_door"
-						"$Fraction"		"0.900000"
-					}
-					"rule_instance"
-					{
-						"name"		"SingleComponentRoom"
-						"$RoomName"		"mod\rooms\3x5_resupplyeasy"
-						"$Fraction"		"0.500000"
-					}
-					"rule_instance"
-					{
-						"name"		"SingleComponentRoom"
-						"$RoomName"		"mod\rooms\3x5_resupplymedium"
-						"$Fraction"		"0.500000"
-					}
-					"rule_instance"
-					{
-						"name"		"SingleComponentRoom"
-						"$RoomName"		"mod\rooms\3x5_resupplyhard"
-						"$Fraction"		"0.500000"
-					}
-					"rule_instance"
-					{
-						"name"		"SingleComponentRoom"
-						"$RoomName"		"mod\corridors\1x8_corridor_fight"
-						"$Fraction"		"0.2"
+						"$Fraction"		"0.1"
 					}
 				}
 			}
