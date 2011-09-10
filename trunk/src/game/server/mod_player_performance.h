@@ -18,6 +18,8 @@ public:
 	static CMOD_Player_Performance* PlayerPerformance();
 
 	int m_totalRating, m_weightedRating, m_healthRating, m_accuracyRating, m_friendlyFireRating, m_directorStressRating;
+	int m_playerZeroAccuracy;
+	double m_averageStressOfPlayers, m_averageStressHistory;
 
 	virtual void FrameUpdatePostEntityThink();
 

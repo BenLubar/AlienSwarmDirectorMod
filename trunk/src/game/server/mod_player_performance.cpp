@@ -47,7 +47,7 @@ CMOD_Player_Performance* CMOD_Player_Performance::PlayerPerformance()
 {	
 	if (!g_PlayerPerformanceSingleton)
 	{
-		g_PlayerPerformanceSingleton = new CMOD_Player_Performance();
+		g_PlayerPerformanceSingleton = new CMOD_Player_Performance();		
 	}
 
 	return g_PlayerPerformanceSingleton;
@@ -77,7 +77,7 @@ void CMOD_Player_Performance::FrameUpdatePostEntityThink()
 	if ( mod_player_performance_debug.GetInt() > 0 )
 	{
 		CalculatePerformance();
-		PrintDebug();
+		PrintDebug();		
 	}	
 }
 
@@ -107,15 +107,15 @@ int CMOD_Player_Performance::CalculatePerformance()
 	
 	if (SINGLE_PLAYER_MODE)
 	{
-		m_totalRating = m_totalRating + m_accuracyRating + m_directorStressRating;
+		m_totalRating = m_healthRating + m_accuracyRating + m_directorStressRating;
 		m_totalRating /= 3;
 	}
 	else
 	{
-		m_totalRating = m_totalRating + m_accuracyRating + m_friendlyFireRating + m_directorStressRating;
+		m_totalRating = m_healthRating + m_accuracyRating + m_friendlyFireRating + m_directorStressRating;
 		m_totalRating /= 4;
 	}
-	
+		
 	if (m_totalRating > 80)
 		m_weightedRating = 3;
 	else if (m_totalRating > 60)
@@ -124,11 +124,11 @@ int CMOD_Player_Performance::CalculatePerformance()
 		m_weightedRating = 1;	
 
 	if (mod_player_performance_force_value.GetInt() > 0)
-	{
+	{		
 		return mod_player_performance_force_value.GetInt();
 	}
 	else
-	{
+	{	
 		return m_weightedRating;
 	}
 }
@@ -174,7 +174,7 @@ int CMOD_Player_Performance::CalculateAccuracyRating(CASW_Game_Resource *pGameRe
 				acc = float(pMR->m_iPlayerShotsFired - pMR->m_iPlayerShotsMissed) / float(pMR->m_iPlayerShotsFired);
 				acc *= 100.0f;
 
-				engine->Con_NPrintf(10 + i,"Player %d accuracy: %f",i, acc);
+				m_playerZeroAccuracy = acc;				
 
 				averageAccuracy += acc;
 
@@ -232,32 +232,33 @@ int CMOD_Player_Performance::CalculateDirectorStress(CASW_Game_Resource *pGameRe
 		g_directorStressHistory->erase(g_directorStressHistory->begin());
 	}
 
-	double averageStressOfPlayers = 0;
+	m_averageStressOfPlayers = 0;
 	for ( int i=0;i<pGameResource->GetMaxMarineResources();i++ )
 	{
 		CASW_Marine_Resource *pMR = pGameResource->GetMarineResource(i);
 		if ( !pMR )
 			continue;
 
-		averageStressOfPlayers += (pMR->GetIntensity()->GetCurrent() * 100.0 * STRESS_MULTIPLIER);
+		m_averageStressOfPlayers += (pMR->GetIntensity()->GetCurrent() * 100.0 * STRESS_MULTIPLIER);
 	}
 	if (!SINGLE_PLAYER_MODE)
 	{
-		averageStressOfPlayers /= pGameResource->GetMaxMarineResources();
+		m_averageStressOfPlayers /= pGameResource->GetMaxMarineResources();
 	}
 
-	engine->Con_NPrintf(17,"Average stress: %f", averageStressOfPlayers);
-	g_directorStressHistory->push_back(averageStressOfPlayers);
 
-	double averageStressHistory = 0;
+	
+	g_directorStressHistory->push_back(m_averageStressOfPlayers);
+
+	m_averageStressHistory = 0;
 	for (unsigned int i = 0; i < g_directorStressHistory->size(); i++)
 	{
-		averageStressHistory += g_directorStressHistory->at(i);
+		m_averageStressHistory += g_directorStressHistory->at(i);
 	}
 
-	averageStressHistory /= g_directorStressHistory->size();
-	engine->Con_NPrintf(18,"Average historical stress: %f", averageStressHistory);
-	return 100 - (int)(averageStressHistory * DIRECTOR_STRESS_MULTIPLIER);
+	m_averageStressHistory /= g_directorStressHistory->size();
+	
+	return 100 - (int)(m_averageStressHistory * DIRECTOR_STRESS_MULTIPLIER);
 }
 
 void CMOD_Player_Performance::PrintDebug()
@@ -271,6 +272,10 @@ void CMOD_Player_Performance::PrintDebug()
 	}
 	engine->Con_NPrintf(5,"Players Director Stress Rating: %d", m_directorStressRating);
 	engine->Con_NPrintf(7,"Players Total Rating: %d", m_totalRating);	
+
+	engine->Con_NPrintf(11,"Player %d accuracy: %f", m_playerZeroAccuracy);
+	engine->Con_NPrintf(12,"Average stress: %f", m_averageStressOfPlayers);
+	engine->Con_NPrintf(13,"Average historical stress: %f", m_averageStressHistory);
 
 	if (mod_player_performance_force_value.GetInt() > 0)
 	{
