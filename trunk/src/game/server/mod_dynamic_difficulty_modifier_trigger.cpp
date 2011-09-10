@@ -22,7 +22,7 @@ BEGIN_DATADESC( CMOD_Dynamic_Difficulty_Modifier_Trigger )
 	//DEFINE_FIELD(m_bDifficultyThresholdReached, FIELD_BOOLEAN),
 	DEFINE_KEYFIELD(m_iMinDifficultyThreshold, FIELD_INTEGER, "minDifficultyThreshold"),
 	DEFINE_KEYFIELD(m_iMaxDifficultyThreshold, FIELD_INTEGER, "maxDifficultyThreshold"),
-	DEFINE_KEYFIELD(m_iMaxTriggerRecalculatePerformanceAndFire, FIELD_INTEGER, "maxTriggerRecalculatePerformanceAndFire"),
+	DEFINE_KEYFIELD(m_iMaxTriggerRecalculatePerformanceAndFire, FIELD_INTEGER, "maxTriggerFire"),
 	
 	// Function Pointers
 	DEFINE_FUNCTION(PositionTouch),
@@ -75,8 +75,8 @@ void CMOD_Dynamic_Difficulty_Modifier_Trigger::PositionTouch(CBaseEntity *pOther
 
 void CMOD_Dynamic_Difficulty_Modifier_Trigger::ActivatePositionTrigger(CBaseEntity *pActivator)
 {
-	if (m_bDisabled)
-		return;
+	//if (m_bDisabled)
+	//	return;
 
 	if (GetNextThink() > gpGlobals->curtime)
 		return;         // still waiting for reset time

@@ -17,10 +17,6 @@ public:
 
 	DECLARE_DATADESC();
 	
-	//float m_fDesiredFacing;
-	//float m_fTolerance;
-
-	
 	//0 = none, 1 = easy, 2 = medium, 3 = hard
 	int m_iMinDifficultyThreshold;
 	int m_iMaxDifficultyThreshold;
@@ -30,15 +26,11 @@ public:
 	//This is will fire all triggers m_iMaxTriggerRecalculatePerformanceAndFire
 	//times.  Performance is recalcualated for each trigger fire.
 	int m_iMaxTriggerRecalculatePerformanceAndFire;
-
 	int m_iTriggerFireCount;
 
-	
 
 	// Outputs
 	COutputEvent m_OnTrigger;
-	//COutputEvent m_OnMarineInPosition;
-	//COutputEvent m_OnMarineOutOfPosition;
 	COutputEvent m_TriggerEasy;
 	COutputEvent m_TriggerMedium;
 	COutputEvent m_TriggerHard;
@@ -54,8 +46,6 @@ private:
 	bool PerformDifficultyCheck(void);
 	int GetDifficultyLevelOfMarines(void);
 };
-
-
 
 
 #endif
