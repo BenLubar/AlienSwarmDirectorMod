@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "25"
+	"mapversion" "26"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "25"
+	"mapversion" "26"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -3111,7 +3111,7 @@ entity
 	{
 		"OnMapSpawn" "tonemap_globalSetTonemapRate.250-1"
 		"OnMapSpawn" "tonemap_globalSetAutoExposureMin10-1"
-		"OnMapSpawn" "tonemap_globalSetAutoExposureMax30-1"
+		"OnMapSpawn" "tonemap_globalSetAutoExposureMax50-1"
 		"OnMapSpawn" "tonemap_globalSetBloomScale.30-1"
 	}
 	"origin" "256 192 8"
