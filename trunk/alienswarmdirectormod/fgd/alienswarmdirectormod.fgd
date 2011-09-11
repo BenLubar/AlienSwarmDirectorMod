@@ -4,7 +4,7 @@
 [
 	minDifficultyThreshold(integer) : "Minimum Difficulty Threshold" : 1 : "Min Threshold value."
 	maxDifficultyThreshold(integer) : "Maximum Difficulty Threshold" : 3 : "Max Threshold value."
-	maxTriggerRecalculatePerformanceAndFire(integer) : "Maximum Trigger Fire Count" : 1 : "Maximum number of times the trigger will recalculate player performance and fire a set of triggers.  Set to -1 to trigger infinetly"
+	maxTriggerFire(integer) : "Maximum Trigger Fire Count" : 1 : "Maximum number of times the trigger will recalculate player performance and fire a set of triggers.  Set to -1 to trigger infinetly"
 
 	output OnTriggerEasy(void) : "Fires if the marine(s) are at an Easy difficulty level."
 	output OnTriggerMedium(void) : "Fires if the marine(s) are at an Medium difficulty level."
