@@ -798,9 +798,9 @@ void C_ASW_Player::LaunchMissionCompleteFrame(bool bSuccess)
 	if (!GetClientModeASW())
 		return;
 
-	Msg("PJ - Can I build the dynamic level here and pull in params (bBuildLevel and iPlayerPerformance from client side Convars?\n");
 	C_MOD_Build_Mission_Map_For_Next_Mission * pBuilder = new C_MOD_Build_Mission_Map_For_Next_Mission();
-	pBuilder->OnMissionComplete();
+	pBuilder->OnMissionComplete(bSuccess);
+	
 
 	GetClientModeASW()->m_hMissionCompleteFrame = new MissionCompleteFrame( bSuccess, GetClientMode()->GetViewport(), "m_MissionCompleteFrame" );	
 }

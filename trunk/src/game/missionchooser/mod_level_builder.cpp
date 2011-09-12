@@ -44,6 +44,8 @@ MOD_Level_Builder::MOD_Level_Builder(){
 	g_pLayoutSystemPage = NULL;
 	g_pMapLayout = NULL;
 
+	m_pASWMapBuilder = new CASW_Map_Builder();
+
 	SetIsBuildingLevel(false);
 }
 
@@ -68,7 +70,7 @@ MOD_Level_Builder* MOD_Level_Builder::LevelBuilder()
 
 bool MOD_Level_Builder::IsBuildingLevel() 
 {
-	return g_IsBuildingLevel;
+	return g_IsBuildingLevel && m_pASWMapBuilder->IsBuildingMission();
 }
 
 void MOD_Level_Builder::SetIsBuildingLevel(bool value)
@@ -76,9 +78,10 @@ void MOD_Level_Builder::SetIsBuildingLevel(bool value)
 	g_IsBuildingLevel = value;
 }
 
-
 void MOD_Level_Builder::BuildMapForMissionFromLayoutFile( const char *szMissionName, const int iDifficultLevel)
 {
+	SetIsBuildingLevel( true );
+
 	//format: tilegen\\new_missions\\Mission1_2.txt
 	char missionRuleFileNameBuffer[1024];
 	Q_snprintf(missionRuleFileNameBuffer, sizeof(missionRuleFileNameBuffer), "%s%s_%d%s",
@@ -102,7 +105,7 @@ void MOD_Level_Builder::BuildMapFromLayoutFile( const char *szMissionRuleFile, c
 {
 	if (IsBuildingLevel())
 	{
-		Msg("mod_level_builder is already building a level!");
+		Msg("mod_level_builder is already building a level!\n");
 		return;
 	}
 	
@@ -178,7 +181,7 @@ void MOD_Level_Builder::BuildMapFromLayoutFile( const char *szMissionRuleFile, c
 }
 
 void MOD_Level_Builder::CompileLevel(const char * szLayoutFile)
-{
+{	
 	if (engine)
 	{
 		char buffer[512];
@@ -191,7 +194,7 @@ void MOD_Level_Builder::CompileLevel(const char * szLayoutFile)
 	{
 		Warning("No Engine!!");
 		return;
-	}		
+	}	
 }
 
 /*

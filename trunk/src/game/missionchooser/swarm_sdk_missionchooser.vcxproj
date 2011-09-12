@@ -438,6 +438,7 @@ exit 1
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\public\missionchooser\iasw_map_builder.h" />
+    <ClInclude Include="..\..\public\missionchooser\imod_level_builder.h" />
     <ClInclude Include="asw_key_values_database.h" />
     <ClInclude Include="asw_location_grid.h" />
     <ClInclude Include="asw_map_builder.h" />
@@ -448,7 +449,6 @@ exit 1
     <ClInclude Include="asw_random_missions.h" />
     <ClInclude Include="asw_spawn_selection.h" />
     <ClInclude Include="asw_system.h" />
-    <ClInclude Include="imod_level_builder.h" />
     <ClInclude Include="mod_level_builder.h" />
     <ClInclude Include="tile_check.h" />
     <ClInclude Include="tilegen_core.h" />

@@ -39,6 +39,9 @@ public:
 	MissionCompletePanel(vgui::Panel *parent, const char *name, bool bSuccess);
 	virtual ~MissionCompletePanel();
 
+	//Mod
+	bool IsNextMissionLevelGenerationComplete();
+
 	virtual void OnThink();
 	//virtual void OnScreenSizeChanged(int iOldWide, int iOldTall);
 	virtual void PerformLayout();

@@ -32,8 +32,21 @@
 #include "nb_island.h"
 #include "asw_hud_minimap.h"
 
+#include <string>
+#include <iostream>
+#include "missionchooser/iasw_mission_chooser_source.h"
+#include "missionchooser/iasw_random_missions.h"
+#include "missionchooser/iasw_map_builder.h"
+#include "missionchooser/imod_level_builder.h"
+
+//#include "../../missionchooser/iasw_mission_chooser_source.h"
+//#include "missionchooser/iasw_map_builder.h"
+//#include "missionchooser/iasw_mission_chooser_source.h"
+
 // memdbgon must be the last include file in a .cpp file!!!
 #include <tier0/memdbgon.h>
+
+class IASW_Mission_Chooser;
 
 using namespace vgui;
 
@@ -43,6 +56,15 @@ extern ConVar asw_unlock_all_weapons;
 ConVar asw_success_sound_delay( "asw_success_sound_delay", "0.0", FCVAR_CHEAT, "Delay before playing mission success music" );
 ConVar asw_fail_sound_delay( "asw_fail_sound_delay", "0.0", FCVAR_CHEAT, "Delay before playing mission fail music" );
 ConVar asw_show_stats_in_singleplayer( "asw_show_stats_in_singleplayer", "0", FCVAR_NONE, "Show stats screen in singleplayer" );
+
+bool MissionCompletePanel::IsNextMissionLevelGenerationComplete()
+{
+	if (missionchooser->MapBuilder()->IsBuildingMission() || 
+		missionchooser->modLevel_Builder()->IsBuildingLevel() )
+		return false;
+	else
+		return true;	
+}
 
 MissionCompletePanel::MissionCompletePanel(Panel *parent, const char *name, bool bSuccess) : vgui::EditablePanel(parent, name)
 {	
@@ -428,8 +450,21 @@ void MissionCompletePanel::UpdateVisibleButtons()
 					}
 				}
 				else
-				{
-					m_pContinueButton->SetText( "#asw_button_continue" );
+				{					
+					if ( !IsNextMissionLevelGenerationComplete() )
+					{
+						missionchooser->MapBuilder()->Update(Plat_FloatTime());
+						float progress = missionchooser->MapBuilder()->GetProgress() * 100;
+						
+						wchar_t buffer[512];
+						swprintf(buffer,sizeof(buffer),L"Building Level...%d", (int)progress );
+						
+						m_pContinueButton->SetText( buffer );
+					}
+					else
+					{
+						m_pContinueButton->SetText( "#asw_button_continue" );
+					}
 				}
 
 				m_pContinueButton->SetVisible( true );
@@ -557,6 +592,12 @@ void MissionCompletePanel::OnCommand(const char* command)
 	}
 	else if ( !Q_stricmp( command, "Continue" ) )
 	{
+		if ( !IsNextMissionLevelGenerationComplete() )
+		{				
+			//We aren't done building the next level, we can't continue
+			return;
+		}
+
 		if ( ASWGameRules()->GetMissionSuccess() && ASWGameRules()->IsCampaignGame() && ASWGameRules()->CampaignMissionsLeft() <= 1 )
 		{
 			if ( !m_bCreditsSeen )

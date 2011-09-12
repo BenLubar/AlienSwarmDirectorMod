@@ -23,27 +23,24 @@ C_MOD_Build_Mission_Map_For_Next_Mission::C_MOD_Build_Mission_Map_For_Next_Missi
 	
 }
 
-void C_MOD_Build_Mission_Map_For_Next_Mission::OnMissionComplete()
+void C_MOD_Build_Mission_Map_For_Next_Mission::OnMissionComplete(bool bSuccess)
 {
-	Msg("C_MOD_Build_Mission_Map_For_Next_Mission::OnMissionComplete() called...");
-	if (mod_player_performance_debug.GetInt() > 0)
+	if (bSuccess)
 	{
-		Msg("will build map.\n");
-		BuildMissionMapForNextMission(mod_player_performance_debug.GetInt());
-	}
-	else
-	{
-		Msg("will NOT build map.\n");
+		if (mod_player_performance_debug.GetInt() > 0)
+		{
+			BuildMissionMapForNextMission(mod_player_performance_debug.GetInt());
+		}
+		else
+		{
+			Msg("WARNING: C_MOD_Build_Mission_Map_For_Next_Mission::OnMissionComplete(): mod_player_performance_debug is not set.  Was a 'mod_build_mission_map_for_next_mission' entity placed in the level?\n\n");
+		}
 	}
 }
 
 void C_MOD_Build_Mission_Map_For_Next_Mission::OnDataChanged(DataUpdateType_t updateType)
 {
-	Msg("C_MOD_Build_Mission_Map_For_Next_Mission received player performance.  Building next map for next mission.\n\n");
-
-	Msg("C_MOD_Build_Mission_Map_For_Next_Mission has been disabled in code.\n");
-	//BuildMissionMapForNextMission(m_iPlayerPerformance);
-	
+	//Save mod_player_performance_value so it can be used later when the mission is complete.
 	mod_player_performance_debug.SetValue(m_iPlayerPerformance);
 
 	BaseClass::OnDataChanged(updateType);
@@ -91,7 +88,7 @@ void CC_MOD_Build_Mission_Map_For_Next_Mission( const CCommand &args )
 {
 	if ( args.ArgC() < 2 )
 	{
-		Msg("Usage: mod_build_mission_map_for_next_mission <player performance> <map name>");
+		Msg("Usage: mod_build_mission_map_for_next_mission <player performance> <map name>\n");
 		return;
 	}
 
@@ -105,6 +102,10 @@ void CC_MOD_Build_Mission_Map_For_Next_Mission( const CCommand &args )
 		missionchooser->modLevel_Builder()->BuildMapForMissionFromLayoutFile(
 			args.Arg(2), atoi(args.Arg(1)));
 	}		
+}
+
+bool C_MOD_Build_Mission_Map_For_Next_Mission::IsBuildingMap(){
+	return missionchooser->modLevel_Builder()->IsBuildingLevel();
 }
 
 static ConCommand asw_build_map("mod_build_mission_map_for_next_mission", CC_MOD_Build_Mission_Map_For_Next_Mission, 0 );

@@ -13,9 +13,10 @@ public:
 
 	C_MOD_Build_Mission_Map_For_Next_Mission();
 
-	void OnMissionComplete();
+	void OnMissionComplete(bool bSuccess);
 	virtual void OnDataChanged(DataUpdateType_t updateType);
 	void BuildMissionMapForNextMission(int playerPerformance);
+	bool IsBuildingMap();
 	
 };
 

@@ -4,7 +4,10 @@
 #pragma once
 #endif
 
-#include "imod_level_builder.h"
+#include "../public/missionchooser/imod_level_builder.h"
+
+
+class CASW_Map_Builder;
 
 //#include "layout_system\tilegen_layout_system.h"
 //#include "vgui\tilegen_pages.h"
@@ -15,6 +18,7 @@ class MOD_Level_Builder : public IMOD_Level_Builder
 
 	bool g_IsBuildingLevel;
 	void SetIsBuildingLevel(bool value);
+	CASW_Map_Builder *m_pASWMapBuilder;
 	
 public:
 	//static MOD_Level_Builder* LevelBuilder();
