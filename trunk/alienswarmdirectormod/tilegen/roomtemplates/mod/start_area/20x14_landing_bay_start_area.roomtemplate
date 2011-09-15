@@ -1,6 +1,6 @@
 "start_area\26x14_landing_bay_start_area"
 {
-	"TilesX"		"20"
+	"TilesX"		"19"
 	"TilesY"		"14"
 	"SpawnWeight"		"0"
 	"TileType"		"3735611"	
