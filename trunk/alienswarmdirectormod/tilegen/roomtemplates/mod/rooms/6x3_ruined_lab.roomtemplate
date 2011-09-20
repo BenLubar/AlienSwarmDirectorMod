@@ -16,7 +16,7 @@
 	{
 		"XPos"		"0"
 		"YPos"		"0"
-		"ExitDirection"		"0"
+		"ExitDirection"		"3"
 		"ZChange"		"0"
 		"ChokeGrow"		"0"
 	}	
