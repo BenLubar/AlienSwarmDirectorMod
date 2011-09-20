@@ -469,7 +469,7 @@ entity
 			"id" "45"
 			"plane" "(256 256 160) (256 256 9.12607e-007) (256 240 9.12607e-007)"
 			"material" "TOOLS/TOOLSNOLIGHT"
-			"uaxis" "[0 1 0 -0] 0.5"
+			"uaxis" "[0 1 0 0] 0.5"
 			"vaxis" "[0 0 -1 -2] 0.5"
 			"rotation" "0"
 			"lightmapscale" "32"
