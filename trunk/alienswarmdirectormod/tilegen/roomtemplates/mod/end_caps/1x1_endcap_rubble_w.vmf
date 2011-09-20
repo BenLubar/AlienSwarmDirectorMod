@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "25"
+	"mapversion" "26"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "25"
+	"mapversion" "26"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -173,7 +173,7 @@ world
 			dispinfo
 			{
 				"power" "2"
-				"startposition" "[271 23.0001 -12.5]"
+				"startposition" "[271 23 -12.5]"
 				"flags" "0"
 				"elevation" "0"
 				"subdiv" "0"
@@ -435,9 +435,9 @@ entity
 		{
 			"id" "48"
 			"plane" "(256 8.39233e-005 160) (256 8.39233e-005 0) (7.62939e-005 -7.62939e-006 0)"
-			"material" "TOOLS/TOOLSNODRAW"
-			"uaxis" "[1 0 0 -44] 0.25"
-			"vaxis" "[0 0 -1 32] 0.25"
+			"material" "TOOLS/TOOLSNOLIGHT"
+			"uaxis" "[1 0 0 -4] 0.25"
+			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
 			"lightmapscale" "32"
 			"smoothing_groups" "0"
@@ -468,9 +468,9 @@ entity
 		{
 			"id" "45"
 			"plane" "(7.62939e-005 -7.62939e-006 160) (7.62939e-005 -7.62939e-006 0) (6.10352e-005 16 0)"
-			"material" "METAL/RES_METALWALL001A"
-			"uaxis" "[0 -1 0 496] 0.5"
-			"vaxis" "[0 0 -1 -106] 0.5"
+			"material" "TOOLS/TOOLSNOLIGHT"
+			"uaxis" "[0 -1 0 0] 0.5"
+			"vaxis" "[0 0 -1 -2] 0.5"
 			"rotation" "0"
 			"lightmapscale" "32"
 			"smoothing_groups" "0"
