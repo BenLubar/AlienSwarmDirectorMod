@@ -1,0 +1,19 @@
+"rooms\7x7_utilityRoom"
+{
+	"TilesX"		"7"
+	"TilesY"		"7"
+	"SpawnWeight"		"0"
+	"TileType"		"151587341"	
+	"EXIT"
+	{
+		"XPos"		"2"
+		"YPos"		"6"
+		"ExitDirection"		"2"
+		"ZChange"		"0"
+		"ChokeGrow"		"0"
+	}
+	"Tags"
+	{
+		"tag"		"Special"
+	}
+}
