@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "91"
+	"mapversion" "94"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -38,7 +38,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "91"
+	"mapversion" "94"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -5318,7 +5318,7 @@ entity
 	"MaxSkillLevel" "0"
 	"MinSkillLevel" "0"
 	"NearDistance" "740"
-	"NumAliens" "5"
+	"NumAliens" "4"
 	"SpawnerState" "1"
 	"spawnflags" "0"
 	"SpawnIfMarinesAreNear" "1"
@@ -5329,7 +5329,7 @@ entity
 	"targetname" "exit_window_spawner"
 	connections
 	{
-		"OnSpawned" "exit_window_01Break0-1"
+		"OnSpawned" "exit_window_01Break1-1"
 	}
 	"origin" "1069 232 29"
 	editor
@@ -5466,7 +5466,7 @@ entity
 	"targetname" "exit_window_spawner_ranger"
 	connections
 	{
-		"OnSpawned" "exit_window_02Break0-1"
+		"OnSpawned" "exit_window_02Break0.5-1"
 	}
 	"origin" "1151 216 29"
 	editor
@@ -11848,14 +11848,14 @@ entity
 	"HealthScale" "1"
 	"InfiniteAliens" "0"
 	"LongRange" "0"
-	"MaxLiveAliens" "4"
+	"MaxLiveAliens" "3"
 	"MaxSkillLevel" "0"
 	"MinSkillLevel" "0"
 	"NearDistance" "740"
 	"NumAliens" "7"
 	"SpawnerState" "1"
 	"SpawnIfMarinesAreNear" "1"
-	"SpawnInterval" "2"
+	"SpawnInterval" "1"
 	"SpawnIntervalJitter" "25"
 	"SpeedScale" "1"
 	"StartBurrowed" "1"
@@ -12265,7 +12265,7 @@ entity
 	"wait" "1"
 	connections
 	{
-		"OnTrigger" "exit_window_spawner_2StartSpawning0-1"
+		"OnTrigger" "exit_window_spawner_2StartSpawning0.75-1"
 		"OnTriggerAtleastHard" "exit_window_spawner_boomerStartSpawning0-1"
 	}
 	solid
@@ -14120,7 +14120,7 @@ entity
 	"targetname" "exit_window_spawner_2"
 	connections
 	{
-		"OnSpawned" "exit_window_03Break0-1"
+		"OnSpawned" "exit_window_03Break1-1"
 	}
 	"origin" "1200 134 29"
 	editor

@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "120"
+	"mapversion" "122"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "120"
+	"mapversion" "122"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -16199,10 +16199,10 @@ entity
 entity
 {
 	"id" "22009"
-	"classname" "asw_objective_kill_eggs"
-	"NumEggs" "11"
-	"objectivedescription1" "Destroy all eggs"
-	"targetname" "@objective_eggs"
+	"classname" "asw_objective_triggered"
+	"objectivedescription1" "Download Maintenance Data"
+	"objectivetitle" "Download Data"
+	"targetname" "@objective_download"
 	"Visible" "1"
 	connections
 	{

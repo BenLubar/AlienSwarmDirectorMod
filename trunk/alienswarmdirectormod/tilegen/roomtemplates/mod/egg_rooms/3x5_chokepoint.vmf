@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "55"
+	"mapversion" "57"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "55"
+	"mapversion" "57"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -5724,7 +5724,7 @@ entity
 	{
 		"OnHitMax" "chokepoint_markerDisable0-1"
 	}
-	"origin" "271.625 673.485 77"
+	"origin" "271.625 680 120"
 	editor
 	{
 		"color" "220 30 220"
