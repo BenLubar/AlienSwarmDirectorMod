@@ -1,19 +1,19 @@
-"rooms\7x7_utilityRoom"
+"egg_rooms\8x8_egg_crew_quarters"
 {
-	"TilesX"		"7"
-	"TilesY"		"7"
+	"TilesX"		"8"
+	"TilesY"		"8"
 	"SpawnWeight"		"0"
-	"TileType"		"151587341"	
+	"TileType"		"0"	
 	"EXIT"
 	{
-		"XPos"		"2"
-		"YPos"		"6"
+		"XPos"		"1"
+		"YPos"		"2"
 		"ExitDirection"		"2"
 		"ZChange"		"0"
 		"ChokeGrow"		"0"
-	}
+	}	
 	"Tags"
-	{
+	{	
 		"tag"		"Special"
 	}
 }
