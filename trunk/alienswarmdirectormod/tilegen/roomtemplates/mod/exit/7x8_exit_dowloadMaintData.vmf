@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "122"
+	"mapversion" "124"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "122"
+	"mapversion" "124"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -4869,10 +4869,10 @@ entity
 {
 	"id" "21791"
 	"classname" "env_instructor_hint"
-	"hint_activator_caption" "Kill all Eggs to enable the escape hatch."
+	"hint_activator_caption" "Downlaod maint data to enable the escape hatch."
 	"hint_allow_nodraw_target" "1"
 	"hint_alphaoption" "0"
-	"hint_caption" "Kill all Eggs to enable the escape hatch."
+	"hint_caption" "Downlaod maint data to enable the escape hatch."
 	"hint_color" "255 255 255"
 	"hint_forcecaption" "1"
 	"hint_icon_offscreen" "icon_tip"
