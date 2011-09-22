@@ -37,7 +37,7 @@ public:
 
 	void					SpawnedAllAliens();
 	virtual void			AlienKilled( CBaseEntity *pVictim );
-	void					MissionStart(); // called by gamerules when mission begins
+	virtual void			MissionStart(); // called by gamerules when mission begins
 
 	bool					ApplyCarnageMode( float fScaler, float fInvScaler );
 
