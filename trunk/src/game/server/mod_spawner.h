@@ -15,7 +15,7 @@ public:
 	CMOD_Spawner();
 	virtual ~CMOD_Spawner();
 
-	virtual void			MissionStart();
+	virtual void			Spawn();
 
 	//inputs
 	void InputResetNumAliens( inputdata_t &inputdata );

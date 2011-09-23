@@ -42,15 +42,13 @@ CMOD_Spawner::~CMOD_Spawner()
 
 }
 
-void CMOD_Spawner::MissionStart(){
-	m_nOriginalNumAliens = m_nNumAliens;
-
-	BaseClass::MissionStart();
+void CMOD_Spawner::Spawn(){
+	m_nOriginalNumAliens = m_nNumAliens;	
+	BaseClass::Spawn();
 }
 
 void CMOD_Spawner::InputResetNumAliens( inputdata_t &inputdata )
 {
 	m_nNumAliens = m_nOriginalNumAliens;
-
 	SetSpawnerState(SST_WaitForInputs);
 }
