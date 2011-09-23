@@ -12,6 +12,7 @@
 	output OnTriggerAtleastEasy(void) : "Fires if the marine(s) are atleast at an Easy difficulty level. Ie, always fires."
 	output OnTriggerAtleastMedium(void) : "Fires if the marine(s) are atleast at an Medium difficulty level. Ie fires when performance is 2 or 3."
 	output OnTriggerAtleastHard(void) : "Fires if the marine(s) are atleast at an Hard difficulty level.  Ie, fires when performance is 3."
+	input SetMaxFireCount(integer) : "Sets the Max Fire Count and resets the number of times the trigger has fired to 0."
 	
 ]
 
