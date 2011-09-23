@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "12"
+	"mapversion" "13"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "12"
+	"mapversion" "13"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -941,9 +941,9 @@ entity
 		{
 			"id" "436"
 			"plane" "(256 736 176) (256 736 0) (256 768 0)"
-			"material" "TOOLS/TOOLSNOLIGHT"
-			"uaxis" "[0 -1 0 -2] 1"
-			"vaxis" "[0 0 -1 0] 1"
+			"material" "METAL/RES_METALWALL001A"
+			"uaxis" "[0 -1 0 -2] 0.35"
+			"vaxis" "[0 0 -1 489] 0.35"
 			"rotation" "0"
 			"lightmapscale" "32"
 			"smoothing_groups" "0"
@@ -4069,8 +4069,8 @@ cameras
 	"activecamera" "0"
 	camera
 	{
-		"position" "[50.6568 761.57 262.486]"
-		"look" "[51.0125 760.934 261.801]"
+		"position" "[95.6978 695.307 239.93]"
+		"look" "[96.4269 695.936 239.662]"
 	}
 }
 cordons

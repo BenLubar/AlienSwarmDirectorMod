@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "28"
+	"mapversion" "29"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "28"
+	"mapversion" "29"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -5923,7 +5923,7 @@ entity
 		{
 			"id" "4"
 			"plane" "(0 0 0) (0 0 -64) (0 1280 -64)"
-			"material" "METAL/RES_METALWALL001A"
+			"material" "TOOLS/TOOLSNOLIGHT"
 			"uaxis" "[0 1 0 0] 0.35"
 			"vaxis" "[0 0 -1 0] 0.35"
 			"rotation" "0"
