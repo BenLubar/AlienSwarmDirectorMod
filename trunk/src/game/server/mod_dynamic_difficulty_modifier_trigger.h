@@ -41,6 +41,9 @@ public:
 	//Fired if Performance is at least 3
 	COutputEvent m_TriggerAtleastHard;
 
+	//inputs
+	void InputSetMaxFireCount( inputdata_t &inputdata );
+
 	EHANDLE m_hMarine;
 private:
 	bool PerformDifficultyCheck(void);

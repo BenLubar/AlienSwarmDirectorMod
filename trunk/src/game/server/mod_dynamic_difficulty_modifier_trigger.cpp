@@ -37,7 +37,9 @@ BEGIN_DATADESC( CMOD_Dynamic_Difficulty_Modifier_Trigger )
 	DEFINE_OUTPUT(m_TriggerHard, "OnTriggerHard"),
 	DEFINE_OUTPUT(m_TriggerAtleastEasy, "OnTriggerAtleastEasy"),
 	DEFINE_OUTPUT(m_TriggerAtleastMedium, "OnTriggerAtleastMedium"),
-	DEFINE_OUTPUT(m_TriggerAtleastHard, "OnTriggerAtleastHard")
+	DEFINE_OUTPUT(m_TriggerAtleastHard, "OnTriggerAtleastHard"),
+
+	DEFINE_INPUTFUNC( FIELD_INTEGER,"SetMaxFireCount",	InputSetMaxFireCount ),
 	
 END_DATADESC()
 
@@ -82,7 +84,7 @@ void CMOD_Dynamic_Difficulty_Modifier_Trigger::ActivatePositionTrigger(CBaseEnti
 		return;         // still waiting for reset time
 
 	//Enforce Trigger Fire limits
-	if (m_iMaxTriggerRecalculatePerformanceAndFire > 0 &&
+	if (m_iMaxTriggerRecalculatePerformanceAndFire >= 0 &&
 		m_iTriggerFireCount >= m_iMaxTriggerRecalculatePerformanceAndFire)
 		return;
 
@@ -116,7 +118,14 @@ void CMOD_Dynamic_Difficulty_Modifier_Trigger::ActivatePositionTrigger(CBaseEnti
 	
 			
 	SetThink( &CMOD_Dynamic_Difficulty_Modifier_Trigger::MultiWaitOver );
-	SetNextThink( gpGlobals->curtime + 0.1f );	
+	if (m_flWait > 0)
+	{
+		SetNextThink( gpGlobals->curtime + 0.1f );	
+	}
+	else
+	{
+		SetNextThink( gpGlobals->curtime + m_flWait );	
+	}
 }
 
 void CMOD_Dynamic_Difficulty_Modifier_Trigger::MultiWaitOver( void )
@@ -159,6 +168,10 @@ bool CMOD_Dynamic_Difficulty_Modifier_Trigger::PerformDifficultyCheck( void )
 		return false;
 }
 
+void CMOD_Dynamic_Difficulty_Modifier_Trigger::InputSetMaxFireCount( inputdata_t &inputdata ){
+	m_iMaxTriggerRecalculatePerformanceAndFire = inputdata.value.Int();
+	m_iTriggerFireCount = 0;
+}
 
 
 
