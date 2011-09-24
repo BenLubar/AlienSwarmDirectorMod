@@ -5,7 +5,7 @@
 	{
 		"name"		"GlobalOptionBlock"
 		"$MissionName"		"Mission 1"
-		"$MissionDescription"		"Randomly generated example mission."
+		"$MissionDescription"		"Intro Level"
 		"$GlobalTheme"		"mod"
 	}
 	"name"		"Mission 1"
@@ -23,29 +23,7 @@
 	"rule_instance"
 	{
 		"name"		"GenerationStep"
-		"$Size"		"7"
-		"$ExitFilters"
-		{
-			"param"
-			{
-				"rule_instance"
-				{
-					"name"		"DisallowSouthGrowing"
-				}
-			}
-		}
-	}
-	"rule_instance"
-	{
-		"name"		"GenerationStep"
-		"$Size"		"150"
-		"$Theme"
-		{
-			"rule_instance"
-			{
-				"name"		"GlobalTheme"
-			}
-		}
+		"$Size"		"50"
 		"$RoomTemplateFilters"
 		{
 			"param"
@@ -53,88 +31,6 @@
 				"rule_instance"
 				{
 					"name"		"Disallow1x1"
-				}
-				"disabled"		"1"
-			}
-			"param"
-			{
-				"rule_instance"
-				{
-					"name"		"Disallow1x1"
-				}
-			}
-		}
-		"$ExitFilters"
-		{
-			"param"
-			{
-				"rule_instance"
-				{
-					"name"		"DisallowSouthGrowing"
-				}
-			}
-		}
-		"$ExtraRules"
-		{
-			"rule_instance"
-			{
-				"name"		"PlaceComponents"
-				"$MandatoryRooms"
-				{
-					"rule_instance"
-					{
-						"name"		"SingleComponentRoom"
-						"$RoomName"		"mod\rooms\3x5_chokepoint"
-						"$Fraction"		"0.600000"
-					}
-					"rule_instance"
-					{
-						"name"		"SingleComponentRoom"
-						"$RoomName"		"mod\rooms\5x5_office_crossing"
-						"$Fraction"		"0.400000"
-					}
-					"rule_instance"
-					{
-						"name"		"SingleComponentRoom"
-						"$RoomName"		"mod\rooms\4x3_server_room_1"
-						"$Fraction"		"0.200000"
-					}
-					"rule_instance"
-					{
-						"name"		"SingleComponentRoom"
-						"$RoomName"		"mod\corridors\2x4_corridor_door"
-						"$Fraction"		"0.100000"
-					}
-					"rule_instance"
-					{
-						"name"		"SingleComponentRoom"
-						"$RoomName"		"mod\corridors\2x4_corridor_door"
-						"$Fraction"		"0.900000"
-					}
-					"rule_instance"
-					{
-						"name"		"SingleComponentRoom"
-						"$RoomName"		"mod\rooms\3x5_resupplyeasy"
-						"$Fraction"		"0.500000"
-					}
-					"rule_instance"
-					{
-						"name"		"SingleComponentRoom"
-						"$RoomName"		"mod\rooms\3x5_resupplymedium"
-						"$Fraction"		"0.500000"
-					}
-					"rule_instance"
-					{
-						"name"		"SingleComponentRoom"
-						"$RoomName"		"mod\rooms\3x5_resupplyhard"
-						"$Fraction"		"0.500000"
-					}
-					"rule_instance"
-					{
-						"name"		"SingleComponentRoom"
-						"$RoomName"		"mod\corridors\1x8_corridor_fight"
-						"$Fraction"		"0.2"
-					}
 				}
 			}
 		}
@@ -156,7 +52,7 @@
 				"rule_instance"
 				{
 					"name"		"SpecificRoom"
-					"$RoomName"		"mod\exit\7x8_exit_killeggs"
+					"$RoomName"		"mod\exit\7x8_exit_escapeonly"
 				}
 			}
 		}
@@ -164,12 +60,5 @@
 	"rule_instance"
 	{
 		"name"		"CapLevel"
-		"$Theme"
-		{
-			"rule_instance"
-			{
-				"name"		"GlobalTheme"
-			}
-		}
 	}
 }
