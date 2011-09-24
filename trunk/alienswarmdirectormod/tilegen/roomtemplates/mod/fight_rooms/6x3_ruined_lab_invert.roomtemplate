@@ -20,4 +20,10 @@
 		"ZChange"		"0"
 		"ChokeGrow"		"0"
 	}	
+	"Tags"
+	{
+		
+		"tag"		"Combat Arena"
+		"tag"       	"Fight Room"
+	}
 }

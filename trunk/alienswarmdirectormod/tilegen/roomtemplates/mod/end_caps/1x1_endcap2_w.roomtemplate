@@ -12,4 +12,8 @@
 		"ZChange"		"0"
 		"ChokeGrow"		"0"
 	}
+	"Tags"
+	{
+		"tag"		"Border"
+	}
 }
