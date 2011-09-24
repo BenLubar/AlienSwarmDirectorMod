@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "3821"
+	"mapversion" "3823"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -68,7 +68,7 @@ viewsettings
 world
 {
 	"id" "394754"
-	"mapversion" "3821"
+	"mapversion" "3823"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -47287,6 +47287,23 @@ entity
 		"logicalpos" "[0 0]"
 	}
 }
+entity
+{
+	"id" "3364982"
+	"classname" "asw_director_control"
+	"controlspawners" "0"
+	"hordes" "0"
+	"targetname" "@director"
+	"wanderers" "1"
+	"origin" "3386 892 5.50142"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
+	}
+}
 cameras
 {
 	"activecamera" "2"
@@ -47302,8 +47319,8 @@ cameras
 	}
 	camera
 	{
-		"position" "[3404.86 1063.32 79.9747]"
-		"look" "[3754.57 937.843 95.5469]"
+		"position" "[3633.58 856.296 292.376]"
+		"look" "[3288.69 938.071 179.935]"
 	}
 }
 cordons
