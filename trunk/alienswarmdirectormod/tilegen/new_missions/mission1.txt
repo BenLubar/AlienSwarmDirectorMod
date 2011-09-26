@@ -28,20 +28,20 @@
 					"rule_instance"
 					{
 						"name"		"SingleComponentRoom"
-						"$RoomName"		"mod\fight_rooms\6x3_ruined_lab"
-						"$Fraction"		"0.100000"
-					}
-					"rule_instance"
-					{
-						"name"		"SingleComponentRoom"
 						"$RoomName"		"mod\fight_rooms\6x14_multi_hallway"
 						"$Fraction"		"0.300000"
 					}
 					"rule_instance"
 					{
 						"name"		"SingleComponentRoom"
-						"$RoomName"		"mod\resupply_rooms\2x1_resupply_corridor_ew"
-						"$Fraction"		"0.500000"
+						"$RoomName"		"mod\resupply_rooms\1x2_resupply_corridor_ns"
+						"$Fraction"		"0.700000"
+					}
+					"rule_instance"
+					{
+						"name"		"SingleComponentRoom"
+						"$RoomName"		"mod\rooms\4x3_server_room_1"
+						"$Fraction"		"0.1"
 					}
 				}
 			}
@@ -65,11 +65,29 @@
 				}
 			}
 		}
+		"$CandidateFilterActions"
+		{
+			"rule_instance"
+			{
+				"name"		"LinearGrowth"
+				"$Threshold"		"10"
+			}
+		}
+		"$ExitFilters"
+		{
+			"param"
+			{
+				"rule_instance"
+				{
+					"name"		"DisallowSouthGrowing"
+				}
+			}
+		}
 	}
 	"rule_instance"
 	{
 		"name"		"GenerationStep"
-		"$Size"		"75"
+		"$Size"		"65"
 		"$Theme"
 		{
 			"rule_instance"
@@ -98,25 +116,25 @@
 					{
 						"name"		"SingleComponentRoom"
 						"$RoomName"		"mod\resupply_rooms\3x5_resupplymedium"
-						"$Fraction"		"0.7"
+						"$Fraction"		"0.700000"
 					}
 					"rule_instance"
 					{
 						"name"		"SingleComponentRoom"
 						"$RoomName"		"mod\resupply_rooms\3x5_resupplyeasy"
-						"$Fraction"		"0.7"
+						"$Fraction"		"0.700000"
 					}
 					"rule_instance"
 					{
 						"name"		"SingleComponentRoom"
 						"$RoomName"		"mod\resupply_rooms\3x5_resupplyhard"
-						"$Fraction"		"0.7"
+						"$Fraction"		"0.700000"
 					}
 					"rule_instance"
 					{
 						"name"		"SingleComponentRoom"
 						"$RoomName"		"mod\fight_rooms\6x3_ruined_lab"
-						"$Fraction"		"0.4"
+						"$Fraction"		"0.400000"
 					}
 				}
 			}
@@ -136,7 +154,7 @@
 			"rule_instance"
 			{
 				"name"		"LinearGrowth"
-				"$Threshold"		"10"
+				"$Threshold"		"5"
 			}
 		}
 	}

@@ -4,8 +4,8 @@
 	"TilesY"		"1"
 	"SpawnWeight"		"0"
 	"TileType"		"0"
-}
 	"Tags"
 	{
-		"tag"		"Border"
+		"tag"		"End Cap"
 	}
+}

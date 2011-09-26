@@ -14,4 +14,8 @@ taglist
     "AlienEncounter"  "This room will be used for fixed aliens spawns."
     "Resupply"  "This room will be used for health/ammo/respawn stashes."
     "Combat Arena"    "Combat arena music will play when fighting aliens from spawners in this room"
+    "Egg Room"        "This room contains Alien Eggs"
+    "Data Room"       "This room contains data that must be downloaded"
+    "Fight Room"      "This room contains a large number of spawners"
+    "End Cap"	      "This is a placed to cap an exit."
 }

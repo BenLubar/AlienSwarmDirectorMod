@@ -2,22 +2,12 @@
 {
 	"Thumbnail"
 	{
-		"Filename"		"tilegen/roomtemplates/mod/rooms\6x14_multi_hallway.tga"
-		"RoomX"		"-11008.000000"
-		"RoomY"		"15104.000000"
-		"RoomWide"		"1536.000000"
-		"RoomTall"		"3584.000000"
-		"OutputWide"		"180.000000"
-		"OutputTall"		"420.000000"
-	}
-	"Thumbnail"
-	{
-		"Filename"		"tilegen/roomtemplates/mod/start_area\2x3_start_area.tga"
-		"RoomX"		"-11520.000000"
-		"RoomY"		"11776.000000"
-		"RoomWide"		"512.000000"
-		"RoomTall"		"768.000000"
-		"OutputWide"		"60.000000"
-		"OutputTall"		"90.000000"
+		"Filename"		"tilegen/roomtemplates/mod/resupply_rooms\1x2_resupply_corridor_ns.tga"
+		"RoomX"		"-12288.000000"
+		"RoomY"		"12800.000000"
+		"RoomWide"		"256.000000"
+		"RoomTall"		"512.000000"
+		"OutputWide"		"30.000000"
+		"OutputTall"		"60.000000"
 	}
 }

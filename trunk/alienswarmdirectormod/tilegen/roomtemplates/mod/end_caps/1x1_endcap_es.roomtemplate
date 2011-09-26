@@ -19,9 +19,9 @@
 		"ExitDirection"		"2"
 		"ZChange"		"0"
 		"ChokeGrow"		"0"
-	}
+	}	
 	"Tags"
 	{
-		"tag"		"Border"
+		"tag"		"End Cap"
 	}
 }

@@ -18,12 +18,14 @@
 		"YPos"		"0"
 		"ExitDirection"		"0"
 		"ZChange"		"0"
-		"ChokeGrow"		"0"
+		"ChokeGrow"		"1"
 	}	
 	"Tags"
 	{
+		"tag"		"Chokepoint"
 		"tag"		"Combat Arena"
 		"tag"       	"Fight Room"
 		"tag"		"Special"
+		
 	}	
 }
