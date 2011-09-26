@@ -12,9 +12,9 @@ GAME
 	"briefingmaterial" 	"vgui/swarm/missionpics/unknownmissionpic"			// example: "vgui/swarm/Overviews/landingbay02briefingOverview"
 
 	// Title of the mission
-	"missiontitle"		"Mission 4"
+	"missiontitle"		"Mission 5"
 	// Description text shown for the mission
-	"description"		"Download more critical data and fight the horde to escape!"
+	"description"		"This is the last mission of the campaign. Good luck!"
 	
 	// Mission image that shows when selecting this mission
 	"image"			"swarm/MissionPics/UnknownMissionPic"  			//must be under "vgui" - dont include vgui in the path

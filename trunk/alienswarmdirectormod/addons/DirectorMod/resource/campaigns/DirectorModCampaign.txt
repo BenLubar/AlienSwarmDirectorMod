@@ -75,7 +75,7 @@ GAME
 		"ThreatString" 		"1"    				// Threat level string to help players decide where to go next
 		"Links"			"mission1 mission3"	// map names of neighbours
 		"LocationDescription" 	"Mission 2"
-		"ShortBriefing"  	"Keep fighting through the horde and proceed to the exit to continue to the next mission."
+		"ShortBriefing"  	"Download critical data and then escape."
 		"AlwaysVisible"		"1"
 		"NeedsMoreThanOneMarine" "0"				// If set to 1, two players need to be connected to play (no solo play)
 	}
@@ -88,7 +88,7 @@ GAME
 		"ThreatString" 		"1"    				// Threat level string to help players decide where to go next
 		"Links"			"mission2 mission4"	// map names of neighbours
 		"LocationDescription" 	"Mission 3"
-		"ShortBriefing"  	"You are half way through.  Good luck against the horde."
+		"ShortBriefing"  	"Kill all the eggs and then escape."
 		"AlwaysVisible"		"1"
 		"NeedsMoreThanOneMarine" "0"				// If set to 1, two players need to be connected to play (no solo play)
 	}
@@ -100,9 +100,22 @@ GAME
 		"LocationX"		"360"				// location of the dot on the map
 		"LocationY"		"200"				// (from 0 to 1023, on the above texture)
 		"ThreatString" 		"1"    				// Threat level string to help players decide where to go next
-		"Links"			"mission3"	// map names of neighbours
+		"Links"			"mission3 mission5"	// map names of neighbours
 		"LocationDescription" 	"Mission 4"
-		"ShortBriefing"  	"Fight through the horde and proceed to the exit to complete this campaign."
+		"ShortBriefing"  	"Download more critical data and then escape."
+		"AlwaysVisible"		"1"
+		"NeedsMoreThanOneMarine" "0"				// If set to 1, two players need to be connected to play (no solo play)
+	}
+	"MISSION"
+	{
+		"MissionName"		"Mission 5"		// name used on the map screen, etc.
+		"MapName"		"mission5"			// name of the map file
+		"LocationX"		"100"				// location of the dot on the map
+		"LocationY"		"70"				// (from 0 to 1023, on the above texture)
+		"ThreatString" 		"1"    				// Threat level string to help players decide where to go next
+		"Links"			"mission4"	// map names of neighbours
+		"LocationDescription" 	"Mission 5"
+		"ShortBriefing"  	"Fight through the horde, kill all the eggs, and proceed to the exit to complete this campaign."
 		"AlwaysVisible"		"1"
 		"NeedsMoreThanOneMarine" "0"				// If set to 1, two players need to be connected to play (no solo play)
 	}

@@ -2,12 +2,22 @@
 {
 	"Thumbnail"
 	{
-		"Filename"		"tilegen/roomtemplates/mod/resupply_rooms\1x2_resupply_corridor_ns.tga"
-		"RoomX"		"-12288.000000"
-		"RoomY"		"12800.000000"
-		"RoomWide"		"256.000000"
-		"RoomTall"		"512.000000"
-		"OutputWide"		"30.000000"
-		"OutputTall"		"60.000000"
+		"Filename"		"tilegen/roomtemplates/mod/fight_rooms\8x7_utilityRoom_ew.tga"
+		"RoomX"		"-3840.000000"
+		"RoomY"		"-7936.000000"
+		"RoomWide"		"2048.000000"
+		"RoomTall"		"1792.000000"
+		"OutputWide"		"240.000000"
+		"OutputTall"		"210.000000"
+	}
+	"Thumbnail"
+	{
+		"Filename"		"tilegen/roomtemplates/mod/fight_rooms\8x7_utilityRoom_nw.tga"
+		"RoomX"		"-1536.000000"
+		"RoomY"		"-7936.000000"
+		"RoomWide"		"2048.000000"
+		"RoomTall"		"1792.000000"
+		"OutputWide"		"240.000000"
+		"OutputTall"		"210.000000"
 	}
 }
