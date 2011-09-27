@@ -50,7 +50,8 @@ Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
 OutFile "${PRODUCT_NAME}.exe"
 ShowInstDetails show
 
-Section "Mod Files" FILES
+Section "AlienSwarmDirectorMod Files" FILES
+        RMDir /r "$INSTDIR\${MODDIR}"
 	SetOverwrite ifdiff
 	SetOutPath "$INSTDIR"
 !ifdef ZIPDLL
@@ -89,6 +90,10 @@ Function .onInit
 	SectionSetFlags ${SHORTCUT} 0
 	StrCpy $STEAMEXE "$R0\steam.exe"
 !endif
+        MessageBox MB_YESNO "Installer will remove any pervious versions of AlienSwarmDirectorMod.   Please make sure the game is not currently running or installation will fail.  Continue?" IDYES true IDNO false
+        false:
+              abort
+        true:
 	SectionSetFlags ${FILES} 17
 	Return
 	lbl_error:
