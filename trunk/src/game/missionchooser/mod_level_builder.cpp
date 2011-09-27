@@ -163,12 +163,17 @@ void MOD_Level_Builder::BuildMapFromLayoutFile( const char *szMissionRuleFile, c
 			
 		
 
-		char fullPath[1024];
+		char* fullPath = (char*)malloc(sizeof(char)*1024);
 		strcat(fullPath, g_gamedir);
 		strcat(fullPath, szOutputLayoutFile);
 
 		Q_strcpy(pMapLayout->m_szFilename, fullPath);	
-		pMapLayout->SaveMapLayout( fullPath );	
+
+		if (!pMapLayout->SaveMapLayout( fullPath ))
+		{
+			Warning("Failed to save Layout file to [%s]", fullPath);
+			return;
+		}
 
 		CompileLevel(szOutputLayoutFile);
 	}

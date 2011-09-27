@@ -607,6 +607,8 @@ void CASW_Map_Builder::BuildMap()
 	m_pBuildingMapLayout = new CMapLayout();
 	if ( !m_pBuildingMapLayout->LoadMapLayout( layoutFilename ) )
 	{
+		Log_Warning(LOG_TilegenGeneral, "Couldn't find layoutfile: [%s]", layoutFilename);
+		m_iBuildStage = MapBuildStage::STAGE_NONE;
 		delete m_pBuildingMapLayout;
 		m_pBuildingMapLayout = NULL;
 		return;
