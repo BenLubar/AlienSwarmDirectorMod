@@ -3,7 +3,7 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-extern ConVar mod_player_performance_debug;
+extern ConVar mod_player_performance_value;
 
 class C_MOD_build_map_proxy : public C_BaseEntity
 {
@@ -18,7 +18,7 @@ public:
 	void OnDataChanged(DataUpdateType_t updateType)
 	{
 		Msg("C_MOD_build_map_proxy received player performance: [%d]\n", m_iPlayerPerformance);
-		mod_player_performance_debug.SetValue(m_iPlayerPerformance);
+		mod_player_performance_value.SetValue(m_iPlayerPerformance);
 	}
 	
 };

@@ -4,10 +4,14 @@
 #pragma once
 #endif
 
+
 #include "../public/missionchooser/imod_level_builder.h"
 
 
 class CASW_Map_Builder;
+class CMapLayout;
+class CLayoutSystem;
+class KeyValues;
 
 //#include "layout_system\tilegen_layout_system.h"
 //#include "vgui\tilegen_pages.h"
@@ -29,6 +33,8 @@ public:
 	virtual void BuildMapForMissionFromLayoutFile( const char *szMissionName, const int iDifficultLevel);
 	virtual void BuildMapFromLayoutFile( const char *szMissionRuleFile, const char *szOutputLayoutFile, const char *szThemeName);	
 	virtual void CompileLevel(const char * szLayoutFile);
+protected:
+	CMapLayout *GenerateMapLayout(CLayoutSystem *pLayoutSystem, KeyValues *pMissionSettings);
 	
 };
 

@@ -16,7 +16,7 @@ IMPLEMENT_CLIENTCLASS_DT(C_MOD_Build_Mission_Map_For_Next_Mission, DT_MOD_Build_
 	RecvPropInt		(RECVINFO(m_iPlayerPerformance)),	
 END_RECV_TABLE()
 
-ConVar mod_player_performance_debug("mod_player_performance_value", "0", 0, "Stores the players performance.");
+ConVar mod_player_performance_value("mod_player_performance_value", "0", 0, "Stores the players performance.");
 
 C_MOD_Build_Mission_Map_For_Next_Mission::C_MOD_Build_Mission_Map_For_Next_Mission()
 {
@@ -27,13 +27,13 @@ void C_MOD_Build_Mission_Map_For_Next_Mission::OnMissionComplete(bool bSuccess)
 {
 	if (bSuccess)
 	{
-		if (mod_player_performance_debug.GetInt() > 0)
+		if (mod_player_performance_value.GetInt() > 0)
 		{
-			BuildMissionMapForNextMission(mod_player_performance_debug.GetInt());
+			BuildMissionMapForNextMission(mod_player_performance_value.GetInt());
 		}
 		else
 		{
-			Msg("WARNING: C_MOD_Build_Mission_Map_For_Next_Mission::OnMissionComplete(): mod_player_performance_debug is not set.  Was a 'mod_build_mission_map_for_next_mission' entity placed in the level?\n\n");
+			Msg("WARNING: C_MOD_Build_Mission_Map_For_Next_Mission::OnMissionComplete(): mod_player_performance_value is not set.  Was a 'mod_build_mission_map_for_next_mission' entity placed in the level?\n\n");
 		}
 	}
 }
@@ -41,7 +41,7 @@ void C_MOD_Build_Mission_Map_For_Next_Mission::OnMissionComplete(bool bSuccess)
 void C_MOD_Build_Mission_Map_For_Next_Mission::OnDataChanged(DataUpdateType_t updateType)
 {
 	//Save mod_player_performance_value so it can be used later when the mission is complete.
-	mod_player_performance_debug.SetValue(m_iPlayerPerformance);
+	mod_player_performance_value.SetValue(m_iPlayerPerformance);
 
 	BaseClass::OnDataChanged(updateType);
 }

@@ -146,23 +146,22 @@ void MOD_Level_Builder::BuildMapFromLayoutFile( const char *szMissionRuleFile, c
 		{
 			Warning("Failed to load mission from pre-processed key-values.");			
 			return;
-		}
+		}		
 
-		pLayoutSystem->BeginGeneration(new CMapLayout( pMissionSettings->MakeCopy() ));
-
-		int safetyCounter = 0;
-		while (pLayoutSystem->IsGenerating())
+		int safteyCounter = 0;
+		CMapLayout *pMapLayout = NULL;
+		while (pMapLayout == NULL)
 		{
-			pLayoutSystem->ExecuteIteration();			
-
-			if (safetyCounter++ > 1000)
+			pMapLayout = GenerateMapLayout(pLayoutSystem, pMissionSettings);
+			safteyCounter++;
+			if (safteyCounter > 10)
 			{
-				Warning("Safety Counter has prevented executing pLayoutSystem->ExecuteIteration() over 1000 times.\n");
-				break;
-			}
+				Warning("MOD_Level_Builder failed generating a layout from layout file [%s]", szMissionRuleFile);
+				return;
+			}				
 		}
+			
 		
-		CMapLayout *pMapLayout = pLayoutSystem->GetMapLayout();
 
 		char fullPath[1024];
 		strcat(fullPath, g_gamedir);
@@ -178,6 +177,28 @@ void MOD_Level_Builder::BuildMapFromLayoutFile( const char *szMissionRuleFile, c
 		Warning("Failed Initializting Mission Preprocessor\n");
 		return;
 	}		
+}
+
+CMapLayout *MOD_Level_Builder::GenerateMapLayout(CLayoutSystem *pLayoutSystem, KeyValues *pMissionSettings)
+{
+	pLayoutSystem->BeginGeneration(new CMapLayout( pMissionSettings->MakeCopy() ));
+
+	int safetyCounter = 0;
+	while (pLayoutSystem->IsGenerating())
+	{
+		pLayoutSystem->ExecuteIteration();			
+
+		if (safetyCounter++ > 1000)
+		{
+			Warning("Safety Counter has prevented executing pLayoutSystem->ExecuteIteration() over 1000 times.\n");
+			break;
+		}
+	}
+
+	if (!pLayoutSystem->GenerationErrorOccurred())
+		return pLayoutSystem->GetMapLayout();
+	else
+		return NULL;
 }
 
 void MOD_Level_Builder::CompileLevel(const char * szLayoutFile)
