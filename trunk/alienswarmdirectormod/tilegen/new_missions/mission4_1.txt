@@ -1,14 +1,14 @@
 "Mission"
 {
-	"Filename"		"mission2_1.txt"
+	"Filename"		"mission4_1.txt"
 	"rule_instance"
 	{
 		"name"		"GlobalOptionBlock"
-		"$MissionName"		"Mission 2"
+		"$MissionName"		"Mission 4"
 		"$MissionDescription"		"Downloaded Data - Easy"
 		"$GlobalTheme"		"mod"
 	}
-	"name"		"Mission 2"
+	"name"		"Mission 4"
 	"rule_instance"
 	{
 		"name"		"PlaceStartRoom"

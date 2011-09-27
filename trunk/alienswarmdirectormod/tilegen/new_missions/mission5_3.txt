@@ -1,14 +1,14 @@
 "Mission"
 {
-	"Filename"		"mission3_3.txt"
+	"Filename"		"mission5_3.txt"
 	"rule_instance"
 	{
 		"name"		"GlobalOptionBlock"
-		"$MissionName"		"Mission 3"
+		"$MissionName"		"Mission 5"
 		"$MissionDescription"		"Kill all eggs - Hard _ 19 eggs"
 		"$GlobalTheme"		"mod"
 	}
-	"name"		"Mission 3"
+	"name"		"Mission 5"
 	"rule_instance"
 	{
 		"name"		"PlaceStartRoom"
@@ -79,25 +79,25 @@
 					{
 						"name"		"SingleComponentRoom"
 						"$RoomName"		"mod\egg_rooms\3x5_egg_hallway"
-						"$Fraction"		"0.6"
+						"$Fraction"		"0.600000"
 					}
 					"rule_instance"
 					{
 						"name"		"SingleComponentRoom"
 						"$RoomName"		"mod\egg_rooms\3x5_chokepoint"
-						"$Fraction"		"0.8"
+						"$Fraction"		"0.800000"
 					}
 					"rule_instance"
 					{
 						"name"		"SingleComponentRoom"
 						"$RoomName"		"mod\egg_rooms\3x5_egg_hallway"
-						"$Fraction"		"0.3"
+						"$Fraction"		"0.300000"
 					}
 					"rule_instance"
 					{
 						"name"		"SingleComponentRoom"
 						"$RoomName"		"mod\egg_rooms\3x5_chokepoint"
-						"$Fraction"		"0.4"
+						"$Fraction"		"0.400000"
 					}
 				}
 			}
