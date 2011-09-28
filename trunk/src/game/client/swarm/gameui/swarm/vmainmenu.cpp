@@ -697,8 +697,11 @@ void MainMenu::OnCommand( const char *command )
 
 		char const *szGameMode = "campaign";
 		pSettings->SetString( "game/mode", szGameMode );
-		pSettings->SetString( "game/campaign", "jacob" );
-		pSettings->SetString( "game/mission", "asi-jac1-landingbay_01" );
+		//Mod - Default to Mod Campaign		
+		//pSettings->SetString( "game/campaign", "jacob" );
+		//pSettings->SetString( "game/mission", "asi-jac1-landingbay_01" );
+		pSettings->SetString("game/campaign", "DirectorModCampaign");
+		pSettings->SetString("game/mission", "Mission1");
 
 		if ( !CUIGameData::Get()->SignedInToLive() )
 		{
