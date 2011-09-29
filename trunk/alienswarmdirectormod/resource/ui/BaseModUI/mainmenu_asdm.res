@@ -26,7 +26,7 @@
 		"tall"					"13"
 		"autoResize"			"1"
 		"pinCorner"				"0"
-		"visible"				"1"
+		"visible"				"0"
 		"enabled"				"1"
 		"tabPosition"			"0"
 		"navUp"					"PnlQuickJoin"
@@ -162,8 +162,8 @@
 		"ControlName"			"BaseModHybridButton"
 		"fieldName"				"BtnQuit"
 		"xpos"					"100"
-		"ypos"					"310"   [$X360]
-		"ypos"					"310"	[$WIN32]
+		"ypos"					"280"   [$X360]  //origanl 310
+		"ypos"					"280"	[$WIN32] //origanl 310
 		"wide"					"180"
 		"tall"					"13"
 		"autoResize"			"1"

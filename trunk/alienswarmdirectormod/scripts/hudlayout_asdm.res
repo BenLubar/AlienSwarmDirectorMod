@@ -393,13 +393,16 @@
 		"ExtraItem_battery_y"	"28"
 		"ExtraItem_battery_w"	"29"
 		"ExtraItem_battery_t"	"5"
-		
-		
-		
-		"FastReload_x" "250" //original 99
-		"FastReload_y" "r69"
+					
+		"FastReload_x" "88"  //orignal 99
+		"FastReload_y" "r85" //original r69
 		"FastReload_w" "84"
 		"FastReload_t" "11"
+
+		"ModPlayerPerformance_x" "91"
+		"ModPlayerPerformance_y" "r68"
+		"ModPlayerPerformance_w" "76"
+		"ModPlayerPerformance_t" "15"		
 		
 		"SquadMates_x"	"172"		// spacing to the right of the currently active marine
 		"SquadMates_y"	"r55"
