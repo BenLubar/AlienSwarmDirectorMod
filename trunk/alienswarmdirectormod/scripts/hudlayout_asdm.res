@@ -396,7 +396,7 @@
 		
 		
 		
-		"FastReload_x" "99"
+		"FastReload_x" "250" //original 99
 		"FastReload_y" "r69"
 		"FastReload_w" "84"
 		"FastReload_t" "11"

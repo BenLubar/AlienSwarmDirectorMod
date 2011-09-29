@@ -1,6 +1,6 @@
 UnlitGeneric
 {
-$basetexture "console/startup_main"
+$basetexture "console/asdm_selectionscreen_widescreen"
 $vertexcolor 1
 $vertexalpha 1
 $ignorez 1
