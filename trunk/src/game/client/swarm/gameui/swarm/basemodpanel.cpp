@@ -1831,7 +1831,9 @@ void CBaseModPanel::ApplySchemeSettings(IScheme *pScheme)
 	surface()->DrawSetTextureFile( m_iBackgroundImageID, filename, true, false );
 
 	m_iProductImageID = surface()->CreateNewTextureID();
-	surface()->DrawSetTextureFile( m_iProductImageID, "console/startup_loading", true, false );
+	//Mod - Draw custom loading file
+	//surface()->DrawSetTextureFile( m_iProductImageID, "console/startup_loading", true, false );
+	surface()->DrawSetTextureFile( m_iProductImageID, "console/asdm_startup_loading", true, false );
 
 	// need these to be anchored now, can't come into existence during load
 	PrecacheLoadingTipIcons();
@@ -1860,11 +1862,15 @@ void CBaseModPanel::ApplySchemeSettings(IScheme *pScheme)
 	if ( aspectRatio >= 1.6f )
 	{
 		// use the widescreen version
-		Q_snprintf( m_szFadeFilename, sizeof( m_szFadeFilename ), "materials/console/%s_widescreen.vtf", "SwarmSelectionScreen" );
+		//Mod - Use custom startup screen
+		//Q_snprintf( m_szFadeFilename, sizeof( m_szFadeFilename ), "materials/console/%s_widescreen.vtf", "SwarmSelectionScreen" );
+		Q_snprintf( m_szFadeFilename, sizeof( m_szFadeFilename ), "materials/console/%s_widescreen.vtf", "asdm_selectionscreen" );
 	}
 	else
 	{
-		Q_snprintf( m_szFadeFilename, sizeof( m_szFadeFilename ), "materials/console/%s_widescreen.vtf", "SwarmSelectionScreen" );
+		//Mod - Use custom startup screen
+		//Q_snprintf( m_szFadeFilename, sizeof( m_szFadeFilename ), "materials/console/%s_widescreen.vtf", "SwarmSelectionScreen" );
+		Q_snprintf( m_szFadeFilename, sizeof( m_szFadeFilename ), "materials/console/%s_widescreen.vtf", "asdm_selectionscreen" );
 	}
 
 	// TODO: GetBackgroundMusic

@@ -872,7 +872,7 @@ void CBaseViewport::LoadHudLayout( void )
 		}	
 	}
 
-	LoadControlSettings( "scripts/HudLayout.res", NULL, NULL, pConditions );
+	LoadControlSettings( "scripts/HudLayout_asdm.res", NULL, NULL, pConditions );
 
 	if ( pConditions )
 	{

@@ -1026,7 +1026,9 @@ void MainMenu::ApplySchemeSettings( IScheme *pScheme )
 {
 	BaseClass::ApplySchemeSettings( pScheme );
 
-	const char *pSettings = "Resource/UI/BaseModUI/MainMenu.res";
+	//Mod - Use custom mainmenu.res file
+	//const char *pSettings = "Resource/UI/BaseModUI/MainMenu.res";
+	const char *pSettings = "Resource/UI/BaseModUI/MainMenu_asdm.res";
 
 #if !defined( _X360 )
 	if ( !g_pMatchFramework->GetMatchSystem() )
