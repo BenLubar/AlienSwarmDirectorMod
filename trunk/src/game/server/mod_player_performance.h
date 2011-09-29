@@ -19,6 +19,7 @@ public:
 
 	int m_totalRating, m_weightedRating, m_healthRating, m_accuracyRating, m_friendlyFireRating, m_directorStressRating;
 	int m_playerZeroAccuracy;
+	int m_previousRating;
 	double m_averageStressOfPlayers, m_averageStressHistory;
 
 	virtual void FrameUpdatePostEntityThink();
@@ -30,6 +31,7 @@ public:
 	int CalculateFriendFireRating(CASW_Game_Resource *pGameResource);
 	int CalculateDirectorStress(CASW_Game_Resource *pGameResource);	
 	void PrintDebug();
+	void WriteToHUD(int performance);
 
 	//Called by asw_director
 	void OnMissionStarted();

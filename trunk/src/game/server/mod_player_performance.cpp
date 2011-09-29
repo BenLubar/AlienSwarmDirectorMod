@@ -3,8 +3,11 @@
 #include "asw_game_resource.h"
 #include "asw_marine_resource.h"
 #include "asw_marine.h"
+#include "asw_player.h"
 #include "mod_player_performance.h"
+#include "asw_marine_profile.h"
 #include <vector>
+
 
 
 // memdbgon must be the last include file in a .cpp file!!!
@@ -55,7 +58,7 @@ CMOD_Player_Performance* CMOD_Player_Performance::PlayerPerformance()
 
 CMOD_Player_Performance::CMOD_Player_Performance( void ) : CAutoGameSystemPerFrame( "CMOD_Player_Performance" )
 {
-	
+	m_previousRating = 0;
 }
 
 CMOD_Player_Performance::~CMOD_Player_Performance()
@@ -74,11 +77,18 @@ void CMOD_Player_Performance::OnMissionStarted(){
 //so asw_director.cpp calls 
 void CMOD_Player_Performance::FrameUpdatePostEntityThink()
 {	
+	int rating = CalculatePerformance();
+
+	if (rating != m_previousRating)
+		WriteToHUD(rating);
+
+	m_previousRating = rating;
+
+
 	if ( mod_player_performance_debug.GetInt() > 0 )
-	{
-		CalculatePerformance();
+	{		
 		PrintDebug();		
-	}	
+	}
 }
 
 
@@ -285,4 +295,24 @@ void CMOD_Player_Performance::PrintDebug()
 	{
 		engine->Con_NPrintf(8,"Player Forced Rating: OFF");
 	}	
+}
+
+void CMOD_Player_Performance::WriteToHUD(int rating)
+{	
+	for ( int i=0;i<ASWGameResource()->GetMaxMarineResources();i++ )
+	{
+		CASW_Marine_Resource *pMR = ASWGameResource()->GetMarineResource(i);
+		if ( !pMR )
+			continue;
+				
+		CASW_Player *pPlayer = pMR->GetCommander();
+	
+		if ( pPlayer && pPlayer->GetMarine() )
+		{		
+			CSingleUserRecipientFilter user( pPlayer );
+			UserMessageBegin( user, "MODPlayerPerformance" );
+			WRITE_SHORT( rating );
+			MessageEnd();			
+		}	
+	}
 }

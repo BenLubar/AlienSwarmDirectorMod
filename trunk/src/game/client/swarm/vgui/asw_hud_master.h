@@ -92,11 +92,16 @@ public:
 	void MsgFunc_ASWOrderUseItemFX( bf_read &msg );
 	void MsgFunc_ASWOrderStopItemFX( bf_read &msg );
 	void MsgFunc_ASWInvalidDesination( bf_read &msg );
+	void MsgFunc_MODPlayerPerformance( bf_read &msg );
 
 	int GetDeadIconTextureID();
 	const HudSheetTexture_t* GetDeadIconUVs();
 	
 protected:
+	//Mod
+	int m_nModPeformanceEmptyTextureID, m_nModPeformanceFullTextureID;
+	int m_iModPlayerPerformance;
+
 	virtual void ApplySchemeSettings( vgui::IScheme *scheme );
 	virtual void Paint();
 	virtual void OnThink();
@@ -111,6 +116,7 @@ protected:
 	void PaintLocalMarineInventory();
 	void PaintSquadMatesInventory();
 	void PaintFastReload();
+	void PaintModPlayerPerformance();
 	void PaintText();
 	void PaintSquadMemberText( int nPosition );	
 
@@ -149,6 +155,16 @@ protected:
 		DECLARE_HUD_SHEET_UV( hud_ammo_grenade ),
 		DECLARE_HUD_SHEET_UV( team_ammo_bar ),
 	END_HUD_SHEET( Sheet_Stencil );
+
+	/*
+	DECALRE_HUD_SHEET(sheet_mod_player_performance_full)
+		DECLARE_HUD_SHEET_UV( mod_player_performance_full ),
+	END_HUD_SHEET(sheet_mod_player_performance_full);
+
+	DECALRE_HUD_SHEET(sheet_mod_player_performance_empty)
+		DECLARE_HUD_SHEET_UV( mod_player_performance_empty ),
+	END_HUD_SHEET(sheet_mod_player_performance_empty);
+	*/
 
 	// positioning
 
@@ -214,6 +230,11 @@ protected:
 	CPanelAnimationVarAliasType( int, m_nFastReload_y, "FastReload_y", "0", "proportional_ypos" );
 	CPanelAnimationVarAliasType( int, m_nFastReload_w, "FastReload_w", "0", "proportional_int" );
 	CPanelAnimationVarAliasType( int, m_nFastReload_t, "FastReload_t", "0", "proportional_int" );
+
+	CPanelAnimationVarAliasType( int, m_nModPlayerPerformance_x, "ModPlayerPerformance_x", "0", "proportional_xpos" );
+	CPanelAnimationVarAliasType( int, m_nModPlayerPerformance_y, "ModPlayerPerformance_y", "0", "proportional_ypos" );
+	CPanelAnimationVarAliasType( int, m_nModPlayerPerformance_w, "ModPlayerPerformance_w", "0", "proportional_int" );
+	CPanelAnimationVarAliasType( int, m_nModPlayerPerformance_t, "ModPlayerPerformance_t", "0", "proportional_int" );
 
 	CPanelAnimationVarAliasType( int, m_nSquadMates_x, "SquadMates_x", "0", "proportional_xpos" );
 	CPanelAnimationVarAliasType( int, m_nSquadMates_y, "SquadMates_y", "0", "proportional_ypos" );

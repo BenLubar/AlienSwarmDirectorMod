@@ -92,4 +92,7 @@ void RegisterUserMessages( void )
 	usermessages->Register( "ShowObjectives", -1 );
 	usermessages->Register( "ASWBuzzerDeath", -1 );	
 	usermessages->Register( "ASWEggEffects", -1 );	
+
+	//Mod
+	usermessages->Register("MODPlayerPerformance", -1);
 }
