@@ -1,6 +1,6 @@
 UnlitGeneric
 {
-$basetexture "console/startup_main"
+$basetexture "console/startup_loading"
 $vertexcolor 1
 $vertexalpha 1
 $ignorez 1
