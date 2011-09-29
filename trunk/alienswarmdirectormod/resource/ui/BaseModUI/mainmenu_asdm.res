@@ -276,6 +276,8 @@
 		"navDown"				""
 	}
 
+	
+
 	"LblPlayer1GamerTag"	[$X360]
 	{
 		"ControlName"			"Label"

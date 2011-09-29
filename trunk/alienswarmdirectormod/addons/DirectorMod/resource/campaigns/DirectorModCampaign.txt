@@ -7,10 +7,10 @@ GAME
 	"CampaignDescription" "This campagin dynamically creates mission maps based on player performance.  Use the server command 'mod_mod_player_performance_debug 1' to monitor performance scores."
 	
 	// texture used on the main menu when choosing which campaign to play
-	"ChooseCampaignTexture" "swarm/campaign/jacob_galacticmap"
+	"ChooseCampaignTexture" "logo/asdm_logo"
 	
 	// texture used on the campaign screen for the map
-	"CampaignTextureName" "swarm/campaign/jacob_galacticmap"
+	"CampaignTextureName" "logo/asdm_logo"
 	
 	// these textures are overlaid on top of the campaign map in order
 	"CampaignTextureLayer1" "swarm/Campaign/CampaignMap_EmptyLayer"			//"CampaignTextureLayer1" "swarm/Campaign/JacobCampaignMap_Haze"

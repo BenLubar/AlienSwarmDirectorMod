@@ -17,7 +17,7 @@ GAME
 	"description"		"Download more critical data and fight the horde to escape!"
 	
 	// Mission image that shows when selecting this mission
-	"image"			"swarm/MissionPics/UnknownMissionPic"  			//must be under "vgui" - dont include vgui in the path
+	"image"			"logo/asdm_logo"  			//must be under "vgui" - dont include vgui in the path
 
 	"version"		"1.0"
 	"author"		"Philip Pittle"

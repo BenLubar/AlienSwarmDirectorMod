@@ -361,7 +361,7 @@
 		"MarinePortrait_weapon_name_x" "65"
 		"MarinePortrait_weapon_name_y" "39"
 		"MarinePortrait_low_ammo_x"	"81"
-		"MarinePortrait_low_ammo_y"	"27"
+		"MarinePortrait_low_ammo_y"	"18"  //original 27
 		"MarinePortrait_bullets_icon_x" "63"
 		"MarinePortrait_bullets_icon_y" "48"
 		"MarinePortrait_bullets_icon_w" "11"
@@ -402,7 +402,11 @@
 		"ModPlayerPerformance_x" "91"
 		"ModPlayerPerformance_y" "r68"
 		"ModPlayerPerformance_w" "76"
-		"ModPlayerPerformance_t" "15"		
+		"ModPlayerPerformance_t" "15"	
+
+		//Conflicts with low ammo messages
+	        "ModPlayerPerformanceDynamicContent_x" "81"
+		"ModPlayerPerformanceDynamicContent_y" "18"	
 		
 		"SquadMates_x"	"172"		// spacing to the right of the currently active marine
 		"SquadMates_y"	"r55"

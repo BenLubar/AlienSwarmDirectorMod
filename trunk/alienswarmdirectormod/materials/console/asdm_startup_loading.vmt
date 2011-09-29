@@ -1,9 +1,7 @@
 UnlitGeneric
 {
-$basetexture "console/asdm_startup_loading"
+$basetexture "console\asdm_startup_loading"
 $vertexcolor 1
 $vertexalpha 1
 $ignorez 1
-$no_fullbright 1
-$nolod 1
 }
