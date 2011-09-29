@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "169"
+	"mapversion" "170"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -38,7 +38,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "169"
+	"mapversion" "170"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -19835,12 +19835,12 @@ entity
 	"StartDisabled" "0"
 	connections
 	{
-		"OnTrigger" "spawn_elev_boomerStartSpawning600-1"
-		"OnTrigger" "spawner_elev_rangerStartSpawning600-1"
-		"OnTrigger" "spawner_elev_droneStartSpawning600-1"
+		"OnTrigger" "spawn_elev_boomerStartSpawning1.5-1"
+		"OnTrigger" "spawner_elev_rangerStartSpawning0-1"
+		"OnTrigger" "spawner_elev_droneStartSpawning3-1"
 		"OnTrigger" "spawner_mainroom_droneStartSpawning2-1"
-		"OnTrigger" "spawner_office_baseStartSpawning600-1"
-		"OnTrigger" "spawner_big_hole_droneStartSpawning600-1"
+		"OnTrigger" "spawner_office_baseStartSpawning1-1"
+		"OnTrigger" "spawner_big_hole_droneStartSpawning0-1"
 	}
 	solid
 	{
