@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "31"
+	"mapversion" "33"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "31"
+	"mapversion" "33"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -3220,7 +3220,7 @@ entity
 	"EntriesPerTumbler" "5"
 	"HackDifficulty" "5"
 	"Locked" "0"
-	"MailFile" "easyLevel"
+	"MailFile" "hardLevel"
 	"origin" "343 415.5 84"
 	"PDAName" "Philip Pittle"
 	"playersrequired" "1"
