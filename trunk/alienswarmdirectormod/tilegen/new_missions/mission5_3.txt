@@ -12,7 +12,7 @@
 	"rule_instance"
 	{
 		"name"		"PlaceStartRoom"
-		"$RoomName"		"mod\start_area\2x3_start_area"
+		"$RoomName"		"mod\start_area\2x3_start_area_hard"
 	}
 	"rule_instance"
 	{
