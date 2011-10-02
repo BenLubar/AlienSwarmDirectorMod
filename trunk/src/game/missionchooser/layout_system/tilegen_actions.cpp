@@ -685,16 +685,24 @@ void CTilegenAction_PlaceComponent::OnBeginGeneration( CLayoutSystem *pLayoutSys
 
 	// Simplest but probably not the most efficient way to randomly choose N rooms from a list of X rooms.
 	int nNumOptionalRoomsChosen = 0;
+	Msg("Processing random rooms, need to add [%d] rooms.  Have [%d] options\n",nNumOptionalRooms, m_OptionalRooms.Count());
 	while ( nNumOptionalRoomsChosen < nNumOptionalRooms )
 	{
-		int nRoom = pLayoutSystem->GetRandomInt( 0, nNumOptionalRooms - 1 );
+
+		//BUG: int nRoom = pLayoutSystem->GetRandomInt( 0, nNumOptionalRooms - 1 );
+		//Should choose from all available rooms.
+		int nRoom = pLayoutSystem->GetRandomInt( 0, m_OptionalRooms.Count() -1);
+			
 		if ( !isRoomChosen[nRoom] )
 		{
+			
 			isRoomChosen[nRoom] = true;
 			AddRoomPlacementInstance( pLayoutSystem, &m_OptionalRooms[nRoom] );
 			++ nNumOptionalRoomsChosen;
+			Msg("Room [%d] is id [%d]\n", nNumOptionalRoomsChosen, nRoom);
 		}
 	}
+	Msg("Done processing random rooms.\n");
 }
 
 bool CTilegenAction_PlaceComponent::LoadFromKeyValues( KeyValues *pKeyValues )
