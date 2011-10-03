@@ -77,10 +77,11 @@ void CMOD_Player_Performance::OnMissionStarted(){
 //so asw_director.cpp calls 
 void CMOD_Player_Performance::FrameUpdatePostEntityThink()
 {	
-	int rating = CalculatePerformance();
+	int rating = CalculatePerformanceButDoNotUpdateHUD();
 
-	if (rating != m_previousRating)
-		WriteToHUD(rating);
+	//if (rating != m_previousRating) - WriteToHUD was firing before HUD was ready to receive, so HUD would
+	//be out of date on level start.
+		WriteToHUD("MODPlayerPerformance", rating);
 
 	m_previousRating = rating;
 
@@ -93,6 +94,12 @@ void CMOD_Player_Performance::FrameUpdatePostEntityThink()
 
 
 int CMOD_Player_Performance::CalculatePerformance()
+{
+	WriteToHUD("MODPlayerPerformanceDynamicContent", -1);
+	return CalculatePerformanceButDoNotUpdateHUD();
+}
+
+int CMOD_Player_Performance::CalculatePerformanceButDoNotUpdateHUD()
 {
 	//Performance is 25% health, 25% accuracy, 
 	//25% friendly fire, 25% average director stress 
@@ -297,7 +304,7 @@ void CMOD_Player_Performance::PrintDebug()
 	}	
 }
 
-void CMOD_Player_Performance::WriteToHUD(int rating)
+void CMOD_Player_Performance::WriteToHUD(const char* messagename, int rating)
 {	
 	for ( int i=0;i<ASWGameResource()->GetMaxMarineResources();i++ )
 	{
@@ -310,7 +317,7 @@ void CMOD_Player_Performance::WriteToHUD(int rating)
 		if ( pPlayer && pPlayer->GetMarine() )
 		{		
 			CSingleUserRecipientFilter user( pPlayer );
-			UserMessageBegin( user, "MODPlayerPerformance" );
+			UserMessageBegin( user, messagename );
 			WRITE_SHORT( rating );
 			MessageEnd();			
 		}	

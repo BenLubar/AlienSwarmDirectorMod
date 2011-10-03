@@ -25,13 +25,14 @@ public:
 	virtual void FrameUpdatePostEntityThink();
 
 	int CalculatePerformance();
+	int CalculatePerformanceButDoNotUpdateHUD();
 
 	int CalculateHealthRating(CASW_Game_Resource *pGameResource);
 	int CalculateAccuracyRating(CASW_Game_Resource *pGameResource);
 	int CalculateFriendFireRating(CASW_Game_Resource *pGameResource);
 	int CalculateDirectorStress(CASW_Game_Resource *pGameResource);	
 	void PrintDebug();
-	void WriteToHUD(int performance);
+	void WriteToHUD(const char* messagename, int rating);
 
 	//Called by asw_director
 	void OnMissionStarted();
