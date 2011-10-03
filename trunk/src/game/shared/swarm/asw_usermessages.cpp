@@ -94,5 +94,6 @@ void RegisterUserMessages( void )
 	usermessages->Register( "ASWEggEffects", -1 );	
 
 	//Mod
-	usermessages->Register("MODPlayerPerformance", -1);
+	usermessages->Register("MODPlayerPerformance", sizeof(short));
+	usermessages->Register("MODPlayerPerformanceDynamicContent", sizeof(short));
 }

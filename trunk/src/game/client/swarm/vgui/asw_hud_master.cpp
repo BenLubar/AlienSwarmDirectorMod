@@ -32,6 +32,7 @@ DECLARE_HUD_MESSAGE( CASW_Hud_Master, ASWOrderUseItemFX );
 DECLARE_HUD_MESSAGE( CASW_Hud_Master, ASWOrderStopItemFX );
 DECLARE_HUD_MESSAGE( CASW_Hud_Master, ASWInvalidDesination );
 DECLARE_HUD_MESSAGE( CASW_Hud_Master, MODPlayerPerformance );
+DECLARE_HUD_MESSAGE( CASW_Hud_Master, MODPlayerPerformanceDynamicContent );
 
 /////////////////////////////////////////////
 // DO NOT CHANGE THE ORDER OF THESE UNLESS YOU
@@ -103,6 +104,7 @@ CASW_Hud_Master::CASW_Hud_Master( const char *pElementName ) :
 	m_bFading = false;
 
 	m_iModPlayerPerformance = 0;
+	m_iModPlayerPerformanceDynamicContentNotificationBlinksRemaning = 0;
 }
 
 CASW_Hud_Master::~CASW_Hud_Master()
@@ -117,6 +119,7 @@ void CASW_Hud_Master::Init()
 	HOOK_HUD_MESSAGE( CASW_Hud_Master, ASWOrderStopItemFX );
 	HOOK_HUD_MESSAGE( CASW_Hud_Master, ASWInvalidDesination );
 	HOOK_HUD_MESSAGE( CASW_Hud_Master, MODPlayerPerformance );
+	HOOK_HUD_MESSAGE( CASW_Hud_Master, MODPlayerPerformanceDynamicContent );
 }
 
 void CASW_Hud_Master::VidInit()
@@ -560,6 +563,7 @@ void CASW_Hud_Master::Paint( void )
 		PaintLocalMarineInventory();
 		PaintFastReload();
 		PaintModPlayerPerformance();
+		PaintModPlayerPerformanceDynamicContentNotification();
 	}
 
 	for ( int i = 0; i < MAX_SQUADMATE_HUD_POSITIONS; i++ )
@@ -1293,18 +1297,20 @@ void CASW_Hud_Master::PaintModPlayerPerformance()
 	//Change to white boxes for full
 	//and thick outlines for empty (similiar to ammo clips
 		
-	//Draw 3 full boxes
-	int currentBox_x = m_nModPlayerPerformance_x + 70;
-	int box_y = m_nModPlayerPerformance_y;// + 10;
+	//Draw 3 full boxes - start from the right and work backwards
+	
+	
 	int box_w = 10;
 	int box_t = 15;
+	int currentBox_x = m_nModPlayerPerformance_x + m_nModPlayerPerformance_w - 5 - box_w;
+	int box_y = m_nModPlayerPerformance_y;// + 10;
 	int box_spacer_w = 12;	
 	int currentBoxTexture;
 
 	for (int i = 0; i < 3; i++)
 	{
 		//m_iModPlayerPerformance is updated in MsgFunc_MODPlayerPerformance
-		if ( (i+1) > m_iModPlayerPerformance)
+		if ( (3-i) > m_iModPlayerPerformance)
 		{
 			currentBoxTexture = m_nModPeformanceEmptyTextureID;
 		}
@@ -1321,7 +1327,7 @@ void CASW_Hud_Master::PaintModPlayerPerformance()
 			box_y + box_t
 			);		
 
-		currentBox_x += box_spacer_w;
+		currentBox_x -= box_spacer_w;
 	}
 
 	/*
@@ -1344,6 +1350,29 @@ void CASW_Hud_Master::PaintModPlayerPerformance()
 	//surface()->DrawSetTexture(m_nMod
 	//surface()->Draw
 	*/
+}
+
+void CASW_Hud_Master::PaintModPlayerPerformanceDynamicContentNotification()
+{
+	if (!m_pLocalMarineResource)
+	{
+		return;
+	}
+
+	//Set in MsgFunc_MODPlayerPerformanceDynamicContent
+	if (m_iModPlayerPerformanceDynamicContentNotificationBlinksRemaning <= 0)
+		return;
+
+	//blink
+	if ( ( int( gpGlobals->curtime*4 ) % 2 ) == 0 )
+	{
+		surface()->DrawSetTextColor( 200, 25, 25, 255 );
+		surface()->DrawSetTextPos( m_nMarinePortrait_x + m_nMarinePortrait_low_ammo_x,
+			m_nMarinePortrait_y + m_nMarinePortrait_low_ammo_y );
+		surface()->DrawUnicodeString( L" - Dynamic Content - " );
+
+		m_iModPlayerPerformanceDynamicContentNotificationBlinksRemaning--;
+	}		
 }
 
 void CASW_Hud_Master::PaintText()
@@ -1825,6 +1854,11 @@ void CASW_Hud_Master::MsgFunc_ASWInvalidDesination( bf_read &msg )
 void CASW_Hud_Master::MsgFunc_MODPlayerPerformance( bf_read &msg)
 {
 	m_iModPlayerPerformance = msg.ReadShort();
+}
+
+void CASW_Hud_Master::MsgFunc_MODPlayerPerformanceDynamicContent( bf_read &msg)
+{
+	m_iModPlayerPerformanceDynamicContentNotificationBlinksRemaning += 75;	
 }
 
 extern int g_asw_iPlayerListOpen;

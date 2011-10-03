@@ -1833,7 +1833,7 @@ void CBaseModPanel::ApplySchemeSettings(IScheme *pScheme)
 	m_iProductImageID = surface()->CreateNewTextureID();
 	//Mod - Draw custom loading file
 	//surface()->DrawSetTextureFile( m_iProductImageID, "console/startup_loading", true, false );
-	//surface()->DrawSetTextureFile( m_iProductImageID, "console/asdm_startup_loading", true, false );
+	surface()->DrawSetTextureFile( m_iProductImageID, "console/asdm_startup_loading", true, false );
 
 	// need these to be anchored now, can't come into existence during load
 	PrecacheLoadingTipIcons();

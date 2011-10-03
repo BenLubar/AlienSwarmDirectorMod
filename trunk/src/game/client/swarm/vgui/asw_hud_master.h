@@ -93,6 +93,7 @@ public:
 	void MsgFunc_ASWOrderStopItemFX( bf_read &msg );
 	void MsgFunc_ASWInvalidDesination( bf_read &msg );
 	void MsgFunc_MODPlayerPerformance( bf_read &msg );
+	void MsgFunc_MODPlayerPerformanceDynamicContent( bf_read &msg );
 
 	int GetDeadIconTextureID();
 	const HudSheetTexture_t* GetDeadIconUVs();
@@ -101,6 +102,7 @@ protected:
 	//Mod
 	int m_nModPeformanceEmptyTextureID, m_nModPeformanceFullTextureID;
 	int m_iModPlayerPerformance;
+	int m_iModPlayerPerformanceDynamicContentNotificationBlinksRemaning;
 
 	virtual void ApplySchemeSettings( vgui::IScheme *scheme );
 	virtual void Paint();
@@ -115,10 +117,12 @@ protected:
 	void PaintSquadMemberStatus( int nPosition );
 	void PaintLocalMarineInventory();
 	void PaintSquadMatesInventory();
-	void PaintFastReload();
-	void PaintModPlayerPerformance();
+	void PaintFastReload();	
 	void PaintText();
 	void PaintSquadMemberText( int nPosition );	
+
+	void PaintModPlayerPerformance();
+	void PaintModPlayerPerformanceDynamicContentNotification();
 
 	int GetClassIcon( C_ASW_Marine_Resource *pMR );
 
@@ -235,6 +239,9 @@ protected:
 	CPanelAnimationVarAliasType( int, m_nModPlayerPerformance_y, "ModPlayerPerformance_y", "0", "proportional_ypos" );
 	CPanelAnimationVarAliasType( int, m_nModPlayerPerformance_w, "ModPlayerPerformance_w", "0", "proportional_int" );
 	CPanelAnimationVarAliasType( int, m_nModPlayerPerformance_t, "ModPlayerPerformance_t", "0", "proportional_int" );
+
+	CPanelAnimationVarAliasType( int, m_nModPlayerPerformanceDynamicContent_x, "ModPlayerPerformanceDynamicContent_x", "0", "proportional_xpos" );
+	CPanelAnimationVarAliasType( int, m_nModPlayerPerformancDynamicContente_y, "ModPlayerPerformanceDynamicContent_y", "0", "proportional_ypos" );
 
 	CPanelAnimationVarAliasType( int, m_nSquadMates_x, "SquadMates_x", "0", "proportional_xpos" );
 	CPanelAnimationVarAliasType( int, m_nSquadMates_y, "SquadMates_y", "0", "proportional_ypos" );
