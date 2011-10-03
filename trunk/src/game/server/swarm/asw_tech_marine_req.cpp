@@ -20,7 +20,7 @@ void CASW_Tech_Marine_Req::Spawn()
 	//Msg("CASW_Tech_Marine_Req::Spawn setting mission requires tech to true\n");
 	if (ASWGameRules())
 	{
-		ASWGameRules()->m_bMissionRequiresTech = true;
+		//ASWGameRules()->m_bMissionRequiresTech = true;
 	}
 }
 

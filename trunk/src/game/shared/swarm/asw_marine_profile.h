@@ -272,22 +272,26 @@ extern CASW_Marine_ProfileList* MarineProfileList();
 
 inline bool CASW_Marine_Profile::CanHack( void )
 {
-	return GetMarineClass() == MARINE_CLASS_TECH;
+	return true;
+	//return GetMarineClass() == MARINE_CLASS_TECH;
 }
 
 inline bool CASW_Marine_Profile::HasHackSkill( void )
 {
-	return GetMarineClass() == MARINE_CLASS_TECH;
+	return true;
+	//return GetMarineClass() == MARINE_CLASS_TECH;
 }
 
 inline bool CASW_Marine_Profile::CanScanner( void )
 {
+	return true;
 	return GetMarineClass() == MARINE_CLASS_TECH;
 }
 
 inline bool CASW_Marine_Profile::CanUseTechWeapons( void )
 {
-	return GetMarineClass() == MARINE_CLASS_TECH;
+	return true;
+	//return GetMarineClass() == MARINE_CLASS_TECH;
 }
 
 inline bool CASW_Marine_Profile::HasTechIcon( void ) 
@@ -297,11 +301,13 @@ inline bool CASW_Marine_Profile::HasTechIcon( void )
 
 inline bool CASW_Marine_Profile::CanUseFirstAid( void ) 
 {
-	return GetMarineClass() == MARINE_CLASS_MEDIC;
+	return true;
+	//return GetMarineClass() == MARINE_CLASS_MEDIC;
 }
 
 inline bool CASW_Marine_Profile::CanUseAutogun( void )
 {
-	return GetMarineClass() == MARINE_CLASS_SPECIAL_WEAPONS;
+	return true;
+	//return GetMarineClass() == MARINE_CLASS_SPECIAL_WEAPONS;
 }
 #endif /* ASW_MARINEPROFILE_H */
