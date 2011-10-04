@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "63"
+	"mapversion" "64"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "63"
+	"mapversion" "64"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -643,7 +643,7 @@ entity
 	"id" "276"
 	"classname" "trigger_asw_button_area"
 	"hacklevel" "5"
-	"locked" "1"
+	"locked" "0"
 	"nopower" "0"
 	"nopowermessage" "[Easy] This room is locked because your performance is too high."
 	"numwires" "1"

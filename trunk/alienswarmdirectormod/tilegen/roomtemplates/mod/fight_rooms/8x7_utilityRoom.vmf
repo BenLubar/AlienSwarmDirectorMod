@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "169"
+	"mapversion" "171"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -38,7 +38,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "169"
+	"mapversion" "171"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -19171,6 +19171,7 @@ entity
 	{
 		"OnTrigger" "logic_leftroom_ranger_relayTrigger0-1"
 		"OnTrigger" "logic_leftroom_drone_relayTrigger2.5-1"
+		"OnTrigger" "jukeboxStartMusic0-1"
 	}
 	solid
 	{
@@ -20659,6 +20660,7 @@ entity
 	connections
 	{
 		"OnTrigger" "info_ammo_hint_rightShowHint0-1"
+		"OnTrigger" "jukeboxStartMusic0-1"
 	}
 	solid
 	{
@@ -20755,6 +20757,7 @@ entity
 	connections
 	{
 		"OnTrigger" "info_ammo_hint_rightShowHint0-1"
+		"OnTrigger" "jukeboxStartMusic0-1"
 	}
 	solid
 	{

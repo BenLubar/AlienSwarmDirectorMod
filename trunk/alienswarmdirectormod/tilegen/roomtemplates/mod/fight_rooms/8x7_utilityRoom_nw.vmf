@@ -19171,6 +19171,7 @@ entity
 	{
 		"OnTrigger" "logic_leftroom_ranger_relayTrigger0-1"
 		"OnTrigger" "logic_leftroom_drone_relayTrigger2.5-1"
+		"OnTrigger" "jukeboxStartMusic0-1"
 	}
 	solid
 	{
@@ -19835,12 +19836,12 @@ entity
 	"StartDisabled" "0"
 	connections
 	{
-		"OnTrigger" "spawn_elev_boomerStartSpawning1.5-1"
-		"OnTrigger" "spawner_elev_rangerStartSpawning0-1"
-		"OnTrigger" "spawner_elev_droneStartSpawning1-1"
+		"OnTrigger" "spawn_elev_boomerStartSpawning600-1"
+		"OnTrigger" "spawner_elev_rangerStartSpawning600-1"
+		"OnTrigger" "spawner_elev_droneStartSpawning600-1"
 		"OnTrigger" "spawner_mainroom_droneStartSpawning2-1"
-		"OnTrigger" "spawner_office_baseStartSpawning4-1"
-		"OnTrigger" "spawner_big_hole_droneStartSpawning2-1"
+		"OnTrigger" "spawner_office_baseStartSpawning600-1"
+		"OnTrigger" "spawner_big_hole_droneStartSpawning600-1"
 	}
 	solid
 	{
@@ -20659,6 +20660,7 @@ entity
 	connections
 	{
 		"OnTrigger" "info_ammo_hint_rightShowHint0-1"
+		"OnTrigger" "jukeboxStartMusic0-1"
 	}
 	solid
 	{
@@ -20755,6 +20757,7 @@ entity
 	connections
 	{
 		"OnTrigger" "info_ammo_hint_rightShowHint0-1"
+		"OnTrigger" "jukeboxStartMusic0-1"
 	}
 	solid
 	{
