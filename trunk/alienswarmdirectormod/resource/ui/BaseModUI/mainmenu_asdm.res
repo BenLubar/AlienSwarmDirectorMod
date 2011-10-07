@@ -193,7 +193,7 @@
 		"tall"					"0"
 		"zpos"					"3"
 		"InitialFocus"			"BtnQuickMatch"
-		"ResourceFile"			"resource/UI/basemodui/CampaignFlyout.res"
+		"ResourceFile"			"resource/UI/basemodui/CampaignFlyout_asdm.res"
 	}
 	
 	"FlmOptionsFlyout"
