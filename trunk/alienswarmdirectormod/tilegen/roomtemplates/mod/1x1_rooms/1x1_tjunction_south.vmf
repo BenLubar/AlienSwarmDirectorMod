@@ -1,7 +1,7 @@
 versioninfo
 {
 	"editorversion" "400"
-	"editorbuild" "4961"
+	"editorbuild" "5032"
 	"mapversion" "8"
 	"formatversion" "100"
 	"prefab" "0"
@@ -927,8 +927,8 @@ cameras
 	"activecamera" "0"
 	camera
 	{
-		"position" "[170.179 -108.183 633.595]"
-		"look" "[153.513 5.41617 393.96]"
+		"position" "[283.271 -144.809 90.2056]"
+		"look" "[152.623 85.6751 69.8198]"
 	}
 }
 cordons
