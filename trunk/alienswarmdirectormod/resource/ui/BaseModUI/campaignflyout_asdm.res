@@ -10,7 +10,7 @@
 		"wide"					"180" [$ENGLISH]
 		"wide"					"270" [!$ENGLISH]
 		"tall"					"65"  [$X360]
-		"tall"					"85"  [$WIN32]
+		"tall"					"20"  [$WIN32]  //orignal 85
 		"visible"				"1"
 		"enabled"				"1"
 		"paintbackground"		"1"
@@ -51,7 +51,7 @@
 		"tall"					"20"
 		"autoResize"			"1"
 		"pinCorner"				"0"
-		"visible"				"1"
+		"visible"				"0"
 		"enabled"				"1"
 		"tabPosition"			"0"
 		"wrap"					"1"
@@ -75,7 +75,7 @@
 		"tall"					"20"
 		"autoResize"			"1"
 		"pinCorner"				"0"
-		"visible"				"1"
+		"visible"				"0"
 		"enabled"				"1"
 		"tabPosition"			"0"
 		"wrap"					"1"
@@ -99,7 +99,7 @@
 		"tall"					"20"
 		"autoResize"			"1"
 		"pinCorner"				"0"
-		"visible"				"1"
+		"visible"				"0"
 		"enabled"				"1"
 		"tabPosition"			"0"
 		"wrap"					"1"
