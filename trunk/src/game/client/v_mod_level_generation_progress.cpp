@@ -58,10 +58,12 @@ MOD_level_generation_progress_launcher* MOD_level_generation_progress_launcher::
 
 void MOD_level_generation_progress_launcher::ShowLevelGenerationProgressWindow()
 {
+	/*
 	MOD_level_generation_progress *levelGeneration = static_cast<MOD_level_generation_progress *>(
 		CBaseModPanel::GetSingleton().OpenWindow(WT_MOD_LEVEL_GENERATION, 0));
 
 	levelGeneration->SetProgress(10);
+	*/
 }
 
 void MOD_level_generation_progress_launcher::BeginLevelGeneration()

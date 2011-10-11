@@ -366,6 +366,7 @@ exit 1
     <None Include="..\..\vpc_scripts\source_dll_win32_debug.vpc" />
     <None Include="..\..\vpc_scripts\source_dll_win32_release.vpc" />
     <None Include="..\..\vpc_scripts\version.vpc" />
+    <None Include="nb_mod_level_loading_button.h" />
     <None Include="vscript_client.nut" />
   </ItemGroup>
   <ItemGroup>
@@ -726,6 +727,7 @@ exit 1
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="nb_mod_level_loading_button.cpp" />
     <ClCompile Include="object_motion_blur_effect.cpp" />
     <ClCompile Include="..\shared\obstacle_pushaway.cpp" />
     <ClCompile Include="panelmetaclassmgr.cpp" />
@@ -2251,6 +2253,7 @@ exit 1
     <ClInclude Include="c_env_ambient_light.h" />
     <ClInclude Include="c_env_projectedtexture.h" />
     <ClInclude Include="c_gameinstructor.h" />
+    <ClInclude Include="c_mod_build_map.h" />
     <ClInclude Include="c_mod_build_mission_map_for_next_mission.h" />
     <ClInclude Include="c_mod_dynamic_door_area.h" />
     <ClInclude Include="c_mod_marker.h" />

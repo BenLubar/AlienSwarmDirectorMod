@@ -39,6 +39,10 @@
 #include "missionchooser/iasw_map_builder.h"
 #include "missionchooser/imod_level_builder.h"
 
+#include "asw_build_map_frame.h"
+
+#include "../nb_mod_level_loading_button.h"
+
 //#include "../../missionchooser/iasw_mission_chooser_source.h"
 //#include "missionchooser/iasw_map_builder.h"
 //#include "missionchooser/iasw_mission_chooser_source.h"
@@ -68,6 +72,11 @@ bool MissionCompletePanel::IsNextMissionLevelGenerationComplete()
 
 MissionCompletePanel::MissionCompletePanel(Panel *parent, const char *name, bool bSuccess) : vgui::EditablePanel(parent, name)
 {	
+
+	//MOD
+	m_pBuildMapFrame = new CASW_Build_Map_Frame(this, "BuildMapFrame");
+
+
 	m_pResultImage = NULL;
 	m_bViewedStatsPage = false;
 
@@ -187,7 +196,7 @@ MissionCompletePanel::MissionCompletePanel(Panel *parent, const char *name, bool
 	m_pRestartButton = new CNB_Button( this, "RestartButton", "#asw_button_restart", this, "Restart" );
 	m_pReadyButton = new CNB_Button( this, "ReadyButton", "#asw_button_ready", this, "Ready" );
 	m_pReadyCheckImage = new vgui::ImagePanel( this, "ReadyCheckImage" );
-	m_pContinueButton = new CNB_Button( this, "ContinueButton", "#asw_button_continue", this, "Continue" );
+	m_pContinueButton = new CNB_MOD_Level_Loading_Button( this, "ContinueButton", "#asw_button_continue", this, "Continue" );
 
 	m_pTab[ 0 ] = new CNB_Button( this, "XPTab", "#asw_summary", this, "XPTab" );
 	m_pTab[ 1 ] = new CNB_Button( this, "StatsTab", "#asw_stats_tab", this, "StatsTab" );
@@ -450,7 +459,8 @@ void MissionCompletePanel::UpdateVisibleButtons()
 					}
 				}
 				else
-				{					
+				{	
+					/*
 					if ( !IsNextMissionLevelGenerationComplete() )
 					{
 						missionchooser->MapBuilder()->Update(Plat_FloatTime());
@@ -463,8 +473,12 @@ void MissionCompletePanel::UpdateVisibleButtons()
 					}
 					else
 					{
-						m_pContinueButton->SetText( "#asw_button_continue" );
+					
+						m_pContinueButton->SetText( "#asw_button_continue" );					
 					}
+					*/
+					m_pContinueButton->SetText( "#asw_button_continue" );					
+				
 				}
 
 				m_pContinueButton->SetVisible( true );
@@ -592,11 +606,13 @@ void MissionCompletePanel::OnCommand(const char* command)
 	}
 	else if ( !Q_stricmp( command, "Continue" ) )
 	{
+		/*
 		if ( !IsNextMissionLevelGenerationComplete() )
 		{				
 			//We aren't done building the next level, we can't continue
 			return;
 		}
+		*/
 
 		if ( ASWGameRules()->GetMissionSuccess() && ASWGameRules()->IsCampaignGame() && ASWGameRules()->CampaignMissionsLeft() <= 1 )
 		{
@@ -626,6 +642,11 @@ void MissionCompletePanel::OnCommand(const char* command)
 			{
 				if ( ASWGameRules()->IsCampaignGame() && ASWGameRules()->GetMissionSuccess() )   // completed a campaign map
 				{
+					/*CASW_Build_Map_Frame *buildMapFrame = new CASW_Build_Map_Frame(m_pMainElements, "BuildMapFrame");
+					buildMapFrame->MoveToCenterOfScreen();
+					buildMapFrame->MoveToFront();
+					buildMapFrame->Activate();
+					*/
 					pPlayer->CampaignSaveAndShow();
 				}
 				else

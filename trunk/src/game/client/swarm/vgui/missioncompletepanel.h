@@ -20,6 +20,10 @@ class CNB_Header_Footer;
 class CNB_Button;
 class CMission_Complete_Message;
 class CNB_Vote_Panel;
+class CNB_MOD_Level_Loading_Button;
+
+class CASW_Build_Map_Frame;
+
 namespace vgui
 {
 	class IScheme;
@@ -60,7 +64,7 @@ public:
 	CNB_Button *m_pRestartButton;
 	vgui::ImagePanel	*m_pReadyCheckImage;
 	CNB_Button *m_pReadyButton;
-	CNB_Button *m_pContinueButton;
+	CNB_MOD_Level_Loading_Button *m_pContinueButton;
 	CNB_Button *m_pNextButton;
 	StatsReport* m_pStatsPanel;
 	vgui::HFont m_LargeFont;
@@ -98,6 +102,9 @@ public:
 	bool m_bShowQueuedUnlocks;
 	void UpdateQueuedUnlocks();
 	CUtlVector<const char*> m_aUnlockedWeapons;
+
+	//MOD
+	CASW_Build_Map_Frame *m_pBuildMapFrame;
 };
 
 
