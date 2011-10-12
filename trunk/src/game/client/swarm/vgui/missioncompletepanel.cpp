@@ -42,6 +42,8 @@
 #include "asw_build_map_frame.h"
 
 #include "../nb_mod_level_loading_button.h"
+#include "../nb_mod_level_building.h"
+#include "../gameui/swarm/basemodpanel.h"
 
 //#include "../../missionchooser/iasw_mission_chooser_source.h"
 //#include "missionchooser/iasw_map_builder.h"
@@ -53,6 +55,7 @@
 class IASW_Mission_Chooser;
 
 using namespace vgui;
+using namespace BaseModUI;
 
 #ifdef _DEBUG
 extern ConVar asw_unlock_all_weapons;
@@ -196,7 +199,8 @@ MissionCompletePanel::MissionCompletePanel(Panel *parent, const char *name, bool
 	m_pRestartButton = new CNB_Button( this, "RestartButton", "#asw_button_restart", this, "Restart" );
 	m_pReadyButton = new CNB_Button( this, "ReadyButton", "#asw_button_ready", this, "Ready" );
 	m_pReadyCheckImage = new vgui::ImagePanel( this, "ReadyCheckImage" );
-	m_pContinueButton = new CNB_MOD_Level_Loading_Button( this, "ContinueButton", "#asw_button_continue", this, "Continue" );
+	//m_pContinueButton = new CNB_MOD_Level_Loading_Button( this, "ContinueButton", "#asw_button_continue", this, "Continue" );
+	m_pContinueButton = new CNB_Button( this, "ContinueButton", "#asw_button_continue", this, "Continue" );
 
 	m_pTab[ 0 ] = new CNB_Button( this, "XPTab", "#asw_summary", this, "XPTab" );
 	m_pTab[ 1 ] = new CNB_Button( this, "StatsTab", "#asw_stats_tab", this, "StatsTab" );
@@ -647,7 +651,11 @@ void MissionCompletePanel::OnCommand(const char* command)
 					buildMapFrame->MoveToFront();
 					buildMapFrame->Activate();
 					*/
-					pPlayer->CampaignSaveAndShow();
+
+					OnShowLevelBuilding(pPlayer);
+					//OnSuggestDifficulty(true);
+					
+					//pPlayer->CampaignSaveAndShow();
 				}
 				else
 				{
@@ -707,6 +715,21 @@ void MissionCompletePanel::UpdateQueuedUnlocks()
 		m_aUnlockedWeapons.Remove( 0 );
 	}
 }
+
+void MissionCompletePanel::OnShowLevelBuilding( C_ASW_Player *pPlayer )
+{
+	if ( m_hSubScreen.Get() )
+	{
+		m_hSubScreen->MarkForDeletion();
+	}
+
+	CNB_MOD_Level_Building *pPanel = new CNB_MOD_Level_Building( this, "LevelBuildingPanel", pPlayer );
+	
+	pPanel->MoveToFront();
+
+	m_hSubScreen = pPanel;
+}
+
 
 void MissionCompletePanel::OnSuggestDifficulty( bool bIncrease )
 {

@@ -443,6 +443,7 @@ exit 1
     <ClCompile Include="c_mod_dynamic_door_area.cpp" />
     <ClCompile Include="c_mod_marker.cpp" />
     <ClCompile Include="c_mod_objective_escape.cpp" />
+    <ClCompile Include="c_mod_show_level_building_loader.cpp" />
     <ClCompile Include="hl2\C_Func_Monitor.cpp" />
     <ClCompile Include="c_func_movelinear.cpp" />
     <ClCompile Include="c_func_occluder.cpp" />
@@ -727,6 +728,7 @@ exit 1
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_Laptop|Win32'">
       </PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="nb_mod_level_building.cpp" />
     <ClCompile Include="nb_mod_level_loading_button.cpp" />
     <ClCompile Include="object_motion_blur_effect.cpp" />
     <ClCompile Include="..\shared\obstacle_pushaway.cpp" />
@@ -2276,6 +2278,7 @@ exit 1
     <ClInclude Include="..\shared\postprocess_shared.h" />
     <ClInclude Include="..\shared\sharedvar.h" />
     <ClInclude Include="mod_buildAndLaunchRandomLevel.h" />
+    <ClInclude Include="nb_mod_level_building.h" />
     <ClInclude Include="spatialentitymgr.h" />
     <ClInclude Include="vgui_avatarimage.h" />
     <ClInclude Include="viewdebug.h" />

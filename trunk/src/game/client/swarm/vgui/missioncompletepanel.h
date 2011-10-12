@@ -21,6 +21,7 @@ class CNB_Button;
 class CMission_Complete_Message;
 class CNB_Vote_Panel;
 class CNB_MOD_Level_Loading_Button;
+class C_ASW_Player;
 
 class CASW_Build_Map_Frame;
 
@@ -64,7 +65,8 @@ public:
 	CNB_Button *m_pRestartButton;
 	vgui::ImagePanel	*m_pReadyCheckImage;
 	CNB_Button *m_pReadyButton;
-	CNB_MOD_Level_Loading_Button *m_pContinueButton;
+	//CNB_MOD_Level_Loading_Button *m_pContinueButton;
+	CNB_Button *m_pContinueButton;
 	CNB_Button *m_pNextButton;
 	StatsReport* m_pStatsPanel;
 	vgui::HFont m_LargeFont;
@@ -104,6 +106,7 @@ public:
 	CUtlVector<const char*> m_aUnlockedWeapons;
 
 	//MOD
+	void OnShowLevelBuilding(C_ASW_Player *pPlayer);
 	CASW_Build_Map_Frame *m_pBuildMapFrame;
 };
 

@@ -42,7 +42,7 @@ void CNB_Suggest_Difficulty::PerformLayout()
 	pKV->SetInt( "fov", 20 );
 	pKV->SetInt( "start_framed", 0 );
 	pKV->SetInt( "disable_manipulation", 1 );
-
+	
 	BaseClass::PerformLayout();
 }
 
