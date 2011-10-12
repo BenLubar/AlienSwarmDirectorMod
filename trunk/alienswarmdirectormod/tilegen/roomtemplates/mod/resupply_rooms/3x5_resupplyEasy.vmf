@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "64"
+	"mapversion" "71"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "64"
+	"mapversion" "71"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -551,6 +551,7 @@ entity
 	"playersrequired" "1"
 	"spawnflags" "2"
 	"StartDisabled" "0"
+	"targetname" "door_trigger"
 	"usetargetname" "door_02"
 	"wait" "1"
 	solid
@@ -643,7 +644,7 @@ entity
 	"id" "276"
 	"classname" "trigger_asw_button_area"
 	"hacklevel" "5"
-	"locked" "0"
+	"locked" "1"
 	"nopower" "0"
 	"nopowermessage" "[Easy] This room is locked because your performance is too high."
 	"numwires" "1"
@@ -4620,7 +4621,7 @@ entity
 	"maxDifficultyThreshold" "3"
 	"maxTriggerFire" "1"
 	"minDifficultyThreshold" "2"
-	"origin" "384 272 82"
+	"origin" "400 156 82"
 	"spawnflags" "2"
 	"StartDisabled" "0"
 	"wait" "1"
@@ -4634,7 +4635,7 @@ entity
 		side
 		{
 			"id" "658"
-			"plane" "(248 248 162) (248 296 162) (520 296 162)"
+			"plane" "(200 16 162) (200 296 162) (600 296 162)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 -1 0 -32] 0.25"
@@ -4645,7 +4646,7 @@ entity
 		side
 		{
 			"id" "657"
-			"plane" "(248 296 2) (248 248 2) (520 248 2)"
+			"plane" "(200 296 2) (200 16 2) (600 16 2)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 -1 0 -32] 0.25"
@@ -4656,7 +4657,7 @@ entity
 		side
 		{
 			"id" "656"
-			"plane" "(248 248 2) (248 296 2) (248 296 162)"
+			"plane" "(200 16 2) (200 296 2) (200 296 162)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[0 1 0 32] 0.25"
 			"vaxis" "[0 0 -1 33.239] 0.25"
@@ -4667,7 +4668,7 @@ entity
 		side
 		{
 			"id" "655"
-			"plane" "(520 296 2) (520 248 2) (520 248 162)"
+			"plane" "(600 296 2) (600 16 2) (600 16 162)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[0 1 0 32] 0.25"
 			"vaxis" "[0 0 -1 33.239] 0.25"
@@ -4678,7 +4679,7 @@ entity
 		side
 		{
 			"id" "654"
-			"plane" "(248 296 2) (520 296 2) (520 296 162)"
+			"plane" "(200 296 2) (600 296 2) (600 296 162)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 33.239] 0.25"
@@ -4689,7 +4690,7 @@ entity
 		side
 		{
 			"id" "653"
-			"plane" "(520 248 2) (248 248 2) (248 248 162)"
+			"plane" "(600 16 2) (200 16 2) (200 16 162)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 33.239] 0.25"
@@ -4774,7 +4775,6 @@ entity
 	"id" "3502"
 	"classname" "asw_pickup_sentry"
 	"angles" "0 0 0"
-	"BulletsInGun" "50"
 	"Clips" "0"
 	"fademaxdist" "0"
 	"fademindist" "-1"
@@ -4782,6 +4782,7 @@ entity
 	"FreezePickup" "No"
 	"SecondaryBullets" "0"
 	"spawnflags" "0"
+	"BulletsInGun" "1"
 	"origin" "360 1032 24"
 	editor
 	{

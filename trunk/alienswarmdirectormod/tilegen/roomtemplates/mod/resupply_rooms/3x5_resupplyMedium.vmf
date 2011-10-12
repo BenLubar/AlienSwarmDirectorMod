@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "72"
+	"mapversion" "77"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "72"
+	"mapversion" "77"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -795,7 +795,7 @@ entity
 	"id" "276"
 	"classname" "trigger_asw_button_area"
 	"hacklevel" "5"
-	"locked" "0"
+	"locked" "1"
 	"nopower" "0"
 	"nopowermessage" "[Medium] This room is locked because your performance is too high or too low."
 	"numwires" "1"
@@ -4683,16 +4683,17 @@ entity
 {
 	"id" "3408"
 	"classname" "mod_dynaimic_difficulty_modifier_trigger"
-	"maxDifficultyThreshold" "1"
+	"maxDifficultyThreshold" "3"
 	"maxTriggerFire" "1"
 	"minDifficultyThreshold" "1"
-	"origin" "384 272 82"
+	"origin" "388 156 82"
 	"spawnflags" "2"
 	"StartDisabled" "0"
 	"wait" "1"
 	connections
 	{
-		"OnTrigger" "trigger_button_areaPowerOff0-1"
+		"OnTriggerEasy" "trigger_button_areaPowerOff0-1"
+		"OnTriggerHard" "trigger_button_areaPowerOff0-1"
 	}
 	solid
 	{
@@ -4700,7 +4701,7 @@ entity
 		side
 		{
 			"id" "658"
-			"plane" "(248 248 162) (248 296 162) (520 296 162)"
+			"plane" "(232 16 162) (232 296 162) (544 296 162)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 -1 0 -32] 0.25"
@@ -4711,7 +4712,7 @@ entity
 		side
 		{
 			"id" "657"
-			"plane" "(248 296 2) (248 248 2) (520 248 2)"
+			"plane" "(232 296 2) (232 16 2) (544 16 2)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 -1 0 -32] 0.25"
@@ -4722,7 +4723,7 @@ entity
 		side
 		{
 			"id" "656"
-			"plane" "(248 248 2) (248 296 2) (248 296 162)"
+			"plane" "(232 16 2) (232 296 2) (232 296 162)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[0 1 0 32] 0.25"
 			"vaxis" "[0 0 -1 33.239] 0.25"
@@ -4733,7 +4734,7 @@ entity
 		side
 		{
 			"id" "655"
-			"plane" "(520 296 2) (520 248 2) (520 248 162)"
+			"plane" "(544 296 2) (544 16 2) (544 16 162)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[0 1 0 32] 0.25"
 			"vaxis" "[0 0 -1 33.239] 0.25"
@@ -4744,7 +4745,7 @@ entity
 		side
 		{
 			"id" "654"
-			"plane" "(248 296 2) (520 296 2) (520 296 162)"
+			"plane" "(232 296 2) (544 296 2) (544 296 162)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 33.239] 0.25"
@@ -4755,106 +4756,7 @@ entity
 		side
 		{
 			"id" "653"
-			"plane" "(520 248 2) (248 248 2) (248 248 162)"
-			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[1 0 0 0] 0.25"
-			"vaxis" "[0 0 -1 33.239] 0.25"
-			"rotation" "0"
-			"lightmapscale" "16"
-			"smoothing_groups" "0"
-		}
-		editor
-		{
-			"color" "220 30 220"
-			"visgroupshown" "1"
-			"visgroupautoshown" "1"
-		}
-	}
-	editor
-	{
-		"color" "220 30 220"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[1000 4500]"
-	}
-}
-entity
-{
-	"id" "3551"
-	"classname" "mod_dynaimic_difficulty_modifier_trigger"
-	"maxDifficultyThreshold" "3"
-	"maxTriggerFire" "1"
-	"minDifficultyThreshold" "3"
-	"origin" "384 288 82"
-	"spawnflags" "2"
-	"StartDisabled" "0"
-	"wait" "1"
-	connections
-	{
-		"OnTrigger" "trigger_button_areaPowerOff0-1"
-	}
-	solid
-	{
-		"id" "3552"
-		side
-		{
-			"id" "670"
-			"plane" "(248 264 162) (248 312 162) (520 312 162)"
-			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[1 0 0 0] 0.25"
-			"vaxis" "[0 -1 0 32] 0.25"
-			"rotation" "0"
-			"lightmapscale" "16"
-			"smoothing_groups" "0"
-		}
-		side
-		{
-			"id" "669"
-			"plane" "(248 312 2) (248 264 2) (520 264 2)"
-			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[1 0 0 0] 0.25"
-			"vaxis" "[0 -1 0 32] 0.25"
-			"rotation" "0"
-			"lightmapscale" "16"
-			"smoothing_groups" "0"
-		}
-		side
-		{
-			"id" "668"
-			"plane" "(248 264 2) (248 312 2) (248 312 162)"
-			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[0 1 0 -32] 0.25"
-			"vaxis" "[0 0 -1 33.239] 0.25"
-			"rotation" "0"
-			"lightmapscale" "16"
-			"smoothing_groups" "0"
-		}
-		side
-		{
-			"id" "667"
-			"plane" "(520 312 2) (520 264 2) (520 264 162)"
-			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[0 1 0 -32] 0.25"
-			"vaxis" "[0 0 -1 33.239] 0.25"
-			"rotation" "0"
-			"lightmapscale" "16"
-			"smoothing_groups" "0"
-		}
-		side
-		{
-			"id" "666"
-			"plane" "(248 312 2) (520 312 2) (520 312 162)"
-			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[1 0 0 0] 0.25"
-			"vaxis" "[0 0 -1 33.239] 0.25"
-			"rotation" "0"
-			"lightmapscale" "16"
-			"smoothing_groups" "0"
-		}
-		side
-		{
-			"id" "665"
-			"plane" "(520 264 2) (248 264 2) (248 264 162)"
+			"plane" "(544 16 2) (232 16 2) (232 16 162)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 33.239] 0.25"
@@ -4991,7 +4893,7 @@ entity
 	"id" "3751"
 	"classname" "asw_pickup_medkit"
 	"angles" "0 0 0"
-	"BulletsInGun" "50"
+	"BulletsInGun" "1"
 	"Clips" "0"
 	"fademaxdist" "0"
 	"fademindist" "-1"
@@ -5014,22 +4916,7 @@ entity
 	"classname" "info_node"
 	"angles" "0 0 0"
 	"nodeid" "39"
-	"origin" "64 744 1.00001"
-	editor
-	{
-		"color" "232 219 8"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[0 12500]"
-	}
-}
-entity
-{
-	"id" "3772"
-	"classname" "info_node"
-	"angles" "0 0 0"
-	"nodeid" "40"
-	"origin" "88 680 1.00001"
+	"origin" "104 744 1.00001"
 	editor
 	{
 		"color" "232 219 8"
@@ -5044,7 +4931,7 @@ entity
 	"classname" "info_node"
 	"angles" "0 0 0"
 	"nodeid" "41"
-	"origin" "56 608 1.00001"
+	"origin" "104 608 1.00001"
 	editor
 	{
 		"color" "232 219 8"
@@ -5257,7 +5144,7 @@ entity
 	"classname" "info_node"
 	"angles" "0 0 0"
 	"nodeid" "43"
-	"origin" "232 736 1.00001"
+	"origin" "240 736 1.00001"
 	editor
 	{
 		"color" "232 219 8"
@@ -5272,7 +5159,7 @@ entity
 	"classname" "info_node"
 	"angles" "0 0 0"
 	"nodeid" "44"
-	"origin" "232 608 1.00001"
+	"origin" "240 608 1.00001"
 	editor
 	{
 		"color" "232 219 8"
@@ -5285,13 +5172,13 @@ entity
 {
 	"id" "3974"
 	"classname" "info_node_link"
-	"EndNode" "0"
+	"EndNode" "43"
 	"initialstate" "1"
 	"InvertAllow" "0"
 	"linktype" "1"
 	"preciseMovement" "0"
 	"priority" "0"
-	"StartNode" "0"
+	"StartNode" "39"
 	"origin" "184 744 1.00001"
 	editor
 	{
@@ -5305,13 +5192,13 @@ entity
 {
 	"id" "3991"
 	"classname" "info_node_link"
-	"EndNode" "0"
+	"EndNode" "44"
 	"initialstate" "1"
 	"InvertAllow" "0"
 	"linktype" "1"
 	"preciseMovement" "0"
 	"priority" "0"
-	"StartNode" "0"
+	"StartNode" "41"
 	"origin" "184 608 1.00001"
 	editor
 	{
