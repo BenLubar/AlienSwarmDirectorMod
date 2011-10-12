@@ -32,7 +32,7 @@ CNB_MOD_Level_Building::CNB_MOD_Level_Building( vgui::Panel *parent, const char 
 			
 	m_pPlayer = pPlayer;
 	
-	m_flLastEngineTime = 0.0f;
+	m_flLastEngineTime = Plat_FloatTime();
 }
 
 void CNB_MOD_Level_Building::ApplySchemeSettings( vgui::IScheme *pScheme )
@@ -68,8 +68,14 @@ void CNB_MOD_Level_Building::PaintBackground()
 
 void CNB_MOD_Level_Building::OnThink()
 {
+
+	//Give 0.75 seconds for the window to open and render
+	if (m_flLastEngineTime + 0.75f < Plat_FloatTime())
+	{
+		//Update progress will set m_flLastEngineTime
 		UpdateWorkingAnim();
 		UpdateProgress();	
+	}
 
 
 	BaseClass::OnThink();
@@ -81,7 +87,7 @@ void CNB_MOD_Level_Building::UpdateWorkingAnim()
 	{
 		// clock the anim at 10hz
 		float time = Plat_FloatTime();
-		if ( ( m_flLastEngineTime + 0.1f ) < time )
+		if ( ( m_flLastEngineTime + 0.05f ) < time )
 		{
 			m_flLastEngineTime = time;
 			m_pWorkingAnim->SetFrame( m_pWorkingAnim->GetFrame() + 1 );
@@ -100,12 +106,7 @@ void CNB_MOD_Level_Building::UpdateProgress()
 						
 	m_pPercentCompleteLabel->SetText( buffer );
 
-	wchar_t bufferStatus[512];
-	swprintf(bufferStatus,sizeof(bufferStatus),L"%s", 
-		missionchooser->MapBuilder()->GetStatusMessage()
-		);
-	
-	m_pStatusLabel->SetText(bufferStatus);
+	m_pStatusLabel->SetText( missionchooser->MapBuilder()->GetStatusMessage());
 
 	if (progress == 100)
 	{
