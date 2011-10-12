@@ -69,8 +69,8 @@ void CNB_MOD_Level_Building::PaintBackground()
 void CNB_MOD_Level_Building::OnThink()
 {
 
-	//Give 0.75 seconds for the window to open and render
-	if (m_flLastEngineTime + 0.75f < Plat_FloatTime())
+	//Give some time for the window to open and render
+	if (m_flLastEngineTime + 0.3f < Plat_FloatTime())
 	{
 		//Update progress will set m_flLastEngineTime
 		UpdateWorkingAnim();
@@ -87,7 +87,7 @@ void CNB_MOD_Level_Building::UpdateWorkingAnim()
 	{
 		// clock the anim at 10hz
 		float time = Plat_FloatTime();
-		if ( ( m_flLastEngineTime + 0.05f ) < time )
+		if ( ( m_flLastEngineTime + 0.1f ) < time )
 		{
 			m_flLastEngineTime = time;
 			m_pWorkingAnim->SetFrame( m_pWorkingAnim->GetFrame() + 1 );
