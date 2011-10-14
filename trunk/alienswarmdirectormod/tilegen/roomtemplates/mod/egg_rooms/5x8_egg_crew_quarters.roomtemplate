@@ -12,6 +12,14 @@
 		"ZChange"		"0"
 		"ChokeGrow"		"0"
 	}	
+	"EXIT"
+	{
+		"XPos"		"4"
+		"YPos"		"3"
+		"ExitDirection"		"3"
+		"ZChange"		"0"
+		"ChokeGrow"		"0"
+	}	
 	"Tags"
 	{	
 		"tag"		"Special"
