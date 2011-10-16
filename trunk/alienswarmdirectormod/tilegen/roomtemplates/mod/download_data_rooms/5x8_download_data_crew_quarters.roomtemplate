@@ -1,4 +1,4 @@
-"egg_rooms\5x8_egg_crew_quarters"
+"download_data_rooms\5x8_download_data_crew_quarters"
 {
 	"TilesX"		"5"
 	"TilesY"		"8"
@@ -23,6 +23,6 @@
 	"Tags"
 	{	
 		"tag"		"Special"
-		"tag"		"Egg Room"
+		"tag"		"Data Room"
 	}
 }

@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "90"
+	"mapversion" "95"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "90"
+	"mapversion" "95"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -6784,21 +6784,6 @@ entity
 }
 entity
 {
-	"id" "204"
-	"classname" "infodecal"
-	"angles" "0 90 0"
-	"texture" "swarm/decals/goodecal1"
-	"origin" "267.7 1444.58 0"
-	editor
-	{
-		"color" "220 30 220"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[4500 7500]"
-	}
-}
-entity
-{
 	"id" "211"
 	"classname" "asw_grub_sac"
 	"angles" "0 89.5 0"
@@ -7574,63 +7559,6 @@ entity
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
 		"logicalpos" "[9000 -12268]"
-	}
-}
-entity
-{
-	"id" "356"
-	"classname" "asw_egg"
-	"angles" "0 30 0"
-	"OnEggDestroyed" "commander_countAdd10-1"
-	"ParasiteClass" "asw_parasite"
-	connections
-	{
-		"OnEggDestroyed" "egg_marker_frontSetComplete0-1"
-	}
-	"origin" "295 1446 0.694702"
-	editor
-	{
-		"color" "220 30 220"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[10000 -10268]"
-	}
-}
-entity
-{
-	"id" "358"
-	"classname" "asw_egg"
-	"ParasiteClass" "asw_parasite"
-	connections
-	{
-		"OnEggDestroyed" "egg_counterAdd1-1"
-	}
-	"origin" "557 1686 0.694603"
-	editor
-	{
-		"color" "220 30 220"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[10000 -9768]"
-	}
-}
-entity
-{
-	"id" "360"
-	"classname" "asw_egg"
-	"angles" "0 252 0"
-	"ParasiteClass" "asw_parasite"
-	connections
-	{
-		"OnEggDestroyed" "egg_counterAdd10-1"
-	}
-	"origin" "189 1860 0.694603"
-	editor
-	{
-		"color" "220 30 220"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[10000 -9268]"
 	}
 }
 entity
@@ -13366,32 +13294,13 @@ entity
 }
 entity
 {
-	"id" "18437"
-	"classname" "asw_marker"
-	"mapheight" "256"
-	"mapwidth" "256"
-	"objectivename" "@objective_eggs"
-	"StartDisabled" "0"
-	"targetname" "egg_marker_front"
-	"origin" "304 1439 193"
-	editor
-	{
-		"color" "220 30 220"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[0 1500]"
-	}
-}
-entity
-{
 	"id" "18448"
 	"classname" "asw_marker"
 	"mapheight" "256"
 	"mapwidth" "256"
-	"objectivename" "@objective_eggs"
+	"objectivename" "@objective_download"
 	"StartDisabled" "0"
-	"targetname" "egg_marker_back"
-	"origin" "381 1783 193"
+	"origin" "298 1808 193"
 	editor
 	{
 		"color" "220 30 220"
@@ -13402,39 +13311,161 @@ entity
 }
 entity
 {
-	"id" "18452"
-	"classname" "asw_egg"
-	"angles" "0 15 0"
-	"ParasiteClass" "asw_parasite"
-	connections
-	{
-		"OnEggDestroyed" "egg_counterAdd10-1"
-	}
-	"origin" "180 1813 0.694603"
+	"id" "204"
+	"classname" "infodecal"
+	"angles" "0 90 0"
+	"texture" "swarm/decals/goodecal1"
+	"origin" "267.7 1444.58 0"
 	editor
 	{
 		"color" "220 30 220"
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
-		"logicalpos" "[10000 -9268]"
+		"logicalpos" "[4500 7500]"
 	}
 }
 entity
 {
-	"id" "18479"
-	"classname" "math_counter"
-	"max" "4"
-	"min" "0"
-	"StartDisabled" "0"
-	"startvalue" "0"
-	"targetname" "egg_counter"
-	"origin" "332.371 1702 190"
+	"id" "18540"
+	"classname" "prop_dynamic_override"
+	"angles" "0 316 0"
+	"DisableBoneFollowers" "0"
+	"disablereceiveshadows" "0"
+	"disableshadows" "0"
+	"ExplodeDamage" "0"
+	"ExplodeRadius" "0"
+	"fademaxdist" "0"
+	"fademindist" "-1"
+	"fadescale" "1"
+	"health" "0"
+	"HoldAnimation" "0"
+	"MaxAnimTime" "10"
+	"maxdxlevel" "0"
+	"MinAnimTime" "5"
+	"mindxlevel" "0"
+	"model" "models/swarmprops/miscdeco/pdamesh.mdl"
+	"PerformanceMode" "0"
+	"pressuredelay" "0"
+	"RandomAnimation" "0"
+	"renderamt" "255"
+	"rendercolor" "255 255 255"
+	"renderfx" "0"
+	"rendermode" "0"
+	"SetBodyGroup" "0"
+	"skin" "0"
+	"solid" "6"
+	"targetname" "PDA1"
+	"origin" "300 1813 0"
 	editor
 	{
 		"color" "220 30 220"
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
-		"logicalpos" "[0 2000]"
+		"logicalpos" "[0 2500]"
+	}
+}
+entity
+{
+	"id" "18562"
+	"classname" "trigger_asw_computer_area"
+	"DownloadObjectiveName" "DownloadData"
+	"DownloadTime" "5.0"
+	"EntriesPerTumbler" "5"
+	"HackDifficulty" "3"
+	"Locked" "1"
+	"origin" "299.5 1815 83.85"
+	"panelpropname" "PDA1"
+	"playersrequired" "1"
+	"spawnflags" "16"
+	"StartDisabled" "0"
+	"TumblerMoveInterval" "0.5"
+	"wait" "1"
+	connections
+	{
+		"OnComputerDataDownloaded" "@objective_downloadSetComplete0-1"
+	}
+	solid
+	{
+		"id" "18563"
+		side
+		{
+			"id" "1736"
+			"plane" "(269 1779 169.853) (269 1851 169.853) (330 1851 169.853)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[1 0 0 56] 0.25"
+			"vaxis" "[0 -1 0 0] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "1735"
+			"plane" "(269 1851 -2.14735) (269 1779 -2.14735) (330 1779 -2.14735)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[1 0 0 56] 0.25"
+			"vaxis" "[0 -1 0 0] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "1734"
+			"plane" "(269 1779 -2.14791) (269 1851 -2.14791) (269 1851 169.85)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[0 1 0 0] 0.25"
+			"vaxis" "[0 0 -1 0] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "1733"
+			"plane" "(330 1851 -2.14788) (330 1779 -2.14788) (330 1779 169.85)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[0 1 0 0] 0.25"
+			"vaxis" "[0 0 -1 0] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "1732"
+			"plane" "(269 1851 -2.1479) (330 1851 -2.1479) (330 1851 169.85)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[1 0 0 56] 0.25"
+			"vaxis" "[0 0 -1 0] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "1731"
+			"plane" "(330 1779 -2.14789) (269 1779 -2.1479) (269 1779 169.85)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[1 0 0 56] 0.25"
+			"vaxis" "[0 0 -1 0] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		editor
+		{
+			"color" "220 30 220"
+			"visgroupshown" "1"
+			"visgroupautoshown" "1"
+		}
+	}
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 4000]"
 	}
 }
 cameras
