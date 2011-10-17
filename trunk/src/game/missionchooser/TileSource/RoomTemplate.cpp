@@ -4,6 +4,9 @@
 #include "filesystem.h"
 #include "TagList.h"
 
+#include <string>
+#include <algorithm>
+
 // memdbgon must be the last include file in a .cpp file!!!
 #include <tier0/memdbgon.h>
 
@@ -118,8 +121,16 @@ bool CRoomTemplate::SaveRoomTemplate()
 	Q_snprintf(szThemeDirName, sizeof(szThemeDirName), "tilegen/roomtemplates/%s", m_pLevelTheme->m_szName);
 	g_pFullFileSystem->CreateDirHierarchy( szThemeDirName, "GAME" );
 
+	Msg("%s\n", m_FullName);
+
+	char fullName_correctSeperator[MAX_PATH];
+	Q_snprintf(fullName_correctSeperator, sizeof(fullName_correctSeperator), "%s", m_FullName);
+	std::replace(fullName_correctSeperator, fullName_correctSeperator+strlen(fullName_correctSeperator), '\\', '/');
+
 	char szFullFileName[MAX_PATH];	
-	Q_snprintf( szFullFileName, sizeof(szFullFileName), "tilegen/roomtemplates/%s/%s.roomtemplate", m_pLevelTheme->m_szName, m_FullName );
+	//Q_snprintf( szFullFileName, sizeof(szFullFileName), "tilegen/roomtemplates/%s/%s.roomtemplate", m_pLevelTheme->m_szName, m_FullName );
+	Q_snprintf( szFullFileName, sizeof(szFullFileName), "tilegen/roomtemplates/%s/%s.roomtemplate", m_pLevelTheme->m_szName, fullName_correctSeperator );	
+
 	KeyValues *pRoomTemplateKeyValues = new KeyValues( m_FullName );
 	pRoomTemplateKeyValues->SetInt( "TilesX", m_nTilesX );
 	pRoomTemplateKeyValues->SetInt( "TilesY", m_nTilesY );
@@ -151,7 +162,8 @@ bool CRoomTemplate::SaveRoomTemplate()
 	}
 	pRoomTemplateKeyValues->AddSubKey(pkvSubSection);
 
-	if (!pRoomTemplateKeyValues->SaveToFile(g_pFullFileSystem, szFullFileName, "GAME"))
+	//if (!pRoomTemplateKeyValues->SaveToFile(g_pFullFileSystem, szFullFileName, "GAME"))
+	if (!pRoomTemplateKeyValues->SaveToFile(g_pFullFileSystem, szFullFileName))
 	{
 		Msg("Error: Failed to save room template %s\n", szFullFileName);
 		return false;
@@ -162,11 +174,11 @@ bool CRoomTemplate::SaveRoomTemplate()
 void CRoomTemplate::SetFullName( const char *pFullName )
 {
 	Q_strncpy( m_FullName, pFullName, MAX_PATH );
-	Q_StripExtension( m_FullName, m_FullName, MAX_PATH );
+	Q_StripExtension( m_FullName, m_FullName, MAX_PATH );	
 	Q_FixSlashes( m_FullName );
 	Q_ExtractFilePath( m_FullName, m_SubFolder, MAX_PATH );
 	Q_AppendSlash( m_SubFolder, MAX_PATH );
-	Q_strncpy( m_TemplateName, m_FullName + Q_strlen( m_SubFolder ), MAX_PATH );
+	Q_strncpy( m_TemplateName, m_FullName + Q_strlen( m_SubFolder ), MAX_PATH );	
 }
 
 void CRoomTemplate::SetDescription( const char *pDescription )
