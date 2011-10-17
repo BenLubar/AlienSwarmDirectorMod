@@ -18,4 +18,5 @@ taglist
     "Data Room"       "This room contains data that must be downloaded"
     "Fight Room"      "This room contains a large number of spawners"
     "End Cap"	      "This is a placed to cap an exit."
+    "Exit Goals"      "This is a special room that the player should not see.  It contains the mission goals."
 }

@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "95"
+	"mapversion" "96"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "95"
+	"mapversion" "96"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -6064,6 +6064,33 @@ world
 			"visgroupshown" "1"
 			"visgroupautoshown" "1"
 		}
+	}
+}
+entity
+{
+	"id" "17276"
+	"classname" "prop_static"
+	"angles" "0 0 0"
+	"disableselfshadowing" "0"
+	"disableshadows" "1"
+	"disablevertexlighting" "0"
+	"fademindist" "-1"
+	"fadescale" "1"
+	"ignorenormals" "0"
+	"Model" "models/props/floor/grate02/grate02_64_broken.mdl"
+	"renderamt" "255"
+	"rendercolor" "255 255 255"
+	"screenspacefade" "0"
+	"Skin" "0"
+	"solid" "0"
+	"origin" "551 1168 2.25"
+	editor
+	{
+		"color" "0 197 238"
+		"groupid" "17274"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[-7768 -8768]"
 	}
 }
 entity
@@ -12730,33 +12757,6 @@ entity
 }
 entity
 {
-	"id" "17276"
-	"classname" "prop_static"
-	"angles" "0 0 0"
-	"disableselfshadowing" "0"
-	"disableshadows" "1"
-	"disablevertexlighting" "0"
-	"fademindist" "-1"
-	"fadescale" "1"
-	"ignorenormals" "0"
-	"Model" "models/props/floor/grate02/grate02_64_broken.mdl"
-	"renderamt" "255"
-	"rendercolor" "255 255 255"
-	"screenspacefade" "0"
-	"Skin" "0"
-	"solid" "0"
-	"origin" "551 1168 2.25"
-	editor
-	{
-		"color" "0 197 238"
-		"groupid" "17274"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[-7768 -8768]"
-	}
-}
-entity
-{
 	"id" "18256"
 	"classname" "info_node"
 	"angles" "0 0 0"
@@ -13373,7 +13373,7 @@ entity
 	"EntriesPerTumbler" "5"
 	"HackDifficulty" "3"
 	"Locked" "1"
-	"origin" "299.5 1815 83.85"
+	"origin" "300.5 1798 83.85"
 	"panelpropname" "PDA1"
 	"playersrequired" "1"
 	"spawnflags" "16"
@@ -13390,7 +13390,7 @@ entity
 		side
 		{
 			"id" "1736"
-			"plane" "(269 1779 169.853) (269 1851 169.853) (330 1851 169.853)"
+			"plane" "(248 1745 169.853) (248 1851 169.853) (353 1851 169.853)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[1 0 0 56] 0.25"
 			"vaxis" "[0 -1 0 0] 0.25"
@@ -13401,7 +13401,7 @@ entity
 		side
 		{
 			"id" "1735"
-			"plane" "(269 1851 -2.14735) (269 1779 -2.14735) (330 1779 -2.14735)"
+			"plane" "(248 1851 -2.14735) (248 1745 -2.14735) (353 1745 -2.14735)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[1 0 0 56] 0.25"
 			"vaxis" "[0 -1 0 0] 0.25"
@@ -13412,7 +13412,7 @@ entity
 		side
 		{
 			"id" "1734"
-			"plane" "(269 1779 -2.14791) (269 1851 -2.14791) (269 1851 169.85)"
+			"plane" "(248 1745 -2.14791) (248 1851 -2.14791) (248 1851 169.85)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
@@ -13423,7 +13423,7 @@ entity
 		side
 		{
 			"id" "1733"
-			"plane" "(330 1851 -2.14788) (330 1779 -2.14788) (330 1779 169.85)"
+			"plane" "(353 1851 -2.14788) (353 1745 -2.14788) (353 1745 169.85)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
@@ -13434,7 +13434,7 @@ entity
 		side
 		{
 			"id" "1732"
-			"plane" "(269 1851 -2.1479) (330 1851 -2.1479) (330 1851 169.85)"
+			"plane" "(248 1851 -2.1479) (353 1851 -2.1479) (353 1851 169.85)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[1 0 0 56] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
@@ -13445,7 +13445,7 @@ entity
 		side
 		{
 			"id" "1731"
-			"plane" "(330 1779 -2.14789) (269 1779 -2.1479) (269 1779 169.85)"
+			"plane" "(353 1745 -2.14789) (248 1745 -2.14789) (248 1745 169.85)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[1 0 0 56] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
