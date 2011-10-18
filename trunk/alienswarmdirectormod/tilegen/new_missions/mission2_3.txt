@@ -5,7 +5,7 @@
 	{
 		"name"		"GlobalOptionBlock"
 		"$MissionName"		"Mission 2"
-		"$MissionDescription"		"Downloaded Data - Med"
+		"$MissionDescription"		"Download Maint Data - Hard"
 		"$GlobalTheme"		"mod"
 	}
 	"name"		"Mission 2"
@@ -65,6 +65,23 @@
 						"$Fraction"		"0.800000"
 					}
 				}
+				"$OptionalRooms"
+				{
+					"rule_instance"
+					{
+						"name"		"SingleComponentRoom"
+						"$RoomName"		"mod\fight_rooms\8x7_utilityroom_ew"
+						"$Fraction"		"0.45"
+					}
+					"rule_instance"
+					{
+						"name"		"SingleComponentRoom"
+						"$RoomName"		"mod\fight_rooms\6x11_break_room"
+						"$Fraction"		"0.2"
+					}
+				}
+				"$MinOptionalRooms"		"1"
+				"$MaxOptionalRooms"		"1"
 			}
 		}
 		"$RoomCandidateFilters"
@@ -105,7 +122,7 @@
 	"rule_instance"
 	{
 		"name"		"GenerationStep"
-		"$Size"		"120"
+		"$Size"		"140"
 		"$ExtraRules"
 		{
 			"rule_instance"
@@ -116,27 +133,55 @@
 					"rule_instance"
 					{
 						"name"		"SingleComponentRoom"
+						"$RoomName"		"mod\download_data_rooms\3x5_download_data_maint_hallway"
+						"$Fraction"		"0.85"
+					}
+				}
+				"$OptionalRooms"
+				{
+					"rule_instance"
+					{
+						"name"		"SingleComponentRoom"
 						"$RoomName"		"mod\fight_rooms\8x7_utilityroom_nw"
-						"$Fraction"		"0.2"
+						"$Fraction"		"0.3"
 					}
 					"rule_instance"
 					{
 						"name"		"SingleComponentRoom"
 						"$RoomName"		"mod\fight_rooms\8x7_utilityroom_ew"
-						"$Fraction"		"0.7"
+						"$Fraction"		"0.4"
 					}
-					"rule_instance"
-					{
-						"name"		"SingleComponentRoom"
-						"$RoomName"		"mod\download_data_rooms\3x5_download_data_maint_hallway"
-						"$Fraction"		"0.9"
-					}
-					"rule_instance"
-					{
-						"name"		"SingleComponentRoom"
-						"$RoomName"		"mod\rooms\4x3_server_room_1"
-						"$Fraction"		"0.6"
-					}
+				}
+				"$MinOptionalRooms"		"1"
+				"$MaxOptionalRooms"		"1"
+			}
+		}
+		"$RoomCandidateFilters"
+		{
+			"param"
+			{
+				"rule_instance"
+				{
+					"name"		"DisallowRoomTag"
+					"$Tag"		"End Cap"
+				}
+			}
+		}
+		"$RoomTemplateFilters"
+		{
+			"param"
+			{
+				"rule_instance"
+				{
+					"name"		"DisallowRoomTag"
+					"$Tag"		"End cap"
+				}
+			}
+			"param"
+			{
+				"rule_instance"
+				{
+					"name"		"Disallow1x1"
 				}
 			}
 		}
@@ -151,7 +196,28 @@
 				"rule_instance"
 				{
 					"name"		"SpecificRoom"
-					"$RoomName"		"mod\exit\7x8_exit_dowloadmaintdata"
+					"$RoomName"		"mod\exit\7x8_exit_dynamic"
+				}
+			}
+		}
+	}
+	"rule_instance"
+	{
+		"name"		"GenerationStep"
+		"$Size"		"1"
+		"$ExtraRules"
+		{
+			"rule_instance"
+			{
+				"name"		"PlaceComponents"
+				"$MandatoryRooms"
+				{
+					"rule_instance"
+					{
+						"name"		"SingleComponentRoom"
+						"$RoomName"		"mod\exit_goals\1x1_exit_goals_download_maint_data"
+						"$Fraction"		"<Enter Value>"
+					}
 				}
 			}
 		}
