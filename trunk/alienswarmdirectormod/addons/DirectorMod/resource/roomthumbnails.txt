@@ -2,12 +2,22 @@
 {
 	"Thumbnail"
 	{
-		"Filename"		"tilegen/roomtemplates/mod/egg_rooms\10x7_egg_break_room.tga"
-		"RoomX"		"-13312.000000"
-		"RoomY"		"13824.000000"
-		"RoomWide"		"2560.000000"
-		"RoomTall"		"1792.000000"
-		"OutputWide"		"300.000000"
-		"OutputTall"		"210.000000"
+		"Filename"		"tilegen/roomtemplates/mod/chokepoints\2x4_corridor_chokepoint.tga"
+		"RoomX"		"-2304.000000"
+		"RoomY"		"5376.000000"
+		"RoomWide"		"512.000000"
+		"RoomTall"		"1024.000000"
+		"OutputWide"		"60.000000"
+		"OutputTall"		"120.000000"
+	}
+	"Thumbnail"
+	{
+		"Filename"		"tilegen/roomtemplates/mod/chokepoints\3x5_chokepoint.tga"
+		"RoomX"		"-512.000000"
+		"RoomY"		"5120.000000"
+		"RoomWide"		"768.000000"
+		"RoomTall"		"1280.000000"
+		"OutputWide"		"90.000000"
+		"OutputTall"		"150.000000"
 	}
 }
