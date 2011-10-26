@@ -1,13 +1,21 @@
-"corridors\1x4_corridor_door"
+"exit\7x8_exit_escapeOnly"
 {
-	"TilesX"		"1"
-	"TilesY"		"4"
+	"TilesX"		"7"
+	"TilesY"		"8"
 	"SpawnWeight"		"0"
-	"TileType"		"0"
+	"TileType"		"553648200"
 	"EXIT"
 	{
-		"XPos"		"0"
-		"YPos"		"3"
+		"XPos"		"5"
+		"YPos"		"7"
+		"ExitDirection"		"2"
+		"ZChange"		"0"
+		"ChokeGrow"		"0"
+	}
+	"EXIT"
+	{
+		"XPos"		"1"
+		"YPos"		"7"
 		"ExitDirection"		"2"
 		"ZChange"		"0"
 		"ChokeGrow"		"0"
@@ -15,41 +23,30 @@
 	"EXIT"
 	{
 		"XPos"		"0"
-		"YPos"		"1"
+		"YPos"		"6"
 		"ExitDirection"		"3"
 		"ZChange"		"0"
 		"ChokeGrow"		"0"
 	}
 	"EXIT"
 	{
-		"XPos"		"0"
-		"YPos"		"0"
-		"ExitDirection"		"3"
+		"XPos"		"6"
+		"YPos"		"6"
+		"ExitDirection"		"1"
 		"ZChange"		"0"
 		"ChokeGrow"		"0"
 	}
 	"EXIT"
 	{
-		"XPos"		"0"
+		"XPos"		"6"
 		"YPos"		"0"
 		"ExitDirection"		"0"
 		"ZChange"		"0"
+		"ExitTag"		"Exit Goals"
 		"ChokeGrow"		"0"
 	}
-	"EXIT"
+	"Tags"
 	{
-		"XPos"		"0"
-		"YPos"		"0"
-		"ExitDirection"		"1"
-		"ZChange"		"0"
-		"ChokeGrow"		"0"
-	}
-	"EXIT"
-	{
-		"XPos"		"0"
-		"YPos"		"1"
-		"ExitDirection"		"1"
-		"ZChange"		"0"
-		"ChokeGrow"		"0"
+		"tag"		"Escape"
 	}
 }

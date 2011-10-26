@@ -1,4 +1,4 @@
-"end_caps\1x1_endcap_WN"
+"end_caps\1x1_endcap_wn"
 {
 	"TilesX"		"1"
 	"TilesY"		"1"
@@ -19,7 +19,7 @@
 		"ExitDirection"		"0"
 		"ZChange"		"0"
 		"ChokeGrow"		"0"
-	}	
+	}
 	"Tags"
 	{
 		"tag"		"End Cap"

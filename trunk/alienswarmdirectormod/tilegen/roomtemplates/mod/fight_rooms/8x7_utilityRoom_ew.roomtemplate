@@ -1,4 +1,4 @@
-"rooms\8x7_utilityRoom_ew"
+"fight_rooms\8x7_utilityRoom_ew"
 {
 	"TilesX"		"8"
 	"TilesY"		"7"
@@ -11,7 +11,7 @@
 		"ExitDirection"		"0"
 		"ZChange"		"0"
 		"ChokeGrow"		"1"
-	}	
+	}
 	"EXIT"
 	{
 		"XPos"		"0"
@@ -19,7 +19,7 @@
 		"ExitDirection"		"3"
 		"ZChange"		"0"
 		"ChokeGrow"		"1"
-	}	
+	}
 	"EXIT"
 	{
 		"XPos"		"3"
@@ -34,12 +34,12 @@
 		"YPos"		"3"
 		"ExitDirection"		"1"
 		"ZChange"		"0"
-		"ChokeGrow"		"1"
-	}		
+		"ChokeGrow"		"0"
+	}
 	"Tags"
 	{
 		"tag"		"Combat Arena"
-		"tag"       	"Fight Room"	
+		"tag"		"Fight Room"
 		"tag"		"Special"
 		"tag"		"Chokepoint"
 	}

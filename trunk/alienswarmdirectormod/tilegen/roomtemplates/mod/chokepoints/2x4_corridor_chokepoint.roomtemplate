@@ -1,6 +1,6 @@
-"corridors\1x4_corridor_door"
+"chokepoints\2x4_corridor_chokepoint"
 {
-	"TilesX"		"1"
+	"TilesX"		"2"
 	"TilesY"		"4"
 	"SpawnWeight"		"0"
 	"TileType"		"0"
@@ -26,7 +26,7 @@
 		"YPos"		"0"
 		"ExitDirection"		"3"
 		"ZChange"		"0"
-		"ChokeGrow"		"0"
+		"ChokeGrow"		"1"
 	}
 	"EXIT"
 	{
@@ -34,22 +34,35 @@
 		"YPos"		"0"
 		"ExitDirection"		"0"
 		"ZChange"		"0"
-		"ChokeGrow"		"0"
+		"ChokeGrow"		"1"
 	}
 	"EXIT"
 	{
-		"XPos"		"0"
+		"XPos"		"1"
+		"YPos"		"0"
+		"ExitDirection"		"0"
+		"ZChange"		"0"
+		"ChokeGrow"		"1"
+	}
+	"EXIT"
+	{
+		"XPos"		"1"
 		"YPos"		"0"
 		"ExitDirection"		"1"
 		"ZChange"		"0"
-		"ChokeGrow"		"0"
+		"ChokeGrow"		"1"
 	}
 	"EXIT"
 	{
-		"XPos"		"0"
+		"XPos"		"1"
 		"YPos"		"1"
 		"ExitDirection"		"1"
 		"ZChange"		"0"
 		"ChokeGrow"		"0"
+	}
+	"Tags"
+	{
+		"tag"		"Chokepoint"
+		"tag"		"Special"
 	}
 }
