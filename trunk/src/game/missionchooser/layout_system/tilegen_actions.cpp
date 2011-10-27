@@ -686,6 +686,8 @@ void CTilegenAction_PlaceComponent::OnBeginGeneration( CLayoutSystem *pLayoutSys
 	// Simplest but probably not the most efficient way to randomly choose N rooms from a list of X rooms.
 	int nNumOptionalRoomsChosen = 0;
 	Msg("Processing random rooms, need to add [%d] rooms.  Have [%d] options\n",nNumOptionalRooms, m_OptionalRooms.Count());
+	Log_Msg(LOG_TilegenLayoutSystem, "Processing random rooms, need to add [%d] rooms.  Have [%d] options\n",nNumOptionalRooms, m_OptionalRooms.Count());
+		
 	while ( nNumOptionalRoomsChosen < nNumOptionalRooms )
 	{
 
@@ -700,6 +702,7 @@ void CTilegenAction_PlaceComponent::OnBeginGeneration( CLayoutSystem *pLayoutSys
 			AddRoomPlacementInstance( pLayoutSystem, &m_OptionalRooms[nRoom] );
 			++ nNumOptionalRoomsChosen;
 			Msg("Room [%d] is id [%d]\n", nNumOptionalRoomsChosen, nRoom);
+			Log_Msg(LOG_TilegenLayoutSystem,  "Room [%d] is id [%d]\n", nNumOptionalRoomsChosen, nRoom);			
 		}
 	}
 	Msg("Done processing random rooms.\n");
