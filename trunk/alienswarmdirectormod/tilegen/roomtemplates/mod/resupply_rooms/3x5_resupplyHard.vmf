@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "83"
+	"mapversion" "84"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "83"
+	"mapversion" "84"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -4693,6 +4693,7 @@ entity
 	connections
 	{
 		"OnTrigger" "trigger_button_areaPowerOff0-1"
+		"OnTriggerAtleastEasy" "supply_markerDisable0-1"
 	}
 	solid
 	{
@@ -5360,6 +5361,24 @@ entity
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
 		"logicalpos" "[1000 4500]"
+	}
+}
+entity
+{
+	"id" "4443"
+	"classname" "asw_marker"
+	"mapheight" "256"
+	"mapwidth" "256"
+	"objectivename" "@objective_supply"
+	"StartDisabled" "0"
+	"targetname" "supply_marker"
+	"origin" "403.539 336 147.379"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
 	}
 }
 cameras

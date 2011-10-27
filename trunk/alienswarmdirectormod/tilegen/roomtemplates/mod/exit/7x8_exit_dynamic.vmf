@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "131"
+	"mapversion" "133"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "131"
+	"mapversion" "133"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -4780,6 +4780,7 @@ entity
 		"OnButtonActivated" "finale_musicStartMusic0-1"
 		"OnButtonActivated" "finale_spawningTrigger0-1"
 		"OnButtonActivated" "@map_builder_for_next_missionActivate0-1"
+		"OnButtonActivated" "@objective_supplySetComplete0-1"
 	}
 	solid
 	{
@@ -8275,7 +8276,7 @@ entity
 		side
 		{
 			"id" "470"
-			"plane" "(32 1344 160) (32 1344 0) (32 512 0)"
+			"plane" "(32 2048 160) (32 2048 0) (32 512 0)"
 			"material" "METAL/RES_METALWALL001A"
 			"uaxis" "[0 1 0 -136.295] 0.35"
 			"vaxis" "[0 0 -1 489.286] 0.35"
@@ -8286,7 +8287,7 @@ entity
 		side
 		{
 			"id" "469"
-			"plane" "(0 1344 160) (0 1344 0) (32 1344 0)"
+			"plane" "(0 2048 160) (0 2048 0) (32 2048 0)"
 			"material" "TOOLS/TOOLSNOLIGHT"
 			"uaxis" "[1 0 0 0] 1"
 			"vaxis" "[0 0 -1 0] 1"
@@ -8297,7 +8298,7 @@ entity
 		side
 		{
 			"id" "468"
-			"plane" "(0 512 160) (0 512 0) (0 1344 0)"
+			"plane" "(0 512 160) (0 512 0) (0 2048 0)"
 			"material" "TOOLS/TOOLSNOLIGHT"
 			"uaxis" "[0 -1 0 4.95309] 1"
 			"vaxis" "[0 0 -1 0] 1"
@@ -8319,7 +8320,7 @@ entity
 		side
 		{
 			"id" "466"
-			"plane" "(0 512 160) (0 1344 160) (32 1344 160)"
+			"plane" "(0 512 160) (0 2048 160) (32 2048 160)"
 			"material" "TOOLS/TOOLSNOLIGHT"
 			"uaxis" "[-1 0 0 0] 1"
 			"vaxis" "[0 1 0 -4.95309] 1"
@@ -8330,7 +8331,7 @@ entity
 		side
 		{
 			"id" "465"
-			"plane" "(32 512 0) (32 1344 0) (0 1344 0)"
+			"plane" "(32 512 0) (32 2048 0) (0 2048 0)"
 			"material" "TOOLS/TOOLSNOLIGHT"
 			"uaxis" "[-1 0 0 0] 1"
 			"vaxis" "[0 -1 0 4.95309] 1"
@@ -8363,7 +8364,7 @@ entity
 		side
 		{
 			"id" "482"
-			"plane" "(1760 512 160) (1760 512 0) (1760 1344 0)"
+			"plane" "(1760 512 160) (1760 512 0) (1760 2048 0)"
 			"material" "METAL/RES_METALWALL001A"
 			"uaxis" "[0 -1 0 393.992] 0.35"
 			"vaxis" "[0 0 -1 489.286] 0.35"
@@ -8385,7 +8386,7 @@ entity
 		side
 		{
 			"id" "480"
-			"plane" "(1792 1344 160) (1792 1344 0) (1792 512 0)"
+			"plane" "(1792 2048 160) (1792 2048 0) (1792 512 0)"
 			"material" "TOOLS/TOOLSNOLIGHT"
 			"uaxis" "[0 1 0 -3.04718] 1"
 			"vaxis" "[0 0 -1 0] 1"
@@ -8396,7 +8397,7 @@ entity
 		side
 		{
 			"id" "479"
-			"plane" "(1760 1344 160) (1760 1344 0) (1792 1344 0)"
+			"plane" "(1760 2048 160) (1760 2048 0) (1792 2048 0)"
 			"material" "METAL/RES_METALWALL001A"
 			"uaxis" "[1 0 0 323.572] 0.35"
 			"vaxis" "[0 0 -1 489.286] 0.35"
@@ -8407,7 +8408,7 @@ entity
 		side
 		{
 			"id" "478"
-			"plane" "(1792 512 160) (1760 512 160) (1760 1344 160)"
+			"plane" "(1792 512 160) (1760 512 160) (1760 2048 160)"
 			"material" "TOOLS/TOOLSNOLIGHT"
 			"uaxis" "[1 0 0 0] 1"
 			"vaxis" "[0 -1 0 3.04718] 1"
@@ -8418,7 +8419,7 @@ entity
 		side
 		{
 			"id" "477"
-			"plane" "(1760 1344 0) (1760 512 0) (1792 512 0)"
+			"plane" "(1760 2048 0) (1760 512 0) (1792 512 0)"
 			"material" "TOOLS/TOOLSNOLIGHT"
 			"uaxis" "[1 0 0 0] 1"
 			"vaxis" "[0 1 0 -3.04718] 1"
@@ -16189,6 +16190,23 @@ entity
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
 		"logicalpos" "[13500 -15268]"
+	}
+}
+entity
+{
+	"id" "23583"
+	"classname" "asw_objective_triggered"
+	"objectivedescription1" "Get Additional Supplies (Optional)"
+	"objectivetitle" "Get Additional Supplies (Optional)"
+	"targetname" "@objective_supply"
+	"Visible" "1"
+	"origin" "664 1664 345.326"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 13000]"
 	}
 }
 cameras

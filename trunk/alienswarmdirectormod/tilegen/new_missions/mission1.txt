@@ -41,7 +41,7 @@
 					{
 						"name"		"SingleComponentRoom"
 						"$RoomName"		"mod\rooms\4x3_server_room_1"
-						"$Fraction"		"0.1"
+						"$Fraction"		"0.100000"
 					}
 				}
 			}
@@ -175,7 +175,28 @@
 				"rule_instance"
 				{
 					"name"		"SpecificRoom"
-					"$RoomName"		"mod\exit\7x8_exit_escapeonly"
+					"$RoomName"		"mod\exit\7x8_exit_dynamic"
+				}
+			}
+		}
+	}
+	"rule_instance"
+	{
+		"name"		"GenerationStep"
+		"$Size"		"1"
+		"$ExtraRules"
+		{
+			"rule_instance"
+			{
+				"name"		"PlaceComponents"
+				"$MandatoryRooms"
+				{
+					"rule_instance"
+					{
+						"name"		"SingleComponentRoom"
+						"$RoomName"		"mod\exit_goals\1x1_exit_goals_no_extra_goals"
+						"$Fraction"		"<Enter Value>"
+					}
 				}
 			}
 		}
