@@ -1,6 +1,6 @@
 "Mission"
 {
-	"Filename"		"mission5_3.txt"
+	"Filename"		"mission3_3.txt"
 	"rule_instance"
 	{
 		"name"		"GlobalOptionBlock"
@@ -17,7 +17,75 @@
 	"rule_instance"
 	{
 		"name"		"GenerationStep"
-		"$Size"		"210"
+		"$Size"		"75"
+		"$RoomTemplateFilters"
+		{
+			"param"
+			{
+				"rule_instance"
+				{
+					"name"		"DisallowRoomTag"
+					"$Tag"		"End Cap"
+				}
+			}
+			"param"
+			{
+				"rule_instance"
+				{
+					"name"		"Disallow1x1"
+				}
+			}
+		}
+		"$ExtraRules"
+		{
+			"rule_instance"
+			{
+				"name"		"PlaceComponents"
+				"$OptionalRooms"
+				{
+					"rule_instance"
+					{
+						"name"		"SingleComponentRoom"
+						"$RoomName"		"mod\egg_rooms\5x5_office_crossing"
+						"$Fraction"		"0.200000"
+					}
+					"rule_instance"
+					{
+						"name"		"SingleComponentRoom"
+						"$RoomName"		"mod\egg_rooms\5x5_office_crossing"
+						"$Fraction"		"0.800000"
+					}
+					"rule_instance"
+					{
+						"name"		"SingleComponentRoom"
+						"$RoomName"		"mod\egg_rooms\5x5_office_crossing_invert"
+						"$Fraction"		"0.250000"
+					}
+					"rule_instance"
+					{
+						"name"		"SingleComponentRoom"
+						"$RoomName"		"mod\egg_rooms\5x5_office_crossing_invert"
+						"$Fraction"		"0.750000"
+					}
+				}
+				"$MinOptionalRooms"		"1"
+				"$MaxOptionalRooms"		"1"
+				"$MandatoryRooms"
+				{
+					"rule_instance"
+					{
+						"name"		"SingleComponentRoom"
+						"$RoomName"		"mod\rooms\5x4_t_junction"
+						"$Fraction"		"0.300000"
+					}
+				}
+			}
+		}
+	}
+	"rule_instance"
+	{
+		"name"		"GenerationStep"
+		"$Size"		"90"
 		"$Theme"
 		{
 			"rule_instance"
@@ -31,17 +99,15 @@
 			{
 				"rule_instance"
 				{
-					"name"		"Disallow1x1"
+					"name"		"DisallowRoomTag"
+					"$Tag"		"End Cap"
 				}
 			}
-		}
-		"$ExitFilters"
-		{
 			"param"
 			{
 				"rule_instance"
 				{
-					"name"		"DisallowSouthGrowing"
+					"name"		"Disallow1x1"
 				}
 			}
 		}
@@ -50,29 +116,81 @@
 			"rule_instance"
 			{
 				"name"		"PlaceComponents"
-				"$MandatoryRooms"
+				"$MinOptionalRooms"		"2"
+				"$MaxOptionalRooms"		"2"
+				"$OptionalRooms"
 				{
 					"rule_instance"
 					{
 						"name"		"SingleComponentRoom"
-						"$RoomName"		"mod\egg_rooms\5x5_office_crossing"
-						"$Fraction"		"0.400000"
-					}
-					"rule_instance"
-					{
-						"name"		"SingleComponentRoom"
-						"$RoomName"		"mod\rooms\4x3_server_room_1"
+						"$RoomName"		"mod\egg_rooms\3x5_egg_hallway"
 						"$Fraction"		"0.200000"
 					}
 					"rule_instance"
 					{
 						"name"		"SingleComponentRoom"
-						"$RoomName"		"mod\corridors\2x4_corridor_door"
-						"$Fraction"		"0.100000"
+						"$RoomName"		"mod\egg_rooms\3x5_egg_chokepoint"
+						"$Fraction"		"0.300000"
+					}
+					"rule_instance"
+					{
+						"name"		"SingleComponentRoom"
+						"$RoomName"		"mod\egg_rooms\5x8_egg_crew_quarters"
+						"$Fraction"		"0.350000"
 					}
 				}
-				"$MinOptionalRooms"		"3"
-				"$MaxOptionalRooms"		"3"
+			}
+		}
+		"$RoomCandidateFilters"
+		{
+			"param"
+			{
+				"rule_instance"
+				{
+					"name"		"DisallowRoomTag"
+					"$Tag"		"End Cap"
+				}
+			}
+			"param"
+			{
+				"rule_instance"
+				{
+					"name"		"Disallow1x1"
+				}
+			}
+		}
+	}
+	"rule_instance"
+	{
+		"name"		"GenerationStep"
+		"$Size"		"85"
+		"$RoomCandidateFilters"
+		{
+			"param"
+			{
+				"rule_instance"
+				{
+					"name"		"Disallow1x1"
+				}
+			}
+		}
+		"$RoomTemplateFilters"
+		{
+			"param"
+			{
+				"rule_instance"
+				{
+					"name"		"Disallow1x1"
+				}
+			}
+		}
+		"$ExtraRules"
+		{
+			"rule_instance"
+			{
+				"name"		"PlaceComponents"
+				"$MinOptionalRooms"		"1"
+				"$MaxOptionalRooms"		"1"
 				"$OptionalRooms"
 				{
 					"rule_instance"
@@ -84,20 +202,14 @@
 					"rule_instance"
 					{
 						"name"		"SingleComponentRoom"
-						"$RoomName"		"mod\egg_rooms\3x5_chokepoint"
-						"$Fraction"		"0.800000"
+						"$RoomName"		"mod\egg_rooms\3x5_egg_chokepoint"
+						"$Fraction"		"0.650000"
 					}
 					"rule_instance"
 					{
 						"name"		"SingleComponentRoom"
-						"$RoomName"		"mod\egg_rooms\3x5_egg_hallway"
-						"$Fraction"		"0.300000"
-					}
-					"rule_instance"
-					{
-						"name"		"SingleComponentRoom"
-						"$RoomName"		"mod\egg_rooms\3x5_chokepoint"
-						"$Fraction"		"0.400000"
+						"$RoomName"		"mod\egg_rooms\5x8_egg_crew_quarters"
+						"$Fraction"		"0.550000"
 					}
 				}
 			}
@@ -120,7 +232,28 @@
 				"rule_instance"
 				{
 					"name"		"SpecificRoom"
-					"$RoomName"		"mod\exit\7x8_exit_killeggs_19"
+					"$RoomName"		"mod\exit\7x8_exit_dynamic"
+				}
+			}
+		}
+	}
+	"rule_instance"
+	{
+		"name"		"GenerationStep"
+		"$Size"		"1"
+		"$ExtraRules"
+		{
+			"rule_instance"
+			{
+				"name"		"PlaceComponents"
+				"$MandatoryRooms"
+				{
+					"rule_instance"
+					{
+						"name"		"SingleComponentRoom"
+						"$RoomName"		"mod\exit_goals\1x1_exit_goals_kill_19_eggs"
+						"$Fraction"		"<Enter Value>"
+					}
 				}
 			}
 		}

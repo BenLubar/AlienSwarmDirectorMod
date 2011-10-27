@@ -12,7 +12,7 @@
 	"rule_instance"
 	{
 		"name"		"PlaceStartRoom"
-		"$RoomName"		"mod\start_area\2x3_start_area_hard"
+		"$RoomName"		"mod\start_area\2x3_start_area_medium"
 		"$X"		"60"
 		"$Y"		"60"
 	}
@@ -86,7 +86,7 @@
 					{
 						"name"		"SingleComponentRoom"
 						"$RoomName"		"mod\fight_rooms\8x7_utilityroom_nw"
-						"$Fraction"		"0.46"
+						"$Fraction"		"0.460000"
 					}
 				}
 				"$MinOptionalRooms"		"1"

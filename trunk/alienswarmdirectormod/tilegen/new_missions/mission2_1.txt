@@ -12,7 +12,7 @@
 	"rule_instance"
 	{
 		"name"		"PlaceStartRoom"
-		"$RoomName"		"mod\start_area\2x3_start_area_hard"
+		"$RoomName"		"mod\start_area\2x3_start_area_easy"
 		"$X"		"60"
 		"$Y"		"60"
 	}
@@ -74,7 +74,7 @@
 					{
 						"name"		"SingleComponentRoom"
 						"$RoomName"		"mod\chokepoints\2x4_corridor_chokepoint"
-						"$Fraction"		"0.80000"
+						"$Fraction"		"0.800000"
 					}
 					"rule_instance"
 					{

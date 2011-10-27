@@ -12,7 +12,7 @@
 	"rule_instance"
 	{
 		"name"		"PlaceStartRoom"
-		"$RoomName"		"mod\start_area\2x3_start_area_hard"
+		"$RoomName"		"mod\start_area\2x3_start_area_medium"
 		"$X"		"60"
 		"$Y"		"60"
 	}
@@ -149,13 +149,13 @@
 					{
 						"name"		"SingleComponentRoom"
 						"$RoomName"		"mod\resupply_rooms\2x1_resupply_corridor_ew"
-						"$Fraction"		"0.3"
+						"$Fraction"		"0.300000"
 					}
 					"rule_instance"
 					{
 						"name"		"SingleComponentRoom"
 						"$RoomName"		"mod\resupply_rooms\1x2_resupply_corridor_ns"
-						"$Fraction"		"0.75"
+						"$Fraction"		"0.750000"
 					}
 				}
 			}
