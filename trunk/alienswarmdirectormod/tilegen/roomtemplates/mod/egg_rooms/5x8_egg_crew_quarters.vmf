@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "90"
+	"mapversion" "92"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "90"
+	"mapversion" "92"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -6064,6 +6064,33 @@ world
 			"visgroupshown" "1"
 			"visgroupautoshown" "1"
 		}
+	}
+}
+entity
+{
+	"id" "17276"
+	"classname" "prop_static"
+	"angles" "0 0 0"
+	"disableselfshadowing" "0"
+	"disableshadows" "1"
+	"disablevertexlighting" "0"
+	"fademindist" "-1"
+	"fadescale" "1"
+	"ignorenormals" "0"
+	"Model" "models/props/floor/grate02/grate02_64_broken.mdl"
+	"renderamt" "255"
+	"rendercolor" "255 255 255"
+	"screenspacefade" "0"
+	"Skin" "0"
+	"solid" "0"
+	"origin" "551 1168 2.25"
+	editor
+	{
+		"color" "0 197 238"
+		"groupid" "17274"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[-7768 -8768]"
 	}
 }
 entity
@@ -12802,33 +12829,6 @@ entity
 }
 entity
 {
-	"id" "17276"
-	"classname" "prop_static"
-	"angles" "0 0 0"
-	"disableselfshadowing" "0"
-	"disableshadows" "1"
-	"disablevertexlighting" "0"
-	"fademindist" "-1"
-	"fadescale" "1"
-	"ignorenormals" "0"
-	"Model" "models/props/floor/grate02/grate02_64_broken.mdl"
-	"renderamt" "255"
-	"rendercolor" "255 255 255"
-	"screenspacefade" "0"
-	"Skin" "0"
-	"solid" "0"
-	"origin" "551 1168 2.25"
-	editor
-	{
-		"color" "0 197 238"
-		"groupid" "17274"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[-7768 -8768]"
-	}
-}
-entity
-{
 	"id" "18256"
 	"classname" "info_node"
 	"angles" "0 0 0"
@@ -13423,11 +13423,15 @@ entity
 {
 	"id" "18479"
 	"classname" "math_counter"
-	"max" "4"
+	"max" "3"
 	"min" "0"
 	"StartDisabled" "0"
 	"startvalue" "0"
 	"targetname" "egg_counter"
+	connections
+	{
+		"OnHitMax" "egg_marker_backSetComplete0-1"
+	}
 	"origin" "332.371 1702 190"
 	editor
 	{
@@ -13435,6 +13439,54 @@ entity
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
 		"logicalpos" "[0 2000]"
+	}
+}
+entity
+{
+	"id" "19105"
+	"classname" "info_node"
+	"angles" "0 90 0"
+	"nodeid" "85"
+	"spawnflags" "0"
+	"origin" "337 422 44.591"
+	editor
+	{
+		"color" "232 219 8"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[3500 10500]"
+	}
+}
+entity
+{
+	"id" "19107"
+	"classname" "info_node"
+	"angles" "0 90 0"
+	"nodeid" "86"
+	"spawnflags" "0"
+	"origin" "488 396 44.591"
+	editor
+	{
+		"color" "232 219 8"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[3500 10500]"
+	}
+}
+entity
+{
+	"id" "19109"
+	"classname" "info_node"
+	"angles" "0 90 0"
+	"nodeid" "87"
+	"spawnflags" "0"
+	"origin" "474 395 44.591"
+	editor
+	{
+		"color" "232 219 8"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[3500 10500]"
 	}
 }
 cameras

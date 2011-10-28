@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "171"
+	"mapversion" "195"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -38,7 +38,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "171"
+	"mapversion" "195"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -1686,7 +1686,7 @@ world
 		side
 		{
 			"id" "4737"
-			"plane" "(1365 1289 4) (1237 1289 4) (1289 1289 40)"
+			"plane" "(1365 1289 4) (1237 1289 4) (1289 1289 42)"
 			"material" "TOOLS/TOOLSNPCCLIP"
 			"uaxis" "[1 0 0 -20] 0.25"
 			"vaxis" "[0 0 -1 -32] 0.25"
@@ -1697,7 +1697,7 @@ world
 		side
 		{
 			"id" "4736"
-			"plane" "(1237 1417 4) (1365 1417 4) (1305 1417 40)"
+			"plane" "(1237 1417 4) (1365 1417 4) (1305 1417 42)"
 			"material" "TOOLS/TOOLSNPCCLIP"
 			"uaxis" "[-1 0 0 20] 0.25"
 			"vaxis" "[0 0 -1 -32] 0.25"
@@ -1708,7 +1708,7 @@ world
 		side
 		{
 			"id" "4735"
-			"plane" "(1237 1289 4) (1365 1289 4) (1365 1417 4)"
+			"plane" "(1365 1417 4) (1237 1417 4) (1237 1289 4)"
 			"material" "TOOLS/TOOLSNPCCLIP"
 			"uaxis" "[-1 0 0 20] 0.25"
 			"vaxis" "[0 -1 0 36] 0.25"
@@ -1719,7 +1719,7 @@ world
 		side
 		{
 			"id" "4734"
-			"plane" "(1305 1289 40) (1289 1289 40) (1289 1417 40)"
+			"plane" "(1305 1289 42) (1289 1289 42) (1289 1417 42)"
 			"material" "TOOLS/TOOLSNPCCLIP"
 			"uaxis" "[1 0 0 -20] 0.25"
 			"vaxis" "[0 -1 0 36] 0.25"
@@ -1730,7 +1730,7 @@ world
 		side
 		{
 			"id" "4733"
-			"plane" "(1365 1289 4) (1305 1289 40) (1305 1417 40)"
+			"plane" "(1365 1289 4) (1305 1289 42) (1305 1417 42)"
 			"material" "TOOLS/TOOLSNPCCLIP"
 			"uaxis" "[0 1 0 -8.85681] 0.35"
 			"vaxis" "[0 0 -1 -23] 0.35"
@@ -1741,7 +1741,7 @@ world
 		side
 		{
 			"id" "4732"
-			"plane" "(1289 1289 40) (1237 1289 4) (1237 1417 4)"
+			"plane" "(1289 1289 42) (1237 1289 4) (1237 1417 4)"
 			"material" "TOOLS/TOOLSNPCCLIP"
 			"uaxis" "[0 1 0 -8.85681] 0.35"
 			"vaxis" "[0 0 -1 -23] 0.35"
@@ -1912,16 +1912,6 @@ world
 	}
 	group
 	{
-		"id" "3058"
-		editor
-		{
-			"color" "0 105 134"
-			"visgroupshown" "1"
-			"visgroupautoshown" "1"
-		}
-	}
-	group
-	{
 		"id" "40570"
 		editor
 		{
@@ -1929,90 +1919,6 @@ world
 			"visgroupshown" "1"
 			"visgroupautoshown" "1"
 		}
-	}
-}
-entity
-{
-	"id" "3062"
-	"classname" "prop_static"
-	"angles" "0 180 0"
-	"disableselfshadowing" "0"
-	"disableshadows" "0"
-	"disablevertexlighting" "0"
-	"disableX360" "0"
-	"fademaxdist" "0"
-	"fademindist" "-1"
-	"fadescale" "1"
-	"ignorenormals" "0"
-	"maxcpulevel" "0"
-	"maxgpulevel" "0"
-	"mincpulevel" "0"
-	"mingpulevel" "0"
-	"model" "models/props/windows/window01a.mdl"
-	"renderamt" "255"
-	"rendercolor" "176 122 68"
-	"skin" "0"
-	"solid" "0"
-	"origin" "1299 1347 77.325"
-	editor
-	{
-		"color" "0 105 134"
-		"groupid" "3058"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[500 -1768]"
-	}
-}
-entity
-{
-	"id" "3066"
-	"classname" "asw_spawner"
-	"AlienClass" "0"
-	"AlienOrders" "3"
-	"angles" "0 180 0"
-	"ClearCheck" "0"
-	"HealthScale" "1"
-	"InfiniteAliens" "0"
-	"MaxLiveAliens" "2"
-	"NearDistance" "740"
-	"NumAliens" "6"
-	"SpawnerState" "1"
-	"spawnflags" "0"
-	"SpawnIfMarinesAreNear" "1"
-	"SpawnInterval" "2"
-	"SpawnIntervalJitter" "25"
-	"SpeedScale" "1"
-	"StartBurrowed" "0"
-	"targetname" "spawner_mainroom_drone"
-	connections
-	{
-		"OnSpawned" "window_mainroom_droneBreak0-1"
-	}
-	"origin" "1382 1346 38"
-	editor
-	{
-		"color" "0 105 134"
-		"groupid" "3058"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[1000 12000]"
-	}
-}
-entity
-{
-	"id" "3068"
-	"classname" "info_node"
-	"angles" "0 270 0"
-	"nodeid" "86"
-	"spawnflags" "0"
-	"origin" "1370 1346 46.984"
-	editor
-	{
-		"color" "0 105 134"
-		"groupid" "3058"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[8000 -12268]"
 	}
 }
 entity
@@ -2040,22 +1946,6 @@ entity
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
 		"logicalpos" "[-7768 -8768]"
-	}
-}
-entity
-{
-	"id" "57"
-	"classname" "env_soundscape"
-	"radius" "1500"
-	"soundscape" "res.interior03"
-	"targetname" "indoor03"
-	"origin" "914 992 219"
-	editor
-	{
-		"color" "220 30 220"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[0 -8268]"
 	}
 }
 entity
@@ -4356,7 +4246,7 @@ entity
 entity
 {
 	"id" "480"
-	"classname" "asw_spawner"
+	"classname" "mod_spawner"
 	"AlienClass" "0"
 	"AlienOrders" "3"
 	"angles" "0 120 0"
@@ -4366,7 +4256,6 @@ entity
 	"MaxLiveAliens" "2"
 	"NearDistance" "740"
 	"NumAliens" "4"
-	"OnSpawned" "AutoInstance1-relay_vent_explo_01Trigger01"
 	"SpawnerState" "1"
 	"spawnflags" "0"
 	"SpawnIfMarinesAreNear" "1"
@@ -4374,7 +4263,7 @@ entity
 	"SpawnIntervalJitter" "25"
 	"SpeedScale" "1"
 	"StartBurrowed" "1"
-	"targetname" "spawner_elev_drone"
+	"targetname" "spawner_elev_drone_repeat"
 	"UnburrowActivity" "act_burrow_out"
 	"UnburrowIdleActivity" "act_burrow_idle"
 	"origin" "1800 779 0"
@@ -4389,7 +4278,7 @@ entity
 entity
 {
 	"id" "482"
-	"classname" "asw_spawner"
+	"classname" "mod_spawner"
 	"AlienClass" "0"
 	"AlienOrders" "3"
 	"angles" "0 90 0"
@@ -4399,7 +4288,6 @@ entity
 	"MaxLiveAliens" "2"
 	"NearDistance" "740"
 	"NumAliens" "4"
-	"OnSpawned" "AutoInstance1-relay_vent_explo_01Trigger01"
 	"SpawnerState" "1"
 	"spawnflags" "0"
 	"SpawnIfMarinesAreNear" "1"
@@ -4407,7 +4295,7 @@ entity
 	"SpawnIntervalJitter" "25"
 	"SpeedScale" "1"
 	"StartBurrowed" "1"
-	"targetname" "spawner_elev_drone"
+	"targetname" "spawner_elev_drone_repeat"
 	"UnburrowActivity" "act_burrow_out"
 	"UnburrowIdleActivity" "act_burrow_idle"
 	"origin" "680 658 0"
@@ -4553,10 +4441,11 @@ entity
 {
 	"id" "521"
 	"classname" "asw_jukebox"
+	"DefaultMusic" "music/rydberg_rumble.wav"
 	"FadeInTime" "1.0"
 	"FadeOutTime" "5.0"
-	"targetname" "jukebox"
-	"origin" "1096.4 1567.36 9"
+	"targetname" "fight_music"
+	"origin" "1096.4 1584 242"
 	editor
 	{
 		"color" "220 30 220"
@@ -19165,13 +19054,13 @@ entity
 	"id" "38904"
 	"classname" "trigger_once"
 	"origin" "186.5 883.5 82"
-	"spawnflags" "2"
+	"spawnflags" "16"
 	"StartDisabled" "0"
 	connections
 	{
 		"OnTrigger" "logic_leftroom_ranger_relayTrigger0-1"
 		"OnTrigger" "logic_leftroom_drone_relayTrigger2.5-1"
-		"OnTrigger" "jukeboxStartMusic0-1"
+		"OnTrigger" "music_onTrigger0-1"
 	}
 	solid
 	{
@@ -19818,7 +19707,7 @@ entity
 	"angles" "0 0 0"
 	"nodeid" "196"
 	"spawnflags" "0"
-	"origin" "1200 1357 21"
+	"origin" "1268 1357 46"
 	editor
 	{
 		"color" "232 219 8"
@@ -19830,18 +19719,20 @@ entity
 entity
 {
 	"id" "39581"
-	"classname" "trigger_once"
+	"classname" "trigger_multiple"
 	"origin" "1298 773.5 82"
-	"spawnflags" "2"
+	"spawnflags" "16"
 	"StartDisabled" "0"
+	"wait" "10"
 	connections
 	{
-		"OnTrigger" "spawn_elev_boomerStartSpawning600-1"
-		"OnTrigger" "spawner_elev_rangerStartSpawning600-1"
-		"OnTrigger" "spawner_elev_droneStartSpawning600-1"
+		"OnTrigger" "spawn_elev_boomerStartSpawning5-1"
+		"OnTrigger" "spawner_elev_rangerStartSpawning0-1"
+		"OnTrigger" "spawner_elev_drone_repeatStartSpawning0-1"
 		"OnTrigger" "spawner_mainroom_droneStartSpawning2-1"
-		"OnTrigger" "spawner_office_baseStartSpawning600-1"
-		"OnTrigger" "spawner_big_hole_droneStartSpawning600-1"
+		"OnTrigger" "spawner_office_baseStartSpawning0-1"
+		"OnTrigger" "spawner_big_hole_drone_repeatStartSpawning1-1"
+		"OnTrigger" "timer_reset_spawnersEnable01"
 	}
 	solid
 	{
@@ -19978,11 +19869,11 @@ entity
 	"id" "40529"
 	"classname" "trigger_once"
 	"origin" "993 848 92.5"
-	"spawnflags" "2"
+	"spawnflags" "16"
 	"StartDisabled" "0"
 	connections
 	{
-		"OnTrigger" "info_ammo_hintShowHint0-1"
+		"OnTrigger" "disable_music_triggerEnable0-1"
 	}
 	solid
 	{
@@ -20328,7 +20219,7 @@ entity
 entity
 {
 	"id" "40732"
-	"classname" "asw_spawner"
+	"classname" "mod_spawner"
 	"AlienClass" "0"
 	"AlienOrders" "3"
 	"angles" "0 90 0"
@@ -20338,7 +20229,6 @@ entity
 	"MaxLiveAliens" "4"
 	"NearDistance" "740"
 	"NumAliens" "4"
-	"OnSpawned" "AutoInstance1-relay_vent_explo_01Trigger01"
 	"SpawnerState" "1"
 	"spawnflags" "0"
 	"SpawnIfMarinesAreNear" "1"
@@ -20346,7 +20236,7 @@ entity
 	"SpawnIntervalJitter" "45"
 	"SpeedScale" "1"
 	"StartBurrowed" "1"
-	"targetname" "spawner_big_hole_drone"
+	"targetname" "spawner_big_hole_drone_repeat"
 	"UnburrowActivity" "act_burrow_out"
 	"UnburrowIdleActivity" "act_burrow_idle"
 	"origin" "532 341 0"
@@ -20411,7 +20301,7 @@ entity
 	"id" "40820"
 	"classname" "trigger_once"
 	"origin" "78.5 911 82"
-	"spawnflags" "2"
+	"spawnflags" "16"
 	"StartDisabled" "0"
 	connections
 	{
@@ -20655,12 +20545,12 @@ entity
 	"id" "40946"
 	"classname" "trigger_once"
 	"origin" "2018.5 860 82"
-	"spawnflags" "2"
+	"spawnflags" "16"
 	"StartDisabled" "0"
 	connections
 	{
 		"OnTrigger" "info_ammo_hint_rightShowHint0-1"
-		"OnTrigger" "jukeboxStartMusic0-1"
+		"OnTrigger" "music_onTrigger0-1"
 	}
 	solid
 	{
@@ -20752,12 +20642,12 @@ entity
 	"id" "41003"
 	"classname" "trigger_once"
 	"origin" "904.5 70.5 82"
-	"spawnflags" "2"
+	"spawnflags" "16"
 	"StartDisabled" "0"
 	connections
 	{
 		"OnTrigger" "info_ammo_hint_rightShowHint0-1"
-		"OnTrigger" "jukeboxStartMusic0-1"
+		"OnTrigger" "music_onTrigger0-1"
 	}
 	solid
 	{
@@ -21720,6 +21610,676 @@ entity
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
 		"logicalpos" "[-15268 -2268]"
+	}
+}
+entity
+{
+	"id" "43923"
+	"classname" "logic_relay"
+	"spawnflags" "0"
+	"StartDisabled" "0"
+	"targetname" "music_on"
+	connections
+	{
+		"OnTrigger" "fight_musicStartMusic0-1"
+		"OnTrigger" "disable_music_on_relayTrigger1-1"
+	}
+	"origin" "1073 1584 242"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[13500 9500]"
+	}
+}
+entity
+{
+	"id" "43925"
+	"classname" "logic_relay"
+	"spawnflags" "0"
+	"StartDisabled" "0"
+	"targetname" "music_off"
+	connections
+	{
+		"OnTrigger" "fight_musicStopMusic3-1"
+	}
+	"origin" "1052 1584 242"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[13500 9500]"
+	}
+}
+entity
+{
+	"id" "43969"
+	"classname" "trigger_once"
+	"origin" "642.5 1709.5 82"
+	"spawnflags" "16"
+	"StartDisabled" "0"
+	connections
+	{
+		"OnTrigger" "music_onTrigger0-1"
+	}
+	solid
+	{
+		"id" "43970"
+		side
+		{
+			"id" "4895"
+			"plane" "(769 1733 162) (769 1733 2) (769 1686 2)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[0 1 0 48] 0.25"
+			"vaxis" "[0 0 -1 -30.761] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "4894"
+			"plane" "(516 1686 162) (516 1686 2) (516 1733 2)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[0 1 0 48] 0.25"
+			"vaxis" "[0 0 -1 -30.761] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "4893"
+			"plane" "(516 1733 162) (516 1733 2) (769 1733 2)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[-1 0 0 20] 0.25"
+			"vaxis" "[0 0 -1 -30.761] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "4892"
+			"plane" "(769 1686 162) (769 1686 2) (516 1686 2)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[-1 0 0 20] 0.25"
+			"vaxis" "[0 0 -1 -30.761] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "4891"
+			"plane" "(516 1733 2) (516 1686 2) (769 1686 2)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[0 1 0 48] 0.25"
+			"vaxis" "[1 0 0 -20] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "4890"
+			"plane" "(516 1686 162) (516 1733 162) (769 1733 162)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[0 1 0 48] 0.25"
+			"vaxis" "[1 0 0 -20] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		editor
+		{
+			"color" "220 30 220"
+			"visgroupshown" "1"
+			"visgroupautoshown" "1"
+		}
+	}
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupid" "22"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[4500 15500]"
+	}
+}
+entity
+{
+	"id" "43991"
+	"classname" "logic_relay"
+	"spawnflags" "0"
+	"StartDisabled" "0"
+	"targetname" "disable_music_on_relay"
+	connections
+	{
+		"OnTrigger" "music_onDisable0-1"
+	}
+	"origin" "1073 1558 242"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[13500 9500]"
+	}
+}
+entity
+{
+	"id" "44020"
+	"classname" "trigger_once"
+	"origin" "640.5 1796.5 82"
+	"spawnflags" "16"
+	"StartDisabled" "1"
+	"targetname" "disable_music_trigger"
+	connections
+	{
+		"OnTrigger" "music_offTrigger0-1"
+	}
+	solid
+	{
+		"id" "44021"
+		side
+		{
+			"id" "4907"
+			"plane" "(767 1820 162) (767 1820 2) (767 1773 2)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[0 1 0 -44] 0.25"
+			"vaxis" "[0 0 -1 -30.761] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "4906"
+			"plane" "(514 1773 162) (514 1773 2) (514 1820 2)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[0 1 0 -44] 0.25"
+			"vaxis" "[0 0 -1 -30.761] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "4905"
+			"plane" "(514 1820 162) (514 1820 2) (767 1820 2)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[-1 0 0 12] 0.25"
+			"vaxis" "[0 0 -1 -30.761] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "4904"
+			"plane" "(767 1773 162) (767 1773 2) (514 1773 2)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[-1 0 0 12] 0.25"
+			"vaxis" "[0 0 -1 -30.761] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "4903"
+			"plane" "(514 1820 2) (514 1773 2) (767 1773 2)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[0 1 0 -44] 0.25"
+			"vaxis" "[1 0 0 -12] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "4902"
+			"plane" "(514 1773 162) (514 1820 162) (767 1820 162)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[0 1 0 -44] 0.25"
+			"vaxis" "[1 0 0 -12] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		editor
+		{
+			"color" "220 30 220"
+			"visgroupshown" "1"
+			"visgroupautoshown" "1"
+		}
+	}
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupid" "22"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[4500 15500]"
+	}
+}
+entity
+{
+	"id" "44041"
+	"classname" "trigger_once"
+	"origin" "2118.5 847.5 82"
+	"spawnflags" "16"
+	"StartDisabled" "1"
+	"targetname" "disable_music_trigger"
+	connections
+	{
+		"OnTrigger" "music_offTrigger0-1"
+	}
+	solid
+	{
+		"id" "44042"
+		side
+		{
+			"id" "4919"
+			"plane" "(2197 1051 162) (2197 1051 2) (2197 644 2)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[0 1 0 24] 0.25"
+			"vaxis" "[0 0 -1 -30.761] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "4918"
+			"plane" "(2040 644 162) (2040 644 2) (2040 1051 2)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[0 1 0 24] 0.25"
+			"vaxis" "[0 0 -1 -30.761] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "4917"
+			"plane" "(2040 1051 162) (2040 1051 2) (2197 1051 2)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[-1 0 0 36] 0.25"
+			"vaxis" "[0 0 -1 -30.761] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "4916"
+			"plane" "(2197 644 162) (2197 644 2) (2040 644 2)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[-1 0 0 36] 0.25"
+			"vaxis" "[0 0 -1 -30.761] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "4915"
+			"plane" "(2040 1051 2) (2040 644 2) (2197 644 2)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[0 1 0 24] 0.25"
+			"vaxis" "[1 0 0 -36] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "4914"
+			"plane" "(2040 644 162) (2040 1051 162) (2197 1051 162)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[0 1 0 24] 0.25"
+			"vaxis" "[1 0 0 -36] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		editor
+		{
+			"color" "220 30 220"
+			"visgroupshown" "1"
+			"visgroupautoshown" "1"
+		}
+	}
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupid" "22"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[4500 15500]"
+	}
+}
+entity
+{
+	"id" "44053"
+	"classname" "trigger_once"
+	"origin" "-68.5 863.5 82"
+	"spawnflags" "16"
+	"StartDisabled" "1"
+	"targetname" "disable_music_trigger"
+	connections
+	{
+		"OnTrigger" "music_offTrigger0-1"
+	}
+	solid
+	{
+		"id" "44054"
+		side
+		{
+			"id" "4931"
+			"plane" "(10 1067 162) (10 1067 2) (10 660 2)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[0 1 0 -40] 0.25"
+			"vaxis" "[0 0 -1 -30.761] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "4930"
+			"plane" "(-147 660 162) (-147 660 2) (-147 1067 2)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[0 1 0 -40] 0.25"
+			"vaxis" "[0 0 -1 -30.761] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "4929"
+			"plane" "(-147 1067 162) (-147 1067 2) (10 1067 2)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[-1 0 0 56] 0.25"
+			"vaxis" "[0 0 -1 -30.761] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "4928"
+			"plane" "(10 660 162) (10 660 2) (-147 660 2)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[-1 0 0 56] 0.25"
+			"vaxis" "[0 0 -1 -30.761] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "4927"
+			"plane" "(-147 1067 2) (-147 660 2) (10 660 2)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[0 1 0 -40] 0.25"
+			"vaxis" "[1 0 0 -56] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "4926"
+			"plane" "(-147 660 162) (-147 1067 162) (10 1067 162)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[0 1 0 -40] 0.25"
+			"vaxis" "[1 0 0 -56] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		editor
+		{
+			"color" "220 30 220"
+			"visgroupshown" "1"
+			"visgroupautoshown" "1"
+		}
+	}
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupid" "22"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[4500 15500]"
+	}
+}
+entity
+{
+	"id" "44062"
+	"classname" "trigger_once"
+	"origin" "916 7 82"
+	"spawnflags" "16"
+	"StartDisabled" "1"
+	"targetname" "disable_music_trigger"
+	connections
+	{
+		"OnTrigger" "music_offTrigger0-1"
+	}
+	solid
+	{
+		"id" "44063"
+		side
+		{
+			"id" "4943"
+			"plane" "(1082 51 162) (1082 51 2) (1082 -37 2)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[0 1 0 56] 0.25"
+			"vaxis" "[0 0 -1 -30.761] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "4942"
+			"plane" "(750 -37 162) (750 -37 2) (750 51 2)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[0 1 0 56] 0.25"
+			"vaxis" "[0 0 -1 -30.761] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "4941"
+			"plane" "(750 51 162) (750 51 2) (1082 51 2)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[-1 0 0 60] 0.25"
+			"vaxis" "[0 0 -1 -30.761] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "4940"
+			"plane" "(1082 -37 162) (1082 -37 2) (750 -37 2)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[-1 0 0 60] 0.25"
+			"vaxis" "[0 0 -1 -30.761] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "4939"
+			"plane" "(750 51 2) (750 -37 2) (1082 -37 2)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[0 1 0 56] 0.25"
+			"vaxis" "[1 0 0 -60] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "4938"
+			"plane" "(750 -37 162) (750 51 162) (1082 51 162)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[0 1 0 56] 0.25"
+			"vaxis" "[1 0 0 -60] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		editor
+		{
+			"color" "220 30 220"
+			"visgroupshown" "1"
+			"visgroupautoshown" "1"
+		}
+	}
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupid" "22"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[4500 15500]"
+	}
+}
+entity
+{
+	"id" "3062"
+	"classname" "prop_static"
+	"angles" "0 180 0"
+	"disableselfshadowing" "0"
+	"disableshadows" "0"
+	"disablevertexlighting" "0"
+	"disableX360" "0"
+	"fademaxdist" "0"
+	"fademindist" "-1"
+	"fadescale" "1"
+	"ignorenormals" "0"
+	"maxcpulevel" "0"
+	"maxgpulevel" "0"
+	"mincpulevel" "0"
+	"mingpulevel" "0"
+	"model" "models/props/windows/window01a.mdl"
+	"renderamt" "255"
+	"rendercolor" "176 122 68"
+	"skin" "0"
+	"solid" "0"
+	"origin" "1299 1347 77.325"
+	editor
+	{
+		"color" "255 255 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[500 -1768]"
+	}
+}
+entity
+{
+	"id" "3066"
+	"classname" "asw_spawner"
+	"AlienClass" "0"
+	"AlienOrders" "3"
+	"angles" "0 180 0"
+	"ClearCheck" "0"
+	"HealthScale" "1"
+	"InfiniteAliens" "0"
+	"MaxLiveAliens" "2"
+	"NearDistance" "740"
+	"NumAliens" "6"
+	"SpawnerState" "1"
+	"spawnflags" "0"
+	"SpawnIfMarinesAreNear" "1"
+	"SpawnInterval" "2"
+	"SpawnIntervalJitter" "25"
+	"SpeedScale" "1"
+	"StartBurrowed" "0"
+	"targetname" "spawner_mainroom_drone"
+	connections
+	{
+		"OnSpawned" "window_mainroom_droneBreak0-1"
+	}
+	"origin" "1360 1346 42"
+	editor
+	{
+		"color" "0 0 255"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[1000 12000]"
+	}
+}
+entity
+{
+	"id" "3068"
+	"classname" "info_node"
+	"angles" "0 270 0"
+	"nodeid" "86"
+	"spawnflags" "0"
+	"origin" "1343 1346 48"
+	editor
+	{
+		"color" "232 219 8"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[8000 -12268]"
+	}
+}
+entity
+{
+	"id" "44945"
+	"classname" "logic_timer"
+	"RefireTime" "75"
+	"spawnflags" "0"
+	"StartDisabled" "1"
+	"targetname" "timer_reset_spawners"
+	"UseRandomTime" "0"
+	connections
+	{
+		"OnTimer" "spawner_big_hole_drone_repeatResetNumAliens0-1"
+		"OnTimer" "spawner_elev_drone_repeatResetNumAliens0-1"
+		"OnTimer" "disable_timer_reset_spawnersTrigger2-1"
+	}
+	"origin" "1042 1535 242"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[13500 9500]"
+	}
+}
+entity
+{
+	"id" "45780"
+	"classname" "logic_relay"
+	"spawnflags" "0"
+	"StartDisabled" "0"
+	"targetname" "disable_timer_reset_spawners"
+	connections
+	{
+		"OnTrigger" "timer_reset_spawnersDisable0-1"
+	}
+	"origin" "1068 1525 242"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[13500 9500]"
 	}
 }
 cameras
