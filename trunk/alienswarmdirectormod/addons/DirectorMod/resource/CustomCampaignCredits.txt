@@ -2,7 +2,7 @@
 {
 // these keys must be in this order!
 "show_credits_logo" "1"
-"custom_logo"	"ExampleCustomLogo/example_custom_logo"
+"custom_logo"	"ASDM_LOGO/asdm_logo"
 "asw_credits_"	"Philip Pittle"
 "asw_credits_"	""
 "asw_credits_"	"Alien Swarm Director Mod"
@@ -15,4 +15,17 @@
 "asw_credits_"	"May 2011"
 "asw_credits_"	""
 "asw_credits_"	""
+"asw_credits_"	"Special Thanks"
+"asw_credits_"  ""
+"asw_credits_"  "Testing:"
+"asw_credits_"	"Grant Griebel"
+"asw_credits_"	"Alex Shaproski"
+"asw_credits_"	"Jamie Pittle"
+"asw_credits_"  ""
+"asw_credits_"  "GUI Help:"
+"asw_credits_"	"Aazell - AS:SP"
+"asw_credits_"  ""
+"asw_credits_"  "and"
+"asw_credits_"  ""
+"asw_credits_"  "The Alien Swarm Team"
 }
