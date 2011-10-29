@@ -17,7 +17,7 @@ class CMOD_Player_Performance : CAutoGameSystemPerFrame
 	static CMOD_Player_Performance* g_PlayerPerformanceSingleton;
 
 	vector<double>* g_directorStressHistory;
-	vector<CMOD_Player_Performance_Calculator*> g_calculators;
+	vector<CMOD_Player_Performance_Calculator*>* g_calculators;
 	
 public:
 	//Singleton accessor

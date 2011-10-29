@@ -5,6 +5,7 @@
 #include "asw_marine.h"
 #include "asw_player.h"
 #include "mod_player_performance.h"
+#include "mod_player_performance_calculators.h"
 #include "asw_marine_profile.h"
 #include <vector>
 
@@ -59,18 +60,30 @@ CMOD_Player_Performance* CMOD_Player_Performance::PlayerPerformance()
 CMOD_Player_Performance::CMOD_Player_Performance( void ) : CAutoGameSystemPerFrame( "CMOD_Player_Performance" )
 {
 	m_previousRating = 0;
+
+	g_calculators = new vector<CMOD_Player_Performance_Calculator*>();	
+	g_calculators->push_back(new CMOD_Player_Performance_Calculator_Health(SINGLE_PLAYER_MODE));
+	g_calculators->push_back(new CMOD_Player_Performance_Calculator_Accuracy(SINGLE_PLAYER_MODE));	
+	g_calculators->push_back(new CMOD_Player_Performance_Calculator_DirectorStress(SINGLE_PLAYER_MODE));
+	g_calculators->push_back(new CMOD_Player_Performance_Calculator_PlayTime(SINGLE_PLAYER_MODE));
+
+	if (SINGLE_PLAYER_MODE)
+		g_calculators->push_back(new CMOD_Player_Performance_Calculator_FriendlyFire(SINGLE_PLAYER_MODE));
 }
 
 CMOD_Player_Performance::~CMOD_Player_Performance()
 {
-	
+	if (g_calculators)
+		delete g_calculators;
 }
 
 //Couldn't figure out how to nativally hook into this event, 
 //so asw_director.cpp calls 
-void CMOD_Player_Performance::OnMissionStarted(){	
-	//probably a memory leak
-	g_directorStressHistory = new vector<double>();	
+void CMOD_Player_Performance::OnMissionStarted(){		
+	for (unsigned int i = 0; i < g_calculators->size(); i++)
+	{
+		g_calculators->at(i)->OnMissionStarted();
+	}
 }
 
 //Couldn't figure out how to nativally hook into this event, 
@@ -94,6 +107,10 @@ void CMOD_Player_Performance::FrameUpdatePostEntityThink()
 
 void CMOD_Player_Performance::Event_AlienKilled( CBaseEntity *pAlien, const CTakeDamageInfo &info )
 {
+	for (unsigned int i = 0; i < g_calculators->size(); i++)
+	{
+		g_calculators->at(i)->Event_AlienKilled(pAlien, info);
+	}
 }
 
 int CMOD_Player_Performance::CalculatePerformance(bool isEndOfLevel)
@@ -120,6 +137,7 @@ int CMOD_Player_Performance::CalculatePerformanceButDoNotUpdateHUD(bool isEndOfL
 		return DEFAULT_PERFORMANCE;
 	}
 
+	/*
 	m_healthRating = CalculateHealthRating(pGameResource);	
 	m_accuracyRating = CalculateAccuracyRating(pGameResource);	
 	m_friendlyFireRating = CalculateFriendFireRating(pGameResource);	
@@ -135,7 +153,15 @@ int CMOD_Player_Performance::CalculatePerformanceButDoNotUpdateHUD(bool isEndOfL
 		m_totalRating = m_healthRating + m_accuracyRating + m_friendlyFireRating + m_directorStressRating;
 		m_totalRating /= 4;
 	}
-		
+	
+	*/
+
+	int m_totalRating = 100;
+	for (unsigned int i = 0; i < g_calculators->size(); i++)
+	{
+		g_calculators->at(i)->UpdatePerformance(&m_totalRating, isEndOfLevel, pGameResource);
+	}
+	
 	if (m_totalRating > 80)
 		m_weightedRating = 3;
 	else if (m_totalRating > 60)
@@ -283,7 +309,23 @@ int CMOD_Player_Performance::CalculateDirectorStress(CASW_Game_Resource *pGameRe
 
 void CMOD_Player_Performance::PrintDebug()
 {
-	engine->Con_NPrintf(1,"Players Performance: %d", m_weightedRating);
+	int screenOffset = 0;
+
+	engine->Con_NPrintf(screenOffset++,"Players Performance: %d", m_weightedRating);
+	for (unsigned int i = 0; i < g_calculators->size(); i++)	
+	{
+		g_calculators->at(i)->PrintDebugString( screenOffset++ );		
+	}	
+	screenOffset++;
+	for (unsigned int i = 0; i < g_calculators->size(); i++)
+	{
+		if (g_calculators->at(i)->HasExtraDebugInfo())
+		{
+			g_calculators->at(i)->PrintExtraDebugInfo(screenOffset++);			
+		}
+	}
+	
+	/*
 	engine->Con_NPrintf(2,"Players Health Rating: %d", m_healthRating);
 	engine->Con_NPrintf(3,"Players Accuracy Rating: %d", m_accuracyRating);
 	if (!SINGLE_PLAYER_MODE)
@@ -296,14 +338,15 @@ void CMOD_Player_Performance::PrintDebug()
 	engine->Con_NPrintf(11,"Player %d accuracy: %f", m_playerZeroAccuracy);
 	engine->Con_NPrintf(12,"Average stress: %f", m_averageStressOfPlayers);
 	engine->Con_NPrintf(13,"Average historical stress: %f", m_averageStressHistory);
+	*/
 
 	if (mod_player_performance_force_value.GetInt() > 0)
 	{
-		engine->Con_NPrintf(8,"Player Forced Rating: ON [%d]", mod_player_performance_force_value.GetInt());
+		engine->Con_NPrintf(screenOffset++,"Player Forced Rating: ON [%d]", mod_player_performance_force_value.GetInt());
 	}
 	else
 	{
-		engine->Con_NPrintf(8,"Player Forced Rating: OFF");
+		engine->Con_NPrintf(screenOffset++,"Player Forced Rating: OFF");
 	}	
 }
 
