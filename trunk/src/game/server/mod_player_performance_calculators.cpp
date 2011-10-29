@@ -33,7 +33,7 @@ using namespace std;
 
 void CMOD_Player_Performance_Calculator::PrintDebugString(int offset)
 {	
-	engine->Con_NPrintf(offset, "Player %s Rating: %d", m_DebugName, GetDebugValue());	
+	engine->Con_NPrintf(offset, "Player %s Rating: [%d]", m_DebugName, GetDebugValue());	
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -53,6 +53,8 @@ void CMOD_Player_Performance_Calculator_Health::UpdatePerformance(int * performa
 			continue;
 
 		averageHealth += pMarine->GetHealth();
+
+				
 	}
 
 	if (!IsSinglePlayerMode())
@@ -93,10 +95,9 @@ void CMOD_Player_Performance_Calculator_Accuracy::UpdatePerformance(int * perfor
 				averageAccuracy += acc;
 
 				playersThatHaveFired++;			
-		}
+		}		
 	}
-
-
+		
 	if (averageAccuracy == 0)
 	{
 		//No one has fired a shot, so perfect accuracy.
@@ -195,6 +196,177 @@ void CMOD_Player_Performance_Calculator_DirectorStress::UpdatePerformance(int * 
 
 void CMOD_Player_Performance_Calculator_PlayTime::UpdatePerformance(int * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource)
 {
-	if (!isEndOfLevel)
-		return;
+//	if (!isEndOfLevel)
+//		return;
+
+	//pGameResource->GetCreateTime();
+	m_LastCalculatedValue = (int)(pGameResource->GetSimulationTime() * 100);
 }
+
+//////////////////////////////////////////////////////////////////////////////////
+
+void CMOD_Player_Performance_Calculator_AlienLifeTime::OnMissionStarted()
+{
+	m_totalAlienLifeTime = 0;
+	m_numberOfAliensKilled = 0;
+}
+
+void CMOD_Player_Performance_Calculator_AlienLifeTime::Event_AlienKilled( CBaseEntity *pAlien, const CTakeDamageInfo &info )
+{	
+	float total_alive_time = gpGlobals->curtime - pAlien->GetModSpawnTime();	
+
+	 m_totalAlienLifeTime += total_alive_time;
+	 m_numberOfAliensKilled++;
+}
+
+void CMOD_Player_Performance_Calculator_AlienLifeTime::UpdatePerformance(int * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource)
+{
+	if (m_numberOfAliensKilled > 0 )
+		m_LastCalculatedValue = (int)((m_totalAlienLifeTime / m_numberOfAliensKilled) * 100);
+}
+
+void CMOD_Player_Performance_Calculator_AlienLifeTime::PrintExtraDebugInfo(int offset)
+{
+	engine->Con_NPrintf(offset, "Aliens Killed [%i] Total Life Time: [%0.3f]", m_numberOfAliensKilled, m_totalAlienLifeTime);	
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+
+CMOD_Player_Performance_Calculator_FastReload::CMOD_Player_Performance_Calculator_FastReload(bool bIsSignlePlayerMode)
+		:CMOD_Player_Performance_Calculator(bIsSignlePlayerMode)
+{
+	m_DebugName = "Fast Reload";		
+
+	ListenForGameEvent("fast_reload");	
+}
+
+CMOD_Player_Performance_Calculator_FastReload::~CMOD_Player_Performance_Calculator_FastReload()
+{
+	StopListeningForAllEvents();
+}
+
+void CMOD_Player_Performance_Calculator_FastReload::OnMissionStarted()
+{
+	m_NumberOfFastReloads = 0;	
+}
+
+void CMOD_Player_Performance_Calculator_FastReload::FireGameEvent(IGameEvent * event)
+{
+	const char * type = event->GetName();
+	
+	if ( Q_strcmp(type, "fast_reload") == 0 )
+	{
+		m_NumberOfFastReloads++;
+	}	
+}
+
+void CMOD_Player_Performance_Calculator_FastReload::UpdatePerformance(int * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource)
+{	
+}
+
+void CMOD_Player_Performance_Calculator_FastReload::PrintExtraDebugInfo(int offset)
+{
+	engine->Con_NPrintf(offset, "Number of Fast Reloads: [%i]", m_NumberOfFastReloads);	
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+
+void CMOD_Player_Performance_Calculator_DodgeRanger::OnMissionStarted()
+{
+	m_HasDodgedRanger = false;
+	m_LastCalculatedValue = 0;
+}
+
+void CMOD_Player_Performance_Calculator_DodgeRanger::UpdatePerformance(int * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource)
+{
+	if (!m_HasDodgedRanger)
+	{
+		for ( int i=0;i<pGameResource->GetMaxMarineResources();i++ )
+		{
+			CASW_Marine_Resource *pMR = pGameResource->GetMarineResource(i);
+			if ( !pMR )
+				continue;
+
+			CASW_Marine *pMarine = pMR->GetMarineEntity();
+			if ( !pMarine || pMarine->GetHealth() <= 0 )
+				continue;
+
+			if (!pMarine->GetMarineResource())
+				continue;
+
+			if (pMarine->GetMarineResource()->m_bDodgedRanger)
+			{
+				m_HasDodgedRanger = true;
+				m_LastCalculatedValue = 5;
+			}
+		}
+	}
+
+	*performance +=m_LastCalculatedValue;
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+
+void CMOD_Player_Performance_Calculator_MeleeKills::OnMissionStarted()
+{
+	m_numberOfAliensKilled = 0;
+	m_numberOfMeleeKills = 0;
+}
+
+void CMOD_Player_Performance_Calculator_MeleeKills::Event_AlienKilled( CBaseEntity *pAlien, const CTakeDamageInfo &info )
+{		
+	 m_numberOfAliensKilled++;
+
+	 if (Q_strcmp(info.GetAmmoName(), "asw_marine"))
+		 m_numberOfMeleeKills++;	
+}
+
+void CMOD_Player_Performance_Calculator_MeleeKills::UpdatePerformance(int * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource)
+{
+	if (m_numberOfAliensKilled > 0 )
+		m_LastCalculatedValue = (int)((m_numberOfMeleeKills * 100) / (m_numberOfAliensKilled * 100));
+}
+
+void CMOD_Player_Performance_Calculator_MeleeKills::PrintExtraDebugInfo(int offset)
+{
+	engine->Con_NPrintf(offset, "Melee Kills [%i] Total Kills: [%i]", m_numberOfMeleeKills, m_numberOfAliensKilled);	
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+
+void CMOD_Player_Performance_Calculator_BoomerKillEarly::OnMissionStarted()
+{
+	m_HasBoomerKillEarly = false;
+	m_LastCalculatedValue = 0;
+}
+
+void CMOD_Player_Performance_Calculator_BoomerKillEarly::UpdatePerformance(int * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource)
+{
+	if (!m_HasBoomerKillEarly)
+	{
+		for ( int i=0;i<pGameResource->GetMaxMarineResources();i++ )
+		{
+			CASW_Marine_Resource *pMR = pGameResource->GetMarineResource(i);
+			if ( !pMR )
+				continue;
+
+			CASW_Marine *pMarine = pMR->GetMarineEntity();
+			if ( !pMarine || pMarine->GetHealth() <= 0 )
+				continue;
+
+			if (!pMarine->GetMarineResource())
+				continue;
+
+			if (pMarine->GetMarineResource()->m_bKilledBoomerEarly)
+			{
+				m_HasBoomerKillEarly = true;
+				m_LastCalculatedValue = 5;
+			}
+		}
+	}
+
+	*performance +=m_LastCalculatedValue;
+}
+
+
+

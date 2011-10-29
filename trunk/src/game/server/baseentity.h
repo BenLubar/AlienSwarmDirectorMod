@@ -1877,6 +1877,11 @@ public:
 
 public:
 
+	//MOD
+	float m_iModSpawnTime;
+	//Returns the time (using gpGlobals->curtime) the Spawn method was called
+	float GetModSpawnTime(){return m_iModSpawnTime;}
+
 
 };
 

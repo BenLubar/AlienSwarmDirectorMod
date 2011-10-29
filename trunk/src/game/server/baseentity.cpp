@@ -3950,6 +3950,7 @@ void CBaseEntity::SetMoveType( MoveType_t val, MoveCollide_t moveCollide )
 
 void CBaseEntity::Spawn( void ) 
 {
+	m_iModSpawnTime = gpGlobals->curtime;
 }
 
 // Post KeyValues/Map data parsing hook

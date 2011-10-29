@@ -31,7 +31,7 @@ void CMOD_Build_Mission_Map_For_Next_Mission::Activate(inputdata_t &inputData)
 	Msg("CMOD_Build_Mission_Map_For_Next_Mission activated!  Telling client to build map.\n\n");
 
 	//update m_iPlayerPerformance.  Engine will broadcast to clients
-	m_iPlayerPerformance = CMOD_Player_Performance::PlayerPerformance()->CalculatePerformance();
+	m_iPlayerPerformance = CMOD_Player_Performance::PlayerPerformance()->CalculatePerformance(true);
 
 	Msg("Player Performance: [%d]", m_iPlayerPerformance);
 

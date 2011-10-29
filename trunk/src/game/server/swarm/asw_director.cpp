@@ -183,6 +183,9 @@ void CASW_Director::Event_AlienKilled( CBaseEntity *pAlien, const CTakeDamageInf
 	if ( !pGameResource )
 		return;
 
+	//Pass event to mod_player_performance
+	CMOD_Player_Performance::PlayerPerformance()->Event_AlienKilled(pAlien, info);
+
 	bool bDangerous = pAlien->Classify() == CLASS_ASW_SHIELDBUG;       // shieldbug
 	bool bVeryDangerous = pAlien->Classify() == CLASS_ASW_QUEEN;		// queen
 

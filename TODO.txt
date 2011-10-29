@@ -25,3 +25,5 @@ Notes:
 		int iNextMission = pSave->m_iNumMissionsComplete;
 
 IMPORTANT !!! asw_show_all_singleplayer_maps 1
+
+fast reload, game event fired in asw_weapon_shared.cpp line 177
