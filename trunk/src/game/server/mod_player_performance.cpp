@@ -77,7 +77,7 @@ void CMOD_Player_Performance::OnMissionStarted(){
 //so asw_director.cpp calls 
 void CMOD_Player_Performance::FrameUpdatePostEntityThink()
 {	
-	int rating = CalculatePerformanceButDoNotUpdateHUD();
+	int rating = CalculatePerformanceButDoNotUpdateHUD(false);
 
 	//if (rating != m_previousRating) - WriteToHUD was firing before HUD was ready to receive, so HUD would
 	//be out of date on level start.
@@ -92,14 +92,17 @@ void CMOD_Player_Performance::FrameUpdatePostEntityThink()
 	}
 }
 
-
-int CMOD_Player_Performance::CalculatePerformance()
+void CMOD_Player_Performance::Event_AlienKilled( CBaseEntity *pAlien, const CTakeDamageInfo &info )
 {
-	WriteToHUD("MODPlayerPerformanceDynamicContent", -1);
-	return CalculatePerformanceButDoNotUpdateHUD();
 }
 
-int CMOD_Player_Performance::CalculatePerformanceButDoNotUpdateHUD()
+int CMOD_Player_Performance::CalculatePerformance(bool isEndOfLevel)
+{
+	WriteToHUD("MODPlayerPerformanceDynamicContent", -1);
+	return CalculatePerformanceButDoNotUpdateHUD(isEndOfLevel);
+}
+
+int CMOD_Player_Performance::CalculatePerformanceButDoNotUpdateHUD(bool isEndOfLevel)
 {
 	//Performance is 25% health, 25% accuracy, 
 	//25% friendly fire, 25% average director stress 
