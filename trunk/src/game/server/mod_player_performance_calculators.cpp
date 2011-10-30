@@ -311,7 +311,7 @@ void CMOD_Player_Performance_Calculator_AlienLifeTime::UpdatePerformance(float *
 	if (m_numberOfAliensKilled == 0 )
 		return;
 
-	float averageLifeExpectency = (m_totalAlienLifeTime / m_numberOfAliensKilled;
+	float averageLifeExpectency = m_totalAlienLifeTime / m_numberOfAliensKilled;
 
 	if (averageLifeExpectency <= mod_player_performance_enemy_life_time_positive_threshold.GetFloat())
 	{
