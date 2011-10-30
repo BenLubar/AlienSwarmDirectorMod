@@ -19,7 +19,7 @@ protected:
 		m_LastCalculatedValue = 0;
 	}
 
-	int m_LastCalculatedValue;
+	float m_LastCalculatedValue;
 	bool m_bIsSinglePlayerMode;
 	char * m_DebugName;
 
@@ -27,11 +27,11 @@ public:
 	virtual void OnMissionStarted(){}
 	virtual void Event_AlienKilled( CBaseEntity *pAlien, const CTakeDamageInfo &info ){};
 
-	virtual void UpdatePerformance(int * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource) = 0;	
+	virtual void UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource) = 0;	
 	bool IsSinglePlayerMode(){return m_bIsSinglePlayerMode;}
 
 	virtual void PrintDebugString(int offset);
-	virtual int GetDebugValue(){return m_LastCalculatedValue;}	
+	virtual double GetDebugValue(){return m_LastCalculatedValue;}	
 	virtual bool HasExtraDebugInfo(){ return false;}
 	virtual void PrintExtraDebugInfo(int offset){}		
 };
@@ -44,10 +44,20 @@ public:
 	CMOD_Player_Performance_Calculator_Health(bool bIsSignlePlayerMode)
 		:CMOD_Player_Performance_Calculator(bIsSignlePlayerMode)
 	{	
-		m_DebugName = "Health";			
+		m_DebugName = "Health";	
+		m_averageHealth = 0;
+		m_fullHealth = 0;
+		m_hasCalculatedFullHealth = false;
 	}
+
+	int m_averageHealth;
+	int m_fullHealth;
+	bool m_hasCalculatedFullHealth;
 		
-	virtual void UpdatePerformance(int * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
+	virtual void OnMissionStarted();
+	virtual void UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
+	virtual bool HasExtraDebugInfo(){ return true;}
+	virtual void PrintExtraDebugInfo(int offset);
 };
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -64,7 +74,7 @@ public:
 	//The accuracy of the primay player.
 	float m_PlayerZeroAccuracy;
 
-	virtual void UpdatePerformance(int * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
+	virtual void UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
 	virtual bool HasExtraDebugInfo(){ return true;}
 	virtual void PrintExtraDebugInfo(int offset);
 };
@@ -80,7 +90,7 @@ public:
 		m_DebugName = "Friendly Fire";		
 	}
 	
-	virtual void UpdatePerformance(int * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
+	virtual void UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
 };
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -94,14 +104,14 @@ public:
 		m_DebugName = "Dicrector Stress";		
 	}
 
-	vector<double>* g_directorStressHistory;
+	vector<float>* g_directorStressHistory;
 
-	double m_averageStressOfPlayers, m_averageStressHistory;
+	float m_averageStressOfPlayers, m_averageStressHistory;
 
 	virtual void OnMissionStarted();		
 	virtual bool HasExtraDebugInfo(){ return true;}
 	virtual void PrintExtraDebugInfo(int offset);
-	virtual void UpdatePerformance(int * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
+	virtual void UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
 };
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -113,9 +123,16 @@ public:
 		:CMOD_Player_Performance_Calculator(bIsSignlePlayerMode)
 	{
 		m_DebugName = "Play Time";		
+		m_MissionStartTime = 0.0;
 	}
+
+	float m_MissionStartTime;
 	
-	virtual void UpdatePerformance(int * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
+	virtual void OnMissionStarted();
+	virtual void UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
+
+	virtual bool HasExtraDebugInfo(){ return true;}
+	virtual void PrintExtraDebugInfo(int offset);	
 };
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -127,7 +144,7 @@ public:
 		:CMOD_Player_Performance_Calculator(bIsSignlePlayerMode)
 	{
 		m_DebugName = "Alien Avg Life Time";
-		m_totalAlienLifeTime = 0;
+		m_totalAlienLifeTime = 0.0f;
 		m_numberOfAliensKilled = 0;
 	}
 
@@ -137,7 +154,7 @@ public:
 	virtual void OnMissionStarted();
 
 	virtual void Event_AlienKilled( CBaseEntity *pAlien, const CTakeDamageInfo &info );
-	virtual void UpdatePerformance(int * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
+	virtual void UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
 
 	virtual bool HasExtraDebugInfo(){ return true;}
 	virtual void PrintExtraDebugInfo(int offset);
@@ -155,7 +172,7 @@ public:
 	int m_NumberOfFastReloads;
 
 	virtual void OnMissionStarted();
-	virtual void UpdatePerformance(int * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
+	virtual void UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
 
 	virtual bool HasExtraDebugInfo(){ return true;}
 	virtual void PrintExtraDebugInfo(int offset);
@@ -179,7 +196,7 @@ public:
 	bool m_HasDodgedRanger;
 
 	virtual void OnMissionStarted();
-	virtual void UpdatePerformance(int * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
+	virtual void UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
 };
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -201,7 +218,7 @@ public:
 	virtual void OnMissionStarted();
 
 	virtual void Event_AlienKilled( CBaseEntity *pAlien, const CTakeDamageInfo &info );
-	virtual void UpdatePerformance(int * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
+	virtual void UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
 
 	virtual bool HasExtraDebugInfo(){ return true;}
 	virtual void PrintExtraDebugInfo(int offset);
@@ -221,7 +238,7 @@ public:
 	bool m_HasBoomerKillEarly;
 
 	virtual void OnMissionStarted();
-	virtual void UpdatePerformance(int * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
+	virtual void UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
 };
 
 #endif

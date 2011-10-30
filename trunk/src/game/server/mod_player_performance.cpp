@@ -20,31 +20,17 @@ using namespace std;
 //returned when Performance can not be calculated
 #define DEFAULT_PERFORMANCE 1
 
-//Multiplies the average accuracy.  If averageAccuracy is 25% and ACCURACY_MODIFIER is 4
-//CalculateAccuracyRating will return a 100 (perfect score)
-#define ACCURACY_MODIFIER 1
-
-//Amount of Friendly Fire per Marine that's allowed before a penalty
-#define FRIENDLYFIRE_HANDICAP 10.0
-
-#define FRIENDLYFIRE_MULTIPLIER 3.0
-
-#define MAX_DIRECTOR_STRESS_HISTORY_SIZE 2024
-
-#define DIRECTOR_STRESS_MULTIPLIER 4.5
-
 //Couldn't get bots or multiplayer to work properly, so change how score is calculated
 #define SINGLE_PLAYER_MODE true
-
-//This counters that effect of stress, end of levels
-//usually have 'finales' which result in the players
-//being 100% stressed. This reduces the overall impact
-//of prolonged high stress on performance metrics.
-#define STRESS_MULTIPLIER 0.3
 
 ConVar mod_player_performance_debug("mod_player_performance_debug", "0", 0, "Displays modPlayerPerformance status on screen");
 
 ConVar mod_player_performance_force_value("mod_player_performance_force_value", "0", 0, "Permantently sets modPlayerPerformance, overriding the calculated value.");
+
+ConVar mod_player_performance_threshold_high("mod_player_performance_threshold_high", "80", 0, "Player performance neccessary to achieve a performance ranking of '3' (high).");
+ConVar mod_player_performance_threshold_medium("mod_player_performance_threshold_medium", "60", 0, "Player performance neccessary to achieve a performance ranking of '2' (medium).");
+
+ConVar mod_player_performance_starting_value("mod_player_performance_starting_value", "80", 0, "The player performance at the beginning of a level.");
 
 CMOD_Player_Performance* CMOD_Player_Performance::g_PlayerPerformanceSingleton = 0;
 
@@ -126,9 +112,6 @@ int CMOD_Player_Performance::CalculatePerformance(bool isEndOfLevel)
 
 int CMOD_Player_Performance::CalculatePerformanceButDoNotUpdateHUD(bool isEndOfLevel)
 {
-	//Performance is 25% health, 25% accuracy, 
-	//25% friendly fire, 25% average director stress 
-
 	//if (mod_player_performance_force_value.GetInt() > 0)
 	//{
 		//Don't return here, go ahead and calculate the value in case debug is on.
@@ -142,15 +125,15 @@ int CMOD_Player_Performance::CalculatePerformanceButDoNotUpdateHUD(bool isEndOfL
 		return DEFAULT_PERFORMANCE;
 	}	
 
-	int m_totalRating = 100;
+	m_totalRating = mod_player_performance_starting_value.GetInt();
 	for (unsigned int i = 0; i < g_calculators->size(); i++)
 	{
 		g_calculators->at(i)->UpdatePerformance(&m_totalRating, isEndOfLevel, pGameResource);
 	}
 	
-	if (m_totalRating > 80)
+	if (m_totalRating >= mod_player_performance_threshold_high.GetInt())
 		m_weightedRating = 3;
-	else if (m_totalRating > 60)
+	else if (m_totalRating > mod_player_performance_threshold_medium.GetInt())
 		m_weightedRating = 2;
 	else 
 		m_weightedRating = 1;	
@@ -170,7 +153,7 @@ void CMOD_Player_Performance::PrintDebug()
 	int screenOffset = 0;
 
 	engine->Con_NPrintf(screenOffset++,"Players Performance: %d", m_weightedRating);
-	engine->Con_NPrintf(screenOffset++,"Players Total Rating: %d", m_totalRating);
+	engine->Con_NPrintf(screenOffset++,"Players Total Rating: %0.02f", m_totalRating);
 	screenOffset++;
 	for (unsigned int i = 0; i < g_calculators->size(); i++)	
 	{
