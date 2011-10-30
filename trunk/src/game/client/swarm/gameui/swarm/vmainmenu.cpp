@@ -676,6 +676,27 @@ void MainMenu::OnCommand( const char *command )
 	{
 		CBaseModPanel::GetSingleton().OpenWindow( WT_ADDONS, this, true );
 	}
+	else if (!Q_strcmp( command, "CreateGame_MOD" ))
+	{
+		KeyValues *pSettings = KeyValues::FromString(
+				"Settings",
+				" System { "
+				" network offline "
+				" } "
+				" Game { "
+				" mode campaign "
+				" campaign DirectorModCampaign "
+				" mission Mission1 "
+				" } "
+				);
+		KeyValues::AutoDelete autodelete( pSettings );
+
+		// TCR: We need to respect the default difficulty
+		pSettings->SetString( "Game/difficulty", GameModeGetDefaultDifficulty( pSettings->GetString( "Game/mode" ) ) );
+
+		g_pMatchFramework->CreateSession( pSettings );
+	}
+
 	else if( !Q_strcmp( command, "CreateGame" ) )
 	{
 		KeyValues *pSettings = KeyValues::FromString(
@@ -691,8 +712,9 @@ void MainMenu::OnCommand( const char *command )
 			" } "
 			" options { "
 			" action create "
-			" } "
-			);
+			" } "			
+		);
+
 		KeyValues::AutoDelete autodelete( pSettings );
 
 		char const *szGameMode = "campaign";
