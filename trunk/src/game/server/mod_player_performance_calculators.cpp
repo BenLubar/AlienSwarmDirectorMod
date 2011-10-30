@@ -22,7 +22,7 @@ using namespace std;
 
 #define FRIENDLYFIRE_MULTIPLIER 3.0
 
-#define MAX_DIRECTOR_STRESS_HISTORY_SIZE 2024
+#define MAX_DIRECTOR_STRESS_HISTORY_SIZE 1500
 
 #define DIRECTOR_STRESS_MULTIPLIER 4.5
 
@@ -32,24 +32,24 @@ using namespace std;
 //of prolonged high stress on performance metrics.
 #define STRESS_MULTIPLIER 0.3
 
-ConVar mod_player_performance_health_critical_threshold("mod_player_performance_health_critical_threshold", "50", 0, "This threshold indicates if health_normal_penalty or health_critical_penalty is used to calculate health penalty.  Note: This is health lost, not health remaning");
-ConVar mod_player_performance_health_normal_penalty("mod_player_performance_health_normal_penalty", "0.4", 0, "The defualt performance penalty for lost health.  This is multipled by each HP lost.");
-ConVar mod_player_performance_health_critical_penalty("mod_player_performance_health_critical_penalty", "0.6", 0, "The critical performance penalty for lost health.  This is multipled by each HP lost.");
-ConVar mod_player_performance_accuracy_threshold("mod_player_performance_accuracy_threshold", "92", 0, "The threshold where a players accuracy has a positive or negative impact on performance.  Above this threshold and performance gets a boost, below and there is a penalty.");
-ConVar mod_player_performance_accuracy_floor("mod_player_performance_accuracy_floor", "75", 0, "The floor for caculating an accuracy penalty.  Ie, this is the lowest value that is used to assess a penalty.");
-ConVar mod_player_performance_accuracy_performance_modifier("mod_player_performance_accuracy_performance_modifier", "0.8", 0, "Multipled against the players weighted accuracy to get the performance modifier. Weighted accuracy is difference between accuracy threshold and actual accuracy.");
-ConVar mod_player_performance_director_stress_threshold("mod_player_performance_director_stress_threshold", "17", 0, "The threshold when stress, as measured by the director, engenders a player performance penalty.");
-ConVar mod_player_performance_director_stress_penalty("mod_player_performance_director_stress_penalty", "0.7", 0, "The per stress point penalty assesed.");
-ConVar mod_player_performance_playtime_par("mod_player_performance_playtime_par", "270", 0, "The average amount of time a player is expected to complete a level.");
-ConVar mod_player_performance_playtime_divisor_bonus("mod_player_performance_playtime_par_bonus", "15", 0, "The boost to performance a player receives for completing a mission under par.  For each '60' seconds under par, the player's performance is increased by 1 point.");
-ConVar mod_player_performance_enemy_life_time_positive_threshold("mod_player_performance_enemy_life_time_positive_threshold", "7", 0, "If the average enemy life expectency is less than this, a bonus is awarded.");
-ConVar mod_player_performance_enemy_life_time_positive_bonus("mod_player_performance_enemy_life_time_positive_bonus", "1.0", 0, "The bonus to award if enemy life expectency is less than the positive threshold.");
-ConVar mod_player_performance_enemy_life_time_negative_threshold("mod_player_performance_enemy_life_time_negative_threshold", "12", 0, "If the average enemy life expectency is more than this, a penalty is assesed.");
-ConVar mod_player_performance_enemy_life_time_negative_penalty("mod_player_performance_enemy_life_time_negative_penalty", "1.0", 0, "The penalty to asses if enemy life expectency is more than the negative threshold.");
-ConVar mod_player_performance_fastreload_bonus("mod_player_performance_fastreload_bonus", "3", 0, "The boost to performance a player receives for each fast reload.");
-ConVar mod_player_performance_dodgeranger_bonus("mod_player_performance_dodgeranger_bonus", "5", 0, "The boost to performance a player receives for dodging a ranger projectile.");
-ConVar mod_player_performance_meleekill_bonus("mod_player_performance_meleekill_bonus", "1.0", 0, "The boost to performance a player receives for each melee kill.");
-ConVar mod_player_performance_boomer_kill_early_bonus("mod_player_performance_boomer_kill_early_bonus", "7", 0, "The boost to performance a player receives for killing a boomer before it explodes.");
+ConVar mod_player_performance_health_critical_threshold(			"mod_player_performance_health_critical_threshold", "50", 0, "This threshold indicates if health_normal_penalty or health_critical_penalty is used to calculate health penalty.  Note: This is health lost, not health remaning");
+ConVar mod_player_performance_health_normal_penalty(				"mod_player_performance_health_normal_penalty", "0.4", 0, "The defualt performance penalty for lost health.  This is multipled by each HP lost.");
+ConVar mod_player_performance_health_critical_penalty(				"mod_player_performance_health_critical_penalty", "0.6", 0, "The critical performance penalty for lost health.  This is multipled by each HP lost.");
+ConVar mod_player_performance_accuracy_threshold(					"mod_player_performance_accuracy_threshold", "92", 0, "The threshold where a players accuracy has a positive or negative impact on performance.  Above this threshold and performance gets a boost, below and there is a penalty.");
+ConVar mod_player_performance_accuracy_floor(						"mod_player_performance_accuracy_floor", "75", 0, "The floor for caculating an accuracy penalty.  Ie, this is the lowest value that is used to assess a penalty.");
+ConVar mod_player_performance_accuracy_performance_modifier(		"mod_player_performance_accuracy_performance_modifier", "0.8", 0, "Multipled against the players weighted accuracy to get the performance modifier. Weighted accuracy is difference between accuracy threshold and actual accuracy.");
+ConVar mod_player_performance_director_stress_threshold(			"mod_player_performance_director_stress_threshold", "17", 0, "The threshold when stress, as measured by the director, engenders a player performance penalty.");
+ConVar mod_player_performance_director_stress_penalty(				"mod_player_performance_director_stress_penalty", "0.5", 0, "The per stress point penalty assesed.");
+ConVar mod_player_performance_playtime_par(							"mod_player_performance_playtime_par", "270", 0, "The average amount of time a player is expected to complete a level.");
+ConVar mod_player_performance_playtime_divisor_bonus(				"mod_player_performance_playtime_par_bonus", "15", 0, "The boost to performance a player receives for completing a mission under par.  For each '60' seconds under par, the player's performance is increased by 1 point.");
+ConVar mod_player_performance_enemy_life_time_positive_threshold(	"mod_player_performance_enemy_life_time_positive_threshold", "7", 0, "If the average enemy life expectency is less than this, a bonus is awarded.");
+ConVar mod_player_performance_enemy_life_time_positive_bonus(		"mod_player_performance_enemy_life_time_positive_bonus", "0.8", 0, "The bonus to award if enemy life expectency is less than the positive threshold.");
+ConVar mod_player_performance_enemy_life_time_negative_threshold(	"mod_player_performance_enemy_life_time_negative_threshold", "12", 0, "If the average enemy life expectency is more than this, a penalty is assesed.");
+ConVar mod_player_performance_enemy_life_time_negative_penalty(		"mod_player_performance_enemy_life_time_negative_penalty", "0.3", 0, "The penalty to asses if enemy life expectency is more than the negative threshold.");
+ConVar mod_player_performance_fastreload_bonus(						"mod_player_performance_fastreload_bonus", "2", 0, "The boost to performance a player receives for each fast reload.");
+ConVar mod_player_performance_dodgeranger_bonus(					"mod_player_performance_dodgeranger_bonus", "5", 0, "The boost to performance a player receives for dodging a ranger projectile.");
+ConVar mod_player_performance_meleekill_bonus(						"mod_player_performance_meleekill_bonus", "0.7", 0, "The boost to performance a player receives for each melee kill.");
+ConVar mod_player_performance_boomer_kill_early_bonus(			"mod_player_performance_boomer_kill_early_bonus", "5", 0, "The boost to performance a player receives for killing a boomer before it explodes.");
 
 
 void CMOD_Player_Performance_Calculator::PrintDebugString(int offset)
@@ -160,9 +160,10 @@ void CMOD_Player_Performance_Calculator_Accuracy::UpdatePerformance(float * perf
 	averageAccuracy /= playersThatHaveFired;
 	averageAccuracy *= ACCURACY_MODIFIER;
 
-	float adjustedAccuracy = averageAccuracy - mod_player_performance_accuracy_threshold.GetInt();
-	if (adjustedAccuracy < mod_player_performance_accuracy_floor.GetFloat())
-		adjustedAccuracy = mod_player_performance_accuracy_floor.GetFloat();
+	if (averageAccuracy < mod_player_performance_accuracy_floor.GetFloat())
+		averageAccuracy = mod_player_performance_accuracy_floor.GetFloat();
+
+	float adjustedAccuracy = averageAccuracy - mod_player_performance_accuracy_threshold.GetInt();	
 
 	m_LastCalculatedValue = adjustedAccuracy * mod_player_performance_accuracy_performance_modifier.GetFloat();
 
@@ -249,7 +250,13 @@ void CMOD_Player_Performance_Calculator_DirectorStress::UpdatePerformance(float 
 	
 	if (m_averageStressHistory > mod_player_performance_director_stress_threshold.GetInt())
 	{
-		m_LastCalculatedValue = m_averageStressHistory * mod_player_performance_director_stress_penalty.GetFloat();
+		float adjustedStress = m_averageStressHistory - mod_player_performance_director_stress_threshold.GetInt();
+		adjustedStress *=  mod_player_performance_director_stress_penalty.GetFloat();
+
+		//multiply by -1 because this is a penalty
+		adjustedStress *=-1;
+
+		m_LastCalculatedValue = adjustedStress;
 	}
 	else
 	{
@@ -319,7 +326,8 @@ void CMOD_Player_Performance_Calculator_AlienLifeTime::UpdatePerformance(float *
 	}
 	else if (averageLifeExpectency >= mod_player_performance_enemy_life_time_negative_threshold.GetFloat())
 	{
-		m_LastCalculatedValue = averageLifeExpectency * mod_player_performance_enemy_life_time_negative_penalty.GetFloat();
+		//multiply by -1, as this is a penlaty
+		m_LastCalculatedValue = -1 * averageLifeExpectency * mod_player_performance_enemy_life_time_negative_penalty.GetFloat();
 	}	
 	else
 	{
