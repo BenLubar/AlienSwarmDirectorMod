@@ -80,8 +80,15 @@ CMOD_Player_Performance::~CMOD_Player_Performance()
 void CMOD_Player_Performance::OnMissionStarted(){		
 	for (unsigned int i = 0; i < g_calculators->size(); i++)
 	{
+		int retries = 1;
+
+		//Game will crash if we call GetRetries()
+		//and we're not in a campaign.
+		if (ASWGameResource()->IsCampaignGame())
+			retries = ASWGameResource()->GetCampaignSave()->GetRetries();
+
 		g_calculators->at(i)->OnMissionStarted(m_lastLevelWeightedRating, 
-			ASWGameResource()->GetCampaignSave()->GetRetries());
+			retries);
 	}
 }
 

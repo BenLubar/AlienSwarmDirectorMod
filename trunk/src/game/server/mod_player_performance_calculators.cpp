@@ -225,57 +225,7 @@ void CMOD_Player_Performance_Calculator_DirectorStress::OnMissionStarted(float l
 	m_CoolDownStartTime = 0;
 	m_previousStressOfPlayers = 0;
 }
-/*
-void CMOD_Player_Performance_Calculator_DirectorStress::UpdatePerformance_old(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource)
-{
-	//make room in the history if needed
-	if (g_directorStressHistory->size() > MAX_DIRECTOR_STRESS_HISTORY_SIZE)
-	{
-		g_directorStressHistory->erase(g_directorStressHistory->begin());
-	}
 
-	m_averageStressOfPlayers = 0;
-	m_averageStressHistory = 0;
-
-	for ( int i=0;i<pGameResource->GetMaxMarineResources();i++ )
-	{
-		CASW_Marine_Resource *pMR = pGameResource->GetMarineResource(i);
-		if ( !pMR )
-			continue;
-
-		m_averageStressOfPlayers += (pMR->GetIntensity()->GetCurrent() * 100.0 * STRESS_MULTIPLIER);
-	}
-	if (!IsSinglePlayerMode())
-	{
-		m_averageStressOfPlayers /= pGameResource->GetMaxMarineResources();
-	}
-
-	g_directorStressHistory->push_back(m_averageStressOfPlayers);
-
-	m_averageStressHistory = 0;
-	for (unsigned int i = 0; i < g_directorStressHistory->size(); i++)
-	{
-		m_averageStressHistory += g_directorStressHistory->at(i);
-	}
-
-	m_averageStressHistory /= g_directorStressHistory->size();
-	
-	if (m_averageStressHistory > mod_player_performance_director_stress_threshold.GetInt())
-	{
-		float adjustedStress = m_averageStressHistory - mod_player_performance_director_stress_threshold.GetInt();
-		adjustedStress *=  mod_player_performance_director_stress_penalty.GetFloat();
-
-		//multiply by -1 because this is a penalty
-		adjustedStress *=-1;
-
-		m_LastCalculatedValue = adjustedStress;
-	}
-	else
-	{
-		m_LastCalculatedValue = 0.0f;
-	}	
-}
-*/
 float CMOD_Player_Performance_Calculator_DirectorStress::CalculateAverageStress(CASW_Game_Resource *pGameResource){
 	float stress = 0;
 
@@ -306,7 +256,7 @@ float CMOD_Player_Performance_Calculator_DirectorStress::CalculateStressPenalty(
 		if (averageStress >= mod_player_performance_director_stress_critical_threshold.GetInt())
 		{
 			//assess the higher penalty
-			streesPenalty = mod_player_performance_director_stress_critical_penalty.GetInt();
+			stressPenalty = mod_player_performance_director_stress_critical_penalty.GetInt();
 		}
 	}
 
@@ -330,71 +280,6 @@ float CMOD_Player_Performance_Calculator_DirectorStress::CalculateStressPenalty(
 	}
 	
 	return stressPenalty;
-
-
-	/*
-
-	if (averageStress >= mod_player_performance_director_stress_critical_penalty.GetInt())
-	{
-		m_CoolDownCriticalStartTime = gpGlobals->curtime;		
-		m_IsCoolingDownCritical = true;		
-
-		stressPenalty = mod_player_performance_director_stress_critical_penalty.GetInt();
-	}
-	else if (averageStress >= mod_player_performance_director_stress_penalty.GetInt())
-	{
-		//if (m_IsCoolingDownCritical)
-		//{
-			//Don't restart cool down timer.
-		//	m_CoolDownStartTime = m_CoolDownCriticalStartTime;
-		//}
-		//else
-		//{
-			m_CoolDownStartTime = gpGlobals->curtime;
-		///}
-		
-		m_IsCoolingDown = true;		
-		m_IsCoolingDownCritical = false;
-
-		if (m_LastCalculatedValue > mod_player_performance_director_stress_penalty.GetInt())
-		{
-			//we're cooling down from critical
-			stressPenalty = m_LastCalculatedValue;
-		}
-		else
-		{
-			stressPenalty = mod_player_performance_director_stress_penalty.GetInt();
-		}
-	}	
-
-	//Degrade stressPenalty based on cooldown_time
-	m_CoolDownTimeLeft = 0;	
-	if (m_IsCoolingDownCritical)
-	{
-		m_CoolDownTimeLeft = mod_player_performance_director_stress_cooldown_time.GetInt() -
-			(gpGlobals->curtime - m_CoolDownCriticalStartTime);		
-	}
-	else if (m_IsCoolingDown)
-	{
-		m_CoolDownTimeLeft = mod_player_performance_director_stress_cooldown_time.GetInt() -
-			(gpGlobals->curtime - m_CoolDownStartTime);		
-	}
-
-	if (m_CoolDownTimeLeft > 0)
-	{
-		stressPenalty *= (m_CoolDownTimeLeft / 
-			mod_player_performance_director_stress_cooldown_time.GetInt());
-
-		//Mutliply by -1, this is a penalty
-		stressPenalty *= -1;
-	}
-	else
-	{
-		m_IsCoolingDown = false;
-		m_IsCoolingDownCritical = false;
-	}
-	return stressPenalty;
-	*/
 }
 
 void CMOD_Player_Performance_Calculator_DirectorStress::UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource)
@@ -403,14 +288,17 @@ void CMOD_Player_Performance_Calculator_DirectorStress::UpdatePerformance(float 
 	
 	m_LastCalculatedValue = CalculateStressPenalty(m_averageStressOfPlayers, m_previousStressOfPlayers);
 
-	*performance += m_LastCalculatedValue;	
+	if (!isEndOfLevel)
+	{
+		//Don't factor director stress into End of Level calculations
+		*performance += m_LastCalculatedValue;	
+	}
 
 	m_previousStressOfPlayers = m_averageStressOfPlayers;
 }
 
 void CMOD_Player_Performance_Calculator_DirectorStress::PrintExtraDebugInfo(int offset)
-{
-	//engine->Con_NPrintf(offset, "Current Stress: [%0.3f] Historical Stress: [%0.3f]", m_averageStressOfPlayers, m_averageStressHistory);	
+{	
 	engine->Con_NPrintf(offset, "Current Stress: [%0.3f] Cool Down Time Left: [%0.3f]", m_averageStressOfPlayers, m_CoolDownTimeLeft);	
 }
 
