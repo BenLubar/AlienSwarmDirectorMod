@@ -22,7 +22,7 @@ public:
 	//Singleton accessor
 	static CMOD_Player_Performance* PlayerPerformance();
 
-	float m_totalRating, m_previousRating;
+	float m_totalRating, m_previousRating, m_lastLevelWeightedRating;
 	int m_weightedRating;	
 	
 	virtual void FrameUpdatePostEntityThink();

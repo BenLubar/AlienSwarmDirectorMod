@@ -9,6 +9,8 @@
 #include "asw_marine_profile.h"
 #include <vector>
 #include "platform.h"
+#include "asw_campaign_save.h"
+#include "asw_campaign_info.h"
 
 
 
@@ -30,7 +32,7 @@ ConVar mod_player_performance_force_value("mod_player_performance_force_value", 
 ConVar mod_player_performance_threshold_high("mod_player_performance_threshold_high", "80", 0, "Player performance neccessary to achieve a performance ranking of '3' (high).");
 ConVar mod_player_performance_threshold_medium("mod_player_performance_threshold_medium", "60", 0, "Player performance neccessary to achieve a performance ranking of '2' (medium).");
 
-ConVar mod_player_performance_starting_value("mod_player_performance_starting_value", "80", 0, "The player performance at the beginning of a level.");
+ConVar mod_player_performance_starting_value("mod_player_performance_starting_value", "79", 0, "The player performance at the beginning of a level.");
 
 CMOD_Player_Performance* CMOD_Player_Performance::g_PlayerPerformanceSingleton = 0;
 
@@ -47,6 +49,7 @@ CMOD_Player_Performance* CMOD_Player_Performance::PlayerPerformance()
 CMOD_Player_Performance::CMOD_Player_Performance( void ) : CAutoGameSystemPerFrame( "CMOD_Player_Performance" )
 {
 	m_previousRating = 0;
+	m_lastLevelWeightedRating = 0;
 
 	g_calculators = new vector<CMOD_Player_Performance_Calculator*>();	
 	g_calculators->push_back(new CMOD_Player_Performance_Calculator_Health(SINGLE_PLAYER_MODE));
@@ -54,10 +57,13 @@ CMOD_Player_Performance::CMOD_Player_Performance( void ) : CAutoGameSystemPerFra
 	g_calculators->push_back(new CMOD_Player_Performance_Calculator_DirectorStress(SINGLE_PLAYER_MODE));
 	g_calculators->push_back(new CMOD_Player_Performance_Calculator_PlayTime(SINGLE_PLAYER_MODE));
 	g_calculators->push_back(new CMOD_Player_Performance_Calculator_AlienLifeTime(SINGLE_PLAYER_MODE));
+	g_calculators->push_back(new CMOD_Player_Performance_Calculator_EnemyKillBonus(SINGLE_PLAYER_MODE));
 	g_calculators->push_back(new CMOD_Player_Performance_Calculator_FastReload(SINGLE_PLAYER_MODE));
 	g_calculators->push_back(new CMOD_Player_Performance_Calculator_DodgeRanger(SINGLE_PLAYER_MODE));
 	g_calculators->push_back(new CMOD_Player_Performance_Calculator_MeleeKills(SINGLE_PLAYER_MODE));
 	g_calculators->push_back(new CMOD_Player_Performance_Calculator_BoomerKillEarly(SINGLE_PLAYER_MODE));
+	g_calculators->push_back(new CMOD_Player_Performance_Calculator_RestartPenalty(SINGLE_PLAYER_MODE));
+	g_calculators->push_back(new CMOD_Player_Performance_Calculator_NewLevelModifier(SINGLE_PLAYER_MODE));
 
 	if (!SINGLE_PLAYER_MODE)
 		g_calculators->push_back(new CMOD_Player_Performance_Calculator_FriendlyFire(SINGLE_PLAYER_MODE));
@@ -74,7 +80,8 @@ CMOD_Player_Performance::~CMOD_Player_Performance()
 void CMOD_Player_Performance::OnMissionStarted(){		
 	for (unsigned int i = 0; i < g_calculators->size(); i++)
 	{
-		g_calculators->at(i)->OnMissionStarted();
+		g_calculators->at(i)->OnMissionStarted(m_lastLevelWeightedRating, 
+			ASWGameResource()->GetCampaignSave()->GetRetries());
 	}
 }
 
@@ -107,7 +114,12 @@ void CMOD_Player_Performance::Event_AlienKilled( CBaseEntity *pAlien, const CTak
 int CMOD_Player_Performance::CalculatePerformance(bool isEndOfLevel)
 {
 	WriteToHUD("MODPlayerPerformanceDynamicContent", -1);
-	return CalculatePerformanceButDoNotUpdateHUD(isEndOfLevel);
+	float rating = CalculatePerformanceButDoNotUpdateHUD(isEndOfLevel);
+
+	if (isEndOfLevel)
+		m_lastLevelWeightedRating = rating;
+
+	return rating;
 }
 
 int CMOD_Player_Performance::CalculatePerformanceButDoNotUpdateHUD(bool isEndOfLevel)

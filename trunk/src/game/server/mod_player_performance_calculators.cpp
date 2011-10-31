@@ -32,25 +32,32 @@ using namespace std;
 //of prolonged high stress on performance metrics.
 #define STRESS_MULTIPLIER 0.3
 
-ConVar mod_player_performance_health_critical_threshold(			"mod_player_performance_health_critical_threshold", "50", 0, "This threshold indicates if health_normal_penalty or health_critical_penalty is used to calculate health penalty.  Note: This is health lost, not health remaning");
+ConVar mod_player_performance_health_critical_threshold(			"mod_player_performance_health_critical_threshold", "40", 0, "This threshold indicates if health_normal_penalty or health_critical_penalty is used to calculate health penalty.  Note: This is health lost, not health remaning");
 ConVar mod_player_performance_health_normal_penalty(				"mod_player_performance_health_normal_penalty", "0.4", 0, "The defualt performance penalty for lost health.  This is multipled by each HP lost.");
 ConVar mod_player_performance_health_critical_penalty(				"mod_player_performance_health_critical_penalty", "0.6", 0, "The critical performance penalty for lost health.  This is multipled by each HP lost.");
 ConVar mod_player_performance_accuracy_threshold(					"mod_player_performance_accuracy_threshold", "92", 0, "The threshold where a players accuracy has a positive or negative impact on performance.  Above this threshold and performance gets a boost, below and there is a penalty.");
-ConVar mod_player_performance_accuracy_floor(						"mod_player_performance_accuracy_floor", "75", 0, "The floor for caculating an accuracy penalty.  Ie, this is the lowest value that is used to assess a penalty.");
-ConVar mod_player_performance_accuracy_performance_modifier(		"mod_player_performance_accuracy_performance_modifier", "0.8", 0, "Multipled against the players weighted accuracy to get the performance modifier. Weighted accuracy is difference between accuracy threshold and actual accuracy.");
-ConVar mod_player_performance_director_stress_threshold(			"mod_player_performance_director_stress_threshold", "17", 0, "The threshold when stress, as measured by the director, engenders a player performance penalty.");
-ConVar mod_player_performance_director_stress_penalty(				"mod_player_performance_director_stress_penalty", "0.5", 0, "The per stress point penalty assesed.");
+ConVar mod_player_performance_accuracy_floor(						"mod_player_performance_accuracy_floor", "82", 0, "The floor for caculating an accuracy penalty.  Ie, this is the lowest value that is used to assess a penalty.");
+ConVar mod_player_performance_accuracy_performance_modifier(		"mod_player_performance_accuracy_performance_modifier", "0.5", 0, "Multipled against the players weighted accuracy to get the performance modifier. Weighted accuracy is difference between accuracy threshold and actual accuracy.");
+ConVar mod_player_performance_director_stress_threshold(			"mod_player_performance_director_stress_threshold", "12", 0, "The threshold when stress, as measured by the director, engenders a player performance penalty.");
+ConVar mod_player_performance_director_stress_critical_threshold(	"mod_player_performance_director_stress_critical_threshold", "25", 0, "The threshold when stress, as measured by the director, engenders an extra player performance penalty.");
+ConVar mod_player_performance_director_stress_penalty(				"mod_player_performance_director_stress_penalty", "10", 0, "The one time penalty assesed when director stress threshold is reached.");
+ConVar mod_player_performance_director_stress_critical_penalty(		"mod_player_performance_director_stress_critical_penalty", "20", 0, "The one time penalty assesed when critical director stress threshold is reached.");
+ConVar mod_player_performance_director_stress_cooldown_time(		"mod_player_performance_director_stress_cooldown_time", "20", 0, "The amount of time it takes for the director stress penalty to degrade.");
 ConVar mod_player_performance_playtime_par(							"mod_player_performance_playtime_par", "270", 0, "The average amount of time a player is expected to complete a level.");
 ConVar mod_player_performance_playtime_divisor_bonus(				"mod_player_performance_playtime_par_bonus", "15", 0, "The boost to performance a player receives for completing a mission under par.  For each '60' seconds under par, the player's performance is increased by 1 point.");
-ConVar mod_player_performance_enemy_life_time_positive_threshold(	"mod_player_performance_enemy_life_time_positive_threshold", "7", 0, "If the average enemy life expectency is less than this, a bonus is awarded.");
+ConVar mod_player_performance_enemy_life_time_positive_threshold(	"mod_player_performance_enemy_life_time_positive_threshold", "4", 0, "If the average enemy life expectency is less than this, a bonus is awarded.");
 ConVar mod_player_performance_enemy_life_time_positive_bonus(		"mod_player_performance_enemy_life_time_positive_bonus", "0.8", 0, "The bonus to award if enemy life expectency is less than the positive threshold.");
-ConVar mod_player_performance_enemy_life_time_negative_threshold(	"mod_player_performance_enemy_life_time_negative_threshold", "12", 0, "If the average enemy life expectency is more than this, a penalty is assesed.");
-ConVar mod_player_performance_enemy_life_time_negative_penalty(		"mod_player_performance_enemy_life_time_negative_penalty", "0.3", 0, "The penalty to asses if enemy life expectency is more than the negative threshold.");
+ConVar mod_player_performance_enemy_life_time_negative_threshold(	"mod_player_performance_enemy_life_time_negative_threshold", "15", 0, "If the average enemy life expectency is more than this, a penalty is assesed.");
+ConVar mod_player_performance_enemy_life_time_negative_penalty(		"mod_player_performance_enemy_life_time_negative_penalty", "0.4", 0, "The penalty to asses if enemy life expectency is more than the negative threshold.");
 ConVar mod_player_performance_fastreload_bonus(						"mod_player_performance_fastreload_bonus", "2", 0, "The boost to performance a player receives for each fast reload.");
 ConVar mod_player_performance_dodgeranger_bonus(					"mod_player_performance_dodgeranger_bonus", "5", 0, "The boost to performance a player receives for dodging a ranger projectile.");
 ConVar mod_player_performance_meleekill_bonus(						"mod_player_performance_meleekill_bonus", "0.7", 0, "The boost to performance a player receives for each melee kill.");
-ConVar mod_player_performance_boomer_kill_early_bonus(			"mod_player_performance_boomer_kill_early_bonus", "5", 0, "The boost to performance a player receives for killing a boomer before it explodes.");
-
+ConVar mod_player_performance_boomer_kill_early_bonus(				"mod_player_performance_boomer_kill_early_bonus", "5", 0, "The boost to performance a player receives for killing a boomer before it explodes.");
+ConVar mod_player_performance_restart_penalty(						"mod_player_performance_restart_penalty", "15", 0, "The penalty assessed if the player restarts a level.");
+ConVar mod_player_performance_restart_penalty_timelimit(			"mod_player_performance_restart_penalty_timelimit", "60", 0, "The amount of time before the restart penalty is reduced to zero.");
+ConVar mod_player_performance_new_level_modifier(					"mod_player_performance_new_level_modifier", "7", 0, "The amount of the bonus/penalty asssesed on a new level based on players previous perforamnce.  This is a bonus if perf was 3, nothing if 2, penalty if 1.");
+ConVar mod_player_performance_new_level_modifier_timelimit(			"mod_player_performance_new_level_modifier_timelimit", "60", 0, "The amount of time before the new level modifier is reduced to zero.");
+ConVar mod_player_performance_enemy_killed_bonus(					"mod_player_performance_enemy_killed_bonus", "0.07", 0, "The bonus awarded to a player for each enemy kill.");
 
 void CMOD_Player_Performance_Calculator::PrintDebugString(int offset)
 {	
@@ -59,7 +66,7 @@ void CMOD_Player_Performance_Calculator::PrintDebugString(int offset)
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void CMOD_Player_Performance_Calculator_Health::OnMissionStarted()
+void CMOD_Player_Performance_Calculator_Health::OnMissionStarted(float lastLevelRating)
 {
 	m_hasCalculatedFullHealth = false;
 }
@@ -93,15 +100,16 @@ void CMOD_Player_Performance_Calculator_Health::UpdatePerformance(float * perfor
 	}
 
 	float healthLost = (float)(m_fullHealth - m_averageHealth);
+	float percentageHealthLost = (healthLost / m_fullHealth) * 100;
 	float penalty = 0;
 
-	if (healthLost >= mod_player_performance_health_critical_threshold.GetInt())
+	if (percentageHealthLost >= mod_player_performance_health_critical_threshold.GetInt())
 	{
-		penalty = healthLost * mod_player_performance_health_critical_penalty.GetFloat();
+		penalty = percentageHealthLost * mod_player_performance_health_critical_penalty.GetFloat();
 	}	
 	else
 	{
-		 penalty= healthLost * mod_player_performance_health_normal_penalty.GetFloat();
+		 penalty= percentageHealthLost * mod_player_performance_health_normal_penalty.GetFloat();
 	}
 
 	//multiply by negative 1 to make it a penalty
@@ -208,13 +216,17 @@ void CMOD_Player_Performance_Calculator_FriendlyFire::UpdatePerformance(float * 
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void CMOD_Player_Performance_Calculator_DirectorStress::OnMissionStarted()
+void CMOD_Player_Performance_Calculator_DirectorStress::OnMissionStarted(float lastLevelRating, int numRetries)
 {
 	//probably a memory leak
 	g_directorStressHistory = new vector<float>();	
-}
 
-void CMOD_Player_Performance_Calculator_DirectorStress::UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource)
+	m_IsCoolingDown = false;			
+	m_CoolDownStartTime = 0;
+	m_previousStressOfPlayers = 0;
+}
+/*
+void CMOD_Player_Performance_Calculator_DirectorStress::UpdatePerformance_old(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource)
 {
 	//make room in the history if needed
 	if (g_directorStressHistory->size() > MAX_DIRECTOR_STRESS_HISTORY_SIZE)
@@ -263,15 +275,148 @@ void CMOD_Player_Performance_Calculator_DirectorStress::UpdatePerformance(float 
 		m_LastCalculatedValue = 0.0f;
 	}	
 }
+*/
+float CMOD_Player_Performance_Calculator_DirectorStress::CalculateAverageStress(CASW_Game_Resource *pGameResource){
+	float stress = 0;
+
+	for ( int i=0;i<pGameResource->GetMaxMarineResources();i++ )
+	{
+		CASW_Marine_Resource *pMR = pGameResource->GetMarineResource(i);
+		if ( !pMR )
+			continue;
+
+		stress += (pMR->GetIntensity()->GetCurrent() * 100.0 * STRESS_MULTIPLIER);
+	}
+	
+	if (!IsSinglePlayerMode() && pGameResource->GetMaxMarineResources() > 0)
+		stress /= pGameResource->GetMaxMarineResources();
+
+	return stress;
+}
+
+float CMOD_Player_Performance_Calculator_DirectorStress::CalculateStressPenalty(float averageStress, float previousStress)
+{
+	float stressPenalty = mod_player_performance_director_stress_penalty.GetInt();
+
+	if (averageStress >= mod_player_performance_director_stress_threshold.GetInt())
+	{
+		//Don't start cool down timer yet.
+		m_CoolDownStartTime = gpGlobals->curtime;
+
+		if (averageStress >= mod_player_performance_director_stress_critical_threshold.GetInt())
+		{
+			//assess the higher penalty
+			streesPenalty = mod_player_performance_director_stress_critical_penalty.GetInt();
+		}
+	}
+
+	//Degrade stressPenalty based on cooldown_time
+	m_CoolDownTimeLeft = mod_player_performance_director_stress_cooldown_time.GetInt() -
+			(gpGlobals->curtime - m_CoolDownStartTime);		
+	
+	if (m_CoolDownTimeLeft > 0)
+	{
+		stressPenalty *= (m_CoolDownTimeLeft / 
+			mod_player_performance_director_stress_cooldown_time.GetInt());		
+
+		//Mutliply by -1, this is a penalty
+		stressPenalty *= -1;
+	}
+	else
+	{		
+		stressPenalty = 0;
+		//set m_CoolDownTimeLeft to zero for nice debug output
+		m_CoolDownTimeLeft = 0;
+	}
+	
+	return stressPenalty;
+
+
+	/*
+
+	if (averageStress >= mod_player_performance_director_stress_critical_penalty.GetInt())
+	{
+		m_CoolDownCriticalStartTime = gpGlobals->curtime;		
+		m_IsCoolingDownCritical = true;		
+
+		stressPenalty = mod_player_performance_director_stress_critical_penalty.GetInt();
+	}
+	else if (averageStress >= mod_player_performance_director_stress_penalty.GetInt())
+	{
+		//if (m_IsCoolingDownCritical)
+		//{
+			//Don't restart cool down timer.
+		//	m_CoolDownStartTime = m_CoolDownCriticalStartTime;
+		//}
+		//else
+		//{
+			m_CoolDownStartTime = gpGlobals->curtime;
+		///}
+		
+		m_IsCoolingDown = true;		
+		m_IsCoolingDownCritical = false;
+
+		if (m_LastCalculatedValue > mod_player_performance_director_stress_penalty.GetInt())
+		{
+			//we're cooling down from critical
+			stressPenalty = m_LastCalculatedValue;
+		}
+		else
+		{
+			stressPenalty = mod_player_performance_director_stress_penalty.GetInt();
+		}
+	}	
+
+	//Degrade stressPenalty based on cooldown_time
+	m_CoolDownTimeLeft = 0;	
+	if (m_IsCoolingDownCritical)
+	{
+		m_CoolDownTimeLeft = mod_player_performance_director_stress_cooldown_time.GetInt() -
+			(gpGlobals->curtime - m_CoolDownCriticalStartTime);		
+	}
+	else if (m_IsCoolingDown)
+	{
+		m_CoolDownTimeLeft = mod_player_performance_director_stress_cooldown_time.GetInt() -
+			(gpGlobals->curtime - m_CoolDownStartTime);		
+	}
+
+	if (m_CoolDownTimeLeft > 0)
+	{
+		stressPenalty *= (m_CoolDownTimeLeft / 
+			mod_player_performance_director_stress_cooldown_time.GetInt());
+
+		//Mutliply by -1, this is a penalty
+		stressPenalty *= -1;
+	}
+	else
+	{
+		m_IsCoolingDown = false;
+		m_IsCoolingDownCritical = false;
+	}
+	return stressPenalty;
+	*/
+}
+
+void CMOD_Player_Performance_Calculator_DirectorStress::UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource)
+{
+	m_averageStressOfPlayers = CalculateAverageStress(pGameResource);
+	
+	m_LastCalculatedValue = CalculateStressPenalty(m_averageStressOfPlayers, m_previousStressOfPlayers);
+
+	*performance += m_LastCalculatedValue;	
+
+	m_previousStressOfPlayers = m_averageStressOfPlayers;
+}
 
 void CMOD_Player_Performance_Calculator_DirectorStress::PrintExtraDebugInfo(int offset)
 {
-	engine->Con_NPrintf(offset, "Current Stress: [%0.3f] Historical Stress: [%0.3f]", m_averageStressOfPlayers, m_averageStressHistory);	
+	//engine->Con_NPrintf(offset, "Current Stress: [%0.3f] Historical Stress: [%0.3f]", m_averageStressOfPlayers, m_averageStressHistory);	
+	engine->Con_NPrintf(offset, "Current Stress: [%0.3f] Cool Down Time Left: [%0.3f]", m_averageStressOfPlayers, m_CoolDownTimeLeft);	
 }
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void CMOD_Player_Performance_Calculator_PlayTime::OnMissionStarted(){
+void CMOD_Player_Performance_Calculator_PlayTime::OnMissionStarted(float lastLevelRating, int numRetries){
 	m_MissionStartTime = gpGlobals->curtime;
 	m_LastCalculatedValue = 0.0f;
 }
@@ -299,7 +444,7 @@ void CMOD_Player_Performance_Calculator_PlayTime::PrintExtraDebugInfo(int offset
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void CMOD_Player_Performance_Calculator_AlienLifeTime::OnMissionStarted()
+void CMOD_Player_Performance_Calculator_AlienLifeTime::OnMissionStarted(float lastLevelRating, int numRetries)
 {
 	m_totalAlienLifeTime = 0;
 	m_numberOfAliensKilled = 0;
@@ -357,7 +502,7 @@ CMOD_Player_Performance_Calculator_FastReload::~CMOD_Player_Performance_Calculat
 	StopListeningForAllEvents();
 }
 
-void CMOD_Player_Performance_Calculator_FastReload::OnMissionStarted()
+void CMOD_Player_Performance_Calculator_FastReload::OnMissionStarted(float lastLevelRating, int numRetries)
 {
 	m_NumberOfFastReloads = 0;	
 }
@@ -386,7 +531,7 @@ void CMOD_Player_Performance_Calculator_FastReload::PrintExtraDebugInfo(int offs
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void CMOD_Player_Performance_Calculator_DodgeRanger::OnMissionStarted()
+void CMOD_Player_Performance_Calculator_DodgeRanger::OnMissionStarted(float lastLevelRating, int numRetries)
 {
 	m_HasDodgedRanger = false;
 	m_LastCalculatedValue = 0;
@@ -422,7 +567,7 @@ void CMOD_Player_Performance_Calculator_DodgeRanger::UpdatePerformance(float * p
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void CMOD_Player_Performance_Calculator_MeleeKills::OnMissionStarted()
+void CMOD_Player_Performance_Calculator_MeleeKills::OnMissionStarted(float lastLevelRating, int numRetries)
 {
 	m_numberOfAliensKilled = 0;
 	m_numberOfMeleeKills = 0;
@@ -462,7 +607,7 @@ void CMOD_Player_Performance_Calculator_MeleeKills::PrintExtraDebugInfo(int offs
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void CMOD_Player_Performance_Calculator_BoomerKillEarly::OnMissionStarted()
+void CMOD_Player_Performance_Calculator_BoomerKillEarly::OnMissionStarted(float lastLevelRating, int numRetries)
 {
 	m_HasBoomerKillEarly = false;
 	m_LastCalculatedValue = 0;
@@ -496,6 +641,141 @@ void CMOD_Player_Performance_Calculator_BoomerKillEarly::UpdatePerformance(float
 	*performance +=m_LastCalculatedValue;
 }
 
+//////////////////////////////////////////////////////////////////////////////////
 
+void CMOD_Player_Performance_Calculator_RestartPenalty::OnMissionStarted(float lastLevelRating, int numRetries)
+{
+	m_MissionStartTime = gpGlobals->curtime;
+	m_LastCalculatedValue = 0;
 
+	if (numRetries > 1)		
+	{
+		m_LastCalculatedValue = mod_player_performance_restart_penalty.GetFloat();
+	}	
+}
 
+void CMOD_Player_Performance_Calculator_RestartPenalty::UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource)
+{
+	if (m_LastCalculatedValue != 0)
+	{
+		float penaltyTimeLeft = mod_player_performance_restart_penalty_timelimit.GetInt() -
+			(gpGlobals->curtime - m_MissionStartTime);
+
+		float percentageOfPenaltyToAssess = 
+			penaltyTimeLeft / 
+			mod_player_performance_restart_penalty_timelimit.GetInt();
+
+		if (percentageOfPenaltyToAssess < 0.001)
+			percentageOfPenaltyToAssess = 0;
+
+		Msg("Time[%0.3f] Percent[%0.3f]\n", gpGlobals->curtime, percentageOfPenaltyToAssess);
+
+		//Multiply by -1 because this is a penalty
+		m_LastCalculatedValue =  -1 * mod_player_performance_restart_penalty.GetFloat() *
+			percentageOfPenaltyToAssess;
+	}
+
+	
+
+	*performance +=m_LastCalculatedValue;
+}
+
+void CMOD_Player_Performance_Calculator_RestartPenalty::PrintExtraDebugInfo(int offset)
+{
+	float timeleft = 0;
+	
+	if (m_LastCalculatedValue != 0)
+	{
+		timeleft = gpGlobals->curtime - m_MissionStartTime;
+		timeleft = mod_player_performance_restart_penalty_timelimit.GetInt() - timeleft;
+
+		if (timeleft < 0)
+			timeleft = 0;
+	}
+	engine->Con_NPrintf(offset, "Restart penalty time left [%0.1f]", timeleft);	
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+
+void CMOD_Player_Performance_Calculator_NewLevelModifier::OnMissionStarted(float lastLevelRating, int numRetries)
+{
+	m_MissionStartTime = gpGlobals->curtime;
+
+	m_LastCalculatedValue = 0;
+	if (numRetries == 1)
+	{
+		if (lastLevelRating == 3)
+			m_LastCalculatedValue = mod_player_performance_new_level_modifier.GetFloat();
+		else if (lastLevelRating ==1)
+			m_LastCalculatedValue = -1 * mod_player_performance_new_level_modifier.GetFloat();
+	}
+}
+
+void CMOD_Player_Performance_Calculator_NewLevelModifier::UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource)
+{
+	if (m_LastCalculatedValue != 0)
+	{
+		float penaltyTimeLeft = 
+			mod_player_performance_restart_penalty_timelimit.GetInt() -
+			(gpGlobals->curtime - m_MissionStartTime);
+
+		if (penaltyTimeLeft < 0)
+		{
+			m_LastCalculatedValue = 0;
+		}
+		else
+		{
+			float percentageOfPenaltyToAssess = 
+				penaltyTimeLeft / 
+				mod_player_performance_restart_penalty_timelimit.GetInt();
+
+			if (percentageOfPenaltyToAssess < 0.001)
+				percentageOfPenaltyToAssess = 0;
+
+			float newValue = mod_player_performance_new_level_modifier.GetFloat() *
+				percentageOfPenaltyToAssess;
+
+			if (m_LastCalculatedValue > 0)
+				m_LastCalculatedValue = newValue;
+			else 
+				m_LastCalculatedValue = -1 * newValue;
+		}
+	}
+
+	*performance +=m_LastCalculatedValue;
+}
+
+void CMOD_Player_Performance_Calculator_NewLevelModifier::PrintExtraDebugInfo(int offset)
+{
+	float timeleft = 0;
+	
+	if (m_LastCalculatedValue != 0)
+	{
+		timeleft = timeleft = gpGlobals->curtime - m_MissionStartTime;
+		timeleft = mod_player_performance_new_level_modifier_timelimit.GetInt() - timeleft;
+
+		if (timeleft < 0)
+			timeleft = 0;
+	}
+
+	engine->Con_NPrintf(offset, "New Level Modifier time left [%0.1f]", timeleft);	
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+
+void CMOD_Player_Performance_Calculator_EnemyKillBonus::OnMissionStarted(float lastLevelRating, int numRetries)
+{
+	m_EnemiesKilled = 0;
+}
+
+void CMOD_Player_Performance_Calculator_EnemyKillBonus::Event_AlienKilled( CBaseEntity *pAlien, const CTakeDamageInfo &info ){
+	m_EnemiesKilled++;
+}
+
+void CMOD_Player_Performance_Calculator_EnemyKillBonus::UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource)
+{
+	m_LastCalculatedValue = mod_player_performance_enemy_killed_bonus.GetFloat() *
+		m_EnemiesKilled;
+	
+	*performance +=m_LastCalculatedValue;
+}

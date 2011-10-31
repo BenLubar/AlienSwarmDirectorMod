@@ -24,7 +24,7 @@ protected:
 	char * m_DebugName;
 
 public:
-	virtual void OnMissionStarted(){}
+	virtual void OnMissionStarted(float lastLevelRating, int numRetries){}
 	virtual void Event_AlienKilled( CBaseEntity *pAlien, const CTakeDamageInfo &info ){};
 
 	virtual void UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource) = 0;	
@@ -54,7 +54,7 @@ public:
 	int m_fullHealth;
 	bool m_hasCalculatedFullHealth;
 		
-	virtual void OnMissionStarted();
+	virtual void OnMissionStarted(float lastLevelRating);
 	virtual void UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
 	virtual bool HasExtraDebugInfo(){ return true;}
 	virtual void PrintExtraDebugInfo(int offset);
@@ -101,17 +101,30 @@ public:
 	CMOD_Player_Performance_Calculator_DirectorStress(bool bIsSignlePlayerMode)
 		:CMOD_Player_Performance_Calculator(bIsSignlePlayerMode)
 	{
-		m_DebugName = "Dicrector Stress";		
+		m_DebugName = "Dicrector Stress";	
+		m_IsCoolingDown = false;				
+		m_CoolDownStartTime = 0;		
+		m_CoolDownTimeLeft = 0;
+		m_previousStressOfPlayers = 0;
 	}
 
 	vector<float>* g_directorStressHistory;
 
 	float m_averageStressOfPlayers, m_averageStressHistory;
+	float m_previousStressOfPlayers;
 
-	virtual void OnMissionStarted();		
+	float m_CoolDownTimeLeft;
+	float m_CoolDownStartTime;	
+	bool m_IsCoolingDown;	
+
+	virtual void OnMissionStarted(float lastLevelRating, int numRetries);		
+	virtual void UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
+
 	virtual bool HasExtraDebugInfo(){ return true;}
 	virtual void PrintExtraDebugInfo(int offset);
-	virtual void UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
+
+	virtual float CalculateAverageStress(CASW_Game_Resource *pGameResource);
+	virtual float CalculateStressPenalty(float averageStress, float previousStress);
 };
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -128,7 +141,7 @@ public:
 
 	float m_MissionStartTime;
 	
-	virtual void OnMissionStarted();
+	virtual void OnMissionStarted(float lastLevelRating, int numRetries);
 	virtual void UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
 
 	virtual bool HasExtraDebugInfo(){ return true;}
@@ -151,7 +164,7 @@ public:
 	float m_totalAlienLifeTime;
 	int m_numberOfAliensKilled;
 	
-	virtual void OnMissionStarted();
+	virtual void OnMissionStarted(float lastLevelRating, int numRetries);
 
 	virtual void Event_AlienKilled( CBaseEntity *pAlien, const CTakeDamageInfo &info );
 	virtual void UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
@@ -171,7 +184,7 @@ public:
 
 	int m_NumberOfFastReloads;
 
-	virtual void OnMissionStarted();
+	virtual void OnMissionStarted(float lastLevelRating, int numRetries);
 	virtual void UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
 
 	virtual bool HasExtraDebugInfo(){ return true;}
@@ -195,7 +208,7 @@ public:
 	
 	bool m_HasDodgedRanger;
 
-	virtual void OnMissionStarted();
+	virtual void OnMissionStarted(float lastLevelRating, int numRetries);
 	virtual void UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
 };
 
@@ -215,7 +228,7 @@ public:
 	int m_numberOfAliensKilled;
 	int m_numberOfMeleeKills;
 
-	virtual void OnMissionStarted();
+	virtual void OnMissionStarted(float lastLevelRating, int numRetries);
 
 	virtual void Event_AlienKilled( CBaseEntity *pAlien, const CTakeDamageInfo &info );
 	virtual void UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
@@ -229,6 +242,9 @@ public:
 class CMOD_Player_Performance_Calculator_BoomerKillEarly : public CMOD_Player_Performance_Calculator
 {
 public:
+
+	//constructor in cpp file
+
 	CMOD_Player_Performance_Calculator_BoomerKillEarly(bool bIsSignlePlayerMode)
 		:CMOD_Player_Performance_Calculator(bIsSignlePlayerMode)
 	{
@@ -237,8 +253,75 @@ public:
 	
 	bool m_HasBoomerKillEarly;
 
-	virtual void OnMissionStarted();
+	virtual void OnMissionStarted(float lastLevelRating, int numRetries);
 	virtual void UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
 };
+
+//////////////////////////////////////////////////////////////////////////////////
+
+class CMOD_Player_Performance_Calculator_RestartPenalty : 
+	public CMOD_Player_Performance_Calculator
+{
+public:
+	CMOD_Player_Performance_Calculator_RestartPenalty::CMOD_Player_Performance_Calculator_RestartPenalty(bool bIsSignlePlayerMode)
+	:CMOD_Player_Performance_Calculator(bIsSignlePlayerMode)
+	{
+		m_DebugName = "Restart Penalty";
+		m_MissionStartTime = 0.0f;
+	}
+	
+	float m_MissionStartTime;
+	
+	virtual void OnMissionStarted(float lastLevelRating, int numRetries);
+	virtual void UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
+
+	virtual bool HasExtraDebugInfo(){ return true;}
+	virtual void PrintExtraDebugInfo(int offset);
+};
+
+//////////////////////////////////////////////////////////////////////////////////
+
+class CMOD_Player_Performance_Calculator_NewLevelModifier : 
+	public CMOD_Player_Performance_Calculator
+{
+public:
+	CMOD_Player_Performance_Calculator_NewLevelModifier::CMOD_Player_Performance_Calculator_NewLevelModifier(bool bIsSignlePlayerMode)
+	:CMOD_Player_Performance_Calculator(bIsSignlePlayerMode)
+	{
+		m_DebugName = "New Level Modifier";
+		m_MissionStartTime = 0.0f;
+	}
+	
+		
+	float m_MissionStartTime;
+	
+	virtual void OnMissionStarted(float lastLevelRating, int numRetries);
+	virtual void UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
+
+	virtual bool HasExtraDebugInfo(){ return true;}
+	virtual void PrintExtraDebugInfo(int offset);	
+};
+
+//////////////////////////////////////////////////////////////////////////////////
+
+class CMOD_Player_Performance_Calculator_EnemyKillBonus : 
+	public CMOD_Player_Performance_Calculator
+{
+public:
+	CMOD_Player_Performance_Calculator_EnemyKillBonus::CMOD_Player_Performance_Calculator_EnemyKillBonus(bool bIsSignlePlayerMode)
+	:CMOD_Player_Performance_Calculator(bIsSignlePlayerMode)
+	{
+		m_DebugName = "Enemy Kill Bonus";	
+		m_EnemiesKilled = 0;
+	}
+			
+	int m_EnemiesKilled;
+	
+	virtual void Event_AlienKilled( CBaseEntity *pAlien, const CTakeDamageInfo &info );
+	virtual void OnMissionStarted(float lastLevelRating, int numRetries);
+	virtual void UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);	
+};
+
+
 
 #endif
