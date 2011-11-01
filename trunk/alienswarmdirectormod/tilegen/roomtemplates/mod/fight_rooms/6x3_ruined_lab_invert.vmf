@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "94"
+	"mapversion" "103"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -38,7 +38,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "94"
+	"mapversion" "103"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -11859,7 +11859,7 @@ entity
 	"SpawnIntervalJitter" "25"
 	"SpeedScale" "1"
 	"StartBurrowed" "1"
-	"targetname" "spawn_lab"
+	"targetname" "spawn_lab_trickle"
 	"origin" "530 624 1.00001"
 	editor
 	{
@@ -11872,14 +11872,20 @@ entity
 entity
 {
 	"id" "10176"
-	"classname" "trigger_once"
-	"origin" "356.5 505.11 73.5"
+	"classname" "mod_dynaimic_difficulty_modifier_trigger"
+	"maxDifficultyThreshold" "3"
+	"maxTriggerFire" "1"
+	"minDifficultyThreshold" "1"
+	"origin" "254 447.43 73.5"
 	"spawnflags" "2"
 	"StartDisabled" "0"
+	"targetname" "trigger_lab_1"
+	"wait" "1"
 	connections
 	{
-		"OnTrigger" "spawn_labStartSpawning0-1"
-		"OnTrigger" "spawn_lab_rangerStartSpawning0-1"
+		"OnTriggerMedium" "relay_lab_mediumPickRandom0-1"
+		"OnTriggerHard" "relay_lab_hardPickRandom0-1"
+		"OnTrigger" "trigger_lab_2Disable0-1"
 	}
 	solid
 	{
@@ -11887,7 +11893,7 @@ entity
 		side
 		{
 			"id" "974"
-			"plane" "(389 719 152) (389 719 -5) (389 278 -5)"
+			"plane" "(389 607 152) (389 607 -5) (389 278 -5)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[0 -1 0 -60.6006] 0.25"
 			"vaxis" "[0 0 -1 -8.96094] 0.25"
@@ -11898,7 +11904,7 @@ entity
 		side
 		{
 			"id" "973"
-			"plane" "(324 278 152) (324 278 -5) (324 719 -5)"
+			"plane" "(119 278 152) (119 278 -5) (119 607 -5)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[0 -1 0 -60.6006] 0.25"
 			"vaxis" "[0 0 -1 -8.96094] 0.25"
@@ -11909,7 +11915,7 @@ entity
 		side
 		{
 			"id" "972"
-			"plane" "(324 719 152) (324 719 -5) (389 719 -5)"
+			"plane" "(119 607 152) (119 607 -5) (389 607 -5)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[-1 0 0 4.48389] 0.25"
 			"vaxis" "[0 0 -1 -8.96094] 0.25"
@@ -11920,7 +11926,7 @@ entity
 		side
 		{
 			"id" "971"
-			"plane" "(389 278 152) (389 278 -5) (324 278 -5)"
+			"plane" "(389 278 152) (389 278 -5) (119 278 -5)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[-1 0 0 4.48389] 0.25"
 			"vaxis" "[0 0 -1 -8.96094] 0.25"
@@ -11931,7 +11937,7 @@ entity
 		side
 		{
 			"id" "970"
-			"plane" "(389 278 -5) (389 719 -5) (324 719 -5)"
+			"plane" "(119 607 -5) (119 278 -5) (389 278 -5)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[-1 0 0 40.4839] 0.25"
 			"vaxis" "[0 1 0 32.6006] 0.25"
@@ -11942,7 +11948,7 @@ entity
 		side
 		{
 			"id" "969"
-			"plane" "(389 719 152) (389 278 152) (324 278 152)"
+			"plane" "(119 278 152) (119 607 152) (389 607 152)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[-1 0 0 40.4839] 0.25"
 			"vaxis" "[0 1 0 32.6006] 0.25"
@@ -12265,7 +12271,7 @@ entity
 	"wait" "1"
 	connections
 	{
-		"OnTrigger" "exit_window_spawner_2StartSpawning0.75-1"
+		"OnTrigger" "exit_window_spawner_2StartSpawning1.5-1"
 		"OnTriggerAtleastHard" "exit_window_spawner_boomerStartSpawning0-1"
 	}
 	solid
@@ -14141,12 +14147,14 @@ entity
 	"origin" "689 505.13 73.5"
 	"spawnflags" "2"
 	"StartDisabled" "0"
+	"targetname" "trigger_window_1"
 	"wait" "1"
 	connections
 	{
-		"OnTrigger" "exit_window_spawnerStartSpawning0-1"
-		"OnTriggerAtleastHard" "exit_window_spawner_hardStartSpawning0-1"
-		"OnTrigger" "exit_window_spawner_rangerStartSpawning0-1"
+		"OnTriggerAtleastEasy" "exit_window_spawnerStartSpawning0-1"
+		"OnTriggerAtleastHard" "exit_window_spawner_hardStartSpawning4-1"
+		"OnTriggerAtleastMedium" "exit_window_spawner_rangerStartSpawning0-1"
+		"OnTrigger" "trigger_window_2Disable0-1"
 	}
 	solid
 	{
@@ -14240,15 +14248,17 @@ entity
 	"maxDifficultyThreshold" "3"
 	"maxTriggerFire" "1"
 	"minDifficultyThreshold" "1"
-	"origin" "1400 329.38 73.5"
+	"origin" "1269.5 585.31 73.5"
 	"spawnflags" "2"
 	"StartDisabled" "0"
+	"targetname" "trigger_window_2"
 	"wait" "1"
 	connections
 	{
-		"OnTrigger" "exit_window_spawnerStartSpawning0-1"
+		"OnTriggerAtleastEasy" "exit_window_spawnerStartSpawning0-1"
 		"OnTriggerAtleastHard" "exit_window_spawner_hardStartSpawning0-1"
-		"OnTrigger" "exit_window_spawner_rangerStartSpawning0.75-1"
+		"OnTriggerAtleastMedium" "exit_window_spawner_rangerStartSpawning2-1"
+		"OnTrigger" "trigger_window_1Disable0-1"
 	}
 	solid
 	{
@@ -14256,9 +14266,9 @@ entity
 		side
 		{
 			"id" "1681"
-			"plane" "(1522 374 152) (1522 374 -5) (1522 282 -5)"
+			"plane" "(1325 757 152) (1325 757 -5) (1325 403 -5)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[0 -1 0 -44.6006] 0.25"
+			"uaxis" "[0 -1 0 15.3994] 0.25"
 			"vaxis" "[0 0 -1 -8.96094] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
@@ -14267,9 +14277,9 @@ entity
 		side
 		{
 			"id" "1680"
-			"plane" "(1278 282 152) (1278 282 -5) (1278 374 -5)"
+			"plane" "(1214 403 152) (1214 403 -5) (1214 757 -5)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[0 -1 0 -44.6006] 0.25"
+			"uaxis" "[0 -1 0 15.3994] 0.25"
 			"vaxis" "[0 0 -1 -8.96094] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
@@ -14278,9 +14288,9 @@ entity
 		side
 		{
 			"id" "1679"
-			"plane" "(1278 374 152) (1278 374 -5) (1522 374 -5)"
+			"plane" "(1214 757 152) (1214 757 -5) (1325 757 -5)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[-1 0 0 4.48438] 0.25"
+			"uaxis" "[-1 0 0 -59.5156] 0.25"
 			"vaxis" "[0 0 -1 -8.96094] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
@@ -14289,9 +14299,9 @@ entity
 		side
 		{
 			"id" "1678"
-			"plane" "(1522 282 152) (1522 282 -5) (1278 282 -5)"
+			"plane" "(1325 403 152) (1325 403 -5) (1214 403 -5)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[-1 0 0 4.48438] 0.25"
+			"uaxis" "[-1 0 0 -59.5156] 0.25"
 			"vaxis" "[0 0 -1 -8.96094] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
@@ -14300,10 +14310,10 @@ entity
 		side
 		{
 			"id" "1677"
-			"plane" "(1522 282 -5) (1522 374 -5) (1278 374 -5)"
+			"plane" "(1214 757 -5) (1214 403 -5) (1325 403 -5)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[-1 0 0 40.4839] 0.25"
-			"vaxis" "[0 1 0 16.6006] 0.25"
+			"uaxis" "[-1 0 0 -23.5161] 0.25"
+			"vaxis" "[0 1 0 -43.3994] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
 			"smoothing_groups" "0"
@@ -14311,10 +14321,10 @@ entity
 		side
 		{
 			"id" "1676"
-			"plane" "(1522 374 152) (1522 282 152) (1278 282 152)"
+			"plane" "(1214 403 152) (1214 757 152) (1325 757 152)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[-1 0 0 40.4839] 0.25"
-			"vaxis" "[0 1 0 16.6006] 0.25"
+			"uaxis" "[-1 0 0 -23.5161] 0.25"
+			"vaxis" "[0 1 0 -43.3994] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
 			"smoothing_groups" "0"
@@ -14338,14 +14348,20 @@ entity
 entity
 {
 	"id" "71620"
-	"classname" "trigger_once"
+	"classname" "mod_dynaimic_difficulty_modifier_trigger"
+	"maxDifficultyThreshold" "3"
+	"maxTriggerFire" "1"
+	"minDifficultyThreshold" "1"
 	"origin" "772.5 494.11 73.5"
 	"spawnflags" "2"
 	"StartDisabled" "0"
+	"targetname" "trigger_lab_2"
+	"wait" "1"
 	connections
 	{
-		"OnTrigger" "spawn_labStartSpawning0-1"
-		"OnTrigger" "spawn_lab_rangerStartSpawning0-1"
+		"OnTriggerMedium" "relay_lab_mediumPickRandom0-1"
+		"OnTriggerHard" "relay_lab_hardPickRandom0-1"
+		"OnTrigger" "trigger_lab_1Disable0-1"
 	}
 	solid
 	{
@@ -14500,6 +14516,121 @@ entity
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
 		"logicalpos" "[0 6500]"
+	}
+}
+entity
+{
+	"id" "80402"
+	"classname" "asw_spawner"
+	"AlienClass" "0"
+	"AlienOrders" "3"
+	"angles" "0 270 0"
+	"ClearCheck" "0"
+	"HealthScale" "1"
+	"InfiniteAliens" "0"
+	"LongRange" "0"
+	"MaxLiveAliens" "3"
+	"MaxSkillLevel" "0"
+	"MinSkillLevel" "0"
+	"NearDistance" "740"
+	"NumAliens" "3"
+	"SpawnerState" "1"
+	"SpawnIfMarinesAreNear" "1"
+	"SpawnInterval" "1"
+	"SpawnIntervalJitter" "25"
+	"SpeedScale" "1"
+	"StartBurrowed" "1"
+	"targetname" "spawn_lab_burst"
+	"origin" "558 624 1.00001"
+	editor
+	{
+		"color" "0 0 255"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 6500]"
+	}
+}
+entity
+{
+	"id" "80410"
+	"classname" "logic_case"
+	"targetname" "relay_lab_hard"
+	connections
+	{
+		"OnCase01" "spawn_lab_burstStartSpawning1-1"
+		"OnCase01" "spawn_lab_rangerStartSpawning4-1"
+		"OnCase03" "spawn_lab_rangerStartSpawning1-1"
+		"OnCase03" "spawn_lab_burstStartSpawning4-1"
+		"OnCase02" "spawn_lab_trickleStartSpawning3-1"
+		"OnCase02" "spawn_lab_rangerStartSpawning1-1"
+		"OnCase04" "spawn_lab_burstStartSpawning1-1"
+		"OnCase05" "spawn_lab_rangerStartSpawning1-1"
+		"OnCase01" "sound_lab_spawner_audio_queuePlaySound0-1"
+		"OnCase02" "sound_lab_spawner_audio_queuePlaySound0-1"
+		"OnCase03" "sound_lab_spawner_audio_queuePlaySound0-1"
+		"OnCase04" "sound_lab_spawner_audio_queuePlaySound0-1"
+		"OnCase05" "sound_lab_spawner_audio_queuePlaySound0-1"
+	}
+	"origin" "502 583.609 139"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
+	}
+}
+entity
+{
+	"id" "80443"
+	"classname" "logic_case"
+	"targetname" "relay_lab_medium"
+	connections
+	{
+		"OnCase01" "spawn_lab_burstStartSpawning1-1"
+		"OnCase03" "spawn_lab_trickleStartSpawning1-1"
+		"OnCase02" "spawn_lab_rangerStartSpawning1-1"
+		"OnCase01" "sound_lab_spawner_audio_queuePlaySound0-1"
+		"OnCase02" "sound_lab_spawner_audio_queuePlaySound0-1"
+		"OnCase03" "sound_lab_spawner_audio_queuePlaySound0-1"
+	}
+	"origin" "476 584 139"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
+	}
+}
+entity
+{
+	"id" "80526"
+	"classname" "ambient_generic"
+	"cspinup" "0"
+	"fadeinsecs" "0"
+	"fadeoutsecs" "1"
+	"health" "10"
+	"lfomodpitch" "0"
+	"lfomodvol" "0"
+	"lforate" "0"
+	"lfotype" "0"
+	"pitch" "100"
+	"pitchstart" "100"
+	"preset" "0"
+	"radius" "1250"
+	"spawnflags" "48"
+	"spindown" "0"
+	"spinup" "0"
+	"targetname" "sound_lab_spawner_audio_queue"
+	"volstart" "0"
+	"origin" "482.052 619 134"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 500]"
 	}
 }
 cameras

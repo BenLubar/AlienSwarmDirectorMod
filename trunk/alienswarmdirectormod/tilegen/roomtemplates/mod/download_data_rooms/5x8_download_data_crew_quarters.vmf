@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "96"
+	"mapversion" "101"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "96"
+	"mapversion" "101"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -6105,11 +6105,11 @@ entity
 	"InfiniteAliens" "0"
 	"MaxLiveAliens" "2"
 	"NearDistance" "740"
-	"NumAliens" "6"
+	"NumAliens" "3"
 	"SpawnerState" "1"
 	"spawnflags" "0"
 	"SpawnIfMarinesAreNear" "1"
-	"SpawnInterval" "10"
+	"SpawnInterval" "1"
 	"SpawnIntervalJitter" "25"
 	"SpeedScale" "1"
 	"StartBurrowed" "1"
@@ -11843,6 +11843,7 @@ entity
 	{
 		"OnTrigger" "spawner_bath_topStartSpawning0-1"
 		"OnTrigger" "spawner_ventStartSpawning0-1"
+		"OnTrigger" "spawner_bath_top_2StartSpawning6-1"
 	}
 	solid
 	{
@@ -12846,6 +12847,7 @@ entity
 	{
 		"OnTrigger" "spawner_bath_topStartSpawning0-1"
 		"OnTrigger" "spawner_ventStartSpawning0-1"
+		"OnTrigger" "spawner_bath_top_2StartSpawning3-1"
 	}
 	solid
 	{
@@ -12934,16 +12936,22 @@ entity
 entity
 {
 	"id" "18299"
-	"classname" "trigger_once"
+	"classname" "mod_dynaimic_difficulty_modifier_trigger"
+	"maxDifficultyThreshold" "3"
+	"maxTriggerFire" "1"
+	"minDifficultyThreshold" "1"
 	"origin" "362.5 1076.5 83.85"
 	"spawnflags" "16"
 	"StartDisabled" "1"
 	"targetname" "trigger_leaving"
+	"wait" "1"
 	connections
 	{
-		"OnTrigger" "spawner_bath_back_1StartSpawning0-1"
-		"OnTrigger" "spawner_bath_top_2StartSpawning0-1"
-		"OnTrigger" "spawner_boomerStartSpawning0-1"
+		"OnTriggerAtleastEasy" "spawner_bath_back_1StartSpawning0-1"
+		"OnTriggerAtleastMedium" "spawner_bath_top_2StartSpawning5-1"
+		"OnTriggerAtleastHard" "spawner_boomerStartSpawning0-1"
+		"OnTriggerAtleastMedium" "spawner_vent_rangerStartSpawning5-1"
+		"OnTriggerAtleastEasy" "sound_exit_queuePlaySound0-1"
 	}
 	solid
 	{
@@ -13039,10 +13047,6 @@ entity
 	connections
 	{
 		"OnTrigger" "trigger_leavingEnable5-1"
-		"OnTrigger" "spawner_bath_back_burstStartSpawning0-1"
-		"OnTrigger" "spawner_bath_top_2StartSpawning2-1"
-		"OnTrigger" "spawner_vent_rangerStartSpawning3-1"
-		"OnTrigger" "spawner_bath_back_1StartSpawning0-1"
 	}
 	solid
 	{
@@ -13383,6 +13387,7 @@ entity
 	connections
 	{
 		"OnComputerDataDownloaded" "@objective_downloadSetComplete0-1"
+		"OnComputerDataDownloaded" "spawner_bath_back_burstStartSpawning2-1"
 	}
 	solid
 	{
@@ -13466,6 +13471,36 @@ entity
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
 		"logicalpos" "[0 4000]"
+	}
+}
+entity
+{
+	"id" "19252"
+	"classname" "ambient_generic"
+	"cspinup" "0"
+	"fadeinsecs" "0"
+	"fadeoutsecs" "0"
+	"health" "10"
+	"lfomodpitch" "0"
+	"lfomodvol" "0"
+	"lforate" "0"
+	"lfotype" "0"
+	"pitch" "100"
+	"pitchstart" "100"
+	"preset" "0"
+	"radius" "1250"
+	"spawnflags" "48"
+	"spindown" "0"
+	"spinup" "0"
+	"targetname" "sound_exit_queue"
+	"volstart" "0"
+	"origin" "416.221 1086.8 170.853"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
 	}
 }
 cameras

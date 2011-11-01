@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "137"
+	"mapversion" "146"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "137"
+	"mapversion" "146"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -4606,10 +4606,8 @@ entity
 	connections
 	{
 		"OnTrigger" "drone_burrowedStartSpawning0-1"
-		"OnTrigger" "exit_window_spawnersStartSpawning10-1"
-		"OnTrigger" "exit_boomersSpawnOneAlien15-1"
-		"OnTrigger" "exit_boomersSpawnOneAlien28-1"
-		"OnTrigger" "exit_boomersSpawnOneAlien35-1"
+		"OnTrigger" "exit_window_spawnersStartSpawning7-1"
+		"OnTrigger" "exit_window_mortarStartSpawning20-1"
 	}
 	"origin" "796.703 1240 276"
 	editor
@@ -14724,26 +14722,27 @@ entity
 {
 	"id" "13244"
 	"classname" "asw_spawner"
-	"AlienClass" "0"
-	"AlienOrders" "3"
+	"AlienClass" "11"
+	"AlienOrders" "2"
 	"AlienOrderTargetName" "mortarbug_target"
 	"angles" "0 0 0"
 	"ClearCheck" "1"
 	"HealthScale" "1"
-	"InfiniteAliens" "1"
+	"InfiniteAliens" "0"
 	"LongRange" "0"
-	"MaxLiveAliens" "2"
+	"MaxLiveAliens" "1"
 	"MaxSkillLevel" "0"
 	"MinSkillLevel" "0"
 	"NearDistance" "740"
-	"NumAliens" "8"
+	"NumAliens" "1"
 	"SpawnerState" "1"
+	"spawnflags" "0"
 	"SpawnIfMarinesAreNear" "1"
-	"SpawnInterval" "6"
-	"SpawnIntervalJitter" "25"
+	"SpawnInterval" "13"
+	"SpawnIntervalJitter" "5"
 	"SpeedScale" "1"
 	"StartBurrowed" "0"
-	"targetname" "exit_window_spawners"
+	"targetname" "exit_window_mortar"
 	connections
 	{
 		"OnSpawned" "exit_window_01Break0-1"
@@ -14768,15 +14767,15 @@ entity
 	"HealthScale" "1"
 	"InfiniteAliens" "1"
 	"LongRange" "0"
-	"MaxLiveAliens" "3"
+	"MaxLiveAliens" "4"
 	"MaxSkillLevel" "0"
 	"MinSkillLevel" "0"
 	"NearDistance" "740"
-	"NumAliens" "6"
+	"NumAliens" "7"
 	"SpawnerState" "1"
 	"SpawnIfMarinesAreNear" "1"
-	"SpawnInterval" "4"
-	"SpawnIntervalJitter" "25"
+	"SpawnInterval" "3"
+	"SpawnIntervalJitter" "75"
 	"SpeedScale" "1"
 	"StartBurrowed" "0"
 	"targetname" "exit_window_spawners"
@@ -15837,12 +15836,13 @@ entity
 	"HealthScale" "1"
 	"InfiniteAliens" "0"
 	"LongRange" "0"
-	"MaxLiveAliens" "1"
+	"MaxLiveAliens" "2"
 	"MaxSkillLevel" "0"
 	"MinSkillLevel" "0"
 	"NearDistance" "740"
 	"NumAliens" "2"
 	"SpawnerState" "1"
+	"spawnflags" "0"
 	"SpawnIfMarinesAreNear" "1"
 	"SpawnInterval" "7"
 	"SpawnIntervalJitter" "25"
@@ -16019,7 +16019,7 @@ entity
 	"classname" "info_target"
 	"angles" "0 0 0"
 	"targetname" "mortarbug_target"
-	"origin" "225.249 1152.18 1.00001"
+	"origin" "200 1064 16"
 	editor
 	{
 		"color" "220 30 220"
@@ -16243,6 +16243,7 @@ entity
 	connections
 	{
 		"OnTrigger" "@map_builder_for_next_missionActivate0-1"
+		"OnTrigger" "hint_prepare_to_fight_hordeShowHint0-1"
 	}
 	solid
 	{
@@ -16326,6 +16327,73 @@ entity
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
 		"logicalpos" "[-6768 9000]"
+	}
+}
+entity
+{
+	"id" "25885"
+	"classname" "env_instructor_hint"
+	"hint_activator_caption" "Prepare to Fight the Horde before opening the Gate"
+	"hint_allow_nodraw_target" "1"
+	"hint_alphaoption" "0"
+	"hint_caption" "Prepare to Fight the Horde before opening the Gate"
+	"hint_color" "255 255 255"
+	"hint_forcecaption" "0"
+	"hint_icon_offscreen" "icon_tip"
+	"hint_icon_offset" "0"
+	"hint_icon_onscreen" "icon_tip"
+	"hint_local_player_only" "0"
+	"hint_nooffscreen" "0"
+	"hint_pulseoption" "0"
+	"hint_range" "0"
+	"hint_shakeoption" "0"
+	"hint_static" "0"
+	"hint_timeout" "4"
+	"targetname" "hint_prepare_to_fight_horde"
+	"origin" "864.451 718.908 273"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
+	}
+}
+entity
+{
+	"id" "25968"
+	"classname" "asw_spawner"
+	"AlienClass" "0"
+	"AlienOrders" "3"
+	"AlienOrderTargetName" "mortarbug_target"
+	"angles" "0 0 0"
+	"ClearCheck" "1"
+	"HealthScale" "1"
+	"InfiniteAliens" "1"
+	"LongRange" "0"
+	"MaxLiveAliens" "2"
+	"MaxSkillLevel" "0"
+	"MinSkillLevel" "0"
+	"NearDistance" "740"
+	"NumAliens" "8"
+	"SpawnerState" "1"
+	"SpawnIfMarinesAreNear" "1"
+	"SpawnInterval" "6"
+	"SpawnIntervalJitter" "25"
+	"SpeedScale" "1"
+	"StartBurrowed" "0"
+	"targetname" "exit_window_spawners"
+	connections
+	{
+		"OnSpawned" "exit_window_01Break0-1"
+	}
+	"origin" "280 1512 1.00001"
+	editor
+	{
+		"color" "0 0 255"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[1000 6000]"
 	}
 }
 cameras

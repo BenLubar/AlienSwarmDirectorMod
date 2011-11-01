@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "74"
+	"mapversion" "75"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -38,7 +38,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "74"
+	"mapversion" "75"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -3540,7 +3540,7 @@ entity
 	connections
 	{
 		"OnTrigger" "spawner_drone_mainStartSpawning0-1"
-		"OnTriggerAtleastMedium" "spawner_boomerStartSpawning0-1"
+		"OnTriggerAtleastHard" "spawner_boomerStartSpawning0-1"
 		"OnTrigger" "spawner_drone_wallStartSpawning2-1"
 	}
 	solid

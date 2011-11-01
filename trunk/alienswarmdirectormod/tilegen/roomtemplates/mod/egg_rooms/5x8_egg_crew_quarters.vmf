@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "92"
+	"mapversion" "102"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "92"
+	"mapversion" "102"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -7630,7 +7630,7 @@ entity
 	"ParasiteClass" "asw_parasite"
 	connections
 	{
-		"OnEggDestroyed" "egg_counterAdd1-1"
+		"OnEggDestroyed" "egg_counterAdd11-1"
 	}
 	"origin" "557 1686 0.694603"
 	editor
@@ -11518,11 +11518,11 @@ entity
 	"MaxSkillLevel" "0"
 	"MinSkillLevel" "0"
 	"NearDistance" "740"
-	"NumAliens" "8"
+	"NumAliens" "4"
 	"SpawnerState" "1"
 	"spawnflags" "0"
 	"SpawnIfMarinesAreNear" "1"
-	"SpawnInterval" "4"
+	"SpawnInterval" "6"
 	"SpawnIntervalJitter" "25"
 	"SpeedScale" "1"
 	"StartBurrowed" "0"
@@ -13006,16 +13006,21 @@ entity
 entity
 {
 	"id" "18299"
-	"classname" "trigger_once"
+	"classname" "mod_dynaimic_difficulty_modifier_trigger"
+	"maxDifficultyThreshold" "3"
+	"maxTriggerFire" "1"
+	"minDifficultyThreshold" "1"
 	"origin" "362.5 1076.5 83.85"
 	"spawnflags" "16"
 	"StartDisabled" "1"
 	"targetname" "trigger_leaving"
+	"wait" "1"
 	connections
 	{
-		"OnTrigger" "spawner_bath_back_1StartSpawning0-1"
-		"OnTrigger" "spawner_bath_top_2StartSpawning0-1"
-		"OnTrigger" "spawner_boomerStartSpawning0-1"
+		"OnTriggerAtleastEasy" "spawner_bath_back_1StartSpawning0-1"
+		"OnTriggerAtleastMedium" "spawner_bath_top_2StartSpawning5-1"
+		"OnTriggerAtleastHard" "spawner_boomerStartSpawning0-1"
+		"OnTriggerAtleastEasy" "sound_exit_queuePlaySound0-1"
 	}
 	solid
 	{
@@ -13105,16 +13110,17 @@ entity
 {
 	"id" "18320"
 	"classname" "trigger_once"
-	"origin" "366.5 1578.5 83.85"
+	"origin" "370.5 1522.5 83.85"
 	"spawnflags" "16"
 	"StartDisabled" "0"
 	connections
 	{
-		"OnTrigger" "trigger_leavingEnable5-1"
+		"OnTrigger" "trigger_leavingEnable10-1"
 		"OnTrigger" "spawner_bath_back_burstStartSpawning0-1"
 		"OnTrigger" "spawner_bath_top_2StartSpawning2-1"
-		"OnTrigger" "spawner_vent_rangerStartSpawning3-1"
-		"OnTrigger" "spawner_bath_back_1StartSpawning0-1"
+		"OnTrigger" "spawner_vent_rangerStartSpawning6-1"
+		"OnTrigger" "spawner_bath_back_1StartSpawning7-1"
+		"OnTrigger" "sound_grate_breakPlaySound0-1"
 	}
 	solid
 	{
@@ -13122,7 +13128,7 @@ entity
 		side
 		{
 			"id" "1724"
-			"plane" "(151 1546 169.853) (151 1611 169.853) (582 1611 169.853)"
+			"plane" "(159 1434 169.853) (159 1611 169.853) (582 1611 169.853)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[1 0 0 -24] 0.25"
 			"vaxis" "[0 -1 0 0] 0.25"
@@ -13133,7 +13139,7 @@ entity
 		side
 		{
 			"id" "1723"
-			"plane" "(151 1611 -2.14735) (151 1546 -2.14735) (582 1546 -2.14735)"
+			"plane" "(159 1611 -2.14735) (159 1434 -2.14735) (582 1434 -2.14735)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[1 0 0 -24] 0.25"
 			"vaxis" "[0 -1 0 0] 0.25"
@@ -13144,7 +13150,7 @@ entity
 		side
 		{
 			"id" "1722"
-			"plane" "(151 1546 -2.14791) (151 1611 -2.14791) (151 1611 169.85)"
+			"plane" "(159 1434 -2.14791) (159 1611 -2.14791) (159 1611 169.85)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
@@ -13155,7 +13161,7 @@ entity
 		side
 		{
 			"id" "1721"
-			"plane" "(582 1611 -2.14788) (582 1546 -2.14788) (582 1546 169.85)"
+			"plane" "(582 1611 -2.14788) (582 1434 -2.14788) (582 1434 169.85)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
@@ -13166,7 +13172,7 @@ entity
 		side
 		{
 			"id" "1720"
-			"plane" "(151 1611 -2.1479) (582 1611 -2.1479) (582 1611 169.85)"
+			"plane" "(159 1611 -2.1479) (582 1611 -2.1479) (582 1611 169.85)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[1 0 0 -24] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
@@ -13177,7 +13183,7 @@ entity
 		side
 		{
 			"id" "1719"
-			"plane" "(582 1546 -2.14789) (151 1546 -2.1479) (151 1546 169.85)"
+			"plane" "(582 1434 -2.14789) (159 1434 -2.14789) (159 1434 169.85)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[1 0 0 -24] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
@@ -13212,7 +13218,7 @@ entity
 	"HealthScale" "1"
 	"InfiniteAliens" "0"
 	"LongRange" "0"
-	"MaxLiveAliens" "3"
+	"MaxLiveAliens" "1"
 	"MaxSkillLevel" "0"
 	"MinSkillLevel" "0"
 	"NearDistance" "740"
@@ -13246,11 +13252,11 @@ entity
 	"HealthScale" "1"
 	"InfiniteAliens" "0"
 	"LongRange" "0"
-	"MaxLiveAliens" "3"
+	"MaxLiveAliens" "2"
 	"MaxSkillLevel" "0"
 	"MinSkillLevel" "0"
 	"NearDistance" "740"
-	"NumAliens" "3"
+	"NumAliens" "2"
 	"SpawnerState" "1"
 	"spawnflags" "0"
 	"SpawnIfMarinesAreNear" "1"
@@ -13355,7 +13361,7 @@ entity
 	"StartBurrowed" "1"
 	"targetname" "spawner_boomer"
 	"UnburrowIdleActivity" "act_roll_256"
-	"origin" "414.098 310.804 1.00006"
+	"origin" "402 59 1.00006"
 	editor
 	{
 		"color" "0 0 255"
@@ -13487,6 +13493,67 @@ entity
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
 		"logicalpos" "[3500 10500]"
+	}
+}
+entity
+{
+	"id" "19833"
+	"classname" "ambient_generic"
+	"cspinup" "0"
+	"fadeinsecs" "0"
+	"fadeoutsecs" "0"
+	"health" "10"
+	"lfomodpitch" "0"
+	"lfomodvol" "0"
+	"lforate" "0"
+	"lfotype" "0"
+	"message" "physics/metal/metal_box_break2.wav"
+	"pitch" "100"
+	"pitchstart" "100"
+	"preset" "0"
+	"radius" "1250"
+	"spawnflags" "48"
+	"spindown" "0"
+	"spinup" "0"
+	"targetname" "sound_grate_break"
+	"volstart" "0"
+	"origin" "420.215 1548.96 170.853"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
+	}
+}
+entity
+{
+	"id" "19870"
+	"classname" "ambient_generic"
+	"cspinup" "0"
+	"fadeinsecs" "0"
+	"fadeoutsecs" "0"
+	"health" "10"
+	"lfomodpitch" "0"
+	"lfomodvol" "0"
+	"lforate" "0"
+	"lfotype" "0"
+	"pitch" "100"
+	"pitchstart" "100"
+	"preset" "0"
+	"radius" "1250"
+	"spawnflags" "48"
+	"spindown" "0"
+	"spinup" "0"
+	"targetname" "sound_exit_queue"
+	"volstart" "0"
+	"origin" "385.174 1064.91 177.853"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
 	}
 }
 cameras

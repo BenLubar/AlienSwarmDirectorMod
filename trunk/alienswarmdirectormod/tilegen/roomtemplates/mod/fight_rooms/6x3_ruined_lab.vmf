@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "90"
+	"mapversion" "99"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -38,7 +38,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "90"
+	"mapversion" "99"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -11740,46 +11740,21 @@ entity
 }
 entity
 {
-	"id" "10145"
-	"classname" "asw_spawner"
-	"AlienClass" "0"
-	"AlienOrders" "3"
-	"angles" "0 90 0"
-	"ClearCheck" "0"
-	"HealthScale" "1"
-	"InfiniteAliens" "0"
-	"LongRange" "0"
-	"MaxLiveAliens" "4"
-	"MaxSkillLevel" "0"
-	"MinSkillLevel" "0"
-	"NearDistance" "740"
-	"NumAliens" "7"
-	"SpawnerState" "1"
-	"SpawnIfMarinesAreNear" "1"
-	"SpawnInterval" "2"
-	"SpawnIntervalJitter" "25"
-	"SpeedScale" "1"
-	"StartBurrowed" "1"
-	"targetname" "spawn_lab"
-	"origin" "1007 143 1.00001"
-	editor
-	{
-		"color" "0 0 255"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[0 6500]"
-	}
-}
-entity
-{
 	"id" "10176"
-	"classname" "trigger_once"
-	"origin" "1180.5 261.89 73.5"
+	"classname" "mod_dynaimic_difficulty_modifier_trigger"
+	"maxDifficultyThreshold" "3"
+	"maxTriggerFire" "1"
+	"minDifficultyThreshold" "1"
+	"origin" "1307.5 305.1 73.5"
 	"spawnflags" "2"
 	"StartDisabled" "0"
+	"targetname" "trigger_lab_1"
+	"wait" "1"
 	connections
 	{
-		"OnTrigger" "spawn_labStartSpawning0-1"
+		"OnTriggerMedium" "relay_lab_mediumPickRandom0-1"
+		"OnTriggerHard" "relay_lab_hardPickRandom0-1"
+		"OnTrigger" "trigger_lab_2Disable0-1"
 	}
 	solid
 	{
@@ -11787,9 +11762,9 @@ entity
 		side
 		{
 			"id" "974"
-			"plane" "(1148 48 152) (1148 48 -5) (1148 489 -5)"
+			"plane" "(1198 163 152) (1198 163 -5) (1198 456 -5)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[0 1 0 7.3999] 0.25"
+			"uaxis" "[0 1 0 15.3999] 0.25"
 			"vaxis" "[0 0 -1 -8.96094] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
@@ -11798,9 +11773,9 @@ entity
 		side
 		{
 			"id" "973"
-			"plane" "(1213 489 152) (1213 489 -5) (1213 48 -5)"
+			"plane" "(1417 456 152) (1417 456 -5) (1417 163 -5)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[0 1 0 7.3999] 0.25"
+			"uaxis" "[0 1 0 15.3999] 0.25"
 			"vaxis" "[0 0 -1 -8.96094] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
@@ -11809,9 +11784,9 @@ entity
 		side
 		{
 			"id" "972"
-			"plane" "(1213 48 152) (1213 48 -5) (1148 48 -5)"
+			"plane" "(1417 163 152) (1417 163 -5) (1198 163 -5)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[1 0 0 -63.5164] 0.25"
+			"uaxis" "[1 0 0 -7.51639] 0.25"
 			"vaxis" "[0 0 -1 -8.96094] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
@@ -11820,9 +11795,9 @@ entity
 		side
 		{
 			"id" "971"
-			"plane" "(1148 489 152) (1148 489 -5) (1213 489 -5)"
+			"plane" "(1198 456 152) (1198 456 -5) (1417 456 -5)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[1 0 0 -63.5164] 0.25"
+			"uaxis" "[1 0 0 -7.51639] 0.25"
 			"vaxis" "[0 0 -1 -8.96094] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
@@ -11831,10 +11806,10 @@ entity
 		side
 		{
 			"id" "970"
-			"plane" "(1148 489 -5) (1148 48 -5) (1213 48 -5)"
+			"plane" "(1198 456 -5) (1198 163 -5) (1417 163 -5)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[1 0 0 -27.5164] 0.25"
-			"vaxis" "[0 -1 0 28.6001] 0.25"
+			"uaxis" "[1 0 0 -35.5164] 0.25"
+			"vaxis" "[0 -1 0 20.6001] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
 			"smoothing_groups" "0"
@@ -11842,10 +11817,10 @@ entity
 		side
 		{
 			"id" "969"
-			"plane" "(1148 48 152) (1148 489 152) (1213 489 152)"
+			"plane" "(1198 163 152) (1198 456 152) (1417 456 152)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[1 0 0 -27.5164] 0.25"
-			"vaxis" "[0 -1 0 28.6001] 0.25"
+			"uaxis" "[1 0 0 -35.5164] 0.25"
+			"vaxis" "[0 -1 0 20.6001] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
 			"smoothing_groups" "0"
@@ -12166,7 +12141,7 @@ entity
 	connections
 	{
 		"OnTrigger" "exit_window_spawner_2StartSpawning0-1"
-		"OnTriggerAtleastHard" "exit_window_spawner_boomerStartSpawning0-1"
+		"OnTriggerAtleastHard" "exit_window_spawner_boomerStartSpawning2-1"
 	}
 	solid
 	{
@@ -14035,15 +14010,17 @@ entity
 	"maxDifficultyThreshold" "3"
 	"maxTriggerFire" "1"
 	"minDifficultyThreshold" "1"
-	"origin" "848 261.87 73.5"
+	"origin" "711 263.87 73.5"
 	"spawnflags" "2"
 	"StartDisabled" "0"
+	"targetname" "trigger_window_1"
 	"wait" "1"
 	connections
 	{
 		"OnTrigger" "exit_window_spawnerStartSpawning0-1"
 		"OnTriggerAtleastHard" "exit_window_spawner_hardStartSpawning0-1"
-		"OnTrigger" "exit_window_spawner_rangerStartSpawning0-1"
+		"OnTriggerAtleastMedium" "exit_window_spawner_rangerStartSpawning2-1"
+		"OnTrigger" "trigger_window_2Disable0-1"
 	}
 	solid
 	{
@@ -14051,9 +14028,9 @@ entity
 		side
 		{
 			"id" "1669"
-			"plane" "(812 31 152) (812 31 -5) (812 507 -5)"
+			"plane" "(675 33 152) (675 33 -5) (675 509 -5)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[0 1 0 63.3999] 0.25"
+			"uaxis" "[0 1 0 55.3999] 0.25"
 			"vaxis" "[0 0 -1 -8.96094] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
@@ -14062,9 +14039,9 @@ entity
 		side
 		{
 			"id" "1668"
-			"plane" "(884 507 152) (884 507 -5) (884 31 -5)"
+			"plane" "(747 509 152) (747 509 -5) (747 33 -5)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[0 1 0 63.3999] 0.25"
+			"uaxis" "[0 1 0 55.3999] 0.25"
 			"vaxis" "[0 0 -1 -8.96094] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
@@ -14073,9 +14050,9 @@ entity
 		side
 		{
 			"id" "1667"
-			"plane" "(884 31 152) (884 31 -5) (812 31 -5)"
+			"plane" "(747 33 152) (747 33 -5) (675 33 -5)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[1 0 0 -3.51636] 0.25"
+			"uaxis" "[1 0 0 32.4836] 0.25"
 			"vaxis" "[0 0 -1 -8.96094] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
@@ -14084,9 +14061,9 @@ entity
 		side
 		{
 			"id" "1666"
-			"plane" "(812 507 152) (812 507 -5) (884 507 -5)"
+			"plane" "(675 509 152) (675 509 -5) (747 509 -5)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[1 0 0 -3.51636] 0.25"
+			"uaxis" "[1 0 0 32.4836] 0.25"
 			"vaxis" "[0 0 -1 -8.96094] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
@@ -14095,10 +14072,10 @@ entity
 		side
 		{
 			"id" "1665"
-			"plane" "(812 507 -5) (812 31 -5) (884 31 -5)"
+			"plane" "(675 509 -5) (675 33 -5) (747 33 -5)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[1 0 0 -31.5164] 0.25"
-			"vaxis" "[0 -1 0 -27.3999] 0.25"
+			"uaxis" "[1 0 0 4.48358] 0.25"
+			"vaxis" "[0 -1 0 -19.3999] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
 			"smoothing_groups" "0"
@@ -14106,10 +14083,10 @@ entity
 		side
 		{
 			"id" "1664"
-			"plane" "(812 31 152) (812 507 152) (884 507 152)"
+			"plane" "(675 33 152) (675 509 152) (747 509 152)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[1 0 0 -31.5164] 0.25"
-			"vaxis" "[0 -1 0 -27.3999] 0.25"
+			"uaxis" "[1 0 0 4.48358] 0.25"
+			"vaxis" "[0 -1 0 -19.3999] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
 			"smoothing_groups" "0"
@@ -14137,15 +14114,17 @@ entity
 	"maxDifficultyThreshold" "3"
 	"maxTriggerFire" "1"
 	"minDifficultyThreshold" "1"
-	"origin" "137 437.62 73.5"
+	"origin" "203.5 192.03 73.5"
 	"spawnflags" "2"
 	"StartDisabled" "0"
+	"targetname" "trigger_window_2"
 	"wait" "1"
 	connections
 	{
-		"OnTrigger" "exit_window_spawnerStartSpawning0-1"
+		"OnTriggerAtleastEasy" "exit_window_spawnerStartSpawning0-1"
 		"OnTriggerAtleastHard" "exit_window_spawner_hardStartSpawning0-1"
-		"OnTrigger" "exit_window_spawner_rangerStartSpawning0.75-1"
+		"OnTriggerAtleastMedium" "exit_window_spawner_rangerStartSpawning2-1"
+		"OnTrigger" "trigger_window_1Disable0-1"
 	}
 	solid
 	{
@@ -14153,9 +14132,9 @@ entity
 		side
 		{
 			"id" "1681"
-			"plane" "(15 393 152) (15 393 -5) (15 485 -5)"
+			"plane" "(142 15 152) (142 15 -5) (142 380 -5)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[0 1 0 -40.6001] 0.25"
+			"uaxis" "[0 1 0 59.3999] 0.25"
 			"vaxis" "[0 0 -1 -8.96094] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
@@ -14164,9 +14143,9 @@ entity
 		side
 		{
 			"id" "1680"
-			"plane" "(259 485 152) (259 485 -5) (259 393 -5)"
+			"plane" "(265 380 152) (265 380 -5) (265 15 -5)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[0 1 0 -40.6001] 0.25"
+			"uaxis" "[0 1 0 59.3999] 0.25"
 			"vaxis" "[0 0 -1 -8.96094] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
@@ -14175,9 +14154,9 @@ entity
 		side
 		{
 			"id" "1679"
-			"plane" "(259 393 152) (259 393 -5) (15 393 -5)"
+			"plane" "(265 15 152) (265 15 -5) (142 15 -5)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[1 0 0 0.483643] 0.25"
+			"uaxis" "[1 0 0 -23.5164] 0.25"
 			"vaxis" "[0 0 -1 -8.96094] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
@@ -14186,9 +14165,9 @@ entity
 		side
 		{
 			"id" "1678"
-			"plane" "(15 485 152) (15 485 -5) (259 485 -5)"
+			"plane" "(142 380 152) (142 380 -5) (265 380 -5)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[1 0 0 0.483643] 0.25"
+			"uaxis" "[1 0 0 -23.5164] 0.25"
 			"vaxis" "[0 0 -1 -8.96094] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
@@ -14197,10 +14176,10 @@ entity
 		side
 		{
 			"id" "1677"
-			"plane" "(15 485 -5) (15 393 -5) (259 393 -5)"
+			"plane" "(142 380 -5) (142 15 -5) (265 15 -5)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[1 0 0 36.4836] 0.25"
-			"vaxis" "[0 -1 0 12.6001] 0.25"
+			"uaxis" "[1 0 0 12.4836] 0.25"
+			"vaxis" "[0 -1 0 -23.3999] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
 			"smoothing_groups" "0"
@@ -14208,10 +14187,10 @@ entity
 		side
 		{
 			"id" "1676"
-			"plane" "(15 393 152) (15 485 152) (259 485 152)"
+			"plane" "(142 15 152) (142 380 152) (265 380 152)"
 			"material" "TOOLS/TOOLSTRIGGER"
-			"uaxis" "[1 0 0 36.4836] 0.25"
-			"vaxis" "[0 -1 0 12.6001] 0.25"
+			"uaxis" "[1 0 0 12.4836] 0.25"
+			"vaxis" "[0 -1 0 -23.3999] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
 			"smoothing_groups" "0"
@@ -14235,13 +14214,20 @@ entity
 entity
 {
 	"id" "71620"
-	"classname" "trigger_once"
+	"classname" "mod_dynaimic_difficulty_modifier_trigger"
+	"maxDifficultyThreshold" "3"
+	"maxTriggerFire" "1"
+	"minDifficultyThreshold" "1"
 	"origin" "764.5 272.89 73.5"
 	"spawnflags" "2"
 	"StartDisabled" "0"
+	"targetname" "trigger_lab_2"
+	"wait" "1"
 	connections
 	{
-		"OnTrigger" "spawn_labStartSpawning0-1"
+		"OnTriggerMedium" "relay_lab_mediumPickRandom0-1"
+		"OnTriggerHard" "relay_lab_hardPickRandom0-1"
+		"OnTrigger" "trigger_lab_1Disable0-1"
 	}
 	solid
 	{
@@ -14452,6 +14438,185 @@ entity
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
 		"logicalpos" "[14000 -5768]"
+	}
+}
+entity
+{
+	"id" "72682"
+	"classname" "logic_case"
+	"targetname" "relay_lab_hard"
+	connections
+	{
+		"OnCase01" "spawn_lab_burstStartSpawning1-1"
+		"OnCase01" "spawn_lab_rangerStartSpawning4-1"
+		"OnCase03" "spawn_lab_rangerStartSpawning1-1"
+		"OnCase03" "spawn_lab_burstStartSpawning4-1"
+		"OnCase02" "spawn_lab_trickleStartSpawning3-1"
+		"OnCase02" "spawn_lab_rangerStartSpawning1-1"
+		"OnCase04" "spawn_lab_burstStartSpawning1-1"
+		"OnCase05" "spawn_lab_rangerStartSpawning1-1"
+		"OnCase01" "sound_lab_spawner_audio_queuePlaySound0-1"
+		"OnCase02" "sound_lab_spawner_audio_queuePlaySound0-1"
+		"OnCase03" "sound_lab_spawner_audio_queuePlaySound0-1"
+		"OnCase04" "sound_lab_spawner_audio_queuePlaySound0-1"
+		"OnCase05" "sound_lab_spawner_audio_queuePlaySound0-1"
+	}
+	"origin" "974 102.609 138"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
+	}
+}
+entity
+{
+	"id" "72684"
+	"classname" "logic_case"
+	"targetname" "relay_lab_medium"
+	connections
+	{
+		"OnCase01" "spawn_lab_burstStartSpawning1-1"
+		"OnCase03" "spawn_lab_trickleStartSpawning1-1"
+		"OnCase02" "spawn_lab_rangerStartSpawning1-1"
+		"OnCase01" "sound_lab_spawner_audio_queuePlaySound0-1"
+		"OnCase02" "sound_lab_spawner_audio_queuePlaySound0-1"
+		"OnCase03" "sound_lab_spawner_audio_queuePlaySound0-1"
+	}
+	"origin" "948 103 138"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
+	}
+}
+entity
+{
+	"id" "72686"
+	"classname" "asw_spawner"
+	"AlienClass" "10"
+	"AlienOrders" "3"
+	"angles" "0 90 0"
+	"ClearCheck" "0"
+	"HealthScale" "1"
+	"InfiniteAliens" "0"
+	"LongRange" "0"
+	"MaxLiveAliens" "1"
+	"MaxSkillLevel" "0"
+	"MinSkillLevel" "0"
+	"NearDistance" "740"
+	"NumAliens" "2"
+	"SpawnerState" "1"
+	"SpawnIfMarinesAreNear" "1"
+	"SpawnInterval" "2"
+	"SpawnIntervalJitter" "25"
+	"SpeedScale" "1"
+	"StartBurrowed" "1"
+	"targetname" "spawn_lab_ranger"
+	"origin" "986 143 -5.24521e-006"
+	editor
+	{
+		"color" "0 0 255"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 6500]"
+	}
+}
+entity
+{
+	"id" "72688"
+	"classname" "asw_spawner"
+	"AlienClass" "0"
+	"AlienOrders" "3"
+	"angles" "0 90 0"
+	"ClearCheck" "0"
+	"HealthScale" "1"
+	"InfiniteAliens" "0"
+	"LongRange" "0"
+	"MaxLiveAliens" "3"
+	"MaxSkillLevel" "0"
+	"MinSkillLevel" "0"
+	"NearDistance" "740"
+	"NumAliens" "7"
+	"SpawnerState" "1"
+	"SpawnIfMarinesAreNear" "1"
+	"SpawnInterval" "1"
+	"SpawnIntervalJitter" "25"
+	"SpeedScale" "1"
+	"StartBurrowed" "1"
+	"targetname" "spawn_lab_trickle"
+	"origin" "1002 143 -5.24521e-006"
+	editor
+	{
+		"color" "0 0 255"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 6500]"
+	}
+}
+entity
+{
+	"id" "72690"
+	"classname" "asw_spawner"
+	"AlienClass" "0"
+	"AlienOrders" "3"
+	"angles" "0 90 0"
+	"ClearCheck" "0"
+	"HealthScale" "1"
+	"InfiniteAliens" "0"
+	"LongRange" "0"
+	"MaxLiveAliens" "3"
+	"MaxSkillLevel" "0"
+	"MinSkillLevel" "0"
+	"NearDistance" "740"
+	"NumAliens" "3"
+	"SpawnerState" "1"
+	"SpawnIfMarinesAreNear" "1"
+	"SpawnInterval" "1"
+	"SpawnIntervalJitter" "25"
+	"SpeedScale" "1"
+	"StartBurrowed" "1"
+	"targetname" "spawn_lab_burst"
+	"origin" "1030 143 -5.24521e-006"
+	editor
+	{
+		"color" "0 0 255"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 6500]"
+	}
+}
+entity
+{
+	"id" "72692"
+	"classname" "ambient_generic"
+	"cspinup" "0"
+	"fadeinsecs" "0"
+	"fadeoutsecs" "1"
+	"health" "10"
+	"lfomodpitch" "0"
+	"lfomodvol" "0"
+	"lforate" "0"
+	"lfotype" "0"
+	"pitch" "100"
+	"pitchstart" "100"
+	"preset" "0"
+	"radius" "1250"
+	"spawnflags" "48"
+	"spindown" "0"
+	"spinup" "0"
+	"targetname" "sound_lab_spawner_audio_queue"
+	"volstart" "0"
+	"origin" "954.052 138 133"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 500]"
 	}
 }
 cameras
