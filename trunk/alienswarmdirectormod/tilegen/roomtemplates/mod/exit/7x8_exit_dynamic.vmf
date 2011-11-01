@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "134"
+	"mapversion" "137"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "134"
+	"mapversion" "137"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -4779,7 +4779,6 @@ entity
 		"OnButtonActivated" "gate_start_soundPlaySound0-1"
 		"OnButtonActivated" "finale_musicStartMusic0-1"
 		"OnButtonActivated" "finale_spawningTrigger0-1"
-		"OnButtonActivated" "@map_builder_for_next_missionActivate0-1"
 		"OnButtonActivated" "@objective_supplySetComplete0-1"
 	}
 	solid
@@ -16043,6 +16042,7 @@ entity
 		"OnTrigger" "@trigger_button_disabledDisable0-1"
 		"OnTrigger" "@trigger_button_end200Enable0-1"
 		"OnTrigger" "@objective_escapeSetVisible10-1"
+		"OnTrigger" "@trigger_set_performance_for_next_levelEnable0-1"
 	}
 	"origin" "654.926 1717.36 345.798"
 	editor
@@ -16207,6 +16207,125 @@ entity
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
 		"logicalpos" "[0 13000]"
+	}
+}
+entity
+{
+	"id" "24334"
+	"classname" "asw_pickup_sentry"
+	"angles" "0 90 0"
+	"BulletsInGun" "1"
+	"Clips" "0"
+	"disableshadows" "0"
+	"fademaxdist" "0"
+	"fademindist" "-1"
+	"fadescale" "1"
+	"FreezePickup" "No"
+	"SecondaryBullets" "0"
+	"spawnflags" "0"
+	"origin" "960 1240 152"
+	editor
+	{
+		"color" "0 0 200"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
+	}
+}
+entity
+{
+	"id" "25131"
+	"classname" "trigger_once"
+	"origin" "900 988 212"
+	"spawnflags" "16"
+	"StartDisabled" "1"
+	"targetname" "@trigger_set_performance_for_next_level"
+	connections
+	{
+		"OnTrigger" "@map_builder_for_next_missionActivate0-1"
+	}
+	solid
+	{
+		"id" "25132"
+		side
+		{
+			"id" "1568"
+			"plane" "(1088 632 272) (712.001 632 272) (712.001 1344 272)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[0 1 0 4] 0.25"
+			"vaxis" "[1 0 0 -16] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "1567"
+			"plane" "(1088 1344 152) (712.001 1344 152) (712.001 632 152)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[0 1 0 4] 0.25"
+			"vaxis" "[1 0 0 -16] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "1566"
+			"plane" "(1088 632 152) (712.001 632 152) (712.001 632 272)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[1 0 0 -48] 0.25"
+			"vaxis" "[0 0 -1 -18.7667] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "1565"
+			"plane" "(712.001 1344 152) (1088 1344 152) (1088 1344 272)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[1 0 0 -48] 0.25"
+			"vaxis" "[0 0 -1 -18.7667] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "1564"
+			"plane" "(712 632 152) (712 1344 152) (712 1344 272)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[0 1 0 4] 0.25"
+			"vaxis" "[0 0 -1 -24.0027] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "1563"
+			"plane" "(1088 1344 152) (1088 632 152) (1088 632 272)"
+			"material" "TOOLS/TOOLSTRIGGER"
+			"uaxis" "[0 1 0 4] 0.25"
+			"vaxis" "[0 0 -1 -18.7667] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		editor
+		{
+			"color" "220 30 220"
+			"visgroupshown" "1"
+			"visgroupautoshown" "1"
+		}
+	}
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[-6768 9000]"
 	}
 }
 cameras

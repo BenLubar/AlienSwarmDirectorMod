@@ -21,6 +21,7 @@
 "asw_credits_"	"Grant Griebel"
 "asw_credits_"	"Alex Shaproski"
 "asw_credits_"	"Jamie Pittle"
+"asw_credits_"	"Benjamin Lang"
 "asw_credits_"  ""
 "asw_credits_"  "GUI Help:"
 "asw_credits_"	"Aazell - AS:SP"

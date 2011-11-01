@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "181"
+	"mapversion" "202"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "181"
+	"mapversion" "202"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -8238,6 +8238,83 @@ world
 			"visgroupautoshown" "1"
 		}
 	}
+	solid
+	{
+		"id" "69923"
+		side
+		{
+			"id" "6815"
+			"plane" "(380 720 2) (438 720 2) (438 660 2)"
+			"material" "TOOLS/TOOLSNOLIGHT"
+			"uaxis" "[0 1 0 0] 0.25"
+			"vaxis" "[1 0 0 -4] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "6814"
+			"plane" "(380 660 1) (438 660 1) (438 720 1)"
+			"material" "TOOLS/TOOLSNPCCLIP"
+			"uaxis" "[0 -1 0 8] 0.25"
+			"vaxis" "[1 0 0 -36] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "6813"
+			"plane" "(438 660 1) (380 660 1) (380 660 2)"
+			"material" "TOOLS/TOOLSNPCCLIP"
+			"uaxis" "[-1 0 0 36] 0.25"
+			"vaxis" "[0 0 -1 -43.4993] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "6812"
+			"plane" "(380 720 1) (438 720 1) (438 720 2)"
+			"material" "TOOLS/TOOLSNPCCLIP"
+			"uaxis" "[-1 0 0 36] 0.25"
+			"vaxis" "[0 0 -1 -43.4993] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "6811"
+			"plane" "(380 660 1) (380 720 1) (380 720 2)"
+			"material" "TOOLS/TOOLSNPCCLIP"
+			"uaxis" "[0 -1 0 8] 0.25"
+			"vaxis" "[0 0 -1 -43.4993] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "6810"
+			"plane" "(438 720 1) (438 660 1) (438 660 2)"
+			"material" "TOOLS/TOOLSNPCCLIP"
+			"uaxis" "[0 -1 0 8] 0.25"
+			"vaxis" "[0 0 -1 -43.4993] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		editor
+		{
+			"color" "0 175 104"
+			"groupid" "69922"
+			"visgroupshown" "1"
+			"visgroupautoshown" "1"
+		}
+	}
 	group
 	{
 		"id" "21337"
@@ -8486,6 +8563,16 @@ world
 		editor
 		{
 			"color" "100 109 0"
+			"visgroupshown" "1"
+			"visgroupautoshown" "1"
+		}
+	}
+	group
+	{
+		"id" "69922"
+		editor
+		{
+			"color" "0 175 104"
 			"visgroupshown" "1"
 			"visgroupautoshown" "1"
 		}
@@ -9596,38 +9683,6 @@ entity
 }
 entity
 {
-	"id" "23757"
-	"classname" "asw_spawner"
-	"AlienClass" "0"
-	"AlienOrders" "3"
-	"angles" "0 180 0"
-	"ClearCheck" "1"
-	"HealthScale" "1"
-	"InfiniteAliens" "0"
-	"MaxLiveAliens" "3"
-	"NearDistance" "740"
-	"NumAliens" "5"
-	"SpawnerState" "1"
-	"spawnflags" "0"
-	"SpawnIfMarinesAreNear" "1"
-	"SpawnInterval" "1"
-	"SpawnIntervalJitter" "25"
-	"SpeedScale" "1"
-	"StartBurrowed" "1"
-	"targetname" "spawn_first_room"
-	"UnburrowActivity" "ACT_CLIMB_DOWN_WALL_128"
-	"origin" "1172.24 664.006 5"
-	editor
-	{
-		"color" "138 251 0"
-		"groupid" "25660"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[0 1500]"
-	}
-}
-entity
-{
 	"id" "23759"
 	"classname" "prop_static"
 	"angles" "-90 0 0"
@@ -9673,7 +9728,7 @@ entity
 	"SpawnIntervalJitter" "25"
 	"SpeedScale" "1"
 	"StartBurrowed" "1"
-	"targetname" "spawn_first_room"
+	"targetname" "spawn_first_room_wall_back_burst"
 	"UnburrowActivity" "ACT_CLIMB_DOWN_WALL_128"
 	"origin" "1172.24 184.006 5"
 	editor
@@ -22213,10 +22268,6 @@ entity
 	"rendercolor" "255 255 255"
 	"spawnobject" "0"
 	"targetname" "window_13"
-	connections
-	{
-		"OnBreak" "link_office_1bTurnOn0-1"
-	}
 	solid
 	{
 		"id" "5211"
@@ -23636,7 +23687,7 @@ entity
 	"classname" "info_node"
 	"angles" "0 0 0"
 	"nodeid" "35"
-	"origin" "374.674 668.97 0.999981"
+	"origin" "282 638 0.999981"
 	editor
 	{
 		"color" "232 219 8"
@@ -23773,7 +23824,7 @@ entity
 	"classname" "asw_spawner"
 	"AlienClass" "10"
 	"AlienOrders" "3"
-	"angles" "0 270 0"
+	"angles" "0 319 0"
 	"ClearCheck" "0"
 	"HealthScale" "1"
 	"InfiniteAliens" "0"
@@ -23789,8 +23840,10 @@ entity
 	"SpawnIntervalJitter" "25"
 	"SpeedScale" "1"
 	"StartBurrowed" "1"
-	"targetname" "spawn_first_room"
-	"origin" "64 220 1.00001"
+	"targetname" "spawn_first_room_beg_ranger"
+	"UnburrowActivity" "act_burrow_out"
+	"UnburrowIdleActivity" "act_burrow_idle"
+	"origin" "112 234 1.00001"
 	editor
 	{
 		"color" "0 0 255"
@@ -26027,7 +26080,7 @@ entity
 	"maxDifficultyThreshold" "3"
 	"maxTriggerFire" "1"
 	"minDifficultyThreshold" "1"
-	"origin" "697 534 67.09"
+	"origin" "697 573 67.09"
 	"spawnflags" "2"
 	"StartDisabled" "0"
 	"wait" "1"
@@ -26046,7 +26099,7 @@ entity
 		side
 		{
 			"id" "4847"
-			"plane" "(126 462 147.086) (126 606 147.086) (1268 606 147.086)"
+			"plane" "(126 540 147.086) (126 606 147.086) (1268 606 147.086)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[1 0 0 -36] 0.25"
 			"vaxis" "[0 -1 0 44] 0.25"
@@ -26057,7 +26110,7 @@ entity
 		side
 		{
 			"id" "4846"
-			"plane" "(126 606 -12.9145) (126 462 -12.9145) (1268 462 -12.9145)"
+			"plane" "(126 606 -12.9145) (126 540 -12.9145) (1268 540 -12.9145)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[1 0 0 -36] 0.25"
 			"vaxis" "[0 -1 0 44] 0.25"
@@ -26068,7 +26121,7 @@ entity
 		side
 		{
 			"id" "4845"
-			"plane" "(126 462 -12.9143) (126 606 -12.9143) (126 606 147.088)"
+			"plane" "(126 540 -12.9143) (126 606 -12.9143) (126 606 147.088)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[0 1 0 -44] 0.25"
 			"vaxis" "[0 0 -1 -26.4189] 0.25"
@@ -26079,7 +26132,7 @@ entity
 		side
 		{
 			"id" "4844"
-			"plane" "(1268 606 -12.9143) (1268 462 -12.9143) (1268 462 147.088)"
+			"plane" "(1268 606 -12.9143) (1268 540 -12.9143) (1268 540 147.088)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[0 1 0 -44] 0.25"
 			"vaxis" "[0 0 -1 -26.4189] 0.25"
@@ -26101,7 +26154,7 @@ entity
 		side
 		{
 			"id" "4842"
-			"plane" "(1268 462 -12.9143) (126 462 -12.9143) (126 462 147.088)"
+			"plane" "(1268 540 -12.9143) (126 540 -12.9143) (126 540 147.088)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[1 0 0 -36] 0.25"
 			"vaxis" "[0 0 -1 -26.4189] 0.25"
@@ -26136,7 +26189,7 @@ entity
 	"InfiniteAliens" "0"
 	"MaxLiveAliens" "3"
 	"NearDistance" "740"
-	"NumAliens" "5"
+	"NumAliens" "4"
 	"SpawnerState" "1"
 	"spawnflags" "0"
 	"SpawnIfMarinesAreNear" "1"
@@ -26144,7 +26197,7 @@ entity
 	"SpawnIntervalJitter" "25"
 	"SpeedScale" "1"
 	"StartBurrowed" "1"
-	"targetname" "spawn_first_room"
+	"targetname" "spawn_first_room_wall_front_burst"
 	"UnburrowActivity" "ACT_CLIMB_DOWN_WALL_128"
 	"origin" "1164 664 5"
 	editor
@@ -26201,15 +26254,15 @@ entity
 	"MaxSkillLevel" "0"
 	"MinSkillLevel" "0"
 	"NearDistance" "740"
-	"NumAliens" "4"
+	"NumAliens" "2"
 	"SpawnerState" "1"
 	"SpawnIfMarinesAreNear" "1"
-	"SpawnInterval" "4"
-	"SpawnIntervalJitter" "25"
+	"SpawnInterval" "1"
+	"SpawnIntervalJitter" "0"
 	"SpeedScale" "1"
-	"StartBurrowed" "1"
-	"targetname" "spawn_first_room"
-	"origin" "539 703 1.00001"
+	"StartBurrowed" "0"
+	"targetname" "spawn_first_room_always_spawn"
+	"origin" "1017 640 1.00001"
 	editor
 	{
 		"color" "0 0 255"
@@ -30572,6 +30625,7 @@ entity
 	connections
 	{
 		"OnButtonHackCompleted" "door_easy_endEnableAutoOpen0-1"
+		"OnButtonHackCompleted" "spawn_endStartSpawning0-1"
 	}
 	solid
 	{
@@ -30774,6 +30828,7 @@ entity
 	connections
 	{
 		"OnButtonHackCompleted" "door_hard_endEnableAutoOpen0-1"
+		"OnButtonHackCompleted" "spawn_endStartSpawning0-1"
 	}
 	solid
 	{
@@ -30976,6 +31031,7 @@ entity
 	connections
 	{
 		"OnButtonHackCompleted" "door_medium_endEnableAutoOpen0-1"
+		"OnButtonHackCompleted" "spawn_endStartSpawning0-1"
 	}
 	solid
 	{
@@ -31555,7 +31611,7 @@ entity
 {
 	"id" "58097"
 	"classname" "trigger_once"
-	"origin" "4.71 656.58 80"
+	"origin" "-522.53 851.89 80"
 	"spawnflags" "2"
 	"StartDisabled" "0"
 	connections
@@ -31563,7 +31619,8 @@ entity
 		"OnTrigger" "light_hallway_hardTurnOff0-1"
 		"OnTrigger" "light_hallway_medTurnOff0-1"
 		"OnTrigger" "light_hallway_easyTurnOff0-1"
-		"OnTrigger" "spawn_first_roomStartSpawning1-1"
+		"OnTrigger" "relay_pick_spawn_groupPickRandom2-1"
+		"OnTrigger" "spawn_first_room_always_spawnStartSpawning0-1"
 	}
 	solid
 	{
@@ -31571,7 +31628,7 @@ entity
 		side
 		{
 			"id" "6347"
-			"plane" "(41 13 160) (41 341 160) (108 341 160)"
+			"plane" "(-301 -190 160) (-301 341 160) (108 341 160)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[1 0 0 36] 0.25"
 			"vaxis" "[0 -1 0 -40] 0.25"
@@ -31582,7 +31639,7 @@ entity
 		side
 		{
 			"id" "6346"
-			"plane" "(41 341 0) (41 13 0) (108 13 0)"
+			"plane" "(-301 341 0) (-301 -190 0) (108 -190 0)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[1 0 0 36] 0.25"
 			"vaxis" "[0 -1 0 -40] 0.25"
@@ -31593,7 +31650,7 @@ entity
 		side
 		{
 			"id" "6345"
-			"plane" "(41 13 0) (41 341 0) (41 341 160)"
+			"plane" "(-301 -190 0) (-301 341 0) (-301 341 160)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[0 1 0 40] 0.25"
 			"vaxis" "[0 0 -1 25.239] 0.25"
@@ -31604,7 +31661,7 @@ entity
 		side
 		{
 			"id" "6344"
-			"plane" "(108 341 0) (108 13 0) (108 13 160)"
+			"plane" "(108 341 0) (108 -190 0) (108 -190 160)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[0 1 0 40] 0.25"
 			"vaxis" "[0 0 -1 25.239] 0.25"
@@ -31615,7 +31672,7 @@ entity
 		side
 		{
 			"id" "6343"
-			"plane" "(41 341 0) (108 341 0) (108 341 160)"
+			"plane" "(-301 341 0) (108 341 0) (108 341 160)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[1 0 0 36] 0.25"
 			"vaxis" "[0 0 -1 25.239] 0.25"
@@ -31626,7 +31683,7 @@ entity
 		side
 		{
 			"id" "6342"
-			"plane" "(108 13 0) (41 13 0) (41 13 160)"
+			"plane" "(108 -190 0) (-301 -190 0) (-301 -190 160)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[1 0 0 36] 0.25"
 			"vaxis" "[0 0 -1 25.239] 0.25"
@@ -35753,7 +35810,7 @@ entity
 	"id" "68439"
 	"classname" "asw_spawner"
 	"AlienClass" "0"
-	"AlienOrders" "0"
+	"AlienOrders" "3"
 	"angles" "0 0 0"
 	"ClearCheck" "0"
 	"HealthScale" "1"
@@ -35764,10 +35821,10 @@ entity
 	"MinSkillLevel" "0"
 	"NearDistance" "740"
 	"NumAliens" "2"
-	"SpawnerState" "0"
-	"SpawnIfMarinesAreNear" "0"
-	"SpawnInterval" "4"
-	"SpawnIntervalJitter" "25"
+	"SpawnerState" "1"
+	"SpawnIfMarinesAreNear" "1"
+	"SpawnInterval" "1"
+	"SpawnIntervalJitter" "75"
 	"SpeedScale" "1"
 	"StartBurrowed" "0"
 	"targetname" "spawn_end"
@@ -35796,10 +35853,10 @@ entity
 	"MinSkillLevel" "0"
 	"NearDistance" "740"
 	"NumAliens" "2"
-	"SpawnerState" "0"
-	"SpawnIfMarinesAreNear" "0"
-	"SpawnInterval" "4"
-	"SpawnIntervalJitter" "25"
+	"SpawnerState" "1"
+	"SpawnIfMarinesAreNear" "1"
+	"SpawnInterval" "1"
+	"SpawnIntervalJitter" "75"
 	"SpeedScale" "1"
 	"StartBurrowed" "0"
 	"targetname" "spawn_end"
@@ -35835,6 +35892,566 @@ entity
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
 		"logicalpos" "[0 1500]"
+	}
+}
+entity
+{
+	"id" "69913"
+	"classname" "light"
+	"_constant_attn" "0"
+	"_distance" "0"
+	"_fifty_percent_distance" "0"
+	"_hardfalloff" "0"
+	"_light" "174 198 194 50"
+	"_lightHDR" "-1 -1 -1 1"
+	"_lightscaleHDR" "0.7"
+	"_linear_attn" "0"
+	"_quadratic_attn" "1"
+	"_zero_percent_distance" "0"
+	"angles" "0 0 0"
+	"pitch" "0"
+	"spawnflags" "0"
+	"style" "0"
+	"SunSpreadAngle" "0"
+	"targetname" "light_hallway_med"
+	"origin" "623 2730 100"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 6000]"
+	}
+}
+entity
+{
+	"id" "69924"
+	"classname" "prop_static"
+	"angles" "0 270 0"
+	"disableselfshadowing" "0"
+	"disableshadows" "1"
+	"disablevertexlighting" "0"
+	"fademindist" "-1"
+	"fadescale" "1"
+	"ignorenormals" "0"
+	"Model" "models/props/floor/grate02/grate02_64_broken.mdl"
+	"renderamt" "255"
+	"rendercolor" "255 255 255"
+	"screenspacefade" "0"
+	"Skin" "0"
+	"solid" "0"
+	"origin" "377 658 2.25"
+	editor
+	{
+		"color" "0 175 104"
+		"groupid" "69922"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[-7768 -8768]"
+	}
+}
+entity
+{
+	"id" "69928"
+	"classname" "asw_spawner"
+	"AlienClass" "0"
+	"AlienOrders" "3"
+	"angles" "0 47 0"
+	"ClearCheck" "0"
+	"HealthScale" "1"
+	"InfiniteAliens" "0"
+	"LongRange" "0"
+	"MaxLiveAliens" "2"
+	"MaxSkillLevel" "0"
+	"MinSkillLevel" "0"
+	"NearDistance" "740"
+	"NumAliens" "5"
+	"SpawnerState" "1"
+	"SpawnIfMarinesAreNear" "1"
+	"SpawnInterval" "4"
+	"SpawnIntervalJitter" "25"
+	"SpeedScale" "1"
+	"StartBurrowed" "1"
+	"targetname" "spawn_first_room_office_trickle"
+	"origin" "357 690 1.00001"
+	editor
+	{
+		"color" "0 0 255"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 6500]"
+	}
+}
+entity
+{
+	"id" "70040"
+	"classname" "asw_spawner"
+	"AlienClass" "0"
+	"AlienOrders" "3"
+	"angles" "0 180 0"
+	"ClearCheck" "1"
+	"HealthScale" "1"
+	"InfiniteAliens" "0"
+	"MaxLiveAliens" "1"
+	"NearDistance" "740"
+	"NumAliens" "5"
+	"SpawnerState" "1"
+	"spawnflags" "0"
+	"SpawnIfMarinesAreNear" "1"
+	"SpawnInterval" "1"
+	"SpawnIntervalJitter" "25"
+	"SpeedScale" "1"
+	"StartBurrowed" "1"
+	"targetname" "spawn_first_room_wall_back_trickle"
+	"UnburrowActivity" "ACT_CLIMB_DOWN_WALL_128"
+	"origin" "1172 176 5"
+	editor
+	{
+		"color" "0 0 255"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 1500]"
+	}
+}
+entity
+{
+	"id" "70072"
+	"classname" "asw_spawner"
+	"AlienClass" "10"
+	"AlienOrders" "3"
+	"angles" "0 0 0"
+	"ClearCheck" "0"
+	"HealthScale" "1"
+	"InfiniteAliens" "0"
+	"LongRange" "0"
+	"MaxLiveAliens" "2"
+	"MaxSkillLevel" "0"
+	"MinSkillLevel" "0"
+	"NearDistance" "740"
+	"NumAliens" "2"
+	"SpawnerState" "1"
+	"SpawnIfMarinesAreNear" "1"
+	"SpawnInterval" "6"
+	"SpawnIntervalJitter" "25"
+	"SpeedScale" "1"
+	"StartBurrowed" "1"
+	"targetname" "spawn_first_room_top_ranger"
+	"UnburrowActivity" "act_burrow_out"
+	"UnburrowIdleActivity" "act_burrow_idle"
+	"origin" "539 697 1.00001"
+	editor
+	{
+		"color" "0 0 255"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 6500]"
+	}
+}
+entity
+{
+	"id" "70088"
+	"classname" "asw_spawner"
+	"AlienClass" "0"
+	"AlienOrders" "3"
+	"angles" "0 270 0"
+	"ClearCheck" "0"
+	"HealthScale" "1"
+	"InfiniteAliens" "0"
+	"LongRange" "0"
+	"MaxLiveAliens" "1"
+	"MaxSkillLevel" "0"
+	"MinSkillLevel" "0"
+	"NearDistance" "740"
+	"NumAliens" "4"
+	"SpawnerState" "1"
+	"SpawnIfMarinesAreNear" "1"
+	"SpawnInterval" "1"
+	"SpawnIntervalJitter" "25"
+	"SpeedScale" "1"
+	"StartBurrowed" "1"
+	"targetname" "spawn_first_room_beg_trickle"
+	"UnburrowActivity" "act_burrow_out"
+	"UnburrowIdleActivity" "act_burrow_idle"
+	"origin" "75 220 1.00001"
+	editor
+	{
+		"color" "0 0 255"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 6500]"
+	}
+}
+entity
+{
+	"id" "70098"
+	"classname" "logic_case"
+	"angles" "0 0 0"
+	"targetname" "relay_spawn_group_1"
+	connections
+	{
+		"OnCase01" "spawn_first_room_beg_rangerStartSpawning0-1"
+		"OnCase01" "spawn_first_room_wall_back_burstStartSpawning2-1"
+		"OnCase01" "spawn_first_room_wall_front_burstStartSpawning4-1"
+		"OnCase01" "spawn_first_room_topStartSpawning6-1"
+		"OnCase01" "spawn_first_room_office_trickleStartSpawning7-1"
+		"OnCase02" "spawn_first_room_office_trickleStartSpawning4-1"
+		"OnCase02" "spawn_first_room_topStartSpawning3-1"
+		"OnCase02" "spawn_first_room_wall_front_burstStartSpawning2-1"
+		"OnCase02" "spawn_first_room_wall_back_burstStartSpawning1-1"
+		"OnCase02" "spawn_first_room_beg_rangerStartSpawning0-1"
+		"OnCase03" "spawn_first_room_office_trickleStartSpawning8-1"
+		"OnCase03" "spawn_first_room_topStartSpawning0-1"
+		"OnCase03" "spawn_first_room_wall_front_burstStartSpawning3-1"
+		"OnCase03" "spawn_first_room_wall_back_burstStartSpawning0-1"
+		"OnCase03" "spawn_first_room_beg_rangerStartSpawning1.5-1"
+	}
+	"origin" "256 136 125"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
+	}
+}
+entity
+{
+	"id" "70128"
+	"classname" "asw_spawner"
+	"AlienClass" "0"
+	"AlienOrders" "3"
+	"angles" "0 47 0"
+	"ClearCheck" "0"
+	"HealthScale" "1"
+	"InfiniteAliens" "0"
+	"LongRange" "0"
+	"MaxLiveAliens" "3"
+	"MaxSkillLevel" "0"
+	"MinSkillLevel" "0"
+	"NearDistance" "740"
+	"NumAliens" "3"
+	"SpawnerState" "1"
+	"SpawnIfMarinesAreNear" "1"
+	"SpawnInterval" "3"
+	"SpawnIntervalJitter" "25"
+	"SpeedScale" "1"
+	"StartBurrowed" "1"
+	"targetname" "spawn_first_room_office_burst"
+	"origin" "354 689 1.00001"
+	editor
+	{
+		"color" "0 0 255"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 6500]"
+	}
+}
+entity
+{
+	"id" "70138"
+	"classname" "logic_case"
+	"angles" "0 0 0"
+	"targetname" "relay_spawn_group_2"
+	connections
+	{
+		"OnCase01" "spawn_first_room_beg_rangerStartSpawning0-1"
+		"OnCase01" "spawn_first_room_wall_front_burstStartSpawning2-1"
+		"OnCase01" "spawn_first_room_top_rangerStartSpawning3-1"
+		"OnCase01" "spawn_first_room_office_trickleStartSpawning4-1"
+		"OnCase01" "spawn_first_room_beg_trickleStartSpawning6-1"
+		"OnCase02" "spawn_first_room_beg_trickleStartSpawning3-1"
+		"OnCase02" "spawn_first_room_office_trickleStartSpawning3-1"
+		"OnCase02" "spawn_first_room_top_rangerStartSpawning0-1"
+		"OnCase02" "spawn_first_room_wall_front_burstStartSpawning0-1"
+		"OnCase02" "spawn_first_room_beg_rangerStartSpawning7-1"
+		"OnCase03" "spawn_first_room_beg_trickleStartSpawning7-1"
+		"OnCase03" "spawn_first_room_office_trickleStartSpawning5-1"
+		"OnCase03" "spawn_first_room_top_rangerStartSpawning3-1"
+		"OnCase03" "spawn_first_room_wall_front_burstStartSpawning1-1"
+		"OnCase03" "spawn_first_room_beg_rangerStartSpawning0-1"
+	}
+	"origin" "284 136 125"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
+	}
+}
+entity
+{
+	"id" "70158"
+	"classname" "logic_case"
+	"angles" "0 0 0"
+	"targetname" "relay_spawn_group_3"
+	connections
+	{
+		"OnCase01" "spawn_first_room_office_burstStartSpawning0-1"
+		"OnCase01" "spawn_first_room_wall_back_burstStartSpawning3-1"
+		"OnCase01" "spawn_first_room_topStartSpawning4-1"
+		"OnCase01" "spawn_first_room_beg_trickleStartSpawning6-1"
+		"OnCase01" "spawn_first_room_top_rangerStartSpawning1-1"
+		"OnCase02" "spawn_first_room_wall_front_rangerStartSpawning3-1"
+		"OnCase02" "spawn_first_room_beg_trickleStartSpawning3-1"
+		"OnCase02" "spawn_first_room_topStartSpawning2-1"
+		"OnCase02" "spawn_first_room_beg_rangerStartSpawning0-1"
+		"OnCase02" "spawn_first_room_office_burstStartSpawning6-1"
+		"OnCase03" "spawn_first_room_beg_rangerStartSpawning6-1"
+		"OnCase03" "spawn_first_room_beg_trickleStartSpawning3-1"
+		"OnCase03" "spawn_first_room_topStartSpawning4-1"
+		"OnCase03" "spawn_first_room_wall_back_burstStartSpawning1-1"
+		"OnCase03" "spawn_first_room_office_burstStartSpawning0-1"
+	}
+	"origin" "316 137 125"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
+	}
+}
+entity
+{
+	"id" "70168"
+	"classname" "logic_case"
+	"angles" "0 0 0"
+	"targetname" "relay_spawn_group_4"
+	connections
+	{
+		"OnCase01" "spawn_first_room_office_burstStartSpawning0-1"
+		"OnCase01" "spawn_first_room_top_rangerStartSpawning3-1"
+		"OnCase01" "spawn_first_room_topStartSpawning5-1"
+		"OnCase01" "spawn_first_room_beg_trickleStartSpawning5-1"
+		"OnCase02" "spawn_first_room_beg_trickleStartSpawning4-1"
+		"OnCase02" "spawn_first_room_topStartSpawning3-1"
+		"OnCase02" "spawn_first_room_top_rangerStartSpawning2-1"
+		"OnCase02" "spawn_first_room_office_burstStartSpawning0-1"
+		"OnCase03" "spawn_first_room_beg_trickleStartSpawning3-1"
+		"OnCase03" "spawn_first_room_topStartSpawning1-1"
+		"OnCase03" "spawn_first_room_top_rangerStartSpawning4-1"
+		"OnCase03" "spawn_first_room_office_burstStartSpawning2-1"
+	}
+	"origin" "345 137 125"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
+	}
+}
+entity
+{
+	"id" "70174"
+	"classname" "logic_case"
+	"angles" "0 0 0"
+	"targetname" "relay_spawn_group_5"
+	connections
+	{
+		"OnCase01" "spawn_first_room_office_trickleStartSpawning2-1"
+		"OnCase01" "spawn_first_room_wall_back_trickleStartSpawning3.25-1"
+		"OnCase01" "spawn_first_room_topStartSpawning6-1"
+		"OnCase01" "spawn_first_room_beg_trickleStartSpawning5-1"
+		"OnCase01" "spawn_first_room_wall_front_burstStartSpawning0-1"
+		"OnCase02" "spawn_first_room_wall_front_burstStartSpawning8-1"
+		"OnCase02" "spawn_first_room_beg_trickleStartSpawning4-1"
+		"OnCase02" "spawn_first_room_topStartSpawning3-1"
+		"OnCase02" "spawn_first_room_wall_back_trickleStartSpawning2-1"
+		"OnCase02" "spawn_first_room_office_trickleStartSpawning0-1"
+		"OnCase03" "spawn_first_room_wall_front_burstStartSpawning0-1"
+		"OnCase03" "spawn_first_room_beg_trickleStartSpawning3-1"
+		"OnCase03" "spawn_first_room_topStartSpawning0-1"
+		"OnCase03" "spawn_first_room_wall_back_trickleStartSpawning5-1"
+		"OnCase03" "spawn_first_room_office_trickleStartSpawning0-1"
+	}
+	"origin" "377 137 125"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
+	}
+}
+entity
+{
+	"id" "70233"
+	"classname" "logic_case"
+	"angles" "0 0 0"
+	"targetname" "relay_spawn_group_6"
+	connections
+	{
+		"OnCase01" "spawn_first_room_office_trickleStartSpawning7-1"
+		"OnCase01" "spawn_first_room_wall_back_trickleStartSpawning4.5-1"
+		"OnCase01" "spawn_first_room_wall_back_burstStartSpawning3-1"
+		"OnCase01" "spawn_first_room_top_rangerStartSpawning1-1"
+		"OnCase01" "spawn_first_room_wall_front_burstStartSpawning0-1"
+		"OnCase02" "spawn_first_room_wall_front_burstStartSpawning0-1"
+		"OnCase02" "spawn_first_room_top_rangerStartSpawning2-1"
+		"OnCase02" "spawn_first_room_wall_back_burstStartSpawning4-1"
+		"OnCase02" "spawn_first_room_wall_back_trickleStartSpawning5-1"
+		"OnCase02" "spawn_first_room_office_trickleStartSpawning6-1"
+		"OnCase03" "spawn_first_room_wall_front_burstStartSpawning0-1"
+		"OnCase03" "spawn_first_room_top_rangerStartSpawning6-1"
+		"OnCase03" "spawn_first_room_wall_back_burstStartSpawning4.5-1"
+		"OnCase03" "spawn_first_room_wall_back_trickleStartSpawning2-1"
+		"OnCase03" "spawn_first_room_office_trickleStartSpawning0-1"
+	}
+	"origin" "400 137 125"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
+	}
+}
+entity
+{
+	"id" "70257"
+	"classname" "logic_case"
+	"angles" "0 0 0"
+	"targetname" "relay_spawn_group_7"
+	connections
+	{
+		"OnCase01" "spawn_first_room_office_burstStartSpawning6-1"
+		"OnCase01" "spawn_first_room_beg_rangerStartSpawning5-1"
+		"OnCase01" "spawn_first_room_beg_trickleStartSpawning4-1"
+		"OnCase01" "spawn_first_room_top_rangerStartSpawning2-1"
+		"OnCase01" "spawn_first_room_topStartSpawning0-1"
+		"OnCase02" "spawn_first_room_topStartSpawning3-1"
+		"OnCase02" "spawn_first_room_top_rangerStartSpawning6-1"
+		"OnCase02" "spawn_first_room_beg_trickleStartSpawning5-1"
+		"OnCase02" "spawn_first_room_beg_rangerStartSpawning0-1"
+		"OnCase02" "spawn_first_room_office_burstStartSpawning3.5-1"
+		"OnCase03" "spawn_first_room_topStartSpawning0-1"
+		"OnCase03" "spawn_first_room_top_rangerStartSpawning2-1"
+		"OnCase03" "spawn_first_room_beg_trickleStartSpawning3-1"
+		"OnCase03" "spawn_first_room_beg_rangerStartSpawning5-1"
+		"OnCase03" "spawn_first_room_office_burstStartSpawning6.5-1"
+	}
+	"origin" "426 137 125"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
+	}
+}
+entity
+{
+	"id" "70279"
+	"classname" "logic_case"
+	"angles" "0 0 0"
+	"targetname" "relay_pick_spawn_group"
+	connections
+	{
+		"OnCase01" "relay_spawn_group_1PickRandom0-1"
+		"OnCase02" "relay_spawn_group_2PickRandom0-1"
+		"OnCase03" "relay_spawn_group_3PickRandom0-1"
+		"OnCase04" "relay_spawn_group_4PickRandom0-1"
+		"OnCase05" "relay_spawn_group_5PickRandom0-1"
+		"OnCase06" "relay_spawn_group_6PickRandom0-1"
+		"OnCase07" "relay_spawn_group_7PickRandom0-1"
+	}
+	"origin" "256 102 125"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
+	}
+}
+entity
+{
+	"id" "70384"
+	"classname" "asw_spawner"
+	"AlienClass" "0"
+	"AlienOrders" "3"
+	"angles" "0 0 0"
+	"ClearCheck" "0"
+	"HealthScale" "1"
+	"InfiniteAliens" "0"
+	"LongRange" "0"
+	"MaxLiveAliens" "3"
+	"MaxSkillLevel" "0"
+	"MinSkillLevel" "0"
+	"NearDistance" "740"
+	"NumAliens" "3"
+	"SpawnerState" "1"
+	"SpawnIfMarinesAreNear" "1"
+	"SpawnInterval" "6"
+	"SpawnIntervalJitter" "25"
+	"SpeedScale" "1"
+	"StartBurrowed" "1"
+	"targetname" "spawn_first_room_top"
+	"UnburrowActivity" "act_burrow_out"
+	"UnburrowIdleActivity" "act_burrow_idle"
+	"origin" "538 703 1.00001"
+	editor
+	{
+		"color" "0 0 255"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 6500]"
+	}
+}
+entity
+{
+	"id" "70472"
+	"classname" "info_node_link"
+	"EndNode" "92"
+	"initialstate" "1"
+	"linktype" "1"
+	"spawnflags" "4096"
+	"StartNode" "18"
+	"origin" "480 466 55"
+	editor
+	{
+		"color" "220 180 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 8000]"
+	}
+}
+entity
+{
+	"id" "70478"
+	"classname" "info_node_link"
+	"EndNode" "91"
+	"initialstate" "1"
+	"linktype" "1"
+	"spawnflags" "4096"
+	"StartNode" "20"
+	"origin" "495 597 55"
+	editor
+	{
+		"color" "220 180 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 8000]"
+	}
+}
+entity
+{
+	"id" "70493"
+	"classname" "info_node_link"
+	"EndNode" "32"
+	"initialstate" "1"
+	"linktype" "1"
+	"spawnflags" "4096"
+	"StartNode" "33"
+	"origin" "222 296 55"
+	editor
+	{
+		"color" "220 180 0"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 8000]"
 	}
 }
 cameras
