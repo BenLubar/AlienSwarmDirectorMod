@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "146"
+	"mapversion" "147"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "146"
+	"mapversion" "147"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -4607,7 +4607,7 @@ entity
 	{
 		"OnTrigger" "drone_burrowedStartSpawning0-1"
 		"OnTrigger" "exit_window_spawnersStartSpawning7-1"
-		"OnTrigger" "exit_window_mortarStartSpawning20-1"
+		"OnTrigger" "exit_window_mortarStartSpawning26-1"
 	}
 	"origin" "796.703 1240 276"
 	editor
