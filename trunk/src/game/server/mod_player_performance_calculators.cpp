@@ -49,9 +49,11 @@ ConVar mod_player_performance_enemy_life_time_positive_threshold(	"mod_player_pe
 ConVar mod_player_performance_enemy_life_time_positive_bonus(		"mod_player_performance_enemy_life_time_positive_bonus", "0.8", 0, "The bonus to award if enemy life expectency is less than the positive threshold.");
 ConVar mod_player_performance_enemy_life_time_negative_threshold(	"mod_player_performance_enemy_life_time_negative_threshold", "15", 0, "If the average enemy life expectency is more than this, a penalty is assesed.");
 ConVar mod_player_performance_enemy_life_time_negative_penalty(		"mod_player_performance_enemy_life_time_negative_penalty", "0.4", 0, "The penalty to asses if enemy life expectency is more than the negative threshold.");
+ConVar mod_player_performance_enemy_life_time_negative_penalty_cap(	"mod_player_performance_enemy_life_time_negative_penalty_cap", "-5", 0, "The maximum penalty that can be assesed for enemy life time.");
 ConVar mod_player_performance_fastreload_bonus(						"mod_player_performance_fastreload_bonus", "2", 0, "The boost to performance a player receives for each fast reload.");
 ConVar mod_player_performance_dodgeranger_bonus(					"mod_player_performance_dodgeranger_bonus", "5", 0, "The boost to performance a player receives for dodging a ranger projectile.");
 ConVar mod_player_performance_meleekill_bonus(						"mod_player_performance_meleekill_bonus", "0.7", 0, "The boost to performance a player receives for each melee kill.");
+ConVar mod_player_performance_meleekill_bonus_cap(					"mod_player_performance_meleekill_bonus_cap", "5", 0, "The maxium performance boost a player can receive for melee kills.");
 ConVar mod_player_performance_boomer_kill_early_bonus(				"mod_player_performance_boomer_kill_early_bonus", "5", 0, "The boost to performance a player receives for killing a boomer before it explodes.");
 ConVar mod_player_performance_restart_penalty(						"mod_player_performance_restart_penalty", "15", 0, "The penalty assessed if the player restarts a level.");
 ConVar mod_player_performance_restart_penalty_timelimit(			"mod_player_performance_restart_penalty_timelimit", "60", 0, "The amount of time before the restart penalty is reduced to zero.");
@@ -81,7 +83,7 @@ void CMOD_Player_Performance_Calculator_Health::UpdatePerformance(float * perfor
 			continue;
 
 		CASW_Marine *pMarine = pMR->GetMarineEntity();
-		if ( !pMarine || pMarine->GetHealth() <= 0 )
+		if ( !pMarine || pMarine->GetHealth() <= 0 )			
 			continue;
 
 		m_averageHealth += pMarine->GetHealth();				
@@ -221,9 +223,11 @@ void CMOD_Player_Performance_Calculator_DirectorStress::OnMissionStarted(float l
 	//probably a memory leak
 	g_directorStressHistory = new vector<float>();	
 
-	m_IsCoolingDown = false;			
+	m_HasFinishedCoolingDown = true;			
 	m_CoolDownStartTime = 0;
 	m_previousStressOfPlayers = 0;
+	m_LastCalculatedValue = 0;
+	m_CoolDownTimeLeft = 0;
 }
 
 float CMOD_Player_Performance_Calculator_DirectorStress::CalculateAverageStress(CASW_Game_Resource *pGameResource){
@@ -250,8 +254,9 @@ float CMOD_Player_Performance_Calculator_DirectorStress::CalculateStressPenalty(
 
 	if (averageStress >= mod_player_performance_director_stress_threshold.GetInt())
 	{
-		//Don't start cool down timer yet.
+		//Don't let cool down time start ticking down yet.
 		m_CoolDownStartTime = gpGlobals->curtime;
+		m_HasFinishedCoolingDown = false;
 
 		if (averageStress >= mod_player_performance_director_stress_critical_threshold.GetInt())
 		{
@@ -260,23 +265,32 @@ float CMOD_Player_Performance_Calculator_DirectorStress::CalculateStressPenalty(
 		}
 	}
 
-	//Degrade stressPenalty based on cooldown_time
-	m_CoolDownTimeLeft = mod_player_performance_director_stress_cooldown_time.GetInt() -
-			(gpGlobals->curtime - m_CoolDownStartTime);		
-	
-	if (m_CoolDownTimeLeft > 0)
+	if (!m_HasFinishedCoolingDown)
 	{
-		stressPenalty *= (m_CoolDownTimeLeft / 
-			mod_player_performance_director_stress_cooldown_time.GetInt());		
+		//Degrade stressPenalty based on cooldown_time
+		m_CoolDownTimeLeft = mod_player_performance_director_stress_cooldown_time.GetInt() -
+				(gpGlobals->curtime - m_CoolDownStartTime);		
+	
+		if (m_CoolDownTimeLeft > 0)
+		{
+			stressPenalty *= (m_CoolDownTimeLeft / 
+				mod_player_performance_director_stress_cooldown_time.GetInt());		
 
-		//Mutliply by -1, this is a penalty
-		stressPenalty *= -1;
+			//Mutliply by -1, this is a penalty
+			stressPenalty *= -1;
+		}
+		else
+		{		
+			stressPenalty = 0;
+			//set m_CoolDownTimeLeft to zero for nice debug output
+			m_CoolDownTimeLeft = 0;
+
+			m_HasFinishedCoolingDown = true;
+		}
 	}
 	else
-	{		
+	{
 		stressPenalty = 0;
-		//set m_CoolDownTimeLeft to zero for nice debug output
-		m_CoolDownTimeLeft = 0;
 	}
 	
 	return stressPenalty;
@@ -361,6 +375,10 @@ void CMOD_Player_Performance_Calculator_AlienLifeTime::UpdatePerformance(float *
 	{
 		//multiply by -1, as this is a penlaty
 		m_LastCalculatedValue = -1 * averageLifeExpectency * mod_player_performance_enemy_life_time_negative_penalty.GetFloat();
+
+		if (m_LastCalculatedValue < mod_player_performance_enemy_life_time_negative_penalty_cap.GetFloat())
+			m_LastCalculatedValue = mod_player_performance_enemy_life_time_negative_penalty_cap.GetFloat();
+
 	}	
 	else
 	{
@@ -372,7 +390,11 @@ void CMOD_Player_Performance_Calculator_AlienLifeTime::UpdatePerformance(float *
 
 void CMOD_Player_Performance_Calculator_AlienLifeTime::PrintExtraDebugInfo(int offset)
 {
-	engine->Con_NPrintf(offset, "Aliens Killed [%i] Total Life Time: [%0.3f]", m_numberOfAliensKilled, m_totalAlienLifeTime);	
+	char * cap = "";
+
+	if (m_LastCalculatedValue == mod_player_performance_enemy_life_time_negative_penalty_cap.GetFloat())
+		cap = " [CAP]";
+	engine->Con_NPrintf(offset, "Aliens Killed [%i] Total Life Time: [%0.3f]%s", m_numberOfAliensKilled, m_totalAlienLifeTime, cap);	
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -478,11 +500,12 @@ void CMOD_Player_Performance_Calculator_MeleeKills::UpdatePerformance(float * pe
 {
 	if (m_numberOfAliensKilled > 0 )
 	{
-		//bonus = ration of [number of melee kills]/[number of total kills] * [meleekill bonus]
-
 		m_LastCalculatedValue = 
 			(float)m_numberOfMeleeKills * 
 			mod_player_performance_meleekill_bonus.GetFloat();
+
+		if (m_LastCalculatedValue > mod_player_performance_meleekill_bonus_cap.GetFloat())
+			m_LastCalculatedValue = mod_player_performance_meleekill_bonus_cap.GetFloat();
 	}	
 
 	*performance +=m_LastCalculatedValue;
@@ -490,7 +513,12 @@ void CMOD_Player_Performance_Calculator_MeleeKills::UpdatePerformance(float * pe
 
 void CMOD_Player_Performance_Calculator_MeleeKills::PrintExtraDebugInfo(int offset)
 {
-	engine->Con_NPrintf(offset, "Melee Kills [%i] Total Kills: [%i]", m_numberOfMeleeKills, m_numberOfAliensKilled);	
+	char * cap = "";
+
+	if (m_LastCalculatedValue == mod_player_performance_meleekill_bonus_cap.GetFloat())
+		cap = " [CAP]";
+
+	engine->Con_NPrintf(offset, "Melee Kills [%i] Total Kills: [%i]%s", m_numberOfMeleeKills, m_numberOfAliensKilled, cap);	
 }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -555,8 +583,6 @@ void CMOD_Player_Performance_Calculator_RestartPenalty::UpdatePerformance(float 
 
 		if (percentageOfPenaltyToAssess < 0.001)
 			percentageOfPenaltyToAssess = 0;
-
-		Msg("Time[%0.3f] Percent[%0.3f]\n", gpGlobals->curtime, percentageOfPenaltyToAssess);
 
 		//Multiply by -1 because this is a penalty
 		m_LastCalculatedValue =  -1 * mod_player_performance_restart_penalty.GetFloat() *

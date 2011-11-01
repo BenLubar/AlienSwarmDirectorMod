@@ -102,7 +102,7 @@ public:
 		:CMOD_Player_Performance_Calculator(bIsSignlePlayerMode)
 	{
 		m_DebugName = "Dicrector Stress";	
-		m_IsCoolingDown = false;				
+		m_HasFinishedCoolingDown = true;				
 		m_CoolDownStartTime = 0;		
 		m_CoolDownTimeLeft = 0;
 		m_previousStressOfPlayers = 0;
@@ -115,7 +115,7 @@ public:
 
 	float m_CoolDownTimeLeft;
 	float m_CoolDownStartTime;	
-	bool m_IsCoolingDown;	
+	bool m_HasFinishedCoolingDown;	
 
 	virtual void OnMissionStarted(float lastLevelRating, int numRetries);		
 	virtual void UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
