@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "137"
+	"mapversion" "138"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -38,7 +38,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "137"
+	"mapversion" "138"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -1848,7 +1848,7 @@ entity
 		"OnTriggerEasy" "logic_case_drone_easyPickRandom0-1"
 		"OnTriggerMedium" "logic_case_drone_mediumPickRandom0-1"
 		"OnTriggerHard" "logic_case_drone_hardPickRandom0-1"
-		"OnTrigger" "timer_trigger_resetAddToTimer2000-1"
+		"OnTrigger" "timer_trigger_resetAddToTimer500-1"
 	}
 	solid
 	{
@@ -9306,7 +9306,7 @@ entity
 		"OnTriggerHard" "logic_case_drone_hardPickRandom0-1"
 		"OnTriggerMedium" "logic_case_drone_mediumPickRandom0-1"
 		"OnTriggerEasy" "logic_case_drone_easyPickRandom0-1"
-		"OnTrigger" "timer_trigger_resetAddToTimer2000-1"
+		"OnTrigger" "timer_trigger_resetAddToTimer500-1"
 	}
 	solid
 	{
@@ -9412,7 +9412,7 @@ entity
 		"OnTriggerMedium" "logic_case_drone_mediumPickRandom0-1"
 		"OnTriggerHard" "logic_case_drone_hardPickRandom0-1"
 		"OnTriggerHard" "spawn_hall_bommer1StartSpawning0-1"
-		"OnTrigger" "timer_trigger_resetAddToTimer2000-1"
+		"OnTrigger" "timer_trigger_resetAddToTimer500-1"
 	}
 	solid
 	{
@@ -10062,8 +10062,8 @@ cameras
 	"activecamera" "0"
 	camera
 	{
-		"position" "[388.983 1021.96 151.831]"
-		"look" "[361.324 1024.47 152.607]"
+		"position" "[447.741 659.803 254.891]"
+		"look" "[444.232 686.052 246.49]"
 	}
 }
 cordons

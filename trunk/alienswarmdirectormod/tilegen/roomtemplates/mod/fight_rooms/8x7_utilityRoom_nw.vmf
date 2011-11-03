@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "224"
+	"mapversion" "225"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -38,7 +38,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "224"
+	"mapversion" "225"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -18879,7 +18879,7 @@ entity
 {
 	"id" "38904"
 	"classname" "trigger_once"
-	"origin" "186.5 883.5 82"
+	"origin" "167.5 883.5 82"
 	"spawnflags" "16"
 	"StartDisabled" "0"
 	connections
@@ -18905,7 +18905,7 @@ entity
 		side
 		{
 			"id" "4554"
-			"plane" "(502 1044 162) (502 1044 2) (502 723 2)"
+			"plane" "(464 1044 162) (464 1044 2) (464 723 2)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[0 -1 0 24] 0.25"
 			"vaxis" "[0 0 -1 -30.761] 0.25"
@@ -18916,7 +18916,7 @@ entity
 		side
 		{
 			"id" "4553"
-			"plane" "(502 723 162) (502 723 2) (-129 723 2)"
+			"plane" "(464 723 162) (464 723 2) (-129 723 2)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[1 0 0 36] 0.25"
 			"vaxis" "[0 0 -1 -30.761] 0.25"
@@ -18927,7 +18927,7 @@ entity
 		side
 		{
 			"id" "4552"
-			"plane" "(-129 1044 162) (-129 1044 2) (502 1044 2)"
+			"plane" "(-129 1044 162) (-129 1044 2) (464 1044 2)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[1 0 0 36] 0.25"
 			"vaxis" "[0 0 -1 -30.761] 0.25"
@@ -18938,7 +18938,7 @@ entity
 		side
 		{
 			"id" "4551"
-			"plane" "(-129 1044 2) (-129 723 2) (502 723 2)"
+			"plane" "(-129 1044 2) (-129 723 2) (464 723 2)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[0 -1 0 24] 0.25"
 			"vaxis" "[-1 0 0 -36] 0.25"
@@ -18949,7 +18949,7 @@ entity
 		side
 		{
 			"id" "4550"
-			"plane" "(-129 723 162) (-129 1044 162) (502 1044 162)"
+			"plane" "(-129 723 162) (-129 1044 162) (464 1044 162)"
 			"material" "TOOLS/TOOLSTRIGGER"
 			"uaxis" "[0 -1 0 24] 0.25"
 			"vaxis" "[-1 0 0 -36] 0.25"
@@ -22207,11 +22207,11 @@ entity
 		"OnCase01" "spawn_elev_boomerStartSpawning0-1"
 		"OnCase02" "spawn_elev_boomerStartSpawning7-1"
 		"OnCase03" "spawn_main_mortarStartSpawning0-1"
-		"OnCase04" "spawn_main_mortarStartSpawning5-1"
+		"OnCase04" "spawn_main_mortarStartSpawning0-1"
 		"OnCase04" "spawner_big_hole_drone_repeatStartSpawning0-1"
-		"OnCase04" "spawner_elev_drone_repeatStartSpawning0-1"
+		"OnCase04" "spawner_elev_drone_repeatStartSpawning2-1"
 		"OnCase04" "spawner_right_side_drone_repeatStartSpawning0-1"
-		"OnCase04" "spawner_mainroom_droneStartSpawning0-1"
+		"OnCase04" "spawner_mainroom_droneStartSpawning5-1"
 		"OnCase04" "spawner_office_baseStartSpawning7-1"
 	}
 	"origin" "1238 959 270"
@@ -22246,7 +22246,7 @@ entity
 	"targetname" "spawn_main_mortar"
 	"UnburrowActivity" "act_spawn_256"
 	"UnburrowIdleActivity" "act_spawn_idle"
-	"origin" "661 1668 0"
+	"origin" "663 1752 0"
 	editor
 	{
 		"color" "0 0 255"
