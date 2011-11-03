@@ -244,6 +244,11 @@ bool VMFExporter::ExportVMF( CMapLayout* pLayout, const char *mapname, bool bPop
 	}
 	
 	// save the map layout there (so the game can get information about rooms during play)
+	// MOD - PJ, not sure why the layout file needs to be saved, it's already saved
+	// in mod_level_builder or asw_map_builder.
+	// In fact, the original code below causes problems if a layout file is regenerated.
+	// The old layout file is used for generation instead of the new one.
+	/*
 	Q_snprintf( filename, sizeof( filename ), "maps\\%s", mapname );
 	Q_SetExtension( filename, "layout", sizeof( filename ) );
 	if ( !m_pMapLayout->SaveMapLayout( filename ) )
@@ -251,7 +256,16 @@ bool VMFExporter::ExportVMF( CMapLayout* pLayout, const char *mapname, bool bPop
 		Q_snprintf( m_szLastExporterError, sizeof(m_szLastExporterError), "Failed to save .layout file\n");
 		return false;
 	}
-
+	*/
+	Q_snprintf( filename, sizeof( filename ), "%smaps\\%s", g_gamedir, mapname );
+	Q_SetExtension( filename, "layout", sizeof( filename ) );
+	Msg("\nVMFExporter is saving layout (again) to [%s]\n", filename);
+	if ( !m_pMapLayout->SaveMapLayout( filename ) )
+	{
+		Q_snprintf( m_szLastExporterError, sizeof(m_szLastExporterError), "Failed to save .layout file\n");
+		return false;
+	}
+	
 	return true;
 }
 

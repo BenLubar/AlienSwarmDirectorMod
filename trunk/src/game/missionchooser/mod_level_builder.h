@@ -30,8 +30,8 @@ public:
 	~MOD_Level_Builder();
 
 	virtual bool IsBuildingLevel();
-	virtual void BuildMapForMissionFromLayoutFile( const char *szMissionName, const int iDifficultLevel);
-	virtual void BuildMapFromLayoutFile( const char *szMissionRuleFile, const char *szOutputLayoutFile, const char *szThemeName);	
+	virtual void BuildMapForMissionFromLayoutFile( const char *szMissionName, const int iDifficultLevel, bool bCompileLevel=true);
+	virtual void BuildMapFromLayoutFile( const char *szMissionRuleFile, const char *szOutputLayoutFile, const char *szThemeName, bool bCompileLevel=true);	
 	virtual void CompileLevel(const char * szLayoutFile);
 protected:
 	CMapLayout *GenerateMapLayout(CLayoutSystem *pLayoutSystem, KeyValues *pMissionSettings);

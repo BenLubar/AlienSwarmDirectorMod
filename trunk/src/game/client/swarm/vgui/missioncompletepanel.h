@@ -106,7 +106,7 @@ public:
 	CUtlVector<const char*> m_aUnlockedWeapons;
 
 	//MOD
-	void OnShowLevelBuilding(C_ASW_Player *pPlayer);
+	void OnShowLevelBuilding(C_ASW_Player *pPlayer, bool missionSuccess);
 	CASW_Build_Map_Frame *m_pBuildMapFrame;
 };
 

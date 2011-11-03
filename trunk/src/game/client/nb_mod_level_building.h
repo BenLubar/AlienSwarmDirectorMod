@@ -17,7 +17,7 @@ class CNB_MOD_Level_Building : public vgui::EditablePanel
 {
 	DECLARE_CLASS_SIMPLE( CNB_MOD_Level_Building, vgui::EditablePanel );
 public:
-	CNB_MOD_Level_Building( vgui::Panel *parent, const char *name, C_ASW_Player *pPlayer );
+	CNB_MOD_Level_Building( vgui::Panel *parent, const char *name, C_ASW_Player *pPlayer, bool missionSuccess );
 	
 	virtual void ApplySchemeSettings( vgui::IScheme *pScheme );
 	virtual void PerformLayout();	
@@ -25,6 +25,7 @@ public:
 	virtual void PaintBackground();	
 	void UpdateWorkingAnim();
 	void UpdateProgress();
+	void OnLevelBuildingComplete();
 	
 	vgui::Label	*m_pTitle;
 	vgui::Label *m_pPercentCompleteLabel;
@@ -33,6 +34,9 @@ public:
 	vgui::ImagePanel *m_pWorkingAnim;
 
 	C_ASW_Player *m_pPlayer;
+
+	//Controls how the Windows progress game flow.
+	bool m_bMissionSuccess;
 
 	float m_flLastEngineTime;	
 };

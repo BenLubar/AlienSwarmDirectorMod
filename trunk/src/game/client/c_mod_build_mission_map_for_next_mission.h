@@ -11,11 +11,12 @@ public:
 
 	int  m_iPlayerPerformance;
 
-	C_MOD_Build_Mission_Map_For_Next_Mission();
+	C_MOD_Build_Mission_Map_For_Next_Mission(){}
 
 	void OnMissionComplete(bool bSuccess);
 	virtual void OnDataChanged(DataUpdateType_t updateType);
 	void BuildMissionMapForNextMission(int playerPerformance);
+	void BuildMissionMapForMission(int missionID, int playerPerformance);
 	bool IsBuildingMap();
 	
 };

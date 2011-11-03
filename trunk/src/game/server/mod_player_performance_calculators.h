@@ -54,7 +54,7 @@ public:
 	int m_fullHealth;
 	bool m_hasCalculatedFullHealth;
 		
-	virtual void OnMissionStarted(float lastLevelRating);
+	virtual void OnMissionStarted(float lastLevelRating, int numRetries);
 	virtual void UpdatePerformance(float * performance, bool isEndOfLevel, CASW_Game_Resource *pGameResource);
 	virtual bool HasExtraDebugInfo(){ return true;}
 	virtual void PrintExtraDebugInfo(int offset);

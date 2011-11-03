@@ -22,7 +22,7 @@
 
 using namespace vgui;
 
-CNB_MOD_Level_Building::CNB_MOD_Level_Building( vgui::Panel *parent, const char *name, C_ASW_Player *pPlayer ) : BaseClass( parent, name )
+CNB_MOD_Level_Building::CNB_MOD_Level_Building( vgui::Panel *parent, const char *name, C_ASW_Player *pPlayer, bool missionSuccess ) : BaseClass( parent, name )
 {
 	m_pBanner = new CNB_Gradient_Bar( this, "Banner" );
 	m_pTitle = new vgui::Label( this, "Title", "" );
@@ -31,6 +31,7 @@ CNB_MOD_Level_Building::CNB_MOD_Level_Building( vgui::Panel *parent, const char 
 	m_pWorkingAnim = new vgui::ImagePanel(this, "WorkingAnim");
 			
 	m_pPlayer = pPlayer;
+	m_bMissionSuccess = missionSuccess;
 	
 	m_flLastEngineTime = Plat_FloatTime();
 }
@@ -40,6 +41,9 @@ void CNB_MOD_Level_Building::ApplySchemeSettings( vgui::IScheme *pScheme )
 	BaseClass::ApplySchemeSettings( pScheme );
 	
 	LoadControlSettings( "resource/ui/nb_mod_level_building.res" );
+
+	if (!m_bMissionSuccess)
+		m_pTitle->SetText("#asw_building_level_mission_fail");
 
 	SetAlpha( 0 );
 	vgui::GetAnimationController()->RunAnimationCommand( this, "alpha", 255, 0, 0.5f, vgui::AnimationController::INTERPOLATOR_LINEAR );
@@ -110,7 +114,17 @@ void CNB_MOD_Level_Building::UpdateProgress()
 
 	if (progress == 100)
 	{
-		MarkForDeletion();
-		m_pPlayer->CampaignSaveAndShow();
+		OnLevelBuildingComplete();
+		
 	}
+}
+
+void CNB_MOD_Level_Building::OnLevelBuildingComplete()
+{
+	MarkForDeletion();
+	if (m_bMissionSuccess)
+		m_pPlayer->CampaignSaveAndShow();
+	else
+		m_pPlayer->RequestMissionRestart();
+
 }

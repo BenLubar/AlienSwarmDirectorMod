@@ -45,6 +45,10 @@
 #include "../nb_mod_level_building.h"
 #include "../gameui/swarm/basemodpanel.h"
 
+#include "../c_asw_campaign_save.h"
+
+#include "../mod/c_mod_build_mission_map_for_next_mission.h"
+
 //#include "../../missionchooser/iasw_mission_chooser_source.h"
 //#include "missionchooser/iasw_map_builder.h"
 //#include "missionchooser/iasw_mission_chooser_source.h"
@@ -63,6 +67,9 @@ extern ConVar asw_unlock_all_weapons;
 ConVar asw_success_sound_delay( "asw_success_sound_delay", "0.0", FCVAR_CHEAT, "Delay before playing mission success music" );
 ConVar asw_fail_sound_delay( "asw_fail_sound_delay", "0.0", FCVAR_CHEAT, "Delay before playing mission fail music" );
 ConVar asw_show_stats_in_singleplayer( "asw_show_stats_in_singleplayer", "0", FCVAR_NONE, "Show stats screen in singleplayer" );
+
+extern ConVar mod_rebuild_map_on_restart;
+extern ConVar mod_player_performance_value;
 
 bool MissionCompletePanel::IsNextMissionLevelGenerationComplete()
 {
@@ -594,7 +601,18 @@ void MissionCompletePanel::OnCommand(const char* command)
 		bool bAllReady = pGameResource->AreAllOtherPlayersReady( pPlayer->entindex() );
 		if ( bAllReady )
 		{
-			pPlayer->RequestMissionRestart();
+			if (mod_rebuild_map_on_restart.GetInt() > 0 
+				&& mod_player_performance_value.GetInt() >0
+				&& ASWGameRules()->GetCampaignSave()->m_iCurrentPosition > 1)
+			{
+				OnShowLevelBuilding(pPlayer, false);
+				//nb_mod_level_buildign will call
+				//pPlayer->RequestMissionRestart()
+			}
+			else
+			{
+				pPlayer->RequestMissionRestart();
+			}
 		}
 		else
 		{
@@ -652,9 +670,10 @@ void MissionCompletePanel::OnCommand(const char* command)
 					buildMapFrame->Activate();
 					*/
 
-					OnShowLevelBuilding(pPlayer);
+					OnShowLevelBuilding(pPlayer, true);
 					//OnSuggestDifficulty(true);
 					
+					//Moved to nb_mod_level_building
 					//pPlayer->CampaignSaveAndShow();
 				}
 				else
@@ -716,14 +735,14 @@ void MissionCompletePanel::UpdateQueuedUnlocks()
 	}
 }
 
-void MissionCompletePanel::OnShowLevelBuilding( C_ASW_Player *pPlayer )
+void MissionCompletePanel::OnShowLevelBuilding( C_ASW_Player *pPlayer, bool missionSucess )
 {
 	if ( m_hSubScreen.Get() )
 	{
 		m_hSubScreen->MarkForDeletion();
 	}
 
-	CNB_MOD_Level_Building *pPanel = new CNB_MOD_Level_Building( this, "LevelBuildingPanel", pPlayer );
+	CNB_MOD_Level_Building *pPanel = new CNB_MOD_Level_Building( this, "LevelBuildingPanel", pPlayer, missionSucess );
 	
 	pPanel->MoveToFront();
 

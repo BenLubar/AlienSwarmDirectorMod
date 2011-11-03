@@ -465,6 +465,7 @@ void CLayoutSystem::BeginGeneration( CMapLayout *pMapLayout )
 	m_Random.SetSeed( nSeed );
 	Log_Msg( LOG_TilegenLayoutSystem, "Beginning generation with random seed " );
 	Log_Msg( LOG_TilegenLayoutSystem, Color( 255, 255, 0, 255 ), "%d.\n", nSeed );
+	Msg("Beginning generation with random seed [%d]", nSeed);
 
 	m_bLayoutError = false;
 	m_bGenerating = true; 

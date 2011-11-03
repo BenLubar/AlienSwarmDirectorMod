@@ -78,15 +78,17 @@ CMOD_Player_Performance::~CMOD_Player_Performance()
 //Couldn't figure out how to nativally hook into this event, 
 //so asw_director.cpp calls 
 void CMOD_Player_Performance::OnMissionStarted(){		
+
+	int retries = 1;
+
+	//Game will crash if we call GetRetries()
+	//and we're not in a campaign.
+	if (ASWGameResource()->IsCampaignGame())
+		retries = ASWGameResource()->GetCampaignSave()->GetRetries();
+
 	for (unsigned int i = 0; i < g_calculators->size(); i++)
 	{
-		int retries = 1;
-
-		//Game will crash if we call GetRetries()
-		//and we're not in a campaign.
-		if (ASWGameResource()->IsCampaignGame())
-			retries = ASWGameResource()->GetCampaignSave()->GetRetries();
-
+		//Msg("Telling calculator [%i] MissionStarted\n", i);
 		g_calculators->at(i)->OnMissionStarted(m_lastLevelWeightedRating, 
 			retries);
 	}

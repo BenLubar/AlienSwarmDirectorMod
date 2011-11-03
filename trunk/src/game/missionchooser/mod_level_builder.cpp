@@ -78,7 +78,7 @@ void MOD_Level_Builder::SetIsBuildingLevel(bool value)
 	g_IsBuildingLevel = value;
 }
 
-void MOD_Level_Builder::BuildMapForMissionFromLayoutFile( const char *szMissionName, const int iDifficultLevel)
+void MOD_Level_Builder::BuildMapForMissionFromLayoutFile( const char *szMissionName, const int iDifficultLevel, bool bCompileLevel)
 {
 	SetIsBuildingLevel( true );
 
@@ -97,11 +97,11 @@ void MOD_Level_Builder::BuildMapForMissionFromLayoutFile( const char *szMissionN
 		szMissionName,
 		LAYOUT_EXTENSION);			
 
-	BuildMapFromLayoutFile(missionRuleFileNameBuffer, layoutFileNameBuffer, DEFAULT_THEME);
+	BuildMapFromLayoutFile(missionRuleFileNameBuffer, layoutFileNameBuffer, DEFAULT_THEME, bCompileLevel);
 }
 
 //Logic from CASW_Random_Missions::BuildAndLaunchRandomLevel
-void MOD_Level_Builder::BuildMapFromLayoutFile( const char *szMissionRuleFile, const char *szOutputLayoutFile, const char *szThemeName)
+void MOD_Level_Builder::BuildMapFromLayoutFile( const char *szMissionRuleFile, const char *szOutputLayoutFile, const char *szThemeName, bool bCompileLevel)
 {
 	if (IsBuildingLevel())
 	{
@@ -169,13 +169,15 @@ void MOD_Level_Builder::BuildMapFromLayoutFile( const char *szMissionRuleFile, c
 
 		Q_strcpy(pMapLayout->m_szFilename, fullPath);	
 
+		Msg("Saving layout file to [%s]", fullPath);
 		if (!pMapLayout->SaveMapLayout( fullPath ))
 		{
 			Warning("Failed to save Layout file to [%s]", fullPath);
 			return;
 		}
 
-		CompileLevel(szOutputLayoutFile);
+		if (bCompileLevel)
+			CompileLevel(szOutputLayoutFile);
 	}
 	else
 	{

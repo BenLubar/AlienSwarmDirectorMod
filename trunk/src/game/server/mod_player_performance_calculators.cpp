@@ -38,8 +38,8 @@ ConVar mod_player_performance_health_critical_penalty(				"mod_player_performanc
 ConVar mod_player_performance_accuracy_threshold(					"mod_player_performance_accuracy_threshold", "92", 0, "The threshold where a players accuracy has a positive or negative impact on performance.  Above this threshold and performance gets a boost, below and there is a penalty.");
 ConVar mod_player_performance_accuracy_floor(						"mod_player_performance_accuracy_floor", "82", 0, "The floor for caculating an accuracy penalty.  Ie, this is the lowest value that is used to assess a penalty.");
 ConVar mod_player_performance_accuracy_performance_modifier(		"mod_player_performance_accuracy_performance_modifier", "0.5", 0, "Multipled against the players weighted accuracy to get the performance modifier. Weighted accuracy is difference between accuracy threshold and actual accuracy.");
-ConVar mod_player_performance_director_stress_threshold(			"mod_player_performance_director_stress_threshold", "12", 0, "The threshold when stress, as measured by the director, engenders a player performance penalty.");
-ConVar mod_player_performance_director_stress_critical_threshold(	"mod_player_performance_director_stress_critical_threshold", "25", 0, "The threshold when stress, as measured by the director, engenders an extra player performance penalty.");
+ConVar mod_player_performance_director_stress_threshold(			"mod_player_performance_director_stress_threshold", "9.5", 0, "The threshold when stress, as measured by the director, engenders a player performance penalty.");
+ConVar mod_player_performance_director_stress_critical_threshold(	"mod_player_performance_director_stress_critical_threshold", "17", 0, "The threshold when stress, as measured by the director, engenders an extra player performance penalty.");
 ConVar mod_player_performance_director_stress_penalty(				"mod_player_performance_director_stress_penalty", "10", 0, "The one time penalty assesed when director stress threshold is reached.");
 ConVar mod_player_performance_director_stress_critical_penalty(		"mod_player_performance_director_stress_critical_penalty", "20", 0, "The one time penalty assesed when critical director stress threshold is reached.");
 ConVar mod_player_performance_director_stress_cooldown_time(		"mod_player_performance_director_stress_cooldown_time", "20", 0, "The amount of time it takes for the director stress penalty to degrade.");
@@ -51,15 +51,16 @@ ConVar mod_player_performance_enemy_life_time_negative_threshold(	"mod_player_pe
 ConVar mod_player_performance_enemy_life_time_negative_penalty(		"mod_player_performance_enemy_life_time_negative_penalty", "0.4", 0, "The penalty to asses if enemy life expectency is more than the negative threshold.");
 ConVar mod_player_performance_enemy_life_time_negative_penalty_cap(	"mod_player_performance_enemy_life_time_negative_penalty_cap", "-5", 0, "The maximum penalty that can be assesed for enemy life time.");
 ConVar mod_player_performance_fastreload_bonus(						"mod_player_performance_fastreload_bonus", "2", 0, "The boost to performance a player receives for each fast reload.");
+ConVar mod_player_performance_fastreload_bonus_cap(					"mod_player_performance_fastreload_bonus_cap", "8", 0, "The maximum boost to performance a player can receive for fast reloads.");
 ConVar mod_player_performance_dodgeranger_bonus(					"mod_player_performance_dodgeranger_bonus", "5", 0, "The boost to performance a player receives for dodging a ranger projectile.");
 ConVar mod_player_performance_meleekill_bonus(						"mod_player_performance_meleekill_bonus", "0.7", 0, "The boost to performance a player receives for each melee kill.");
 ConVar mod_player_performance_meleekill_bonus_cap(					"mod_player_performance_meleekill_bonus_cap", "5", 0, "The maxium performance boost a player can receive for melee kills.");
 ConVar mod_player_performance_boomer_kill_early_bonus(				"mod_player_performance_boomer_kill_early_bonus", "5", 0, "The boost to performance a player receives for killing a boomer before it explodes.");
-ConVar mod_player_performance_restart_penalty(						"mod_player_performance_restart_penalty", "15", 0, "The penalty assessed if the player restarts a level.");
-ConVar mod_player_performance_restart_penalty_timelimit(			"mod_player_performance_restart_penalty_timelimit", "60", 0, "The amount of time before the restart penalty is reduced to zero.");
+ConVar mod_player_performance_restart_penalty(						"mod_player_performance_restart_penalty", "35", 0, "The penalty assessed if the player restarts a level.");
+ConVar mod_player_performance_restart_penalty_timelimit(			"mod_player_performance_restart_penalty_timelimit", "50", 0, "The amount of time before the restart penalty is reduced to zero.");
 ConVar mod_player_performance_new_level_modifier(					"mod_player_performance_new_level_modifier", "7", 0, "The amount of the bonus/penalty asssesed on a new level based on players previous perforamnce.  This is a bonus if perf was 3, nothing if 2, penalty if 1.");
 ConVar mod_player_performance_new_level_modifier_timelimit(			"mod_player_performance_new_level_modifier_timelimit", "60", 0, "The amount of time before the new level modifier is reduced to zero.");
-ConVar mod_player_performance_enemy_killed_bonus(					"mod_player_performance_enemy_killed_bonus", "0.07", 0, "The bonus awarded to a player for each enemy kill.");
+ConVar mod_player_performance_enemy_killed_bonus(					"mod_player_performance_enemy_killed_bonus", "0.05", 0, "The bonus awarded to a player for each enemy kill.");
 
 void CMOD_Player_Performance_Calculator::PrintDebugString(int offset)
 {	
@@ -68,7 +69,7 @@ void CMOD_Player_Performance_Calculator::PrintDebugString(int offset)
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void CMOD_Player_Performance_Calculator_Health::OnMissionStarted(float lastLevelRating)
+void CMOD_Player_Performance_Calculator_Health::OnMissionStarted(float lastLevelRating, int numRetries)
 {
 	m_hasCalculatedFullHealth = false;
 }
@@ -431,12 +432,20 @@ void CMOD_Player_Performance_Calculator_FastReload::UpdatePerformance(float * pe
 {
 	m_LastCalculatedValue = (float)(m_NumberOfFastReloads * mod_player_performance_fastreload_bonus.GetInt());
 
+	if (m_LastCalculatedValue >  mod_player_performance_fastreload_bonus_cap.GetFloat())
+		m_LastCalculatedValue =  mod_player_performance_fastreload_bonus_cap.GetFloat();
+
 	*performance += m_LastCalculatedValue;
 }
 
 void CMOD_Player_Performance_Calculator_FastReload::PrintExtraDebugInfo(int offset)
 {
-	engine->Con_NPrintf(offset, "Number of Fast Reloads: [%i]", m_NumberOfFastReloads);	
+	char * cap = "";
+
+	if (m_LastCalculatedValue == mod_player_performance_fastreload_bonus_cap.GetFloat())
+		cap = " [CAP]";
+
+	engine->Con_NPrintf(offset, "Number of Fast Reloads: [%i]%s", m_NumberOfFastReloads, cap);	
 }
 
 //////////////////////////////////////////////////////////////////////////////////
