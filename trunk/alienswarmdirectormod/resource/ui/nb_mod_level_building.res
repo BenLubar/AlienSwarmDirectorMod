@@ -20,7 +20,7 @@
 		"font"		"DefaultExtraLarge"
 		"textAlignment"		"west"
 		"ControlName"		"Label"
-		"labelText"		"#asw_building_level"
+		"labelText"		"#asw_building_level_mission_success"
 		"fgcolor_override"		"224 224 224 255"
 	}
 	"Banner"
