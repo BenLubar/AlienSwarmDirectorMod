@@ -1,5 +1,5 @@
 !define PRODUCT_NAME "AlienSwarmDirectorMod"
-!define PRODUCT_VERSION "0.4"
+!define PRODUCT_VERSION "1.0"
 !define PRODUCT_PUBLISHER "Philip.Pittle"
 !define PRODUCT_WEB_SITE "philip.pittle@gmail.com"
 
