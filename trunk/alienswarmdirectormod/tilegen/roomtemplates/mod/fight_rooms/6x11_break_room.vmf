@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "145"
+	"mapversion" "146"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -32,7 +32,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "145"
+	"mapversion" "146"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -10396,7 +10396,7 @@ entity
 		}
 		editor
 		{
-			"color" "220 30 220"
+			"color" "220 220 220"
 			"visgroupshown" "1"
 			"visgroupautoshown" "1"
 		}
@@ -10794,71 +10794,6 @@ entity
 	"spawnflags" "0"
 	"spawnobject" "0"
 	"targetname" "window_02"
-	solid
-	{
-		"id" "14885"
-		side
-		{
-			"id" "8877"
-			"plane" "(560.586 364 20) (506.848 310.258 20) (508.258 308.843 20)"
-			"material" "TOOLS/TOOLSNODRAW"
-			"uaxis" "[0 1 0 3.5806] 1"
-			"vaxis" "[-1 0 0 -25.5801] 1"
-			"rotation" "0"
-			"lightmapscale" "32"
-			"smoothing_groups" "0"
-		}
-		side
-		{
-			"id" "8876"
-			"plane" "(562 362.582 148) (508.254 308.84 148) (506.844 310.254 148)"
-			"material" "TOOLS/TOOLSNODRAW"
-			"uaxis" "[0 1 0 3.5806] 1"
-			"vaxis" "[-1 0 0 -25.5801] 1"
-			"rotation" "0"
-			"lightmapscale" "32"
-			"smoothing_groups" "0"
-		}
-		side
-		{
-			"id" "8875"
-			"plane" "(506.848 310.262 20) (560.583 364 20) (560.582 364 148)"
-			"material" "SWARM/BSP/SWARM_GLASSDISTORTION"
-			"uaxis" "[0 0 1 -48] 1"
-			"vaxis" "[-0.707107 -0.707107 0 -409.22] 1"
-			"rotation" "0"
-			"lightmapscale" "32"
-			"smoothing_groups" "0"
-		}
-		side
-		{
-			"id" "8873"
-			"plane" "(562 362.578 20) (508.262 308.844 20) (508.262 308.844 148)"
-			"material" "SWARM/BSP/SWARM_GLASSDISTORTION"
-			"uaxis" "[0 0 -1 50] 1"
-			"vaxis" "[-0.707107 -0.707107 0 -409.22] 1"
-			"rotation" "0"
-			"lightmapscale" "256"
-			"smoothing_groups" "0"
-		}
-		side
-		{
-			"id" "8872"
-			"plane" "(560.582 364 20) (562 362.583 20) (562 362.582 148)"
-			"material" "TOOLS/TOOLSNODRAW"
-			"uaxis" "[-0.706031 0.708181 0 16.9565] 0.25"
-			"vaxis" "[0 0 -1 -32] 0.25"
-			"rotation" "0"
-			"lightmapscale" "32"
-			"smoothing_groups" "0"
-		}
-		editor
-		{
-			"color" "220 30 220"
-			"visgroupshown" "1"
-			"visgroupautoshown" "1"
-		}
-	}
 	editor
 	{
 		"color" "220 30 220"
@@ -45902,7 +45837,7 @@ entity
 		}
 		editor
 		{
-			"color" "220 30 220"
+			"color" "220 220 220"
 			"visgroupshown" "1"
 			"visgroupautoshown" "1"
 		}
