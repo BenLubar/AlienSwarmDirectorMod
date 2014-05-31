@@ -49,7 +49,7 @@ void CMissionChooserTGAImagePanel::SetTGA( const char *filename, char const *pPa
 {
 	if ( !pPathID )
 	{
-		Q_snprintf( m_szTGAName, sizeof(m_szTGAName), "//MOD/%s", filename );
+		Q_snprintf( m_szTGAName, sizeof(m_szTGAName), "//GAME/%s", filename );
 	}
 	else
 	{
