@@ -176,7 +176,7 @@ exit 1
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <PreBuildEvent>
-      <Command>if EXIST "C:\Program Files\Steam\SteamApps\sourcemods\alienswarmdirectormod\bin\.\$(TargetFileName)" for /f "delims=" %%A in (%27attrib "C:\Program Files\Steam\SteamApps\sourcemods\alienswarmdirectormod\bin\.\$(TargetFileName)"%27) do set valveTmpIsReadOnly="%%A"
+      <Command>if EXIST "C:\Program Files (x86)\Steam\SteamApps\sourcemods\alienswarmdirectormod\bin\.\$(TargetFileName)" for /f "delims=" %%A in (%27attrib "C:\Program Files (x86)\Steam\SteamApps\sourcemods\alienswarmdirectormod\bin\.\$(TargetFileName)"%27) do set valveTmpIsReadOnly="%%A"
 set valveTmpIsReadOnlyLetter=%valveTmpIsReadOnly:~6,1%
 if "%valveTmpIsReadOnlyLetter%"=="R" del /q "$(TargetDir)"$(TargetFileName)
 if exist ..\..\devtools\bin\vpccrccheck.exe ..\..\devtools\bin\vpccrccheck.exe -crc2 test_swarm.vcproj
@@ -238,6 +238,7 @@ if ERRORLEVEL 1 exit 1
       </BaseAddress>
       <TargetMachine>MachineX86</TargetMachine>
       <LinkErrorReporting>PromptImmediately</LinkErrorReporting>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <Manifest>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -250,14 +251,14 @@ if ERRORLEVEL 1 exit 1
       <OutputFile>$(OutDir)client.bsc</OutputFile>
     </Bscmake>
     <PostBuildEvent>
-      <Message>Publishing to C:\Program Files\Steam\SteamApps\sourcemods\alienswarmdirectormod\bin\.</Message>
-      <Command>if exist "C:\Program Files\Steam\SteamApps\sourcemods\alienswarmdirectormod\bin\." goto ValveStart
-mkdir "C:\Program Files\Steam\SteamApps\sourcemods\alienswarmdirectormod\bin\."
+      <Message>Publishing to C:\Program Files (x86)\Steam\SteamApps\sourcemods\alienswarmdirectormod\bin\.</Message>
+      <Command>if exist "C:\Program Files (x86)\Steam\SteamApps\sourcemods\alienswarmdirectormod\bin\." goto ValveStart
+mkdir "C:\Program Files (x86)\Steam\SteamApps\sourcemods\alienswarmdirectormod\bin\."
 :ValveStart
-copy "$(TargetDir)"$(TargetFileName) "C:\Program Files\Steam\SteamApps\sourcemods\alienswarmdirectormod\bin\.\$(TargetFileName)"
+copy "$(TargetDir)"$(TargetFileName) "C:\Program Files (x86)\Steam\SteamApps\sourcemods\alienswarmdirectormod\bin\.\$(TargetFileName)"
 if ERRORLEVEL 1 goto BuildEventFailed
-if exist "$(TargetDir)"$(TargetName).map copy "$(TargetDir)"$(TargetName).map "C:\Program Files\Steam\SteamApps\sourcemods\alienswarmdirectormod\bin\.\$(TargetName).map"
-copy "$(TargetDir)"$(TargetName).pdb "C:\Program Files\Steam\SteamApps\sourcemods\alienswarmdirectormod\bin\.\$(TargetName).pdb"
+if exist "$(TargetDir)"$(TargetName).map copy "$(TargetDir)"$(TargetName).map "C:\Program Files (x86)\Steam\SteamApps\sourcemods\alienswarmdirectormod\bin\.\$(TargetName).map"
+copy "$(TargetDir)"$(TargetName).pdb "C:\Program Files (x86)\Steam\SteamApps\sourcemods\alienswarmdirectormod\bin\.\$(TargetName).pdb"
 if ERRORLEVEL 1 goto BuildEventFailed
 goto BuildEventOK
 :BuildEventFailed
