@@ -8,7 +8,7 @@
 #include <vgui_controls/Panel.h>
 #include "asw_hudelement.h"
 
-#define ASW_MAX_ITEM_USE_ORDERS 6
+#define ASW_MAX_ITEM_USE_ORDERS ASW_MAX_MARINE_RESOURCES
 
 class CASW_Hotbar_Entry;
 class C_ASW_Marine;

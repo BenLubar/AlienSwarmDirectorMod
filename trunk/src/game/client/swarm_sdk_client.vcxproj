@@ -893,6 +893,7 @@ exit 1
     <ClCompile Include="..\shared\teamplay_gamerules.cpp" />
     <ClCompile Include="..\shared\teamplayroundbased_gamerules.cpp" />
     <ClCompile Include="..\shared\test_ehandle.cpp" />
+    <ClCompile Include="swarm\vgui\nb_lobby_row_xsmall.cpp" />
     <ClCompile Include="text_message.cpp" />
     <ClCompile Include="texturescrollmaterialproxy.cpp" />
     <ClCompile Include="timematerialproxy.cpp" />
@@ -2284,6 +2285,7 @@ exit 1
     <ClInclude Include="mod_buildAndLaunchRandomLevel.h" />
     <ClInclude Include="nb_mod_level_building.h" />
     <ClInclude Include="spatialentitymgr.h" />
+    <ClInclude Include="swarm\vgui\nb_lobby_row_xsmall.h" />
     <ClInclude Include="vgui_avatarimage.h" />
     <ClInclude Include="viewdebug.h" />
     <ClInclude Include="viewpostprocess.h" />

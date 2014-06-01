@@ -22,7 +22,7 @@ extern ConVar sv_force_transmit_ents;
 void CServerGameClients::GetPlayerLimits( int& minplayers, int& maxplayers, int &defaultMaxPlayers ) const
 {
 	minplayers = 1; 
-	defaultMaxPlayers = 4;
+	defaultMaxPlayers = 32;
 	maxplayers = ASW_MAX_PLAYERS;
 }
 

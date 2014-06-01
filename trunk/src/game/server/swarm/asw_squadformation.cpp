@@ -13,8 +13,8 @@
 #include "tier0/memdbgon.h"
 
 ConVar asw_marine_ai_followspot( "asw_marine_ai_followspot", "0", FCVAR_CHEAT );
-ConVar asw_follow_hint_max_range( "asw_follow_hint_max_range", "300", FCVAR_CHEAT );
-ConVar asw_follow_hint_max_z_dist( "asw_follow_hint_max_z_dist", "120", FCVAR_CHEAT );
+ConVar asw_follow_hint_max_range("asw_follow_hint_max_range", "300", FCVAR_CHEAT);
+ConVar asw_follow_hint_max_z_dist("asw_follow_hint_max_z_dist", "120", FCVAR_CHEAT);
 ConVar asw_follow_use_hints( "asw_follow_use_hints", "2", FCVAR_CHEAT, "0 = follow formation, 1 = use hints when in combat, 2 = always use hints" );
 ConVar asw_follow_hint_debug( "asw_follow_hint_debug", "0", FCVAR_CHEAT );
 ConVar asw_follow_velocity_predict( "asw_follow_velocity_predict", "0.3", FCVAR_CHEAT, "Marines travelling in diamond follow formation will predict their leader's movement ahead by this many seconds" );
@@ -105,31 +105,47 @@ bool CASW_SquadFormation::Remove( CASW_Marine *pMarine, bool bIgnoreAssert )
 
 const  Vector CASW_SquadFormation::s_MarineFollowOffset[MAX_SQUAD_SIZE]=
 {
-	Vector( -60, -70, 0 ),
-	Vector( -120, 0, 0 ),
-	Vector( -60, 70, 0 )
+	Vector(-60, -70, 0),
+	Vector(-120, 0, 0),
+	Vector(-60, 70, 0),
+	Vector(-100, 50, 0),
+	Vector(-100, -50, 0),
+	Vector(-20, 50, 0),
+	Vector(-20, -50, 0)
 };
 
 const  float CASW_SquadFormation::s_MarineFollowDirection[MAX_SQUAD_SIZE]=
 {
 	-70,
 	180,
-	70
+	70,
+	125,
+	-125,
+	35,
+	-35
 };
 
 // position offsets when standing around a heal beacon
 const  Vector CASW_SquadFormation::s_MarineBeaconOffset[MAX_SQUAD_SIZE]=
 {
-	Vector( 30, -52, 0 ),
-	Vector( -52, 0, 0 ),
-	Vector( 30, 52, 0 )
+	Vector(30, -52, 0),
+	Vector(-52, 0, 0),
+	Vector(30, 52, 0),
+	Vector(-30, 40, 0),
+	Vector(-30, -40, 0),
+	Vector(-20, 40, 0),
+	Vector(-20, -40, 0)
 };
 
 const  float CASW_SquadFormation::s_MarineBeaconDirection[MAX_SQUAD_SIZE]=
 {
 	-70,
 	180,
-	70
+	70,
+	125,
+	-125,
+	35,
+	-35
 };
 
 float CASW_SquadFormation::GetYaw( unsigned slotnum )

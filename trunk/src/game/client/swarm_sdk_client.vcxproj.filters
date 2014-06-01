@@ -2870,6 +2870,9 @@
     <ClCompile Include="nb_mod_level_building.cpp">
       <Filter>Source Files\Mod</Filter>
     </ClCompile>
+    <ClCompile Include="swarm\vgui\nb_lobby_row_xsmall.cpp">
+      <Filter>Source Files\Swarm\Shared\vgui\ManagedPanels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="achievement_notification_panel.h">
@@ -6027,6 +6030,9 @@
     </ClInclude>
     <ClInclude Include="nb_mod_level_building.h">
       <Filter>Source Files\Mod</Filter>
+    </ClInclude>
+    <ClInclude Include="swarm\vgui\nb_lobby_row_xsmall.h">
+      <Filter>Source Files\Swarm\Shared\vgui\ManagedPanels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

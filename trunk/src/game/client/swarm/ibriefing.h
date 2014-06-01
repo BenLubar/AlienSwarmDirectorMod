@@ -60,6 +60,6 @@ public:
 	virtual void ResetLastChatterTime() = 0;
 };
 
-#define NUM_BRIEFING_LOBBY_SLOTS 4
+#define NUM_BRIEFING_LOBBY_SLOTS ASW_MAX_MARINE_RESOURCES
 
 #endif // _INCLUDED_IBRIEFING_H

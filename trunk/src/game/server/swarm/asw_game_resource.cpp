@@ -100,7 +100,7 @@ CASW_Game_Resource::CASW_Game_Resource()
 	g_pASWGameResource = this;
 	m_iNumEnumeratedMarines = NULL;
 	m_pCampaignInfo = NULL;
-	m_iMaxMarines = 4;
+	m_iMaxMarines = ASW_MAX_MARINE_RESOURCES;
 	m_bOneMarineEach = false;
 	m_iNumMarinesSelected = 0;
 	m_iRandomMapSeed = 0;

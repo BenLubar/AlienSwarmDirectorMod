@@ -1400,9 +1400,9 @@ void CAlienSwarm::SetMaxMarines( CASW_Player *pException )
 		}
 	}	
 
-	if (iPlayers < 4)
+	if (iPlayers < ASW_MAX_MARINE_RESOURCES)
 	{
-		pGameResource->SetMaxMarines(4, false);
+		pGameResource->SetMaxMarines(ASW_MAX_MARINE_RESOURCES, false);
 	}
 	else
 	{

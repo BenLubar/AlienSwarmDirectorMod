@@ -15,6 +15,7 @@ class vgui::Button;
 class vgui::ImagePanel;
 class CNB_Lobby_Row;
 class CNB_Lobby_Row_Small;
+class CNB_Lobby_Row_XSmall;
 class CNB_Lobby_Tooltip;
 class CNB_Mission_Summary;
 class CNB_Header_Footer;
@@ -53,6 +54,10 @@ public:
 	CNB_Lobby_Row_Small	*m_pLobbyRow1;
 	CNB_Lobby_Row_Small	*m_pLobbyRow2;
 	CNB_Lobby_Row_Small	*m_pLobbyRow3;
+	CNB_Lobby_Row_XSmall	*m_pLobbyRow4;
+	CNB_Lobby_Row_XSmall	*m_pLobbyRow5;
+	CNB_Lobby_Row_XSmall	*m_pLobbyRow6;
+	CNB_Lobby_Row_XSmall	*m_pLobbyRow7;
 	CNB_Lobby_Tooltip	*m_pLobbyTooltip;
 	CNB_Mission_Summary	*m_pMissionSummary;
 	// == MANAGED_MEMBER_POINTERS_END ==

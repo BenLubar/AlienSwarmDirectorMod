@@ -65,7 +65,7 @@ public:
 	m_##sheet[ full_texture_name ].s, \
 	m_##sheet[ full_texture_name ].t
 
-#define MAX_SQUADMATE_HUD_POSITIONS 3
+#define MAX_SQUADMATE_HUD_POSITIONS (ASW_MAX_MARINE_RESOURCES - 1)
 
 // ===========================================================================
 //  This manually draws a number of HUD elements quickly using texture sheets

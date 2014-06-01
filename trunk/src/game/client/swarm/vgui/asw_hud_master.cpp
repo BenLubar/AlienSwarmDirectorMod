@@ -533,7 +533,7 @@ void CASW_Hud_Master::Paint( void )
 	// shift along depending on which marine we are
 	int cursor_x = YRES( 18 );
 	int nSquadMate = 0;
-	for ( int i = 0; i < 4; i++ )
+	for ( int i = 0; i < ASW_MAX_MARINE_RESOURCES; i++ )
 	{
 		if ( i == nCurrentMarine )
 		{

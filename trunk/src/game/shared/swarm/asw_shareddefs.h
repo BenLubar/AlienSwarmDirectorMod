@@ -50,11 +50,11 @@ enum ASW_Skill_Slot
 
 #define ENGINEERING_AURA_RADIUS 300
 
-#define ASW_MAX_PLAYERS 6			// currently limiting the game to 6 players, more than that feels chaotic
+#define ASW_MAX_PLAYERS 32
 
 #define ASW_MAX_READY_PLAYERS 8		// max number of slots for ready players in the game resource
 
-#define ASW_MAX_MARINE_RESOURCES 5
+#define ASW_MAX_MARINE_RESOURCES 8
 #define ASW_MAX_OBJECTIVES 25
 
 #define ASW_PLAYER_MAX_USE_ENTS 3
