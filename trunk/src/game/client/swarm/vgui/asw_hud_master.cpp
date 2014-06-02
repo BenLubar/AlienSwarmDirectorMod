@@ -303,11 +303,6 @@ void CASW_Hud_Master::OnThink()
 				}
 
 				bool bWalking = ( pPlayer->GetMarine() && pPlayer->GetMarine()->m_bWalking );
-				if ( bWalking )
-				{
-					int poop = 1;
-					poop = 2;
-				}
 
 				int nItemSelect = bWalking ? 1 : 0;
 				int nItemShift = nItemSelect == 0 ? 1 : 0;
@@ -557,7 +552,7 @@ void CASW_Hud_Master::Paint( void )
 	m_nMarinePortrait_bar_y = m_nMarinePortrait_circle_y + m_nMarinePortrait_circle_bg_t * 0.5f;
 	m_nMarinePortrait_bar_y2 = m_nMarinePortrait_circle_y2;
 
-	if ( m_pLocalMarineProfile && m_pLocalMarineResource )
+	if ( m_pLocalMarineProfile && m_pLocalMarineResource && m_pLocalMarineResource->IsInhabited() )
 	{
 		PaintLocalMarinePortrait();
 		PaintLocalMarineInventory();
