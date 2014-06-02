@@ -795,6 +795,14 @@ ConVar asw_reserve_marine_time("asw_reserve_marine_time", "30.0f", 0, "Number of
 void CAlienSwarm::Precache( void )
 {
 	UTIL_PrecacheOther( "asw_marine" );
+	UTIL_PrecacheOther( "asw_drone" );
+	UTIL_PrecacheOther( "asw_buzzer" );
+	UTIL_PrecacheOther( "asw_ranger" );
+	UTIL_PrecacheOther( "asw_boomer" );
+	UTIL_PrecacheOther( "asw_shieldbug" );
+	UTIL_PrecacheOther( "asw_harvester" );
+	UTIL_PrecacheOther( "asw_mortarbug" );
+	UTIL_PrecacheOther( "asw_parasite" );
 
 	PrecacheEffect( "ASWSpeech" );
 	PrecacheEffect( "ASWBloodImpact" );
