@@ -2846,6 +2846,10 @@ bool CASW_Marine::CheckAutoWeaponSwitch()
 	if (pWeapon && pWeapon->IsOffensiveWeapon())
 		return true;
 
+	// healing has a higher priority than swapping weapons.
+	if (pWeapon && pWeapon->Classify() == CLASS_ASW_HEAL_GUN && IsCurSchedule(SCHED_ASW_HEAL_MARINE))
+		return true;
+
 	// marine doesn't auto switch weapons the first two times he's hurt
 	m_iHurtWithoutOffensiveWeapon++;
 	if (m_iHurtWithoutOffensiveWeapon <3)
