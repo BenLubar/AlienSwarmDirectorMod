@@ -38,6 +38,8 @@ void CASW_Path_Utils_NPC::Spawn()
 	AddSolidFlags( FSOLID_NOT_STANDABLE );
 	SetMoveType( MOVETYPE_STEP );
 	m_takedamage = DAMAGE_NO;
+	SetRenderMode(kRenderNone);
+	AddEffects(EF_NODRAW | EF_NOSHADOW);
 }
 
 void CASW_Path_Utils_NPC::Precache()
