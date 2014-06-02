@@ -40,7 +40,6 @@ public:
 	void ChangeWeapon( int nLobbySlot, int nInventorySlot );
 	void SpendSkillPointsOnMarine( int nProfileIndex );
 	void ShowMissionDetails();
-	void ShowMissionOptions();
 	void ShowPromotionPanel();
 
 	vgui::DHANDLE<vgui::Panel> m_hSubScreen;

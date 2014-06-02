@@ -2126,7 +2126,6 @@ exit 1
     <ClCompile Include="swarm\vgui\nb_lobby_row_small.cpp" />
     <ClCompile Include="swarm\vgui\nb_lobby_tooltip.cpp" />
     <ClCompile Include="swarm\vgui\nb_main_panel.cpp" />
-    <ClCompile Include="swarm\vgui\nb_mission_options.cpp" />
     <ClCompile Include="swarm\vgui\nb_mission_panel.cpp" />
     <ClCompile Include="swarm\vgui\nb_mission_summary.cpp" />
     <ClCompile Include="swarm\vgui\nb_select_campaign_entry.cpp" />
@@ -2635,7 +2634,6 @@ exit 1
     <ClInclude Include="swarm\vgui\nb_lobby_row_small.h" />
     <ClInclude Include="swarm\vgui\nb_lobby_tooltip.h" />
     <ClInclude Include="swarm\vgui\nb_main_panel.h" />
-    <ClInclude Include="swarm\vgui\nb_mission_options.h" />
     <ClInclude Include="swarm\vgui\nb_mission_panel.h" />
     <ClInclude Include="swarm\vgui\nb_mission_summary.h" />
     <ClInclude Include="swarm\vgui\nb_select_campaign_entry.h" />

@@ -20,7 +20,6 @@
 #include "KeyValues.h"
 #include "nb_mission_summary.h"
 #include "nb_mission_panel.h"
-#include "nb_mission_options.h"
 #include "nb_spend_skill_points.h"
 #include "nb_header_footer.h"
 #include "nb_select_mission_panel.h"
@@ -337,10 +336,6 @@ void CNB_Main_Panel::OnCommand( const char *command )
 			Briefing()->ToggleLocalPlayerReady();
 		}
 	}
-	else if ( !Q_stricmp( command, "OptionsButton" ) )
-	{
-		ShowMissionOptions();
-	}
 	else if ( !Q_stricmp( command, "FriendsButton" ) )
 	{
 #ifndef _X360 
@@ -382,19 +377,6 @@ void CNB_Main_Panel::ShowMissionDetails()
 	}
 
 	CNB_Mission_Panel *pPanel = new CNB_Mission_Panel( this, "MissionPanel" );
-	pPanel->MoveToFront();
-
-	m_hSubScreen = pPanel;
-}
-
-void CNB_Main_Panel::ShowMissionOptions()
-{
-	if ( m_hSubScreen.Get() )
-	{
-		m_hSubScreen->MarkForDeletion();
-	}
-
-	CNB_Mission_Options *pPanel = new CNB_Mission_Options( this, "MissionOptions" );
 	pPanel->MoveToFront();
 
 	m_hSubScreen = pPanel;

@@ -2483,9 +2483,6 @@
     <ClCompile Include="swarm\vgui\nb_main_panel.cpp">
       <Filter>Source Files\Swarm\Shared\vgui\ManagedPanels</Filter>
     </ClCompile>
-    <ClCompile Include="swarm\vgui\nb_mission_options.cpp">
-      <Filter>Source Files\Swarm\Shared\vgui\ManagedPanels</Filter>
-    </ClCompile>
     <ClCompile Include="swarm\vgui\nb_mission_panel.cpp">
       <Filter>Source Files\Swarm\Shared\vgui\ManagedPanels</Filter>
     </ClCompile>
@@ -4013,9 +4010,6 @@
       <Filter>Source Files\Swarm\Shared\vgui\ManagedPanels</Filter>
     </ClInclude>
     <ClInclude Include="swarm\vgui\nb_main_panel.h">
-      <Filter>Source Files\Swarm\Shared\vgui\ManagedPanels</Filter>
-    </ClInclude>
-    <ClInclude Include="swarm\vgui\nb_mission_options.h">
       <Filter>Source Files\Swarm\Shared\vgui\ManagedPanels</Filter>
     </ClInclude>
     <ClInclude Include="swarm\vgui\nb_mission_panel.h">
