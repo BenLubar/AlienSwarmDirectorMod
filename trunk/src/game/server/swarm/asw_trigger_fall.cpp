@@ -53,6 +53,10 @@ void CASW_Trigger_Fall::Spawn( void )
 //-----------------------------------------------------------------------------
 void CASW_Trigger_Fall::FallTouch( CBaseEntity *pOther )
 {
+	// Only hurt things that we are allowed to hurt
+	if (!PassesTriggerFilters(pOther))
+		return;
+
 	// If it's a player, just kill him for now
 	if ( pOther->IsNPC() )
 	{
@@ -64,7 +68,7 @@ void CASW_Trigger_Fall::FallTouch( CBaseEntity *pOther )
 	else 
 	{
 		// Just remove the entity
-		//UTIL_Remove( pOther );
+		UTIL_Remove( pOther );
 	}
 
 	// Fire our output
