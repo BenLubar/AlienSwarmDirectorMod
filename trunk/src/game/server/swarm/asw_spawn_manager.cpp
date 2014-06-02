@@ -33,6 +33,7 @@ ConVar asw_horde_max_distance("asw_horde_max_distance", "1500", FCVAR_CHEAT, "Ma
 ConVar asw_max_alien_batch("asw_max_alien_batch", "10", FCVAR_CHEAT, "Max number of aliens spawned in a horde batch" );
 ConVar asw_batch_interval("asw_batch_interval", "5", FCVAR_CHEAT, "Time between successive batches spawning in the same spot");
 ConVar asw_candidate_interval("asw_candidate_interval", "1.0", FCVAR_CHEAT, "Interval between updating candidate spawning nodes");
+ConVar asw_wanderer_class( "asw_wanderer_class", "asw_drone_jumper", FCVAR_CHEAT, "Alien class used when spawning wanderers" );
 ConVar asw_horde_class( "asw_horde_class", "asw_drone_jumper", FCVAR_CHEAT, "Alien class used when spawning hordes" );
 
 CASW_Spawn_Manager::CASW_Spawn_Manager()
@@ -271,7 +272,7 @@ bool CASW_Spawn_Manager::SpawnAlientAtRandomNode()
 	if ( candidateNodes.Count() <= 0 )
 		return false;
 
-	const char *szAlienClass = "asw_drone";
+	const char *szAlienClass = asw_wanderer_class.GetString();
 	Vector vecMins, vecMaxs;
 	GetAlienBounds( szAlienClass, vecMins, vecMaxs );
 
