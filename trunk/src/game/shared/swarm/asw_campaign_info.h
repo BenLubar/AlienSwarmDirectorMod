@@ -61,6 +61,7 @@ public:
 		string_t	m_ThreatString;		// string to describe the overall threat level of this mission
 		bool		m_bAlwaysVisible;
 		bool		m_bNeedsMoreThanOneMarine;
+		bool        m_bRandomlyGenerated;
 	};
 
 	// Array of missions that make up our campaign.  Entry [0] is our starting point and isn't a proper mission.

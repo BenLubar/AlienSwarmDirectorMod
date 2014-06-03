@@ -78,6 +78,7 @@ GAME
 		"ShortBriefing"  	"Download critical data and then escape."
 		"AlwaysVisible"		"1"
 		"NeedsMoreThanOneMarine" "0"				// If set to 1, two players need to be connected to play (no solo play)
+		"RandomlyGenerated"	"1"
 	}
 	"MISSION"
 	{
@@ -91,6 +92,7 @@ GAME
 		"ShortBriefing"  	"Kill all the eggs and then escape."
 		"AlwaysVisible"		"1"
 		"NeedsMoreThanOneMarine" "0"				// If set to 1, two players need to be connected to play (no solo play)
+		"RandomlyGenerated"	"1"
 	}
 
 	"MISSION"
@@ -105,6 +107,7 @@ GAME
 		"ShortBriefing"  	"Download more critical data and then escape."
 		"AlwaysVisible"		"1"
 		"NeedsMoreThanOneMarine" "0"				// If set to 1, two players need to be connected to play (no solo play)
+		"RandomlyGenerated"	"1"
 	}
 	"MISSION"
 	{
@@ -118,5 +121,6 @@ GAME
 		"ShortBriefing"  	"Fight through the horde, kill all the eggs, and proceed to the exit to complete this campaign."
 		"AlwaysVisible"		"1"
 		"NeedsMoreThanOneMarine" "0"				// If set to 1, two players need to be connected to play (no solo play)
+		"RandomlyGenerated"	"1"
 	}
 }

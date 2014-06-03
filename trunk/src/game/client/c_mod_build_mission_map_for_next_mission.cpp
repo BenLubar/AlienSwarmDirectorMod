@@ -96,6 +96,12 @@ void C_MOD_Build_Mission_Map_For_Next_Mission::BuildMissionMapForMission(int mis
 		return;
 	}
 
+	if (!pNextMission->m_bRandomlyGenerated)
+	{
+		// Don't try to generate non-random maps.
+		return;
+	}
+
 	missionchooser->modLevel_Builder()->BuildMapForMissionFromLayoutFile(
 		pNextMission->m_MapName, playerPerformance);
 }

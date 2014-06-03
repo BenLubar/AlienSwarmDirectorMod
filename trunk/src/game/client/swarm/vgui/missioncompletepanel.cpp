@@ -31,6 +31,7 @@
 #include "debrieftextpage.h"
 #include "nb_island.h"
 #include "asw_hud_minimap.h"
+#include "asw_campaign_info.h"
 
 #include <string>
 #include <iostream>
@@ -605,9 +606,15 @@ void MissionCompletePanel::OnCommand(const char* command)
 				&& mod_player_performance_value.GetInt() >0
 				&& ASWGameRules()->GetCampaignSave()->m_iCurrentPosition > 1)
 			{
-				OnShowLevelBuilding(pPlayer, false);
-				//nb_mod_level_buildign will call
-				//pPlayer->RequestMissionRestart()
+				CASW_Campaign_Info::CASW_Campaign_Mission_t * pMission = ASWGameRules()->GetCampaignInfo()->GetMission(ASWGameRules()->GetCampaignSave()->m_iCurrentPosition);
+				if (pMission && pMission->m_bRandomlyGenerated)
+				{
+					OnShowLevelBuilding(pPlayer, false);
+				}
+				else
+				{
+					pPlayer->RequestMissionRestart();
+				}
 			}
 			else
 			{
@@ -670,11 +677,15 @@ void MissionCompletePanel::OnCommand(const char* command)
 					buildMapFrame->Activate();
 					*/
 
-					OnShowLevelBuilding(pPlayer, true);
-					//OnSuggestDifficulty(true);
-					
-					//Moved to nb_mod_level_building
-					//pPlayer->CampaignSaveAndShow();
+					CASW_Campaign_Info::CASW_Campaign_Mission_t * pMission = ASWGameRules()->GetCampaignInfo()->GetMission(ASWGameRules()->GetCampaignSave()->m_iCurrentPosition + 1);
+					if (pMission && pMission->m_bRandomlyGenerated)
+					{
+						OnShowLevelBuilding(pPlayer, true);
+					}
+					else
+					{
+						pPlayer->CampaignSaveAndShow();
+					}
 				}
 				else
 				{

@@ -117,6 +117,7 @@ bool CASW_Campaign_Info::LoadCampaign(const char *szCampaignName)
 			m_pMission[m_iNumMissions]->m_Briefing = MAKE_STRING(pkvMission->GetString("ShortBriefing"));
 			m_pMission[m_iNumMissions]->m_bAlwaysVisible = pkvMission->GetBool( "AlwaysVisible" );
 			m_pMission[m_iNumMissions]->m_bNeedsMoreThanOneMarine = pkvMission->GetBool( "NeedsMoreThanOneMarine", false );
+			m_pMission[m_iNumMissions]->m_bRandomlyGenerated = pkvMission->GetBool("RandomlyGenerated", false);
 
 			m_iNumMissions++;
 		}
