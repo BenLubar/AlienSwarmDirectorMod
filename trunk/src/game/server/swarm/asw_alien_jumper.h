@@ -8,8 +8,6 @@
 
 // this class implements aliens that can jump
 
-#define	ALIEN_SHOVER_FARTHEST_PHYSICS_OBJECT	350
-
 class CASW_Alien_Jumper : public CASW_Alien_Shover
 {
 public:
