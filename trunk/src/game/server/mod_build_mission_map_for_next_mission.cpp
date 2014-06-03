@@ -1,7 +1,6 @@
 #include "cbase.h"
 #include "mod_build_mission_map_for_next_mission.h"
 #include "mod_player_performance.h"
-#include "mod_build_map_proxy.h"
 
 LINK_ENTITY_TO_CLASS( mod_build_mission_map_for_next_mission, CMOD_Build_Mission_Map_For_Next_Mission );
 
@@ -34,11 +33,4 @@ void CMOD_Build_Mission_Map_For_Next_Mission::Activate(inputdata_t &inputData)
 	m_iPlayerPerformance = CMOD_Player_Performance::PlayerPerformance()->CalculatePerformance(true);
 
 	Msg("Player Performance: [%d]", m_iPlayerPerformance);
-
-	/*
-	CMOD_build_map_proxy * proxy = static_cast<CMOD_build_map_proxy*>(
-		CreateEntityByName( "mod_build_map_proxy" )); // create an object of this entity class
-
-	proxy->m_iPlayerPerformance = m_iPlayerPerformance;
-	*/
 }

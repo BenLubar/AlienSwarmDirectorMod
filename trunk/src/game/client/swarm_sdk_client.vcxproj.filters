@@ -2837,13 +2837,7 @@
     <ClCompile Include="toolframework_client.cpp">
       <Filter>Tool Framework</Filter>
     </ClCompile>
-    <ClCompile Include="mod_buildAndLaunchRandomLevel.cpp">
-      <Filter>Source Files\Mod</Filter>
-    </ClCompile>
     <ClCompile Include="c_mod_build_map.cpp">
-      <Filter>Source Files\Mod</Filter>
-    </ClCompile>
-    <ClCompile Include="c_mod_build_map_proxy.cpp">
       <Filter>Source Files\Mod</Filter>
     </ClCompile>
     <ClCompile Include="c_mod_build_mission_map_for_next_mission.cpp">
@@ -2859,9 +2853,6 @@
       <Filter>Source Files\Mod</Filter>
     </ClCompile>
     <ClCompile Include="nb_mod_level_loading_button.cpp">
-      <Filter>Source Files\Mod</Filter>
-    </ClCompile>
-    <ClCompile Include="c_mod_show_level_building_loader.cpp">
       <Filter>Source Files\Mod</Filter>
     </ClCompile>
     <ClCompile Include="nb_mod_level_building.cpp">
@@ -6003,9 +5994,6 @@
     </ClInclude>
     <ClInclude Include="game_controls\vguitextwindow.h">
       <Filter>game_controls Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="mod_buildAndLaunchRandomLevel.h">
-      <Filter>Source Files\Mod</Filter>
     </ClInclude>
     <ClInclude Include="c_mod_objective_escape.h">
       <Filter>Source Files\Mod</Filter>
