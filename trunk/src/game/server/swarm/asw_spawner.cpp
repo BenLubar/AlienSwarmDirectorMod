@@ -18,6 +18,7 @@
 #include "tier0/memdbgon.h"
 
 LINK_ENTITY_TO_CLASS( asw_spawner, CASW_Spawner );
+LINK_ENTITY_TO_CLASS( mod_spawner, CASW_Spawner );
 
 //ConVar asw_uber_drone_chance("asw_uber_drone_chance", "0.25f", FCVAR_CHEAT, "Chance of an uber drone spawning when playing in uber mode");
 extern ConVar asw_debug_spawners;
@@ -37,12 +38,14 @@ BEGIN_DATADESC( CASW_Spawner )
 	DEFINE_INPUTFUNC( FIELD_VOID,	"StartSpawning",	InputStartSpawning ),
 	DEFINE_INPUTFUNC( FIELD_VOID,	"StopSpawning",		InputStopSpawning ),
 	DEFINE_INPUTFUNC( FIELD_VOID,	"ToggleSpawning",	InputToggleSpawning ),
+	DEFINE_INPUTFUNC( FIELD_VOID,	"ResetNumAliens",	InputResetNumAliens ),
 
 	DEFINE_OUTPUT( m_OnAllSpawned,		"OnAllSpawned" ),
 	DEFINE_OUTPUT( m_OnAllSpawnedDead,	"OnAllSpawnedDead" ),
 
 	DEFINE_FIELD( m_nCurrentLiveAliens, FIELD_INTEGER ),
 	DEFINE_FIELD( m_AlienClassName,		FIELD_STRING ),
+	DEFINE_FIELD( m_nOriginalNumAliens, FIELD_INTEGER ),
 
 	DEFINE_THINKFUNC( SpawnerThink ),
 END_DATADESC()
@@ -72,12 +75,12 @@ void CASW_Spawner::Spawn()
 	InitAlienClassName();
 
 	BaseClass::Spawn();
-	
-	m_flSpawnIntervalJitter /= 100.0f;
-	m_flSpawnIntervalJitter = clamp<float>(m_flSpawnIntervalJitter, 0, 100);
+
+	m_flSpawnIntervalJitter = clamp<float>(m_flSpawnIntervalJitter / 100.0f, 0.0f, 1.0f);
 
 	SetSolid( SOLID_NONE );
 	m_nCurrentLiveAliens = 0;
+	m_nOriginalNumAliens = m_nNumAliens;
 
 	// trigger any begin state stuff
 	SetSpawnerState(m_SpawnerState);
@@ -265,6 +268,12 @@ void CASW_Spawner::InputToggleSpawning( inputdata_t &inputdata )
 		SetSpawnerState(SST_WaitForInputs);
 	else if (m_SpawnerState == SST_WaitForInputs)
 		SetSpawnerState(SST_Spawning);
+}
+
+void CASW_Spawner::InputResetNumAliens(inputdata_t &inputdata)
+{
+	m_nNumAliens = m_nOriginalNumAliens;
+	SetSpawnerState(SST_WaitForInputs);
 }
 
 const Vector& CASW_Spawner::GetAlienMins()

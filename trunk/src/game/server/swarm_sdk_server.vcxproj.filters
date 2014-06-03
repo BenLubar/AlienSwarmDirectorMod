@@ -2324,9 +2324,6 @@
     <ClCompile Include="mod_build_mission_map_for_next_mission.cpp">
       <Filter>Source Files\Mod</Filter>
     </ClCompile>
-    <ClCompile Include="mod_spawner.cpp">
-      <Filter>Source Files\Mod</Filter>
-    </ClCompile>
     <ClCompile Include="mod_player_performance_calculators.cpp">
       <Filter>Source Files\Mod</Filter>
     </ClCompile>
@@ -4748,9 +4745,6 @@
       <Filter>Source Files\Mod</Filter>
     </ClInclude>
     <ClInclude Include="mod_build_mission_map_for_next_mission.h">
-      <Filter>Source Files\Mod</Filter>
-    </ClInclude>
-    <ClInclude Include="mod_spawner.h">
       <Filter>Source Files\Mod</Filter>
     </ClInclude>
     <ClInclude Include="mod_player_performance_calculators.h">

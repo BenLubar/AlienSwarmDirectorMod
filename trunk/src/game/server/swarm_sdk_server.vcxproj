@@ -590,7 +590,6 @@ exit 1
     <ClCompile Include="mod_objective_escape.cpp" />
     <ClCompile Include="mod_player_performance.cpp" />
     <ClCompile Include="mod_player_performance_calculators.cpp" />
-    <ClCompile Include="mod_spawner.cpp" />
     <ClCompile Include="monstermaker.cpp" />
     <ClCompile Include="movehelper_server.cpp" />
     <ClCompile Include="movement.cpp" />
@@ -1360,7 +1359,6 @@ exit 1
     <ClInclude Include="mod_objective_escape.h" />
     <ClInclude Include="mod_player_performance.h" />
     <ClInclude Include="mod_player_performance_calculators.h" />
-    <ClInclude Include="mod_spawner.h" />
     <ClInclude Include="monstermaker.h" />
     <ClInclude Include="movehelper_server.h" />
     <ClInclude Include="movie_explosion.h" />

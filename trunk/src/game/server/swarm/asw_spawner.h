@@ -55,7 +55,8 @@ public:
 	void InputSpawnAlien( inputdata_t &inputdata );
 	void InputStartSpawning( inputdata_t &inputdata );
 	void InputStopSpawning( inputdata_t &inputdata );
-	void InputToggleSpawning( inputdata_t &inputdata );
+	void InputToggleSpawning(inputdata_t &inputdata);
+	void InputResetNumAliens(inputdata_t &inputdata);
 
 protected:
 
@@ -64,7 +65,8 @@ protected:
 	COutputEvent m_OnAllSpawnedDead;
 
 	int			m_nMaxLiveAliens;			// max number of NPCs that this spawner may have out at one time.
-	int			m_nNumAliens;				// max number of NPCs that this spawner can create total
+	int			m_nNumAliens;				// max number of NPCs that this spawner can create. (remaining)
+	int         m_nOriginalNumAliens;       // max number of NPCs that this spawner can create. (total)
 	bool		m_bInfiniteAliens;
 	float		m_flSpawnInterval;			// time between spawns
 	float		m_flSpawnIntervalJitter;	// fractional variation applied to spawn interval each time to give it some randomness
