@@ -34,6 +34,8 @@ ConVar asw_max_alien_batch("asw_max_alien_batch", "10", FCVAR_CHEAT, "Max number
 ConVar asw_batch_interval("asw_batch_interval", "5", FCVAR_CHEAT, "Time between successive batches spawning in the same spot");
 ConVar asw_candidate_interval("asw_candidate_interval", "1.0", FCVAR_CHEAT, "Interval between updating candidate spawning nodes");
 ConVar asw_wanderer_class( "asw_wanderer_class", "asw_drone_jumper", FCVAR_CHEAT, "Alien class used when spawning wanderers" );
+ConVar asw_wanderer_varied( "asw_wanderer_varied", "0.5", FCVAR_CHEAT, "Probability that the director will spawn wanderers that are not asw_wanderer_class", true, 0.0f, true, 1.0f );
+ConVar asw_wanderer_varied_rare( "asw_wanderer_varied_rare", "0.1", FCVAR_CHEAT, "Probability that the varied wanderers will be more powerful aliens", true, 0.0f, true, 1.0f );
 ConVar asw_horde_class( "asw_horde_class", "asw_drone_jumper", FCVAR_CHEAT, "Alien class used when spawning hordes" );
 
 CASW_Spawn_Manager::CASW_Spawn_Manager()
@@ -252,6 +254,22 @@ void CASW_Spawn_Manager::AddAlien()
 	m_iAliensToSpawn++;
 }
 
+const char * g_VariedWandererTypeCommon [] = {
+	"asw_drone_jumper",
+	"asw_ranger",
+	"asw_buzzer",
+	"asw_parasite_defanged",
+	"asw_grub"
+};
+
+const char * g_VariedWandererTypeRare [] = {
+	"asw_shieldbug",
+	"asw_mortarbug",
+	"asw_parasite",
+	"asw_harvester",
+	"asw_boomer"
+};
+
 bool CASW_Spawn_Manager::SpawnAlientAtRandomNode()
 {
 	UpdateCandidateNodes();
@@ -273,10 +291,23 @@ bool CASW_Spawn_Manager::SpawnAlientAtRandomNode()
 		return false;
 
 	const char *szAlienClass = asw_wanderer_class.GetString();
+	if (RandomFloat() < asw_wanderer_varied.GetFloat())
+	{
+		if (RandomFloat() < asw_wanderer_varied_rare.GetFloat())
+		{
+			szAlienClass = g_VariedWandererTypeRare[RandomInt(0, NELEMS(g_VariedWandererTypeRare)-1)];
+		}
+		else
+		{
+			szAlienClass = g_VariedWandererTypeCommon[RandomInt(0, NELEMS(g_VariedWandererTypeCommon) - 1)];
+		}
+	}
+	int nHull;
 	Vector vecMins, vecMaxs;
-	GetAlienBounds( szAlienClass, vecMins, vecMaxs );
+	Assert( GetAlienHull( szAlienClass, nHull ) );
+	Assert( GetAlienBounds( szAlienClass, vecMins, vecMaxs ) );
 
-	int iMaxTries = 1;
+	int iMaxTries = 4;
 	for ( int i=0 ; i<iMaxTries ; i++ )
 	{
 		int iChosen = RandomInt( 0, candidateNodes.Count() - 1);
@@ -285,12 +316,12 @@ bool CASW_Spawn_Manager::SpawnAlientAtRandomNode()
 			continue;
 
 		float flDistance = 0;
-		CASW_Marine *pMarine = dynamic_cast<CASW_Marine*>(UTIL_ASW_NearestMarine( pNode->GetPosition( CANDIDATE_ALIEN_HULL ), flDistance ));
+		CASW_Marine *pMarine = dynamic_cast<CASW_Marine*>(UTIL_ASW_NearestMarine( pNode->GetPosition( nHull ), flDistance ));
 		if ( !pMarine )
 			return false;
 
 		// check if there's a route from this node to the marine(s)
-		AI_Waypoint_t *pRoute = ASWPathUtils()->BuildRoute( pNode->GetPosition( CANDIDATE_ALIEN_HULL ), pMarine->GetAbsOrigin(), NULL, 100 );
+		AI_Waypoint_t *pRoute = ASWPathUtils()->BuildRoute( pNode->GetPosition( nHull ), pMarine->GetAbsOrigin(), NULL, 100 );
 		if ( !pRoute )
 		{
 			if ( asw_director_debug.GetBool() )
@@ -306,7 +337,7 @@ bool CASW_Spawn_Manager::SpawnAlientAtRandomNode()
 			continue;
 		}
 		
-		Vector vecSpawnPos = pNode->GetPosition( CANDIDATE_ALIEN_HULL ) + Vector( 0, 0, 32 );
+		Vector vecSpawnPos = pNode->GetPosition( nHull ) + Vector( 0, 0, 32 );
 		if ( ValidSpawnPoint( vecSpawnPos, vecMins, vecMaxs, true, MARINE_NEAR_DISTANCE ) )
 		{
 			if ( SpawnAlienAt( szAlienClass, vecSpawnPos, vec3_angle ) )
@@ -496,6 +527,9 @@ bool CASW_Spawn_Manager::FindHordePosition()
 		return false;
 	}
 
+	int nHull;
+	Assert( GetAlienHull ( asw_horde_class.GetString(), nHull ) );
+
 	int iMaxTries = 3;
 	for ( int i=0 ; i<iMaxTries ; i++ )
 	{
@@ -505,7 +539,7 @@ bool CASW_Spawn_Manager::FindHordePosition()
 			continue;
 
 		float flDistance = 0;
-		CASW_Marine *pMarine = dynamic_cast<CASW_Marine*>(UTIL_ASW_NearestMarine( pNode->GetPosition( CANDIDATE_ALIEN_HULL ), flDistance ));
+		CASW_Marine *pMarine = dynamic_cast<CASW_Marine*>(UTIL_ASW_NearestMarine( pNode->GetPosition( nHull ), flDistance ));
 		if ( !pMarine )
 		{
 			if ( asw_director_debug.GetBool() )
@@ -516,7 +550,7 @@ bool CASW_Spawn_Manager::FindHordePosition()
 		}
 
 		// check if there's a route from this node to the marine(s)
-		AI_Waypoint_t *pRoute = ASWPathUtils()->BuildRoute( pNode->GetPosition( CANDIDATE_ALIEN_HULL ), pMarine->GetAbsOrigin(), NULL, 100 );
+		AI_Waypoint_t *pRoute = ASWPathUtils()->BuildRoute( pNode->GetPosition( nHull ), pMarine->GetAbsOrigin(), NULL, 100 );
 		if ( !pRoute )
 		{
 			if ( asw_director_debug.GetInt() >= 2 )
@@ -536,7 +570,7 @@ bool CASW_Spawn_Manager::FindHordePosition()
 			continue;
 		}
 		
-		m_vecHordePosition = pNode->GetPosition( CANDIDATE_ALIEN_HULL ) + Vector( 0, 0, 32 );
+		m_vecHordePosition = pNode->GetPosition( nHull ) + Vector( 0, 0, 32 );
 
 		// spawn facing the nearest marine
 		Vector vecDir = pMarine->GetAbsOrigin() - m_vecHordePosition;
@@ -570,32 +604,54 @@ bool CASW_Spawn_Manager::LineBlockedByGeometry( const Vector &vecSrc, const Vect
 	return ( tr.fraction != 1.0f );
 }
 
-bool CASW_Spawn_Manager::GetAlienBounds( const char *szAlienClass, Vector &vecMins, Vector &vecMaxs )
+bool CASW_Spawn_Manager::GetAlienHull( const char *szAlienClass, int &nHull )
 {
 	int nCount = GetNumAlienClasses();
 	for ( int i = 0 ; i < nCount; i++ )
 	{
 		if ( !Q_stricmp( szAlienClass, GetAlienClass( i )->m_pszAlienClass ) )
 		{
-			vecMins = NAI_Hull::Mins( GetAlienClass( i )->m_nHullType );
-			vecMaxs = NAI_Hull::Maxs (GetAlienClass( i )->m_nHullType );
+			nHull = GetAlienClass( i )->m_nHullType;
 			return true;
 		}
 	}
 	return false;
 }
 
-bool CASW_Spawn_Manager::GetAlienBounds( string_t iszAlienClass, Vector &vecMins, Vector &vecMaxs )
+bool CASW_Spawn_Manager::GetAlienHull( string_t iszAlienClass, int &nHull )
 {
 	int nCount = GetNumAlienClasses();
 	for ( int i = 0 ; i < nCount; i++ )
 	{
 		if ( iszAlienClass == GetAlienClass( i )->m_iszAlienClass )
 		{
-			vecMins = NAI_Hull::Mins( GetAlienClass( i )->m_nHullType );
-			vecMaxs = NAI_Hull::Maxs (GetAlienClass( i )->m_nHullType );
+			nHull = GetAlienClass( i )->m_nHullType;
 			return true;
 		}
+	}
+	return false;
+}
+
+bool CASW_Spawn_Manager::GetAlienBounds( const char *szAlienClass, Vector &vecMins, Vector &vecMaxs )
+{
+	int nHull;
+	if ( GetAlienHull( szAlienClass, nHull ) )
+	{
+		vecMins = NAI_Hull::Mins( nHull );
+		vecMaxs = NAI_Hull::Maxs( nHull );
+		return true;
+	}
+	return false;
+}
+
+bool CASW_Spawn_Manager::GetAlienBounds( string_t iszAlienClass, Vector &vecMins, Vector &vecMaxs )
+{
+	int nHull;
+	if ( GetAlienHull( iszAlienClass, nHull ) )
+	{
+		vecMins = NAI_Hull::Mins( nHull );
+		vecMaxs = NAI_Hull::Maxs( nHull );
+		return true;
 	}
 	return false;
 }
@@ -711,7 +767,7 @@ CBaseEntity* CASW_Spawn_Manager::SpawnAlienAt(const char* szAlienClass, const Ve
 	}
 
 	// have drones unburrow by default, so we don't worry so much about them spawning onscreen
-	if ( !Q_strcmp( szAlienClass, "asw_drone" ) )
+	//if ( !Q_strcmp( szAlienClass, "asw_drone" ) )
 	{			
 		pSpawnable->StartBurrowed();
 		pSpawnable->SetUnburrowIdleActivity( NULL_STRING );

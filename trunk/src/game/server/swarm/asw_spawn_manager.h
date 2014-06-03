@@ -57,6 +57,8 @@ public:
 	bool ValidSpawnPoint( const Vector &vecPosition, const Vector &vecMins, const Vector &vecMaxs, bool bCheckGround = true, float flMarineNearDistance = 0 );
 	bool LineBlockedByGeometry( const Vector &vecSrc, const Vector &vecEnd );
 	
+	bool GetAlienHull( const char *szAlienClass, int &nHull );
+	bool GetAlienHull( string_t iszAlienClass, int &nHull );
 	bool GetAlienBounds( const char *szAlienClass, Vector &vecMins, Vector &vecMaxs );
 	bool GetAlienBounds( string_t iszAlienClass, Vector &vecMins, Vector &vecMaxs );
 
