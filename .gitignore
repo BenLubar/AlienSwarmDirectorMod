@@ -114,3 +114,9 @@ UpgradeLog*.XML
 
 #svn artifacts
 .svn
+
+#Source Engine
+*.vmx
+
+#Windows
+Thumbs.db

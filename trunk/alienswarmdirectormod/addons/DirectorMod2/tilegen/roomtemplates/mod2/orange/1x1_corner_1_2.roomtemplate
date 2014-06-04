@@ -1,0 +1,25 @@
+"orange\1x1_corner_1_2"
+{
+	"TilesX"		"1"
+	"TilesY"		"1"
+	"SpawnWeight"		"0"
+	"TileType"		"0"
+	"EXIT"
+	{
+		"XPos"		"0"
+		"YPos"		"0"
+		"ExitDirection"		"0"
+		"ZChange"		"0"
+		"ExitTag"		"orange"
+		"ChokeGrow"		"0"
+	}
+	"EXIT"
+	{
+		"XPos"		"0"
+		"YPos"		"0"
+		"ExitDirection"		"1"
+		"ZChange"		"0"
+		"ExitTag"		"orange"
+		"ChokeGrow"		"0"
+	}
+}
