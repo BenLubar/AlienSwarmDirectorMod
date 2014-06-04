@@ -615,10 +615,11 @@ void CASW_Map_Builder::BuildMap()
 	}
 
 	// Export it to VMF
-	VMFExporter *pExporter = new VMFExporter();
-	bool bSuccess = pExporter->ExportVMF( m_pBuildingMapLayout, m_szLayoutName );
-	//bool bSuccess = pExporter->ExportVMF( m_pBuildingMapLayout, "C:\\Program Files\\Steam\\steamapps\\sourcemods\\alienswarmdirectormod\\maps\\customoutput.vmf" );
-	delete pExporter;
+	bool bSuccess = false;
+	{
+		VMFExporter exporter;
+		bSuccess = exporter.ExportVMF(m_pBuildingMapLayout, m_szLayoutName);
+	}
 
 	if ( !bSuccess )
 	{

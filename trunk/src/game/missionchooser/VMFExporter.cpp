@@ -233,8 +233,7 @@ bool VMFExporter::ExportVMF( CMapLayout* pLayout, const char *mapname, bool bPop
 		pKey->RecursiveSaveToFile( buf, 0 );			
 	}
 
-	strcat(fullpath, g_gamedir);
-	strcat(fullpath, filename);
+	Q_snprintf(fullpath, sizeof(fullpath), "%s%s", g_gamedir, filename);
 
 	Msg("\nSaving file %s\n\n", fullpath);
 	if ( !g_pFullFileSystem->WriteFile( fullpath, "GAME", buf ) )

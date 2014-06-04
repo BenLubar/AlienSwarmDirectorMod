@@ -76,18 +76,13 @@ void CTilegenKVEditorPage::OnCommand( const char *command )
 	if ( !Q_stricmp( command, "Save" ) )
 	{
 		KeyValues *pKV = GetKeyValues();
-						
-		char fullFilePathBuffer [512];
-		Q_snprintf(fullFilePathBuffer, sizeof(fullFilePathBuffer),"C:\\Program Files\\Steam\\steamapps\\sourcemods\\alienswarmdirectormod\\%s", m_szFilename);
-		Msg("Saving to [%s]", fullFilePathBuffer);
 
-		//if ( pKV != NULL && !pKV->SaveToFile( g_pFullFileSystem, m_szFilename, "GAME" ) )
-		if ( pKV != NULL && !pKV->SaveToFile( g_pFullFileSystem, fullFilePathBuffer ) )
+		if ( pKV != NULL && !pKV->SaveToFile( g_pFullFileSystem, m_szFilename, "MOD" ) )
 		{
 			if ( p4 )
 			{
 				char fullPath[MAX_PATH];
-				g_pFullFileSystem->RelativePathToFullPath( m_szFilename, "GAME", fullPath, MAX_PATH );
+				g_pFullFileSystem->RelativePathToFullPath( m_szFilename, "MOD", fullPath, MAX_PATH );
 				if ( p4->IsFileInPerforce( fullPath ) )
 				{
 					MessageBox *pMessage = new MessageBox( "Check Out?", "File is not writeable. Would you like to check it out from Perforce?", this );
