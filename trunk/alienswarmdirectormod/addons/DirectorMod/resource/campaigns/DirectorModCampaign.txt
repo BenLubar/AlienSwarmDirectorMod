@@ -18,7 +18,7 @@ GAME
 	"CampaignTextureLayer3" "swarm/Campaign/CampaignMap_EmptyLayer"			//"CampaignTextureLayer3" "swarm/Campaign/JacobCampaignMap_SnowFar"
 	
 	// custom campaign credits file
-	"CustomCreditsFile" 	"resource/CustomCampaignCredits"
+	"CustomCreditsFile" 	"resource/DirectorModCredits"
 
 	// position of this campaign in the galactic map (coords go from 0 to 1023)
 	"GalaxyX"   "660"
