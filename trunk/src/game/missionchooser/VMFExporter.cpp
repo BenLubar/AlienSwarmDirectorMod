@@ -100,7 +100,7 @@ bool VMFExporter::ExportVMF( CMapLayout* pLayout, const char *mapname, bool bPop
 	bool bHasStartRoom = false;
 	for ( int i = 0 ; i < pLayout->m_PlacedRooms.Count() ; i++ )
 	{
-		if ( pLayout->m_PlacedRooms[i]->m_pRoomTemplate->IsStartRoom() )
+		if ( pLayout->m_PlacedRooms[i]->GetRoomTemplate()->IsStartRoom() )
 		{
 			int half_map_size = MAP_LAYOUT_TILES_WIDE * 0.5f;		// shift back so the middle of our grid is the origin
 			m_vecStartRoomOrigin.x = ( pLayout->m_PlacedRooms[i]->m_iPosX - half_map_size ) * ASW_TILE_SIZE;
@@ -148,7 +148,7 @@ bool VMFExporter::ExportVMF( CMapLayout* pLayout, const char *mapname, bool bPop
 		for ( int i = 0; i < nPlacedRooms; ++ i )
 		{
 			m_pRoom = m_pMapLayout->m_PlacedRooms[i];
-			AddRoomInstance( m_pRoom->m_pRoomTemplate, i );
+			AddRoomInstance( m_pRoom->GetRoomTemplate(), i );
 		}
 	}
 	else
@@ -175,7 +175,7 @@ bool VMFExporter::ExportVMF( CMapLayout* pLayout, const char *mapname, bool bPop
 			m_pRoom = m_pMapLayout->m_PlacedRooms[m_iCurrentRoom];
 			if (!m_pRoom)
 				continue;
-			const CRoomTemplate *pRoomTemplate = m_pRoom->m_pRoomTemplate;
+			const CRoomTemplate *pRoomTemplate = m_pRoom->GetRoomTemplate();
 			if (!pRoomTemplate)
 				continue;
 
@@ -203,7 +203,7 @@ bool VMFExporter::ExportVMF( CMapLayout* pLayout, const char *mapname, bool bPop
 			m_pRoom = m_pMapLayout->m_PlacedRooms[m_iCurrentRoom];
 			if (!m_pRoom)
 				continue;
-			const CRoomTemplate *pRoomTemplate = m_pRoom->m_pRoomTemplate;
+			const CRoomTemplate *pRoomTemplate = m_pRoom->GetRoomTemplate();
 			if (!pRoomTemplate)
 				continue;
 
@@ -273,7 +273,7 @@ bool VMFExporter::AddRoomTemplateSolids( const CRoomTemplate *pRoomTemplate )
 	// open its vmf file
 	char roomvmfname[MAX_PATH];
 	Q_snprintf(roomvmfname, sizeof(roomvmfname), "tilegen/roomtemplates/%s/%s.vmf", 
-		pRoomTemplate->m_pLevelTheme->m_szName,
+		pRoomTemplate->m_iszLevelTheme.c_str(),
 		pRoomTemplate->GetFullName() );
 	m_pTemplateKeys = new KeyValues( "RoomTemplateVMF" );
 	m_pTemplateKeys->LoadFromFile( g_pFullFileSystem, roomvmfname, "GAME" );
@@ -323,7 +323,7 @@ bool VMFExporter::AddRoomTemplateEntities( const CRoomTemplate *pRoomTemplate )
 	// reopen the source vmf
 	char roomvmfname[MAX_PATH];
 	Q_snprintf( roomvmfname, sizeof(roomvmfname), "tilegen/roomtemplates/%s/%s.vmf", 
-		pRoomTemplate->m_pLevelTheme->m_szName,
+		pRoomTemplate->m_iszLevelTheme.c_str(),
 		pRoomTemplate->GetFullName() );
 	m_pTemplateKeys = new KeyValues( "RoomTemplateVMF" );
 	m_pTemplateKeys->LoadFromFile( g_pFullFileSystem, roomvmfname, "GAME" );
@@ -865,7 +865,7 @@ void VMFExporter::AddRoomInstance( const CRoomTemplate *pRoomTemplate, int nPlac
 	}
 	
 	char vmfName[MAX_PATH];
-	Q_snprintf( vmfName, sizeof( vmfName ), "tilegen/roomtemplates/%s/%s.vmf", pRoomTemplate->m_pLevelTheme->m_szName, pRoomTemplate->GetFullName() );
+	Q_snprintf( vmfName, sizeof( vmfName ), "tilegen/roomtemplates/%s/%s.vmf", pRoomTemplate->m_iszLevelTheme.c_str(), pRoomTemplate->GetFullName() );
 	// Convert backslashes to forward slashes to please the VMF parser
 	int nStrLen = Q_strlen( vmfName );
 	for ( int i = 0; i < nStrLen; ++ i )

@@ -14,9 +14,8 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include <tier0/memdbgon.h>
 
-CRoom::CRoom()
+CRoom::CRoom() : m_iszLevelTheme(), m_iszRoomTemplate()
 {
-	m_pRoomTemplate = NULL;
 	m_iPosX = 0;
 	m_iPosY = 0;
 	m_iNumChildren = 0;
@@ -27,9 +26,8 @@ CRoom::CRoom()
 	m_pMapLayout = NULL;
 }
 
-CRoom::CRoom( CMapLayout *pMapLayout, const CRoomTemplate* pRoomTemplate, int TileX, int TileY )
+CRoom::CRoom(CMapLayout *pMapLayout, std::string iszLevelTheme, std::string iszRoomTemplate, int TileX, int TileY) : m_iszLevelTheme(iszLevelTheme), m_iszRoomTemplate(iszRoomTemplate)
 {
-	m_pRoomTemplate = pRoomTemplate;
 	m_iPosX = TileX;
 	m_iPosY = TileY;
 	m_iNumChildren = 0;
@@ -66,15 +64,15 @@ KeyValues *CRoom::GetKeyValuesCopy()
 	KeyValues *pKeys = new KeyValues( "room" );
 	pKeys->SetInt( "posx", m_iPosX );
 	pKeys->SetInt( "posy", m_iPosY );
-	pKeys->SetString( "theme", m_pRoomTemplate->m_pLevelTheme->m_szName );
-	pKeys->SetString( "template", m_pRoomTemplate->GetFullName() );
+	pKeys->SetString( "theme", m_iszLevelTheme.c_str() );
+	pKeys->SetString( "template", m_iszRoomTemplate.c_str() );
 
 	return pKeys;
 }
 
 bool CRoom::SaveRoomToFile(CChunkFile *pFile)
 {
-	if (!pFile || !m_pRoomTemplate || !m_pRoomTemplate->m_pLevelTheme)
+	if (!pFile)
 		return false;
 
 	ChunkFileResult_t eResult = pFile->BeginChunk("room");
@@ -88,9 +86,9 @@ bool CRoom::SaveRoomToFile(CChunkFile *pFile)
 		return false;
 
 	// theme and template name
-	if (pFile->WriteKeyValue("theme", m_pRoomTemplate->m_pLevelTheme->m_szName) != ChunkFile_Ok)
+	if (pFile->WriteKeyValue("theme", m_iszLevelTheme.c_str()) != ChunkFile_Ok)
 		return false;
-	if (pFile->WriteKeyValue( "template", m_pRoomTemplate->GetFullName() ) != ChunkFile_Ok)
+	if (pFile->WriteKeyValue("template", m_iszRoomTemplate.c_str()) != ChunkFile_Ok)
 		return false;
 
 	if (pFile->EndChunk() != ChunkFile_Ok)
@@ -103,42 +101,16 @@ bool CRoom::SaveRoomToFile(CChunkFile *pFile)
 bool CRoom::LoadRoomFromKeyValues( KeyValues *pRoomKeys, CMapLayout *pMapLayout )
 {	
 	CRoom* pNewRoom = new CRoom();
-	char szLoadingTheme[256];
-	char szLoadingTemplate[256];
-	szLoadingTheme[0] = '\0';
-	szLoadingTemplate[0] = '\0';
-
-	Q_snprintf( szLoadingTheme, sizeof(szLoadingTheme), "%s", pRoomKeys->GetString( "theme" ) );		
-	Q_snprintf( szLoadingTemplate, sizeof(szLoadingTemplate), "%s", pRoomKeys->GetString( "template" ) );		
+	
 	pNewRoom->m_iPosX = pRoomKeys->GetInt( "posx" );
 	pNewRoom->m_iPosY = pRoomKeys->GetInt( "posy" );
 
-	// find pointer to the room template
-	// first find the theme with matching name
-	int iThemes = CLevelTheme::s_LevelThemes.Count();
-	for (int i=0;i<iThemes;i++)
+	pNewRoom->m_iszLevelTheme = pRoomKeys->GetString( "theme" );
+	pNewRoom->m_iszRoomTemplate = pRoomKeys->GetString( "template" );
+
+	if (!pNewRoom->GetRoomTemplate())
 	{
-		CLevelTheme* pTheme = CLevelTheme::s_LevelThemes[i];
-		if (!pTheme)
-			continue;
-		if ( !Q_stricmp(pTheme->m_szName, szLoadingTheme) )
-		{
-			// now find a template within that theme with our template's name
-			int iTemplates = pTheme->m_RoomTemplates.Count();
-			for (int t=0;t<iTemplates;t++)
-			{
-				if ( !Q_stricmp( pTheme->m_RoomTemplates[t]->GetFullName(), szLoadingTemplate ) )
-				{
-					pNewRoom->m_pRoomTemplate = pTheme->m_RoomTemplates[t];
-					break;
-				}
-			}
-			break;
-		}
-	}
-	if (!pNewRoom->m_pRoomTemplate)
-	{
-		Msg( "Failed to load room template %s in theme %s\n", szLoadingTemplate, szLoadingTheme );
+		Msg( "Failed to load room template %s in theme %s\n", pRoomKeys->GetString( "theme" ), pRoomKeys->GetString( "template" ) );
 		delete pNewRoom;
 		return false;
 	}
@@ -149,6 +121,17 @@ bool CRoom::LoadRoomFromKeyValues( KeyValues *pRoomKeys, CMapLayout *pMapLayout 
 	return true;
 }
 
+CLevelTheme *CRoom::GetLevelTheme() const
+{
+	return CLevelTheme::FindTheme(m_iszLevelTheme.c_str());
+}
+
+CRoomTemplate *CRoom::GetRoomTemplate() const
+{
+	CLevelTheme *pLevelTheme = GetLevelTheme();
+	return pLevelTheme ? pLevelTheme->FindRoom(m_iszRoomTemplate.c_str()) : NULL;
+}
+
 // =================================
 // IASW_Room_Details interface
 // =================================
@@ -156,74 +139,74 @@ bool CRoom::LoadRoomFromKeyValues( KeyValues *pRoomKeys, CMapLayout *pMapLayout 
 // tags
 bool CRoom::HasTag( const char *szTag )
 {
-	if ( !m_pRoomTemplate )
+	const CRoomTemplate *pRoomTemplate = GetRoomTemplate();
+	if ( !pRoomTemplate )
 		return false;
 
-	return m_pRoomTemplate->HasTag( szTag );
+	return pRoomTemplate->HasTag( szTag );
 }
 
 int CRoom::GetNumTags()
 {
-	if ( !m_pRoomTemplate )
+	const CRoomTemplate *pRoomTemplate = GetRoomTemplate();
+	if (!pRoomTemplate)
 		return 0;
 
-	return m_pRoomTemplate->GetNumTags();
+	return pRoomTemplate->GetNumTags();
 }
 
 const char* CRoom::GetTag( int i )
 {
-	if ( !m_pRoomTemplate )
+	const CRoomTemplate *pRoomTemplate = GetRoomTemplate();
+	if (!pRoomTemplate)
 		return "";
 
-	return m_pRoomTemplate->GetTag( i );
+	return pRoomTemplate->GetTag( i );
 }
 
 int CRoom::GetSpawnWeight()
 {
-	if ( !m_pRoomTemplate )
+	const CRoomTemplate *pRoomTemplate = GetRoomTemplate();
+	if (!pRoomTemplate)
 		return -1;
 
-	return m_pRoomTemplate->GetSpawnWeight();
+	return pRoomTemplate->GetSpawnWeight();
 }
 
 bool CRoom::GetThumbnailName( char* szOut, int iBufferSize )
 {
-	if ( !m_pRoomTemplate || !m_pRoomTemplate->m_pLevelTheme )
-		return false;
-
-	Q_snprintf( szOut, iBufferSize, "tilegen/roomtemplates/%s/%s.tga", m_pRoomTemplate->m_pLevelTheme->m_szName, m_pRoomTemplate->GetFullName() );
+	Q_snprintf( szOut, iBufferSize, "tilegen/roomtemplates/%s/%s.tga", m_iszLevelTheme.c_str(), m_iszRoomTemplate.c_str() );
 	return true;
 }
 
 bool CRoom::GetFullRoomName( char* szOut, int iBufferSize )
 {
-	if ( !m_pRoomTemplate || !m_pRoomTemplate->m_pLevelTheme )
-		return false;
-
-	Q_snprintf( szOut, iBufferSize, "%s\\%s", m_pRoomTemplate->m_pLevelTheme->m_szName, m_pRoomTemplate->GetFullName() );
+	Q_snprintf( szOut, iBufferSize, "%s\\%s", m_iszLevelTheme.c_str(), m_iszRoomTemplate.c_str() );
 	return true;
 }
 
 void CRoom::GetSoundscape( char* szOut, int iBufferSize )
 {
-	Q_snprintf( szOut, iBufferSize, "%s", m_pRoomTemplate ? m_pRoomTemplate->GetSoundscape() : "" );
+	const CRoomTemplate *pRoomTemplate = GetRoomTemplate();
+	if (!pRoomTemplate)
+	{
+		szOut[0] = '\0';
+	}
+	else
+	{
+		Q_snprintf(szOut, iBufferSize, "%s", pRoomTemplate->GetSoundscape());
+	}
 }
 
 void CRoom::GetTheme( char* szOut, int iBufferSize )
 {
-	Q_snprintf( szOut, iBufferSize, "%s", ( m_pRoomTemplate && m_pRoomTemplate->m_pLevelTheme ) ? m_pRoomTemplate->m_pLevelTheme->m_szName : "" );
+	Q_strncpy(szOut, m_iszLevelTheme.c_str(), iBufferSize);
 }
 
 const Vector& CRoom::GetAmbientLight()
 {
-	/*
-	if ( m_bHasAlienEncounter )
-	{
-		static Vector s_vecAlienEncounterAmbient = vec3_origin; //Vector( 0.05f, 0.05f, 0.05f );
-		return s_vecAlienEncounterAmbient;
-	}
-	*/
-	return ( m_pRoomTemplate && m_pRoomTemplate->m_pLevelTheme ) ? m_pRoomTemplate->m_pLevelTheme->m_vecAmbientLight : vec3_origin;
+	const CLevelTheme *pLevelTheme = GetLevelTheme();
+	return pLevelTheme ? pLevelTheme->m_vecAmbientLight : vec3_origin;
 }
 
 
@@ -232,10 +215,11 @@ const Vector& CRoom::GetAmbientLight()
 //-----------------------------------------------------------------------------
 int CRoom::GetTileType()
 {
-	if ( !m_pRoomTemplate )
+	const CRoomTemplate *pRoomTemplate = GetRoomTemplate();
+	if ( !pRoomTemplate )
 		return -1;
 
-	return m_pRoomTemplate->GetTileType();
+	return pRoomTemplate->GetTileType();
 }
 
 
@@ -255,7 +239,8 @@ const char *CRoom::GetTileTypeName( int nType )
 
 void CRoom::GetWorldBounds( Vector *vecWorldMins, Vector *vecWorldMaxs )
 {
-	if ( !m_pRoomTemplate )
+	const CRoomTemplate *pRoomTemplate = GetRoomTemplate();
+	if ( !pRoomTemplate )
 	{
 		*vecWorldMins = vec3_origin;
 		*vecWorldMaxs = vec3_origin;
@@ -270,8 +255,8 @@ void CRoom::GetWorldBounds( Vector *vecWorldMins, Vector *vecWorldMaxs )
 	vecWorldMins->y = yOffset;
 	vecWorldMins->z = 0;
 
-	vecWorldMaxs->x = xOffset + m_pRoomTemplate->GetTilesX() * ASW_TILE_SIZE;
-	vecWorldMaxs->y = yOffset + m_pRoomTemplate->GetTilesY() * ASW_TILE_SIZE;
+	vecWorldMaxs->x = xOffset + pRoomTemplate->GetTilesX() * ASW_TILE_SIZE;
+	vecWorldMaxs->y = yOffset + pRoomTemplate->GetTilesY() * ASW_TILE_SIZE;
 	vecWorldMaxs->z = 0;
 }
 
@@ -288,16 +273,18 @@ const Vector& CRoom::WorldSpaceCenter()
 
 int CRoom::GetNumExits()
 {
-	if ( !m_pRoomTemplate )
+	const CRoomTemplate *pRoomTemplate = GetRoomTemplate();
+	if ( !pRoomTemplate )
 		return 0;
 
-	return m_pRoomTemplate->m_Exits.Count();	
+	return pRoomTemplate->m_Exits.Count();	
 }
 
 IASW_Room_Details *CRoom::GetAdjacentRoom( int nExit )
 {
+	const CRoomTemplate *pRoomTemplate = GetRoomTemplate();
 	int nExitX, nExitY;
-	if ( GetExitPosition( m_pRoomTemplate, m_iPosX, m_iPosY, nExit, &nExitX, &nExitY ) )
+	if ( GetExitPosition( pRoomTemplate, m_iPosX, m_iPosY, nExit, &nExitX, &nExitY ) )
 	{
 		return m_pMapLayout->GetRoom( nExitX, nExitY );
 	}

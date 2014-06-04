@@ -196,10 +196,7 @@ bool CMapLayout::SaveMapLayout( const char *filename )
 	for (int i=0;i<iRooms;i++)
 	{
 		KeyValues *pRoomKeys = new KeyValues( "logical_room" );
-		if ( m_LogicalRooms[i]->m_pLevelTheme )
-		{
-			pRoomKeys->SetString( "theme", m_LogicalRooms[i]->m_pLevelTheme->m_szName );
-		}
+		pRoomKeys->SetString( "theme", m_LogicalRooms[i]->m_iszLevelTheme.c_str() );
 		pRoomKeys->SetString( "template", m_LogicalRooms[i]->GetFullName() );
 		pLayoutKeys->AddSubKey( pRoomKeys );
 	}
@@ -367,10 +364,10 @@ void CMapLayout::GetExtents(int &iTileX_Min, int &iTileX_Max, int &iTileY_Min, i
 			iTileX_Min = pRoom->m_iPosX;
 		if (pRoom->m_iPosY < iTileY_Min)
 			iTileY_Min = pRoom->m_iPosY;
-		if (pRoom->m_iPosX + pRoom->m_pRoomTemplate->GetTilesX() > iTileX_Max)
-			iTileX_Max = pRoom->m_iPosX + pRoom->m_pRoomTemplate->GetTilesX();
-		if (pRoom->m_iPosY + pRoom->m_pRoomTemplate->GetTilesY() > iTileY_Max)
-			iTileY_Max = pRoom->m_iPosY + pRoom->m_pRoomTemplate->GetTilesY();
+		if (pRoom->m_iPosX + pRoom->GetRoomTemplate()->GetTilesX() > iTileX_Max)
+			iTileX_Max = pRoom->m_iPosX + pRoom->GetRoomTemplate()->GetTilesX();
+		if (pRoom->m_iPosY + pRoom->GetRoomTemplate()->GetTilesY() > iTileY_Max)
+			iTileY_Max = pRoom->m_iPosY + pRoom->GetRoomTemplate()->GetTilesY();
 	}
 
 	// don't return out of bounds
@@ -494,7 +491,7 @@ bool CMapLayout::CheckExitsOnSquares( const CRoomTemplate *pTemplate1, int offse
 {
 	CRoom *pRoom2 = m_pRoomGrid[x2][y2];
 	Assert( pRoom2 );
-	const CRoomTemplate *pTemplate2 = pRoom2->m_pRoomTemplate;
+	const CRoomTemplate *pTemplate2 = pRoom2->GetRoomTemplate();
 	Assert( pTemplate2 );
 
 	// check if the roomtemplate to be placed has an exit facing this way
@@ -550,13 +547,13 @@ void CMapLayout::PlaceRoom( CRoom *pRoom )
 	pRoom->m_nPlacementIndex = m_PlacedRooms.AddToTail( pRoom );
 	pRoom->m_pMapLayout = this;
 
-	if ( !pRoom->m_pRoomTemplate )
+	if ( !pRoom->GetRoomTemplate() )
 		return;
 
 	// fill in our pointer grid to easily access the croom later
-	for (int x = pRoom->m_iPosX ; x < pRoom->m_iPosX + pRoom->m_pRoomTemplate->GetTilesX() ; x++)
+	for (int x = pRoom->m_iPosX ; x < pRoom->m_iPosX + pRoom->GetRoomTemplate()->GetTilesX() ; x++)
 	{
-		for (int y = pRoom->m_iPosY ; y < pRoom->m_iPosY + pRoom->m_pRoomTemplate->GetTilesY() ; y++)
+		for (int y = pRoom->m_iPosY ; y < pRoom->m_iPosY + pRoom->GetRoomTemplate()->GetTilesY() ; y++)
 		{
 			m_pRoomGrid[x][y] = pRoom;
 		}
@@ -568,15 +565,15 @@ void CMapLayout::RemoveRoom( CRoom *pRoom )
 	m_PlacedRooms.FindAndRemove( pRoom );
 	pRoom->m_pMapLayout = NULL;
 
-	if ( !pRoom->m_pRoomTemplate )
+	if ( !pRoom->GetRoomTemplate() )
 		return;
 
 	// clear the pointer grid at the location of this room
 	int iTileX = pRoom->m_iPosX;
 	int iTileY = pRoom->m_iPosY;
-	for ( int x = iTileX ; x < iTileX + pRoom->m_pRoomTemplate->GetTilesX() ; x++ )
+	for ( int x = iTileX ; x < iTileX + pRoom->GetRoomTemplate()->GetTilesX() ; x++ )
 	{
-		for ( int y = iTileY ; y < iTileY + pRoom->m_pRoomTemplate->GetTilesY() ; y++ )
+		for ( int y = iTileY ; y < iTileY + pRoom->GetRoomTemplate()->GetTilesY() ; y++ )
 		{
 			m_pRoomGrid[x][y] = NULL;
 		}

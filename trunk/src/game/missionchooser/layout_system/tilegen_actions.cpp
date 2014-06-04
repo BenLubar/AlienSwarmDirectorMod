@@ -987,7 +987,7 @@ void CTilegenAction_AddInstances::Execute( CLayoutSystem *pLayoutSystem )
 	CUtlVector< int > validCandidates;
 	for ( int i = 0; i < pMapLayout->m_PlacedRooms.Count(); ++ i )
 	{
-		pLayoutSystem->GetFreeVariables()->SetOrCreateFreeVariable( "RoomTemplate", ( void * )pMapLayout->m_PlacedRooms[i]->m_pRoomTemplate );
+		pLayoutSystem->GetFreeVariables()->SetOrCreateFreeVariable( "RoomTemplate", ( void * )pMapLayout->m_PlacedRooms[i]->GetRoomTemplate() );
 		if ( m_pRoomTemplateFilter == NULL || m_pRoomTemplateFilter->Evaluate( pFreeVariables ) )
 		{
 			validCandidates.AddToTail( i );
@@ -1077,18 +1077,18 @@ void CTilegenAction_LoadLayout::Execute( CLayoutSystem *pLayoutSystem )
 	for ( int i = 0; i < pMapLayout->m_PlacedRooms.Count(); ++ i )
 	{
 		CRoom *pRoom = pMapLayout->m_PlacedRooms[i];
-		CRoomCandidate roomCandidate( pRoom->m_pRoomTemplate, pRoom->m_iPosX, pRoom->m_iPosY, NULL );
+		CRoomCandidate roomCandidate( pRoom->GetRoomTemplate(), pRoom->m_iPosX, pRoom->m_iPosY, NULL );
 		if ( !pLayoutSystem->TryPlaceRoom( &roomCandidate ) )
 		{
 			Log_Warning( LOG_TilegenLayoutSystem, "Unable to place room template '%s' at position (%d, %d) based on data from layout file '%s'.\n", 
-				pRoom->m_pRoomTemplate->GetFullName(), 
+				pRoom->m_iszRoomTemplate.c_str(),
 				pRoom->m_iPosX,
 				pRoom->m_iPosY,
 				m_LayoutFilename );
 			pLayoutSystem->OnError();
 			return;
 		}
-		Log_Msg( LOG_TilegenLayoutSystem, "Chose room candidate %s at position (%d, %d).\n", pRoom->m_pRoomTemplate->GetFullName(), pRoom->m_iPosX, pRoom->m_iPosY );
+		Log_Msg( LOG_TilegenLayoutSystem, "Chose room candidate %s at position (%d, %d).\n", pRoom->m_iszRoomTemplate.c_str(), pRoom->m_iPosX, pRoom->m_iPosY );
 	}
 }
 

@@ -4,6 +4,8 @@
 #pragma once
 #endif
 
+#include <string>
+
 class CRoomTemplate;
 class CMissionChooserTGAImagePanel;
 
@@ -26,9 +28,11 @@ public:
 	virtual void ApplySchemeSettings(vgui::IScheme *pScheme);
 	virtual void OnMouseReleased(vgui::MouseCode code);
 
-	void SetRoomTemplate( const CRoomTemplate* pTemplate );	
+	CRoomTemplate * GetRoomTemplate();
+	void SetRoomTemplate(const CRoomTemplate* pTemplate);
 	void UpdateImages();
-	const CRoomTemplate* m_pRoomTemplate;
+	std::string m_iszLevelTheme;
+	std::string m_iszRoomTemplate;
 
 	CMissionChooserTGAImagePanel* m_pRoomTGAPanel;
 	CUtlVector<CMissionChooserTGAImagePanel*> m_pGridImagePanels;

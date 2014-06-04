@@ -4,11 +4,13 @@
 #pragma once
 #endif
 
+#include <string>
 #include "Utlvector.h"
 #include "ChunkFile.h"
 #include "missionchooser/iasw_random_missions.h"
 
 class CRoomTemplate;
+class CLevelTheme;
 class CMapLayout;
 class CPlacedRoomTemplatePanel;
 
@@ -22,14 +24,17 @@ class CRoom : public IASW_Room_Details
 {
 public:
 	CRoom();
-	CRoom( CMapLayout *pMapLayout, const CRoomTemplate* pRoomTemplate, int TileX, int TileY );
+	CRoom(CMapLayout *pMapLayout, std::string iszLevelTheme, std::string iszRoomTemplate, int TileX, int TileY);
 	virtual ~CRoom();
 	
 	// tile position we're in
 	int m_iPosX;
 	int m_iPosY;
 
-	const CRoomTemplate *m_pRoomTemplate;
+	std::string m_iszLevelTheme;
+	std::string m_iszRoomTemplate;
+	CLevelTheme *GetLevelTheme() const;
+	CRoomTemplate *GetRoomTemplate() const;
 
 	// used by the layout generator
 	int m_iNumChildren;

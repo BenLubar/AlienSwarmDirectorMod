@@ -20,7 +20,7 @@ void CTilegenListener_NumTilesPlaced::OnBeginGeneration( const CLayoutSystem *pL
 
 void CTilegenListener_NumTilesPlaced::OnRoomPlaced( const CLayoutSystem *pLayoutSystem, CFreeVariableMap *pFreeVariables  )
 {
-	int nArea = pLayoutSystem->GetMapLayout()->GetLastPlacedRoom()->m_pRoomTemplate->GetArea();
+	int nArea = pLayoutSystem->GetMapLayout()->GetLastPlacedRoom()->GetRoomTemplate()->GetArea();
 	m_nTotalArea += nArea;
 	m_nTotalAreaThisState += nArea;
 	pFreeVariables->SetOrCreateFreeVariable( "NumTilesPlaced", ( void * )m_nTotalArea );

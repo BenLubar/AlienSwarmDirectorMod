@@ -4,6 +4,7 @@
 #pragma once
 #endif
 
+#include <string>
 #include "missionchooser/iasw_random_missions.h"
 
 class CLevelTheme;
@@ -55,7 +56,7 @@ public:
 class CRoomTemplate
 {
 public:
-	CRoomTemplate(CLevelTheme* pLevelTheme);
+	CRoomTemplate(std::string iszLevelTheme);
 	~CRoomTemplate();
 
 	void Clear();
@@ -85,7 +86,7 @@ public:
 
 	CUtlVector<CRoomTemplateExit*> m_Exits;	// list of exits	
 
-	CLevelTheme* m_pLevelTheme;		// pointer to the loaded in theme	
+	std::string m_iszLevelTheme;
 
 	// Tag queries
 	bool HasTag( const char *pTag ) const;

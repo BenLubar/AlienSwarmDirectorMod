@@ -244,7 +244,7 @@ void CTileGenDialog::OnCommand( const char *command )
 			pMessage->DoModal();
 			return;
 		}
-		CRoomTemplate *pRoomTemplate = new CRoomTemplate(CLevelTheme::s_pCurrentTheme);
+		CRoomTemplate *pRoomTemplate = new CRoomTemplate(CLevelTheme::s_pCurrentTheme->m_szName);
 		if (pRoomTemplate)
 		{
 			// Launch the room template editing window
@@ -540,15 +540,16 @@ void CTileGenDialog::OnTick()
 				for (int i=0; i<iRooms && !bCollision; i++)
 				{
 					CRoom *pRoom = m_SelectedRooms[i];
-					if (!pRoom || !pRoom->m_pRoomTemplate )
+					CRoomTemplate *pRoomTemplate = pRoom ? pRoom->GetRoomTemplate() : NULL;
+					if (!pRoomTemplate)
 					{
 						bCollision = true;
 						break;
 					}
 
-					for ( int x=0;x<pRoom->m_pRoomTemplate->GetTilesX() && !bCollision;x++ )
+					for ( int x=0;x<pRoomTemplate->GetTilesX() && !bCollision;x++ )
 					{
-						for ( int y=0;y<pRoom->m_pRoomTemplate->GetTilesY();y++ )
+						for ( int y=0;y<pRoomTemplate->GetTilesY();y++ )
 						{
 							if ( m_pMapLayout->m_pRoomGrid[ pRoom->m_iPosX + xdiff + x ][ pRoom->m_iPosY + ydiff + y ] != NULL &&
 								 !IsASelectedRoom( m_pMapLayout->m_pRoomGrid[ pRoom->m_iPosX + xdiff + x ][ pRoom->m_iPosY + ydiff + y ] ) )
@@ -882,21 +883,23 @@ void CTileGenDialog::GenerateRoomThumbnails( bool bAddToPerforce )
 			continue;
 	
 		KeyValues *pkvEntry = new KeyValues( "Thumbnail" );
-		Q_snprintf( filename, sizeof( filename ), "tilegen/roomtemplates/%s/%s.tga", pRoom->m_pRoomTemplate->m_pLevelTheme->m_szName,
-			pRoom->m_pRoomTemplate->GetFullName() );
+		Q_snprintf( filename, sizeof( filename ), "tilegen/roomtemplates/%s/%s.tga", pRoom->m_iszLevelTheme.c_str(),
+			pRoom->m_iszRoomTemplate.c_str() );
 		pkvEntry->SetString( "Filename", filename );
 
+		CRoomTemplate *pRoomTemplate = pRoom->GetRoomTemplate();
+		Assert(pRoomTemplate);
 		int half_map_size = MAP_LAYOUT_TILES_WIDE * 0.5f;		// shift back so the middle of our grid is the origin
 		float xPos = (pRoom->m_iPosX - half_map_size) * ASW_TILE_SIZE;
 		float yPos = (pRoom->m_iPosY - half_map_size) * ASW_TILE_SIZE;
 		pkvEntry->SetFloat( "RoomX", xPos );
-		pkvEntry->SetFloat( "RoomY", yPos + pRoom->m_pRoomTemplate->GetTilesY() * ASW_TILE_SIZE );
+		pkvEntry->SetFloat( "RoomY", yPos + pRoomTemplate->GetTilesY() * ASW_TILE_SIZE );
 
-		pkvEntry->SetFloat( "RoomWide", pRoom->m_pRoomTemplate->GetTilesX() * ASW_TILE_SIZE );
-		pkvEntry->SetFloat( "RoomTall", pRoom->m_pRoomTemplate->GetTilesY() * ASW_TILE_SIZE );
+		pkvEntry->SetFloat( "RoomWide", pRoomTemplate->GetTilesX() * ASW_TILE_SIZE );
+		pkvEntry->SetFloat( "RoomTall", pRoomTemplate->GetTilesY() * ASW_TILE_SIZE );
 
-		pkvEntry->SetFloat( "OutputWide", pRoom->m_pRoomTemplate->GetTilesX() * RoomTemplatePanelTileSize() );
-		pkvEntry->SetFloat( "OutputTall", pRoom->m_pRoomTemplate->GetTilesY() * RoomTemplatePanelTileSize() );
+		pkvEntry->SetFloat( "OutputWide", pRoomTemplate->GetTilesX() * RoomTemplatePanelTileSize() );
+		pkvEntry->SetFloat( "OutputTall", pRoomTemplate->GetTilesY() * RoomTemplatePanelTileSize() );
 
 		pKV->AddSubKey( pkvEntry );
 	}
@@ -985,8 +988,11 @@ void CTileGenDialog::EndRubberBandSelection( int mx, int my )
 	for ( int i = 0; i < iRooms; i++ )
 	{
 		CRoom *pRoom = m_pMapLayout->m_PlacedRooms[i];
-		if ( pRoom->m_iPosX < iEndTileX && ( pRoom->m_iPosX + pRoom->m_pRoomTemplate->GetTilesX() ) > iStartTileX &&
-			pRoom->m_iPosY < iEndTileY && ( pRoom->m_iPosY + pRoom->m_pRoomTemplate->GetTilesY() ) > iStartTileY )
+		Assert(pRoom);
+		CRoomTemplate *pRoomTemplate = pRoom->GetRoomTemplate();
+		Assert(pRoomTemplate);
+		if ( pRoom->m_iPosX < iEndTileX && ( pRoom->m_iPosX + pRoomTemplate->GetTilesX() ) > iStartTileX &&
+			pRoom->m_iPosY < iEndTileY && ( pRoom->m_iPosY + pRoomTemplate->GetTilesY() ) > iStartTileY )
 		{
 			ToggleRoomSelection( pRoom );
 		}

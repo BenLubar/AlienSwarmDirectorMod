@@ -126,7 +126,7 @@ CRoomTemplateEditDialog::CRoomTemplateEditDialog( Panel *parent, const char *nam
 		
 	LoadControlSettings( "tilegen/RoomTemplateEditDialog.res", "GAME" );
 
-	m_pThemeLabel->SetText(pRoomTemplate->m_pLevelTheme->m_szName);
+	m_pThemeLabel->SetText(pRoomTemplate->m_iszLevelTheme.c_str());
 	if (!bCreatingNew)
 	{
 		m_pRoomTemplateNameEdit->SetText( pRoomTemplate->GetFullName() );
@@ -195,7 +195,7 @@ void CRoomTemplateEditDialog::OnCommand( const char *command )
 		}
 
 		char relativePath[MAX_PATH], fullPath[MAX_PATH];
-		Q_snprintf( relativePath, _countof( relativePath ), "tilegen/roomtemplates/%s/%s.roomtemplate", m_pRoomTemplate->m_pLevelTheme->m_szName, m_pRoomTemplate->GetFullName() );
+		Q_snprintf( relativePath, _countof( relativePath ), "tilegen/roomtemplates/%s/%s.roomtemplate", m_pRoomTemplate->m_iszLevelTheme.c_str(), m_pRoomTemplate->GetFullName() );
 		// This does not work if the file doesn't exist
 		g_pFullFileSystem->RelativePathToFullPath( relativePath, "GAME", fullPath, MAX_PATH );
 
@@ -263,7 +263,7 @@ void CRoomTemplateEditDialog::OnCommand( const char *command )
 		{
 			// reload the room template from disk to undo any changes we may have made
 			char szFullFileName[256];
-			Q_snprintf(szFullFileName, _countof(szFullFileName), "tilegen/roomtemplates/%s/%s.roomtemplate", m_pRoomTemplate->m_pLevelTheme->m_szName, m_pRoomTemplate->GetFullName());
+			Q_snprintf(szFullFileName, _countof(szFullFileName), "tilegen/roomtemplates/%s/%s.roomtemplate", m_pRoomTemplate->m_iszLevelTheme.c_str(), m_pRoomTemplate->GetFullName());
 			KeyValues *pRoomTemplateKeyValues = new KeyValues( m_pRoomTemplate->GetFullName() );
 			if (pRoomTemplateKeyValues->LoadFromFile(g_pFullFileSystem, szFullFileName, "GAME"))
 			{
@@ -282,7 +282,7 @@ void CRoomTemplateEditDialog::OnCommand( const char *command )
 	{
 		OnClose();
 		CMapLayout *pMapLayout = new CMapLayout;
-		new CRoom( pMapLayout, m_pRoomTemplate, MAP_LAYOUT_TILES_WIDE / 2, MAP_LAYOUT_TILES_WIDE / 2 );
+		new CRoom( pMapLayout, m_pRoomTemplate->m_iszLevelTheme, m_pRoomTemplate->GetFullName(), MAP_LAYOUT_TILES_WIDE / 2, MAP_LAYOUT_TILES_WIDE / 2 );
 		pMapLayout->SaveMapLayout( "maps/output.layout" );
 		char buffer[256];
 		Q_snprintf(buffer, _countof(buffer), "asw_random_weapons 0; asw_money 0; asw_build_map %s edit %s", "output.layout", GetVMFFilename() );
@@ -293,7 +293,7 @@ void CRoomTemplateEditDialog::OnCommand( const char *command )
 	{
 		OnClose();
 		CMapLayout *pMapLayout = new CMapLayout;
-		new CRoom( pMapLayout, m_pRoomTemplate, MAP_LAYOUT_TILES_WIDE / 2, MAP_LAYOUT_TILES_WIDE / 2 );
+		new CRoom( pMapLayout, m_pRoomTemplate->m_iszLevelTheme, m_pRoomTemplate->GetFullName(), MAP_LAYOUT_TILES_WIDE / 2, MAP_LAYOUT_TILES_WIDE / 2 );
 		pMapLayout->SaveMapLayout( "maps/output.layout" );
 		char buffer[256];
 		Q_snprintf(buffer, _countof(buffer), "asw_random_weapons 0; asw_money 0; asw_director_spawn_npcs 0; asw_spawner_spawn_npcs 0; asw_build_map %s; asw_generate_nav 1", "output.layout", GetVMFFilename() );
@@ -539,7 +539,7 @@ void CRoomTemplateEditDialog::DoPickVMF()
 	FileOpenDialog *pFileDialog = new FileOpenDialog(this, "Set Room Template", true);
 
 	char template_dir[1024];
-	Q_snprintf( template_dir, _countof( template_dir ), "%s\\tilegen\\roomtemplates\\%s", g_gamedir, m_pRoomTemplate->m_pLevelTheme->m_szName );
+	Q_snprintf( template_dir, _countof( template_dir ), "%s\\tilegen\\roomtemplates\\%s", g_gamedir, m_pRoomTemplate->m_iszLevelTheme.c_str() );
 	pFileDialog->SetStartDirectory( template_dir );
 	pFileDialog->AddFilter("*.vmf", "Map file (*.vmf)", true);
 	pFileDialog->AddActionSignalTarget(this);
@@ -549,7 +549,7 @@ void CRoomTemplateEditDialog::DoPickVMF()
 
 void CRoomTemplateEditDialog::OnFileSelected( const char *fullpath )
 {
-	const char *pThemeStart = Q_strstr( fullpath, m_pRoomTemplate->m_pLevelTheme->m_szName );
+	const char *pThemeStart = Q_strstr( fullpath, m_pRoomTemplate->m_iszLevelTheme.c_str() );
 	if ( !pThemeStart )
 	{
 		Warning( "Failed to pull theme name out of selected file.  Make sure vmf file is in the correct folder under tilegen/roomtemplates.\n" );
@@ -593,7 +593,7 @@ const char* CRoomTemplateEditDialog::GetVMFFilename()
 {
 	static char buffer[MAX_PATH];
 
-	Q_snprintf( buffer, _countof( buffer ), "tilegen/roomtemplates/%s/%s", m_pRoomTemplate->m_pLevelTheme->m_szName, m_pRoomTemplate->GetFullName() );
+	Q_snprintf( buffer, _countof( buffer ), "tilegen/roomtemplates/%s/%s", m_pRoomTemplate->m_iszLevelTheme.c_str(), m_pRoomTemplate->GetFullName() );
 	
 	return buffer;
 }

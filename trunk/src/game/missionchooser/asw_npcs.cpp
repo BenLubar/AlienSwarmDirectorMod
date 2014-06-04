@@ -47,7 +47,7 @@ void CASWMissionChooserNPCs::InitFixedSpawns( CLayoutSystem *pLayoutSystem, CMap
 	for ( int i = 0; i < iRooms; i++ )
 	{
 		CRoom *pRoom = pLayout->m_PlacedRooms[i];
-		if ( pRoom && pRoom->m_pRoomTemplate && pRoom->m_pRoomTemplate->HasTag( "AlienEncounter" ) )
+		if ( pRoom && pRoom->GetRoomTemplate() && pRoom->GetRoomTemplate()->HasTag( "AlienEncounter" ) )
 		{
 			bAlienEncounterTag = true;
 
@@ -87,7 +87,7 @@ void CASWMissionChooserNPCs::InitFixedSpawns( CLayoutSystem *pLayoutSystem, CMap
 	for ( int i = 0; i < iRooms; i++ )
 	{
 		CRoom *pRoom = pLayout->m_PlacedRooms[i];
-		iTotalArea += ( pRoom->m_pRoomTemplate->GetTilesX() * ASW_TILE_SIZE ) * ( pRoom->m_pRoomTemplate->GetTilesY() * ASW_TILE_SIZE );
+		iTotalArea += ( pRoom->GetRoomTemplate()->GetTilesX() * ASW_TILE_SIZE ) * ( pRoom->GetRoomTemplate()->GetTilesY() * ASW_TILE_SIZE );
 	}
 
 	// decide how many encounters we want
@@ -103,9 +103,9 @@ void CASWMissionChooserNPCs::InitFixedSpawns( CLayoutSystem *pLayoutSystem, CMap
 	{
 		CRoom *pRoom = pLayout->m_PlacedRooms[i];
 		if ( pRoom->GetSpawnWeight() > 0
-				&& !pRoom->m_pRoomTemplate->IsEscapeRoom() 
-				&& !pRoom->m_pRoomTemplate->IsStartRoom() 
-				&& !pRoom->m_pRoomTemplate->IsBorderRoom() )
+				&& !pRoom->GetRoomTemplate()->IsEscapeRoom() 
+				&& !pRoom->GetRoomTemplate()->IsStartRoom() 
+				&& !pRoom->GetRoomTemplate()->IsBorderRoom() )
 		{
 			flTotalWeight += pRoom->GetSpawnWeight();
 			candidates.AddToTail( pRoom );
@@ -169,12 +169,12 @@ void CASWMissionChooserNPCs::PushEncountersApart( CMapLayout *pLayout )
 	{
 		CRoom *pRoom = pLayout->m_PlacedRooms[i];
 		if ( pRoom->GetSpawnWeight() > 0
-			&& !pRoom->m_pRoomTemplate->IsEscapeRoom() 
-			&& !pRoom->m_pRoomTemplate->IsStartRoom() 
-			&& !pRoom->m_pRoomTemplate->IsBorderRoom() )
+			&& !pRoom->GetRoomTemplate()->IsEscapeRoom() 
+			&& !pRoom->GetRoomTemplate()->IsStartRoom() 
+			&& !pRoom->GetRoomTemplate()->IsBorderRoom() )
 		{
 			// skip 1x1 rooms
-			if ( pRoom->m_pRoomTemplate->GetTilesX() * pRoom->m_pRoomTemplate->GetTilesY() <= 1 )
+			if ( pRoom->GetRoomTemplate()->GetTilesX() * pRoom->GetRoomTemplate()->GetTilesY() <= 1 )
 				continue;
 
 			flTotalWeight += pRoom->GetSpawnWeight();

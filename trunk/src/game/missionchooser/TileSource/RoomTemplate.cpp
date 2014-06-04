@@ -32,8 +32,8 @@ ExitDirection_t GetDirectionFromString( const char *pDirectionString )
 	return EXITDIR_END;
 }
 
-CRoomTemplate::CRoomTemplate( CLevelTheme* pLevelTheme ) :
-m_pLevelTheme( pLevelTheme ),
+CRoomTemplate::CRoomTemplate( std::string iszLevelTheme ) :
+m_iszLevelTheme( iszLevelTheme ),
 m_nSpawnWeight( 0 ),
 m_nTilesX( 1 ),
 m_nTilesY( 1 )
@@ -114,22 +114,14 @@ void CRoomTemplate::LoadFromKeyValues( const char *pRoomName, KeyValues *pKeyVal
 
 bool CRoomTemplate::SaveRoomTemplate()
 {
-	if (!m_pLevelTheme)
-		return false;
-
 	char szThemeDirName[MAX_PATH];
-	Q_snprintf(szThemeDirName, sizeof(szThemeDirName), "tilegen/roomtemplates/%s", m_pLevelTheme->m_szName);
-	g_pFullFileSystem->CreateDirHierarchy( szThemeDirName, "GAME" );
+	Q_snprintf(szThemeDirName, sizeof(szThemeDirName), "tilegen/roomtemplates/%s", m_iszLevelTheme.c_str());
+	g_pFullFileSystem->CreateDirHierarchy( szThemeDirName, "MOD" );
 
 	Msg("%s\n", m_FullName);
 
-	char fullName_correctSeperator[MAX_PATH];
-	Q_snprintf(fullName_correctSeperator, sizeof(fullName_correctSeperator), "%s", m_FullName);
-	std::replace(fullName_correctSeperator, fullName_correctSeperator+strlen(fullName_correctSeperator), '\\', '/');
-
 	char szFullFileName[MAX_PATH];	
-	//Q_snprintf( szFullFileName, sizeof(szFullFileName), "tilegen/roomtemplates/%s/%s.roomtemplate", m_pLevelTheme->m_szName, m_FullName );
-	Q_snprintf( szFullFileName, sizeof(szFullFileName), "tilegen/roomtemplates/%s/%s.roomtemplate", m_pLevelTheme->m_szName, fullName_correctSeperator );	
+	Q_snprintf(szFullFileName, sizeof(szFullFileName), "%s/%s.roomtemplate", szThemeDirName, m_FullName);
 
 	KeyValues *pRoomTemplateKeyValues = new KeyValues( m_FullName );
 	pRoomTemplateKeyValues->SetInt( "TilesX", m_nTilesX );
@@ -162,8 +154,7 @@ bool CRoomTemplate::SaveRoomTemplate()
 	}
 	pRoomTemplateKeyValues->AddSubKey(pkvSubSection);
 
-	//if (!pRoomTemplateKeyValues->SaveToFile(g_pFullFileSystem, szFullFileName, "GAME"))
-	if (!pRoomTemplateKeyValues->SaveToFile(g_pFullFileSystem, szFullFileName))
+	if (!pRoomTemplateKeyValues->SaveToFile(g_pFullFileSystem, szFullFileName, "MOD"))
 	{
 		Msg("Error: Failed to save room template %s\n", szFullFileName);
 		return false;

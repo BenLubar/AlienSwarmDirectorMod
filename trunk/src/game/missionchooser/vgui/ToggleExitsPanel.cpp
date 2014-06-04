@@ -95,12 +95,7 @@ void CToggleExitsPanel::SetRoomTemplatePanel( CRoomTemplatePanel *pPanel, bool b
 
 const CRoomTemplate *CToggleExitsPanel::GetRoomTemplate() const
 {
-	if ( !m_pRoomTemplatePanel )
-	{
-		return NULL;
-	}
-
-	return m_pRoomTemplatePanel->m_pRoomTemplate;
+	return m_pRoomTemplatePanel ? m_pRoomTemplatePanel->GetRoomTemplate() : NULL;
 }
 
 // ===============================================================================================================

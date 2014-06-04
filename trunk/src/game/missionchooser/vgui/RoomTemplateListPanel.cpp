@@ -69,15 +69,15 @@ void CRoomTemplateListPanel::PerformLayout()
 	{
 		m_RoomTemplateFolders[i].SetButtonText();
 		m_RoomTemplateFolders[i].m_pFolderButton->SetBounds(padding, cur_y, GetWide() - padding * 2, 24);
-		cur_y += 24;		
+		cur_y += 24;
 
 		// Add every room template in this category
 		for ( int j = 0; j < m_Thumbnails.Count(); ++ j )
 		{
-			if ( Q_stricmp( m_Thumbnails[j]->m_pRoomTemplate->GetFolderName(), m_RoomTemplateFolders[i].m_FolderName ) != 0 )
+			if ( Q_stricmp( m_Thumbnails[j]->GetRoomTemplate()->GetFolderName(), m_RoomTemplateFolders[i].m_FolderName ) != 0 )
 				continue;
 
-			if ( m_RoomTemplateFolders[i].m_bExpanded && FilterTemplate( m_Thumbnails[j]->m_pRoomTemplate ) )
+			if ( m_RoomTemplateFolders[i].m_bExpanded && FilterTemplate( m_Thumbnails[j]->GetRoomTemplate() ) )
 			{
 				m_Thumbnails[j]->SetVisible( true );
 
@@ -123,7 +123,7 @@ void CRoomTemplateListPanel::UpdatePanelsWithTemplate( const CRoomTemplate* pTem
 		if (!pPanel)
 			continue;
 
-		if (pPanel->m_pRoomTemplate == pTemplate)
+		if (pPanel->GetRoomTemplate() == pTemplate)
 			pPanel->UpdateImages();
 	}
 }

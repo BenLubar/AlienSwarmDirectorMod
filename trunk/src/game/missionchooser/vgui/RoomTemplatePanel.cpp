@@ -22,9 +22,8 @@ using namespace vgui;
 
 CUtlVector<CRoomTemplatePanel*> g_pRoomTemplatePanels;
 
-CRoomTemplatePanel::CRoomTemplatePanel( Panel *parent, const char *name ) : BaseClass( parent, name )
+CRoomTemplatePanel::CRoomTemplatePanel(Panel *parent, const char *name) : BaseClass(parent, name), m_iszLevelTheme(), m_iszRoomTemplate()
 {
-	m_pRoomTemplate = NULL;
 	m_hMenu = NULL;
 
 	m_pRoomTGAPanel = new CMissionChooserTGAImagePanel(this, "RoomTGAPanel" );
@@ -59,9 +58,16 @@ CRoomTemplatePanel::~CRoomTemplatePanel( void )
 	g_pRoomTemplatePanels.FindAndRemove(this);
 }
 
+CRoomTemplate *CRoomTemplatePanel::GetRoomTemplate()
+{
+	CLevelTheme *pLevelTheme = CLevelTheme::FindTheme(m_iszLevelTheme.c_str());
+	return pLevelTheme ? pLevelTheme->FindRoom(m_iszRoomTemplate.c_str()) : NULL;
+}
+
 void CRoomTemplatePanel::SetRoomTemplate( const CRoomTemplate* pTemplate )
 {
-	m_pRoomTemplate = pTemplate;
+	m_iszLevelTheme = pTemplate->m_iszLevelTheme;
+	m_iszRoomTemplate = pTemplate->GetFullName();
 	UpdateImages();
 
 	if (pTemplate)
@@ -92,23 +98,23 @@ void CRoomTemplatePanel::UpdateImages()
 		m_pExitImagePanels[i]->MarkForDeletion();
 	}	
 	m_pExitImagePanels.RemoveAll();
-	
-	char buffer[MAX_PATH];
-	buffer[0] = 0;
-	if ( m_pRoomTemplate && m_pRoomTemplate->m_pLevelTheme )
-	{
-		Q_snprintf( buffer, sizeof(buffer), "tilegen/roomtemplates/%s/%s.tga", m_pRoomTemplate->m_pLevelTheme->m_szName, m_pRoomTemplate->GetFullName() );
-	}
-	m_pRoomTGAPanel->SetTGA( buffer );
 
-	if ( !m_pRoomTemplate || !m_pRoomTemplate->m_pLevelTheme )
+	CRoomTemplate *pRoomTemplate = GetRoomTemplate();
+	if (!pRoomTemplate)
+	{
+		m_pRoomTGAPanel->SetTGA("");
 		return;
+	}
+
+	char buffer[MAX_PATH];
+	Q_snprintf( buffer, sizeof(buffer), "tilegen/roomtemplates/%s/%s.tga", m_iszLevelTheme.c_str(), m_iszRoomTemplate.c_str() );
+	m_pRoomTGAPanel->SetTGA( buffer );
 
 	// check for updating our grid images
 	//if (m_pRoomTemplate->GetTilesX() != m_iLastTilesX || m_pRoomTemplate->GetTilesY() != m_iLastTilesY)
 	{
-		m_iLastTilesX = m_pRoomTemplate->GetTilesX();
-		m_iLastTilesY = m_pRoomTemplate->GetTilesY();
+		m_iLastTilesX = pRoomTemplate->GetTilesX();
+		m_iLastTilesY = pRoomTemplate->GetTilesY();
 
 		// clear our grid images
 		for (int i=0;i<m_pGridImagePanels.Count();i++)
@@ -121,7 +127,7 @@ void CRoomTemplatePanel::UpdateImages()
 		// create enough grid image panels for each square
 		if (g_pTileGenDialog->m_bShowTileSquares || m_bForceShowTileSquares)
 		{
-			int iGrids = m_pRoomTemplate->GetArea();
+			int iGrids = pRoomTemplate->GetArea();
 			for (int i=0;i<iGrids;i++)
 			{
 				CMissionChooserTGAImagePanel *pGridImagePanel = new CMissionChooserTGAImagePanel(this, "GridImagePanel");
@@ -135,10 +141,10 @@ void CRoomTemplatePanel::UpdateImages()
 	if (g_pTileGenDialog->m_bShowExits || m_bForceShowExits)
 	{
 		// create enough exit image panels for each exit in the room
-		int iExits = m_pRoomTemplate->m_Exits.Count();
+		int iExits = pRoomTemplate->m_Exits.Count();
 		for (int i=0;i<iExits;i++)
 		{
-			CRoomTemplateExit *pExit = m_pRoomTemplate->m_Exits[i];
+			CRoomTemplateExit *pExit = pRoomTemplate->m_Exits[i];
 			CMissionChooserTGAImagePanel *pExitImagePanel = new CMissionChooserTGAImagePanel(this, "ExitImagePanel");
 			pExitImagePanel->SetMouseInputEnabled(false);
 			switch (pExit->m_ExitDirection)
@@ -178,7 +184,7 @@ void CRoomTemplatePanel::ApplySchemeSettings(vgui::IScheme *pScheme)
 
 	if (m_bRoomTemplateBrowserMode)
 	{
-		if (g_pTileGenDialog && g_pTileGenDialog->m_pCursorTemplate == m_pRoomTemplate)
+		if (g_pTileGenDialog && g_pTileGenDialog->m_pCursorTemplate == GetRoomTemplate())
 		{
 			//SetPaintBackgroundEnabled(true);
 			//SetPaintBackgroundType(0);
@@ -198,22 +204,23 @@ void CRoomTemplatePanel::PerformLayout()
 {
 	BaseClass::PerformLayout();
 
-	if (!m_pRoomTemplate || !g_pTileGenDialog)
+	CRoomTemplate *pRoomTemplate = GetRoomTemplate();
+	if (!pRoomTemplate || !g_pTileGenDialog)
 		return;
 
 	int tile_size = g_pTileGenDialog->RoomTemplatePanelTileSize();
 
-	SetSize(m_pRoomTemplate->GetTilesX() * tile_size , m_pRoomTemplate->GetTilesY() * tile_size);
+	SetSize(pRoomTemplate->GetTilesX() * tile_size , pRoomTemplate->GetTilesY() * tile_size);
 
 	m_pRoomTGAPanel->SetBounds(0, 0, GetWide(), GetTall());
 	m_pSelectedOutline->SetBounds(0, 0, GetWide(), GetTall());
 
 	// arrange the grid squares across our size
-	for (int y=0; y<m_pRoomTemplate->GetTilesY(); y++)
+	for (int y=0; y<pRoomTemplate->GetTilesY(); y++)
 	{
-		for (int x=0; x<m_pRoomTemplate->GetTilesX(); x++)
+		for (int x=0; x<pRoomTemplate->GetTilesX(); x++)
 		{
-			int iGridImage = x + m_pRoomTemplate->GetTilesX() * y;
+			int iGridImage = x + pRoomTemplate->GetTilesX() * y;
 			if (m_pGridImagePanels.Count() > iGridImage)
 			{
 				m_pGridImagePanels[iGridImage]->SetBounds(x * tile_size, y * tile_size, tile_size, tile_size);
@@ -222,9 +229,9 @@ void CRoomTemplatePanel::PerformLayout()
 	}
 
 	// arrange exits
-	for (int i=0;i<m_pRoomTemplate->m_Exits.Count();i++)
+	for (int i=0;i<pRoomTemplate->m_Exits.Count();i++)
 	{
-		CRoomTemplateExit *pExit = m_pRoomTemplate->m_Exits[i];
+		CRoomTemplateExit *pExit = pRoomTemplate->m_Exits[i];
 		if (!pExit || m_pExitImagePanels.Count() <= i)
 			continue;
 
@@ -352,14 +359,13 @@ void CRoomTemplatePanel::OnMouseReleased(vgui::MouseCode code)
 	{
 		if (code == MOUSE_LEFT)
 		{
-			g_pTileGenDialog->SetCursorRoomTemplate( m_pRoomTemplate );
+			g_pTileGenDialog->SetCursorRoomTemplate( GetRoomTemplate() );
 		}
 		else if (code == MOUSE_RIGHT)
 		{
-			if (m_pRoomTemplate)
+			if (GetRoomTemplate())
 			{
-				// The convoluted FindRoom() call is so we can get a non-const pointer to the room template for the edit dialog to modify.
-				CRoomTemplateEditDialog *pDialog = new CRoomTemplateEditDialog( g_pTileGenDialog, "RoomTemplateEditDialog", m_pRoomTemplate->m_pLevelTheme->FindRoom( m_pRoomTemplate->GetFullName() ), false );
+				CRoomTemplateEditDialog *pDialog = new CRoomTemplateEditDialog(g_pTileGenDialog, "RoomTemplateEditDialog", GetRoomTemplate(), false);
 
 				pDialog->AddActionSignalTarget( g_pTileGenDialog );
 				pDialog->DoModal();

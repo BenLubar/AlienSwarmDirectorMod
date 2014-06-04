@@ -27,9 +27,9 @@ using namespace vgui;
 CPlacedRoomTemplatePanel::CPlacedRoomTemplatePanel( CRoom *pRoom, Panel *parent, const char *name ) : BaseClass( parent, name )
 {
 	m_pRoom = pRoom;
-	Assert( pRoom->m_pRoomTemplate );
+	Assert( pRoom->GetRoomTemplate() );
 
-	SetRoomTemplate( pRoom->m_pRoomTemplate );
+	SetRoomTemplate( pRoom->GetRoomTemplate() );
 
 	m_bSetAlpha = m_bStartedGrowAnimation = false;
 	m_bSelectedOnThisPress = false;
@@ -68,15 +68,15 @@ void CPlacedRoomTemplatePanel::PerformLayout()
 	if ( !m_pRoom )
 		return;
 
-	AssertMsg( m_pRoom->m_pRoomTemplate, "Room without room template" );
-	if ( !m_pRoom->m_pRoomTemplate )
+	AssertMsg( m_pRoom->GetRoomTemplate(), "Room without room template" );
+	if ( !m_pRoom->GetRoomTemplate() )
 		return;
 
 	// position us within the grid
 	int pos_y = m_pRoom->m_iPosY;// - m_pRoom->m_pRoomTemplate->GetTilesY();	// shift us up, so we're positioned relative to our lower left			
 	pos_y = g_pTileGenDialog->MapLayoutTilesWide() - pos_y - 1;	// reverse the Y axis
 	// shift us down by the room height on the y
-	pos_y -= (m_pRoom->m_pRoomTemplate->GetTilesY() - 1);
+	pos_y -= (m_pRoom->GetRoomTemplate()->GetTilesY() - 1);
 	
 	SetPos(m_pRoom->m_iPosX * g_pTileGenDialog->RoomTemplatePanelTileSize(),
 			pos_y * g_pTileGenDialog->RoomTemplatePanelTileSize());

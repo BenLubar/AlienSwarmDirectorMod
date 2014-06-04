@@ -139,7 +139,7 @@ const CRoom *CTilegenExpression_SourceRoomFromExit::DirectEvaluate( CFreeVariabl
 
 const CRoomTemplate *CTilegenExpression_SourceRoomTemplateFromExit::DirectEvaluate( CFreeVariableMap *pContext, const CTilegenExpression_SourceRoomTemplateFromExit::ParameterType &pExit ) 
 { 
-	return pExit ? pExit->pSourceRoom->m_pRoomTemplate : NULL; 
+	return pExit ? pExit->pSourceRoom->GetRoomTemplate() : NULL; 
 }
 
 bool CTilegenExpression_ChokepointGrowSource::DirectEvaluate( CFreeVariableMap *pContext, const CTilegenExpression_ChokepointGrowSource::ParameterType &pExit ) 
@@ -237,7 +237,7 @@ int CTilegenExpression_NumTimesPlaced::DirectEvaluate( CFreeVariableMap *pContex
 	int nPlacementCount = 0;
 	for ( int i = 0; i < pMapLayout->m_PlacedRooms.Count(); ++ i )
 	{
-		if ( pMapLayout->m_PlacedRooms[i]->m_pRoomTemplate == pRoomTemplate )
+		if ( pMapLayout->m_PlacedRooms[i]->GetRoomTemplate() == pRoomTemplate )
 		{
 			++ nPlacementCount;
 		}

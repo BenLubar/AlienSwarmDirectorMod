@@ -159,7 +159,7 @@ void CLevelTheme::LoadRoomTemplatesInFolder( const char *szPath )
 				KeyValues *pRoomTemplateKeyValues = new KeyValues( filename );
 				if (pRoomTemplateKeyValues->LoadFromFile(g_pFullFileSystem, szFullFileName, "GAME"))
 				{
-					CRoomTemplate* pRoomTemplate = new CRoomTemplate(this);
+					CRoomTemplate* pRoomTemplate = new CRoomTemplate(m_szName);
 					pRoomTemplate->LoadFromKeyValues( szFullFileName + Q_strlen( ROOMTEMPLATES_FOLDER ) + 1 + Q_strlen( m_szName ), pRoomTemplateKeyValues );		// sets the room templates properties based on these keyvalues
 					m_RoomTemplates.Insert(pRoomTemplate);
 				}

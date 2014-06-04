@@ -307,7 +307,7 @@ bool CLayoutSystem::TryPlaceRoom( const CRoomCandidate *pRoomCandidate )
 	if ( m_pMapLayout->TemplateFits( pRoomTemplate, nX, nY, false ) )
 	{
 		// This has the side-effect of attaching itself to the layout; no need to keep track of it.
-		CRoom *pRoom = new CRoom( m_pMapLayout, pRoomTemplate, nX, nY );
+		CRoom *pRoom = new CRoom( m_pMapLayout, pRoomTemplate->m_iszLevelTheme, pRoomTemplate->GetFullName(), nX, nY );
 
 		// Remove exits covered up by the room
 		for ( int i = m_OpenExits.Count() - 1; i >= 0; -- i )
@@ -548,7 +548,7 @@ void CLayoutSystem::ExecuteIteration()
 // (e.g., a north exit from a room tile at (x, y) is actually added to location (x, y+1)
 void CLayoutSystem::AddOpenExitsFromRoom( CRoom *pRoom )
 {
-	const CRoomTemplate *pTemplate = pRoom->m_pRoomTemplate;
+	const CRoomTemplate *pTemplate = pRoom->GetRoomTemplate();
 
 	// Go through each exit in the room.
 	for ( int i = 0; i < pTemplate->m_Exits.Count(); ++ i )

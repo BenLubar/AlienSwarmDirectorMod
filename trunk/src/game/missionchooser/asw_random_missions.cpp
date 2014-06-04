@@ -107,7 +107,7 @@ IASW_Room_Details* CASW_Random_Missions::GetStartRoomDetails()
 	for ( int i = 0; i < iRooms; i++ )
 	{
 		CRoom *pRoom = m_pCurrentMapLayout->m_PlacedRooms[ i ];
-		if ( !pRoom || !pRoom->m_pRoomTemplate->IsStartRoom() )
+		if (!pRoom || !pRoom->GetRoomTemplate() || !pRoom->GetRoomTemplate()->IsStartRoom())
 			continue;
 
 		return (IASW_Room_Details*) pRoom;

@@ -111,11 +111,11 @@ bool TileCheck::ContinueCheckingAllRoomTemplates()
 
 void TileCheck::CheckTemplate( CRoomTemplate *pTemplate )
 {
-	if ( !pTemplate || !pTemplate->m_pLevelTheme )
+	if ( !pTemplate )
 		return;
 
 	char szFullFileName[512];
-	Q_snprintf(szFullFileName, sizeof(szFullFileName), "tilegen/roomtemplates/%s/%s.vmf", pTemplate->m_pLevelTheme->m_szName, pTemplate->GetFullName() );
+	Q_snprintf(szFullFileName, sizeof(szFullFileName), "tilegen/roomtemplates/%s/%s.vmf", pTemplate->m_iszLevelTheme.c_str(), pTemplate->GetFullName() );
 	KeyValues *pRoomTemplateKeyValues = new KeyValues( pTemplate->GetFullName() );
 	if ( !pRoomTemplateKeyValues->LoadFromFile( g_pFullFileSystem, szFullFileName, "GAME" ) )
 	{
@@ -126,7 +126,7 @@ void TileCheck::CheckTemplate( CRoomTemplate *pTemplate )
 	int iNodes = CountAINodes( pRoomTemplateKeyValues );
 	if ( pTemplate->m_Exits.Count() > 0 && iNodes <= 0 )
 	{
-		TileCheckError( "%s/%s has no AI nodes.\n", pTemplate->m_pLevelTheme->m_szName, pTemplate->GetFullName() );
+		TileCheckError( "%s/%s has no AI nodes.\n", pTemplate->m_iszLevelTheme.c_str(), pTemplate->GetFullName() );
 	}
 
 	// VBSP2 converts brushes automatically, so we don't need this check currently
@@ -137,7 +137,7 @@ void TileCheck::CheckTemplate( CRoomTemplate *pTemplate )
 
 	if ( CountDirectors( pRoomTemplateKeyValues ) > 0 )
 	{
-		TileCheckError( "%s/%s has an asw_director_control.\n", pTemplate->m_pLevelTheme->m_szName, pTemplate->GetFullName() );
+		TileCheckError( "%s/%s has an asw_director_control.\n", pTemplate->m_iszLevelTheme.c_str(), pTemplate->GetFullName() );
 	}
 
 	if ( pTemplate->HasTag( "Chokepoint" ) )
@@ -159,11 +159,11 @@ void TileCheck::CheckTemplate( CRoomTemplate *pTemplate )
 
 		if ( !bNonGrowSource )
 		{
-			TileCheckError( "%s/%s requires at least one exit that isn't marked 'chokepoint grow source'.\n", pTemplate->m_pLevelTheme->m_szName, pTemplate->GetFullName() );
+			TileCheckError( "%s/%s requires at least one exit that isn't marked 'chokepoint grow source'.\n", pTemplate->m_iszLevelTheme.c_str(), pTemplate->GetFullName() );
 		}
 		if ( !bGrowSource )
 		{
-			TileCheckError( "%s/%s requires at least one exit marked 'chokepoint grow source'.\n", pTemplate->m_pLevelTheme->m_szName, pTemplate->GetFullName() );
+			TileCheckError( "%s/%s requires at least one exit marked 'chokepoint grow source'.\n", pTemplate->m_iszLevelTheme.c_str(), pTemplate->GetFullName() );
 		}
 	}
 
