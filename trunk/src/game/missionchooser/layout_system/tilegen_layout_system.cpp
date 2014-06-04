@@ -500,7 +500,7 @@ void CLayoutSystem::ExecuteIteration()
 {
 	Assert( m_pCurrentState != NULL && m_pMapLayout != NULL );
 
-	const int nMaxIterations = 200;
+	const int nMaxIterations = MAP_LAYOUT_TILES_WIDE * MAP_LAYOUT_TILES_WIDE;
 	if ( m_nIterations > nMaxIterations )
 	{
 		Log_Warning( LOG_TilegenLayoutSystem, "Exceeded %d iterations, may be in an infinite loop.\n", nMaxIterations );
