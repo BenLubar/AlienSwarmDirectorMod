@@ -1,0 +1,6 @@
+"LightmappedGeneric" {
+	"$basetexture"	"tile/gridnoise"
+	"$surfaceprop"	"tile"
+	"$bumpmap"	"tile/grid5"
+	"$color"	"[0.0 0.0 1.0]"
+}

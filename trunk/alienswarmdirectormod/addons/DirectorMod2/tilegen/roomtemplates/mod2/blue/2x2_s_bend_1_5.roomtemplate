@@ -1,0 +1,25 @@
+"blue\2x2_s_bend_1_5"
+{
+	"TilesX"		"2"
+	"TilesY"		"2"
+	"SpawnWeight"		"0"
+	"TileType"		"0"
+	"EXIT"
+	{
+		"XPos"		"0"
+		"YPos"		"0"
+		"ExitDirection"		"0"
+		"ZChange"		"0"
+		"ExitTag"		"blue"
+		"ChokeGrow"		"0"
+	}
+	"EXIT"
+	{
+		"XPos"		"1"
+		"YPos"		"1"
+		"ExitDirection"		"2"
+		"ZChange"		"0"
+		"ExitTag"		"blue"
+		"ChokeGrow"		"0"
+	}
+}
