@@ -809,40 +809,6 @@ entity
 }
 entity
 {
-	"id" "21"
-	"classname" "logic_auto"
-	"spawnflags" "1"
-	connections
-	{
-		"OnMapSpawn" "@tonemapSetBloomScale0.50-1"
-	}
-	"origin" "192 128 64"
-	editor
-	{
-		"color" "246 147 0"
-		"groupid" "2"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[0 -9268]"
-	}
-}
-entity
-{
-	"id" "23"
-	"classname" "env_tonemap_controller"
-	"targetname" "@tonemap"
-	"origin" "176 128 64"
-	editor
-	{
-		"color" "246 147 0"
-		"groupid" "2"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[0 -9268]"
-	}
-}
-entity
-{
 	"id" "34"
 	"classname" "info_node_marine_hint"
 	"angles" "0 280 0"

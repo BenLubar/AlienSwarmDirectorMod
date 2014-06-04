@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "2"
+	"mapversion" "3"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "2"
+	"mapversion" "3"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -55,7 +55,7 @@ world
 		{
 			"id" "112"
 			"plane" "(256 384 0) (-3.05176e-005 384 0) (-3.05176e-005 384 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -121,7 +121,7 @@ world
 		{
 			"id" "119"
 			"plane" "(96 256 64) (160 256 64) (160 384 64)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 -1 0 0] 0.25"
 			"rotation" "0"
@@ -242,7 +242,7 @@ world
 		{
 			"id" "121"
 			"plane" "(96 384 0) (96 256 0) (96 256 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -308,7 +308,7 @@ world
 		{
 			"id" "128"
 			"plane" "(160 256 0) (160 384 0) (160 384 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -341,7 +341,7 @@ world
 		{
 			"id" "138"
 			"plane" "(160 240 0) (96 240 0) (96 384 0)"
-			"material" "TILE/GRID3"
+			"material" "TILE/GRID3RED"
 			"uaxis" "[1 0 0 64] 0.25"
 			"vaxis" "[0 -1 0 64] 0.25"
 			"rotation" "0"
@@ -495,7 +495,7 @@ world
 		{
 			"id" "150"
 			"plane" "(256 239 0) (256 17 0) (0 17 0)"
-			"material" "TILE/GRID3ORANGE"
+			"material" "TILE/GRID3RED"
 			"uaxis" "[1 0 0 64] 0.25"
 			"vaxis" "[0 -1 0 64] 0.25"
 			"rotation" "0"
@@ -605,7 +605,7 @@ world
 		{
 			"id" "153"
 			"plane" "(0 16 0) (256 16 0) (256 16 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -616,7 +616,7 @@ world
 		{
 			"id" "152"
 			"plane" "(256 16 0) (256 0 0) (256 0 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -627,7 +627,7 @@ world
 		{
 			"id" "151"
 			"plane" "(0 -1.52588e-005 0) (0 16 0) (0 16 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -1045,7 +1045,7 @@ world
 		{
 			"id" "191"
 			"plane" "(96 240 32) (160 240 32) (160 256 32)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 -1 0 0] 0.25"
 			"rotation" "0"
@@ -1056,7 +1056,7 @@ world
 		{
 			"id" "190"
 			"plane" "(96 256 32) (160 256 32) (160 256 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -1067,7 +1067,7 @@ world
 		{
 			"id" "189"
 			"plane" "(160 240 32) (96 240 32) (96 240 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -1144,7 +1144,7 @@ world
 		{
 			"id" "195"
 			"plane" "(96 240 0) (0 240 0) (0 240 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -1155,7 +1155,7 @@ world
 		{
 			"id" "194"
 			"plane" "(0 240 0) (0 256 0) (0 256 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -1166,7 +1166,7 @@ world
 		{
 			"id" "193"
 			"plane" "(96 256 0) (96 240 0) (96 240 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -1221,7 +1221,7 @@ world
 		{
 			"id" "201"
 			"plane" "(256 240 0) (160 240 0) (160 240 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -1232,7 +1232,7 @@ world
 		{
 			"id" "200"
 			"plane" "(256 256 0) (256 240 0) (256 240 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -1243,7 +1243,7 @@ world
 		{
 			"id" "199"
 			"plane" "(160 240 0) (160 256 0) (160 256 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -1516,7 +1516,7 @@ entity
 		{
 			"id" "215"
 			"plane" "(0 240 128) (0 16 128) (256 16 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 -1 0 0] 0.25"
 			"rotation" "0"

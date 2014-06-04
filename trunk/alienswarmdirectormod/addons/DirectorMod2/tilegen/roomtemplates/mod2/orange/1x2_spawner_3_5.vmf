@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "2"
+	"mapversion" "3"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "2"
+	"mapversion" "3"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -341,7 +341,7 @@ world
 		{
 			"id" "138"
 			"plane" "(160 240 0) (96 240 0) (96 384 0)"
-			"material" "TILE/GRID3"
+			"material" "TILE/GRID3ORANGE"
 			"uaxis" "[1 0 0 64] 0.25"
 			"vaxis" "[0 -1 0 64] 0.25"
 			"rotation" "0"

@@ -1,0 +1,38 @@
+"white\1x1_start_2_3_4"
+{
+	"TilesX"		"1"
+	"TilesY"		"1"
+	"SpawnWeight"		"0"
+	"TileType"		"0"
+	"EXIT"
+	{
+		"XPos"		"0"
+		"YPos"		"0"
+		"ExitDirection"		"1"
+		"ZChange"		"0"
+		"ExitTag"		"white"
+		"ChokeGrow"		"0"
+	}
+	"EXIT"
+	{
+		"XPos"		"0"
+		"YPos"		"0"
+		"ExitDirection"		"3"
+		"ZChange"		"0"
+		"ExitTag"		"white"
+		"ChokeGrow"		"0"
+	}
+	"EXIT"
+	{
+		"XPos"		"0"
+		"YPos"		"0"
+		"ExitDirection"		"2"
+		"ZChange"		"0"
+		"ExitTag"		"white"
+		"ChokeGrow"		"0"
+	}
+	"Tags"
+	{
+		"tag"		"Start"
+	}
+}

@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "3"
+	"mapversion" "5"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "3"
+	"mapversion" "5"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -55,7 +55,7 @@ world
 		{
 			"id" "112"
 			"plane" "(384 0 0) (384 256 0) (384 256 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -66,7 +66,7 @@ world
 		{
 			"id" "111"
 			"plane" "(512 256 0) (512 0 0) (512 0 128)"
-			"material" "TOOLS/TOOLSNODRAW"
+			"material" "TOOLS/TOOLSNOLIGHT"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -77,7 +77,7 @@ world
 		{
 			"id" "110"
 			"plane" "(384 256 0) (512 256 0) (512 256 128)"
-			"material" "TOOLS/TOOLSNODRAW"
+			"material" "TOOLS/TOOLSNOLIGHT"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -88,7 +88,7 @@ world
 		{
 			"id" "109"
 			"plane" "(512 0 0) (384 0 0) (384 0 128)"
-			"material" "TOOLS/TOOLSNODRAW"
+			"material" "TOOLS/TOOLSNOLIGHT"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -121,7 +121,7 @@ world
 		{
 			"id" "119"
 			"plane" "(256 160 64) (256 96 64) (384 96 64)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 -1 0 0] 0.25"
 			"rotation" "0"
@@ -231,7 +231,7 @@ world
 		{
 			"id" "122"
 			"plane" "(256 256 0) (384 256 0) (384 256 128)"
-			"material" "TOOLS/TOOLSNODRAW"
+			"material" "TOOLS/TOOLSNOLIGHT"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -242,7 +242,7 @@ world
 		{
 			"id" "121"
 			"plane" "(384 160 0) (256 160 0) (256 160 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -308,7 +308,7 @@ world
 		{
 			"id" "128"
 			"plane" "(256 96 0) (384 96 0) (384 96 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -319,7 +319,7 @@ world
 		{
 			"id" "127"
 			"plane" "(384 0 0) (256 0 0) (256 0 128)"
-			"material" "TOOLS/TOOLSNODRAW"
+			"material" "TOOLS/TOOLSNOLIGHT"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -341,8 +341,8 @@ world
 		{
 			"id" "138"
 			"plane" "(240 96 0) (240 160 0) (384 160 0)"
-			"material" "TILE/GRID3"
-			"uaxis" "[1 0 0 -448] 0.25"
+			"material" "TILE/GRID3RED"
+			"uaxis" "[1 0 0 64] 0.25"
 			"vaxis" "[0 -1 0 64] 0.25"
 			"rotation" "0"
 			"lightmapscale" "16"
@@ -495,7 +495,7 @@ world
 		{
 			"id" "150"
 			"plane" "(239 0 0) (17 0 0) (17 256 0)"
-			"material" "TILE/GRID3ORANGE"
+			"material" "TILE/GRID3RED"
 			"uaxis" "[1 0 0 64] 0.25"
 			"vaxis" "[0 -1 0 64] 0.25"
 			"rotation" "0"
@@ -605,7 +605,7 @@ world
 		{
 			"id" "153"
 			"plane" "(16 256 0) (16 0 0) (16 0 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -616,7 +616,7 @@ world
 		{
 			"id" "152"
 			"plane" "(16 0 0) (0 0 0) (0 0 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -627,7 +627,7 @@ world
 		{
 			"id" "151"
 			"plane" "(0 256 0) (16 256 0) (16 256 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -1045,7 +1045,7 @@ world
 		{
 			"id" "191"
 			"plane" "(240 160 32) (240 96 32) (256 96 32)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 -1 0 0] 0.25"
 			"rotation" "0"
@@ -1056,7 +1056,7 @@ world
 		{
 			"id" "190"
 			"plane" "(256 160 32) (256 96 32) (256 96 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -1067,7 +1067,7 @@ world
 		{
 			"id" "189"
 			"plane" "(240 96 32) (240 160 32) (240 160 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -1144,7 +1144,7 @@ world
 		{
 			"id" "195"
 			"plane" "(240 160 0) (240 256 0) (240 256 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -1155,7 +1155,7 @@ world
 		{
 			"id" "194"
 			"plane" "(240 256 0) (256 256 0) (256 256 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -1166,7 +1166,7 @@ world
 		{
 			"id" "193"
 			"plane" "(256 160 0) (240 160 0) (240 160 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -1221,7 +1221,7 @@ world
 		{
 			"id" "201"
 			"plane" "(240 0 0) (240 96 0) (240 96 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -1232,7 +1232,7 @@ world
 		{
 			"id" "200"
 			"plane" "(256 0 0) (240 0 0) (240 0 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -1243,7 +1243,7 @@ world
 		{
 			"id" "199"
 			"plane" "(240 96 0) (256 96 0) (256 96 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -1516,7 +1516,7 @@ entity
 		{
 			"id" "215"
 			"plane" "(240 256 128) (16 256 128) (16 0 128)"
-			"material" "TILE/GRID5ORANGE"
+			"material" "TILE/GRID5RED"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 -1 0 0] 0.25"
 			"rotation" "0"
