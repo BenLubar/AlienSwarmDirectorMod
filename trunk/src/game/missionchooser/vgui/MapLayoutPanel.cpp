@@ -213,7 +213,7 @@ void CMapLayoutPanel::AddRoom( const CRoomTemplate *pTemplate, int iTileX, int i
 	if ( !g_pTileGenDialog )
 		return;
 
-	CRoom *pRoom = new CRoom( GetMapLayout(), g_pTileGenDialog->m_pCursorTemplate->GetFullName(), g_pTileGenDialog->m_pCursorTemplate->m_iszLevelTheme, iTileX, iTileY );
+	CRoom *pRoom = new CRoom(GetMapLayout(), g_pTileGenDialog->m_pCursorTemplate->m_iszLevelTheme, g_pTileGenDialog->m_pCursorTemplate->GetFullName(), iTileX, iTileY);
 	CreateRoomUIPanel( pRoom );
 }
 
