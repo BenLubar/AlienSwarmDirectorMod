@@ -302,7 +302,8 @@ bool CASW_Spawn_Manager::SpawnAlientAtRandomNode()
 			szAlienClass = g_VariedWandererTypeCommon[RandomInt(0, NELEMS(g_VariedWandererTypeCommon) - 1)];
 		}
 	}
-	int nHull;
+
+	int nHull = 0;
 	Vector vecMins, vecMaxs;
 	Assert( GetAlienHull( szAlienClass, nHull ) );
 	Assert( GetAlienBounds( szAlienClass, vecMins, vecMaxs ) );
@@ -527,7 +528,7 @@ bool CASW_Spawn_Manager::FindHordePosition()
 		return false;
 	}
 
-	int nHull;
+	int nHull = 0;
 	Assert( GetAlienHull ( asw_horde_class.GetString(), nHull ) );
 
 	int iMaxTries = 3;
