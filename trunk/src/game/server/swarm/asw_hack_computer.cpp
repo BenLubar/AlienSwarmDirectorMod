@@ -165,7 +165,7 @@ void CASW_Hack_Computer::SelectHackOption(int i)
 			return;
 
 		if (!GetHackingMarine() || !GetHackingMarine()->GetMarineProfile()	// only a hacker can access a locked computer
-				|| !GetHackingMarine()->GetMarineProfile()->CanHack())
+				|| (!GetComputerArea()->m_bAnyoneCanHack.Get() && !GetHackingMarine()->GetMarineProfile()->CanHack()))
 			return;
 
 		if (m_fFastFinishTime == 0)

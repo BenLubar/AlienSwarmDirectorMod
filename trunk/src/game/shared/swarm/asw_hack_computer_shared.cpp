@@ -32,7 +32,7 @@ void CASW_Hack_Computer::ASWPostThink(CASW_Player *pPlayer, CASW_Marine *pMarine
 	// check for auto overriding
 	if ( GetComputerArea() && pMarine )
 	{
-		if ( pMarine->GetMarineProfile()->CanHack() && GetComputerArea()->m_bIsLocked
+		if ( (pMarine->GetMarineProfile()->CanHack() || GetComputerArea()->m_bAnyoneCanHack.Get()) && GetComputerArea()->m_bIsLocked
 			&& m_iShowOption.Get() != ASW_HACK_OPTION_OVERRIDE && gpGlobals->curtime > GetComputerArea()->m_fAutoOverrideTime )
 		{
 			GetComputerArea()->Override( pMarine );
