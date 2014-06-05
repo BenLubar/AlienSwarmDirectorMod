@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "1"
+	"mapversion" "3"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -14,18 +14,18 @@ viewsettings
 	"bSnapToGrid" "1"
 	"bShowGrid" "1"
 	"bShowLogicalGrid" "0"
-	"nGridSpacing" "64"
+	"nGridSpacing" "16"
 	"bShow3DGrid" "0"
 }
 world
 {
 	"id" "1"
-	"mapversion" "1"
+	"mapversion" "3"
 	"classname" "worldspawn"
-	"skyname" "blacksky"
-	"maxpropscreenwidth" "-1"
-	"detailvbsp" "detail.vbsp"
 	"detailmaterial" "detail/detailsprites"
+	"detailvbsp" "detail.vbsp"
+	"maxpropscreenwidth" "-1"
+	"skyname" "blacksky"
 	solid
 	{
 		"id" "3"
@@ -66,7 +66,7 @@ world
 		{
 			"id" "111"
 			"plane" "(-3.05176e-005 512 0) (256 512 0) (256 512 128)"
-			"material" "TOOLS/TOOLSNODRAW"
+			"material" "TOOLS/TOOLSNOLIGHT"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -77,7 +77,7 @@ world
 		{
 			"id" "110"
 			"plane" "(-3.05176e-005 384 0) (-3.05176e-005 512 0) (-3.05176e-005 512 128)"
-			"material" "TOOLS/TOOLSNODRAW"
+			"material" "TOOLS/TOOLSNOLIGHT"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -88,7 +88,7 @@ world
 		{
 			"id" "109"
 			"plane" "(256 512 0) (256 384 0) (256 384 128)"
-			"material" "TOOLS/TOOLSNODRAW"
+			"material" "TOOLS/TOOLSNOLIGHT"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -231,7 +231,7 @@ world
 		{
 			"id" "122"
 			"plane" "(0 256 0) (-3.05176e-005 384 0) (-3.05176e-005 384 128)"
-			"material" "TOOLS/TOOLSNODRAW"
+			"material" "TOOLS/TOOLSNOLIGHT"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -319,7 +319,7 @@ world
 		{
 			"id" "127"
 			"plane" "(256 384 0) (256 256 0) (256 256 128)"
-			"material" "TOOLS/TOOLSNODRAW"
+			"material" "TOOLS/TOOLSNOLIGHT"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"

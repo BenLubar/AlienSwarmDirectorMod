@@ -33,7 +33,7 @@ world
 		{
 			"id" "60"
 			"plane" "(239 -7.43195e-007 0) (17 -1.04471e-005 0) (17 256 0)"
-			"material" "TILE/GRID3YELLOW"
+			"material" "TILE/GRID3"
 			"uaxis" "[1 0 0 64] 0.25"
 			"vaxis" "[0 -1 0 -448] 0.25"
 			"rotation" "0"
@@ -143,7 +143,7 @@ world
 		{
 			"id" "63"
 			"plane" "(16 256 0) (16 -1.04909e-005 0) (16 -1.04909e-005 128)"
-			"material" "TILE/GRID5YELLOW"
+			"material" "TILE/GRID5"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -154,7 +154,7 @@ world
 		{
 			"id" "62"
 			"plane" "(16 -1.04909e-005 0) (0 -1.11903e-005 0) (0 -1.11903e-005 128)"
-			"material" "TILE/GRID5YELLOW"
+			"material" "TILE/GRID5"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -165,7 +165,7 @@ world
 		{
 			"id" "61"
 			"plane" "(0 256 0) (16 256 0) (16 256 128)"
-			"material" "TILE/GRID5YELLOW"
+			"material" "TILE/GRID5"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -220,7 +220,7 @@ world
 		{
 			"id" "69"
 			"plane" "(240 -6.99423e-007 0) (240 256 0) (240 256 128)"
-			"material" "TILE/GRID5YELLOW"
+			"material" "TILE/GRID5"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -231,7 +231,7 @@ world
 		{
 			"id" "68"
 			"plane" "(256 0 0) (240 -6.99423e-007 0) (240 -6.99423e-007 128)"
-			"material" "TILE/GRID5YELLOW"
+			"material" "TILE/GRID5"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -242,7 +242,7 @@ world
 		{
 			"id" "67"
 			"plane" "(240 256 0) (256 256 0) (256 256 128)"
-			"material" "TILE/GRID5YELLOW"
+			"material" "TILE/GRID5"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
 			"rotation" "0"
@@ -945,7 +945,7 @@ entity
 		{
 			"id" "107"
 			"plane" "(16 -1.04909e-005 128) (240 -6.99423e-007 128) (240 256 128)"
-			"material" "TILE/GRID5YELLOW"
+			"material" "TILE/GRID5"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 -1 0 0] 0.25"
 			"rotation" "0"

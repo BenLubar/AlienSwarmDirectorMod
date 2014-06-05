@@ -3269,54 +3269,6 @@ entity
 		"logicalpos" "[0 -7268]"
 	}
 }
-entity
-{
-	"id" "89"
-	"classname" "light"
-	"_constant_attn" "1"
-	"_distance" "0"
-	"_fifty_percent_distance" "0"
-	"_hardfalloff" "0"
-	"_light" "255 255 255 100"
-	"_lightHDR" "-1 -1 -1 1"
-	"_lightscaleHDR" "1"
-	"_linear_attn" "0"
-	"_quadratic_attn" "0"
-	"_zero_percent_distance" "0"
-	"style" "0"
-	"origin" "128 448 64"
-	editor
-	{
-		"color" "220 30 220"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[0 0]"
-	}
-}
-entity
-{
-	"id" "107"
-	"classname" "light"
-	"_constant_attn" "1"
-	"_distance" "0"
-	"_fifty_percent_distance" "0"
-	"_hardfalloff" "0"
-	"_light" "255 255 255 100"
-	"_lightHDR" "-1 -1 -1 1"
-	"_lightscaleHDR" "1"
-	"_linear_attn" "0"
-	"_quadratic_attn" "0"
-	"_zero_percent_distance" "0"
-	"style" "0"
-	"origin" "384 64 64"
-	editor
-	{
-		"color" "220 30 220"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[0 0]"
-	}
-}
 cameras
 {
 	"activecamera" "-1"
