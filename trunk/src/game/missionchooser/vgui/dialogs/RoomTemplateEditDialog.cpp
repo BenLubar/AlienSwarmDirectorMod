@@ -244,11 +244,6 @@ void CRoomTemplateEditDialog::OnCommand( const char *command )
 			}
 		}
 
-		if ( m_bCreatingNew )
-		{
-			CLevelTheme::s_pCurrentTheme->m_RoomTemplates.Insert( m_pRoomTemplate );
-		}
-
 		PostActionSignal(new KeyValues("UpdateCurrentTheme"));	// make the TileGenDialog update the current theme (will update the room template display too)
 		OnClose();
 	}
@@ -256,6 +251,7 @@ void CRoomTemplateEditDialog::OnCommand( const char *command )
 	{
 		if (m_bCreatingNew)
 		{
+			CLevelTheme::FindTheme(m_pRoomTemplate->m_iszLevelTheme.c_str())->m_RoomTemplates.Remove(m_pRoomTemplate);
 			delete m_pRoomTemplate;
 			m_pRoomTemplate = NULL;
 		}
@@ -586,6 +582,15 @@ void CRoomTemplateEditDialog::OnFileSelected( const char *fullpath )
 		m_pSpawnWeightSlider->SetValue( m_pRoomTemplate->GetSpawnWeight() );
 		m_pTilesXSlider->SetValue( m_pRoomTemplate->GetTilesX() );
 		m_pTilesYSlider->SetValue( m_pRoomTemplate->GetTilesY() );
+	}
+
+	if (m_bCreatingNew)
+	{
+		m_pRoomTemplate->SetFullName(roomName);
+		CLevelTheme::FindTheme(m_pRoomTemplate->m_iszLevelTheme.c_str())->m_RoomTemplates.Insert(m_pRoomTemplate);
+		m_pRoomTemplatePanel->SetRoomTemplate(m_pRoomTemplate);
+		m_pToggleExitsPanel->SetRoomTemplatePanel(m_pRoomTemplatePanel, true);
+		m_pRoomTemplatePanel->InvalidateLayout(true);
 	}
 }
 
