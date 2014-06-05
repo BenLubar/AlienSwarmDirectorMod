@@ -93,28 +93,6 @@ extern ConVar ai_lead_time;
 
 #define ASW_MARINE_GOO_SCAN_TIME 0.5f
 
-// offsets and yaws for following formation
-
-const static Vector g_MarineFollowOffset[]=
-{
-	Vector( -60, -70, 0 ),
-	Vector( -120, 0, 0 ),
-	Vector( -60, 70, 0 ),
-	Vector( -40, -80, 0 ),
-	Vector( -40, -80, 0 ),
-	Vector( -40, -80, 0 ),
-};
-
-const static float g_MarineFollowDirection[]=
-{
-	-70,
-	180,
-	70,
-	90,
-	90,
-	90
-};
-
 bool CASW_Marine::CreateBehaviors()
 {
 	//AddBehavior( &m_ActBusyBehavior );
@@ -1478,6 +1456,7 @@ int CASW_Marine::FindThrowNode( const Vector &vThreatPos, float flMinThreatDist,
 #define ASW_FOLLOW_DISTANCE 230
 #define ASW_FOLLOW_DISTANCE_NO_LOS 100
 #define ASW_FORMATION_FOLLOW_DISTANCE 40
+#define ASW_FORMATION_ATTACK_DISTANCE 120
 
 
 bool CASW_Marine::NeedToUpdateSquad()
@@ -1492,11 +1471,11 @@ bool CASW_Marine::NeedToFollowMove()
 	if ( !pLeader || pLeader == this )
 		return false;
 
-	if( IsOutOfAmmo() && GetEnemy() )
+	if (GetEnemy() && GetEnemy()->GetAbsOrigin().DistToSqr(GetAbsOrigin()) < ( ASW_FORMATION_ATTACK_DISTANCE * ASW_FORMATION_ATTACK_DISTANCE ))
 		return false;
 
 	// only move if we're not near our saved follow point
-	float dist = ( GetAbsOrigin() - GetFollowPos() ).Length2DSqr();
+	float dist = GetAbsOrigin().DistToSqr(GetFollowPos());
 	return dist > ( ASW_FORMATION_FOLLOW_DISTANCE * ASW_FORMATION_FOLLOW_DISTANCE );
 }
 
