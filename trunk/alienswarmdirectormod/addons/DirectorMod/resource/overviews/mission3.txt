@@ -22,4 +22,6 @@ GAME
 	"version"		"1.0"
 	"author"		"Philip Pittle"
 	"website"		""
+
+	"use_overview"	"0"
 }
