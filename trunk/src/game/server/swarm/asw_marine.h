@@ -33,16 +33,13 @@ class CASW_Alien_Goo;
 class CASW_BuffGrenade_Projectile;
 class CBaseTrigger;
 
-#define ASW_MAX_FOLLOWERS 6
-#define ASW_INVALID_FOLLOW_SLOT -1
-
 // marine sight cone when holding position
 #define ASW_HOLD_POSITION_FOV_DOT 0.5f
-#define ASW_HOLD_POSITION_SIGHT_RANGE 768.0f
+#define ASW_HOLD_POSITION_SIGHT_RANGE 1536.0f
 
 // marine sight cone when in follow mode
 #define ASW_FOLLOW_MODE_FOV_DOT 0.7f
-#define ASW_FOLLOW_MODE_SIGHT_RANGE 525.0f
+#define ASW_FOLLOW_MODE_SIGHT_RANGE 1050.0f
 #define ASW_FOLLOW_MODE_SIGHT_HEIGHT 64.0f
 
 // marine sight cone using the old follow mode
