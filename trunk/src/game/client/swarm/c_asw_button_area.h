@@ -53,6 +53,7 @@ protected:
 	bool m_bNoPower;
 	bool m_bWaitingForInput;
 	bool m_bOldWaitingForInput;
+	bool m_bAnyoneCanHack;
 	int m_iHackLevel;
 	bool m_bIsDoorButton;
 	C_ASW_Button_Area( const C_ASW_Button_Area & ); // not defined, not accessible		

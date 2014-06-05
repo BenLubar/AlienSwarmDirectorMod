@@ -16,11 +16,12 @@ IMPLEMENT_CLIENTCLASS_DT( C_ASW_Button_Area, DT_ASW_Button_Area, CASW_Button_Are
 	RecvPropInt			(RECVINFO(m_iHackLevel)),
 	RecvPropBool		(RECVINFO(m_bIsLocked)),
 	RecvPropBool		(RECVINFO(m_bIsDoorButton)),
-	RecvPropBool(RECVINFO(m_bIsInUse)),
-	RecvPropFloat(RECVINFO(m_fHackProgress)),	
-	RecvPropBool(RECVINFO(m_bNoPower)),
-	RecvPropBool(RECVINFO(m_bWaitingForInput)),
-	RecvPropString( RECVINFO( m_NoPowerMessage ) ),
+	RecvPropBool        (RECVINFO(m_bIsInUse)),
+	RecvPropFloat       (RECVINFO(m_fHackProgress)),	
+	RecvPropBool        (RECVINFO(m_bNoPower)),
+	RecvPropBool        (RECVINFO(m_bWaitingForInput)),
+	RecvPropBool        (RECVINFO(m_bAnyoneCanHack)),
+	RecvPropString      (RECVINFO(m_NoPowerMessage)),
 END_RECV_TABLE()
 
 bool C_ASW_Button_Area::s_bLoadedLockedIconTexture = false;
@@ -142,7 +143,7 @@ bool C_ASW_Button_Area::GetUseAction(ASWUseAction &action, C_ASW_Marine *pUser)
 	{
 		CASW_Marine_Profile *pProfile = pUser->GetMarineProfile();
 
-		if ( pProfile->CanHack() )
+		if ( m_bAnyoneCanHack || pProfile->CanHack() )
 		{
 			action.iUseIconTexture = GetHackIconTextureID();
 			TryLocalize( GetHackIconText(pUser), action.wszText, sizeof( action.wszText ) );

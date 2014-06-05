@@ -31,6 +31,7 @@ LINK_ENTITY_TO_CLASS( trigger_asw_computer_area, CASW_Computer_Area );
 BEGIN_DATADESC( CASW_Computer_Area )
 	DEFINE_KEYFIELD(m_bIsLocked, FIELD_BOOLEAN, "locked" ),
 	DEFINE_KEYFIELD(m_bUseAfterHack, FIELD_BOOLEAN, "useafterhack" ),
+	DEFINE_KEYFIELD(m_bAnyoneCanHack, FIELD_BOOLEAN, "anyonecanhack" ),
 
 	DEFINE_KEYFIELD( m_SecurityCam1Name, FIELD_STRING, "SecurityCam1Name" ),	
 	DEFINE_KEYFIELD( m_Turret1Name, FIELD_STRING, "Turret1Name" ),	
@@ -95,6 +96,7 @@ IMPLEMENT_SERVERCLASS_ST(CASW_Computer_Area, DT_ASW_Computer_Area)
 	SendPropBool		(SENDINFO(m_bWaitingForInput)),
 	SendPropBool		(SENDINFO(m_bIsInUse)),
 	SendPropFloat		(SENDINFO(m_fHackProgress)),
+	SendPropBool        (SENDINFO(m_bAnyoneCanHack)),
 
 	SendPropEHandle( SENDINFO( m_hSecurityCam1 ) ),	
 	SendPropEHandle( SENDINFO( m_hTurret1 ) ),	
@@ -138,6 +140,7 @@ CASW_Computer_Area::CASW_Computer_Area()
 	m_iActiveCam = 1; // asw temp: should be 0 and get set when the player uses a particular camera
 	m_fNextSecureShoutCheck = 0;
 	m_flStopUsingTime = 0.0f;
+	m_bAnyoneCanHack = false;
 
 	m_pDownloadingSound = NULL;
 	m_pComputerInUseSound = NULL;
@@ -219,7 +222,7 @@ void CASW_Computer_Area::ActivateUseIcon( CASW_Marine* pMarine, int nHoldType )
 	if (m_bIsInUse && pMarine->m_hUsingEntity.Get() == this)
 	{
 		// check overriding
-		if (pMarine->GetMarineProfile()->CanHack() && GetCurrentHack() && m_bIsLocked
+		if ((m_bAnyoneCanHack.Get() || pMarine->GetMarineProfile()->CanHack()) && GetCurrentHack() && m_bIsLocked
 				&& GetCurrentHack()->m_iShowOption.Get() != ASW_HACK_OPTION_OVERRIDE)
 		{
 			Override( pMarine );
@@ -233,7 +236,7 @@ void CASW_Computer_Area::ActivateUseIcon( CASW_Marine* pMarine, int nHoldType )
 	}
 			
 	// player has used this item
-	if ( !m_bIsLocked || pMarine->GetMarineProfile()->CanHack() )
+	if ( !m_bIsLocked || (m_bAnyoneCanHack.Get() || pMarine->GetMarineProfile()->CanHack()) )
 	{
 		if ( !m_bIsInUse )
 		{
@@ -380,7 +383,7 @@ void CASW_Computer_Area::MarineUsing(CASW_Marine* pMarine, float deltatime)
 		{
 			float fTime = (deltatime * (1.0f/((float)m_fDownloadTime)));
 			// boost fTime by the marine's hack skill
-			bool bTech = (pMarine->GetMarineProfile() && pMarine->GetMarineProfile()->CanHack());
+			bool bTech = (pMarine->GetMarineProfile() && (m_bAnyoneCanHack.Get() || pMarine->GetMarineProfile()->CanHack()));
 			if (bTech)
 				fTime *= MarineSkills()->GetSkillBasedValueByMarine(pMarine, ASW_MARINE_SKILL_HACKING, ASW_MARINE_SUBSKILL_HACKING_SPEED_SCALE);
 			else
@@ -650,7 +653,7 @@ void CASW_Computer_Area::ActivateMultiTrigger(CBaseEntity *pActivator)
 			if ( pMarine )
 			{
 				// techs doesn't call for help, cos he's got the skillz already
-				if (pMarine->GetMarineProfile() && pMarine->GetMarineProfile()->CanHack())
+				if (pMarine->GetMarineProfile() && (m_bAnyoneCanHack.Get() || pMarine->GetMarineProfile()->CanHack()))
 					return;
 				// check if there's a hacker nearby
 				CASW_Game_Resource *pGameResource = ASWGameResource();

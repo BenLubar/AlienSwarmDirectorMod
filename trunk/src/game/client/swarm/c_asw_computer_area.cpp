@@ -16,11 +16,12 @@ IMPLEMENT_CLIENTCLASS_DT( C_ASW_Computer_Area, DT_ASW_Computer_Area, CASW_Comput
 	RecvPropInt			(RECVINFO(m_iHackLevel)),
 	RecvPropFloat		(RECVINFO(m_fDownloadTime)),
 	RecvPropBool		(RECVINFO(m_bIsLocked)),
-	RecvPropBool(RECVINFO(m_bIsInUse)),
-	RecvPropBool(RECVINFO(m_bWaitingForInput)),
-	RecvPropFloat(RECVINFO(m_fHackProgress)),	
+	RecvPropBool        (RECVINFO(m_bIsInUse)),
+	RecvPropBool        (RECVINFO(m_bWaitingForInput)),
+	RecvPropFloat       (RECVINFO(m_fHackProgress)),
+	RecvPropBool        (RECVINFO(m_bAnyoneCanHack)),
 
-	RecvPropInt		(RECVINFO(m_bIsLocked)),
+	RecvPropInt	        (RECVINFO(m_bIsLocked)),
 	RecvPropFloat		(RECVINFO(m_fHackProgress)),
 
 	RecvPropEHandle( RECVINFO( m_hSecurityCam1 ) ),
@@ -177,7 +178,7 @@ int C_ASW_Computer_Area::GetNumMenuOptions()
 bool C_ASW_Computer_Area::GetUseAction(ASWUseAction &action, C_ASW_Marine *pUser)
 {
 	CASW_Marine_Profile *pProfile = pUser->GetMarineProfile();
-	bool bTech = pProfile->CanHack();
+	bool bTech = m_bAnyoneCanHack.Get() || pProfile->CanHack();
 
 	action.UseIconRed = 255;
 	action.UseIconGreen = 255;

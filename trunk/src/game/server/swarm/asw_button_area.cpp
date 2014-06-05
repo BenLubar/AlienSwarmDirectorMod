@@ -35,6 +35,7 @@ BEGIN_DATADESC( CASW_Button_Area )
 	
 	DEFINE_KEYFIELD(m_bUseAfterHack, FIELD_BOOLEAN, "useafterhack" ),
 	DEFINE_KEYFIELD(m_bDisableAfterUse, FIELD_BOOLEAN, "disableafteruse" ),
+	DEFINE_KEYFIELD( m_bAnyoneCanHack, FIELD_BOOLEAN, "anyonecanhack" ),
 
 	DEFINE_KEYFIELD( m_iWireColumns, FIELD_INTEGER, "wirecolumns"),
 	DEFINE_KEYFIELD( m_iWireRows, FIELD_INTEGER, "wirerows"),
@@ -60,7 +61,8 @@ IMPLEMENT_SERVERCLASS_ST(CASW_Button_Area, DT_ASW_Button_Area)
 	SendPropFloat		(SENDINFO(m_fHackProgress)),
 	SendPropBool		(SENDINFO(m_bNoPower)),	
 	SendPropBool		(SENDINFO(m_bWaitingForInput)),	
-	SendPropString		(SENDINFO( m_NoPowerMessage ) ),
+	SendPropBool        (SENDINFO(m_bAnyoneCanHack)),
+	SendPropString		(SENDINFO(m_NoPowerMessage)),
 END_SEND_TABLE()
 
 ConVar asw_ai_button_hacking_scale( "asw_ai_button_hacking_scale", "0.3", FCVAR_CHEAT, "Button panel hacking speed scale for AI marines" );
@@ -76,6 +78,8 @@ CASW_Button_Area::CASW_Button_Area()
 	m_iAliensKilledBeforeHack = 0;
 
 	m_iHackLevel = 6;
+
+	m_bAnyoneCanHack = false;
 }
 
 CASW_Button_Area::~CASW_Button_Area()
@@ -139,7 +143,7 @@ void CASW_Button_Area::ActivateUseIcon( CASW_Marine* pMarine, int nHoldType )
 	}
 	if ( m_bIsLocked )
 	{
-		if ( pMarine->GetMarineProfile()->CanHack() )
+		if ( m_bAnyoneCanHack.Get() || pMarine->GetMarineProfile()->CanHack() )
 		{
 			// can hack, get the player to launch his hacking window				
 			if ( !m_bIsInUse )

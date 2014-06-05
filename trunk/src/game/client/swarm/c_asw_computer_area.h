@@ -40,6 +40,8 @@ public:
 
 	int GetNumMenuOptions();
 
+	CNetworkVar( bool, m_bAnyoneCanHack );
+
 	CNetworkString( m_MailFile, 255 );
 	CNetworkString( m_NewsFile, 255 );
 	CNetworkString( m_StocksSeed, 255 );

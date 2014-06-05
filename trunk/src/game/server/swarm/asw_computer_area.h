@@ -42,6 +42,7 @@ public:
 	CNetworkVar( int,  m_iHackLevel );	
 	CNetworkVar( float, m_fDownloadTime );
 	CNetworkVar( bool,  m_bIsLocked );	
+	CNetworkVar( bool, m_bAnyoneCanHack );
 	CNetworkVar( bool, m_bWaitingForInput );
 	EHANDLE m_hComputerHack;
 
