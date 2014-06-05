@@ -42,6 +42,12 @@ void C_MOD_Build_Mission_Map_For_Next_Mission::OnMissionComplete(bool bSuccess)
 		return;
 	}
 
+	if (engine->IsPlayingDemo())
+	{
+		//Don't rebuild maps while playing recordings.
+		return;
+	}
+
 	if (mod_player_performance_value.GetInt() == 0)
 	{
 		Msg("WARNING: C_MOD_Build_Mission_Map_For_Next_Mission::OnMissionComplete(): mod_player_performance_value is not set.  Was a 'mod_build_mission_map_for_next_mission' entity placed in the level?\n\n");
