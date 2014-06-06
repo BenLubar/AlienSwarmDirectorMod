@@ -1830,20 +1830,20 @@ void CHLClient::LevelInitPreEntity( char const* pMapName )
 #if !defined( NO_ENTITY_PREDICTION )
 	// don't do prediction if single player!
 	// don't set direct because of FCVAR_USERINFO
-	if ( gpGlobals->maxClients > 1 )
+	//if ( gpGlobals->maxClients > 1 )
 	{
 		if ( !cl_predict->GetInt() )
 		{
 			engine->ClientCmd( "cl_predict 1" );
 		}
 	}
-	else
-	{
-		if ( cl_predict->GetInt() )
-		{
-			engine->ClientCmd( "cl_predict 0" );
-		}
-	}
+	//else
+	//{
+	//	if ( cl_predict->GetInt() )
+	//	{
+	//		engine->ClientCmd( "cl_predict 0" );
+	//	}
+	//}
 #endif
 
 	// Check low violence settings for this map
