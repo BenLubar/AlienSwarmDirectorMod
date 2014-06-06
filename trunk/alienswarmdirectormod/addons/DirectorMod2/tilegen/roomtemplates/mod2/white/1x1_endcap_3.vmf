@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "7"
+	"mapversion" "8"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "7"
+	"mapversion" "8"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -32,7 +32,7 @@ world
 		side
 		{
 			"id" "302"
-			"plane" "(256 -32 128) (224 0 128) (224 128 128)"
+			"plane" "(224 144 128) (256 144 128) (256 -32 128)"
 			"material" "TOOLS/TOOLSPLAYERCLIP"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 -1 0 0] 0.25"
@@ -43,7 +43,7 @@ world
 		side
 		{
 			"id" "301"
-			"plane" "(224 0 0) (256 -32 0) (256 128 0)"
+			"plane" "(224 0 0) (256 -32 0) (256 144 0)"
 			"material" "TOOLS/TOOLSPLAYERCLIP"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 -1 0 0] 0.25"
@@ -54,7 +54,7 @@ world
 		side
 		{
 			"id" "300"
-			"plane" "(256 -32 0) (256 -32 128) (256 128 128)"
+			"plane" "(256 -32 0) (256 -32 128) (256 144 128)"
 			"material" "TOOLS/TOOLSPLAYERCLIP"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
@@ -65,7 +65,7 @@ world
 		side
 		{
 			"id" "299"
-			"plane" "(224 128 0) (224 128 128) (224 0 128)"
+			"plane" "(224 144 0) (224 144 128) (224 0 128)"
 			"material" "TOOLS/TOOLSPLAYERCLIP"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
@@ -76,7 +76,7 @@ world
 		side
 		{
 			"id" "298"
-			"plane" "(256 128 0) (256 128 128) (224 128 128)"
+			"plane" "(256 144 0) (256 144 128) (224 144 128)"
 			"material" "TOOLS/TOOLSPLAYERCLIP"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
@@ -1066,7 +1066,7 @@ world
 		side
 		{
 			"id" "308"
-			"plane" "(240 128 128) (16 128 128) (16 160 128)"
+			"plane" "(16 160 128) (240 160 128) (240 144 128)"
 			"material" "TOOLS/TOOLSPLAYERCLIP"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 -1 0 0] 0.25"
@@ -1077,7 +1077,7 @@ world
 		side
 		{
 			"id" "307"
-			"plane" "(16 128 0) (240 128 0) (240 160 0)"
+			"plane" "(16 144 0) (240 144 0) (240 160 0)"
 			"material" "TOOLS/TOOLSPLAYERCLIP"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 -1 0 0] 0.25"
@@ -1088,7 +1088,7 @@ world
 		side
 		{
 			"id" "306"
-			"plane" "(240 128 0) (240 128 128) (240 160 128)"
+			"plane" "(240 144 0) (240 144 128) (240 160 128)"
 			"material" "TOOLS/TOOLSPLAYERCLIP"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
@@ -1099,7 +1099,7 @@ world
 		side
 		{
 			"id" "305"
-			"plane" "(16 160 0) (16 160 128) (16 128 128)"
+			"plane" "(16 160 0) (16 160 128) (16 144 128)"
 			"material" "TOOLS/TOOLSPLAYERCLIP"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
@@ -1121,7 +1121,7 @@ world
 		side
 		{
 			"id" "303"
-			"plane" "(16 128 0) (16 128 128) (240 128 128)"
+			"plane" "(16 144 0) (16 144 128) (240 144 128)"
 			"material" "TOOLS/TOOLSPLAYERCLIP"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
@@ -1143,7 +1143,7 @@ world
 		side
 		{
 			"id" "314"
-			"plane" "(32 3.05176e-005 128) (-1.23978e-005 -32 128) (-5.72205e-006 128 128)"
+			"plane" "(0 144 128) (32 144 128) (32 0 128)"
 			"material" "TOOLS/TOOLSPLAYERCLIP"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 -1 0 0] 0.25"
@@ -1154,7 +1154,7 @@ world
 		side
 		{
 			"id" "313"
-			"plane" "(-1.23978e-005 -32 0) (32 3.05176e-005 0) (32 128 0)"
+			"plane" "(-0 -32 0) (32 0 0) (32 144 0)"
 			"material" "TOOLS/TOOLSPLAYERCLIP"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 -1 0 0] 0.25"
@@ -1165,7 +1165,7 @@ world
 		side
 		{
 			"id" "312"
-			"plane" "(32 3.05176e-005 0) (32 3.05176e-005 128) (32 128 128)"
+			"plane" "(32 0 0) (32 0 128) (32 144 128)"
 			"material" "TOOLS/TOOLSPLAYERCLIP"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
@@ -1176,7 +1176,7 @@ world
 		side
 		{
 			"id" "311"
-			"plane" "(-5.72205e-006 128 0) (-5.72205e-006 128 128) (-1.23978e-005 -32 128)"
+			"plane" "(0 144 0) (0 144 128) (0 -32 128)"
 			"material" "TOOLS/TOOLSPLAYERCLIP"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
@@ -1187,7 +1187,7 @@ world
 		side
 		{
 			"id" "310"
-			"plane" "(32 128 0) (32 128 128) (-5.72205e-006 128 128)"
+			"plane" "(32 144 0) (32 144 128) (0 144 128)"
 			"material" "TOOLS/TOOLSPLAYERCLIP"
 			"uaxis" "[1 0 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
@@ -1198,7 +1198,7 @@ world
 		side
 		{
 			"id" "309"
-			"plane" "(-1.23978e-005 -32 0) (-1.23978e-005 -32 128) (32 3.05176e-005 128)"
+			"plane" "(-0 -32 0) (0 -32 128) (32 0 128)"
 			"material" "TOOLS/TOOLSPLAYERCLIP"
 			"uaxis" "[0 1 0 0] 0.25"
 			"vaxis" "[0 0 -1 0] 0.25"
