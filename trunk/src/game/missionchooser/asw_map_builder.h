@@ -53,7 +53,9 @@ public:
 	MapBuildStage GetMapBuildStage() { return m_iBuildStage; }
 	bool IsBuildingMission();
 	CMapLayout *GetCurrentlyBuildingMapLayout() const { return m_pBuildingMapLayout; }
-	
+
+	void RunCommandWhenFinished(const char *pCommand) { Q_strncpy(m_szCommandWhenFinished, pCommand, MAP_BUILD_OUTPUT_BUFFER_SIZE); }
+
 	// A value that ranges from 0 to 100 indicating percentage of map progress complete
 	CInterlockedInt m_nVBSP2Progress;
 	char m_szVBSP2MapName[MAX_PATH];
@@ -66,6 +68,8 @@ private:
 	void ProcessExecution();
 	void FinishExecution();
 	void UpdateProgress();
+
+	char m_szCommandWhenFinished[MAP_BUILD_OUTPUT_BUFFER_SIZE];
 
 	// VBSP1 build options
 	KeyValues *m_pMapBuilderOptions;

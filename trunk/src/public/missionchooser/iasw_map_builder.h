@@ -61,6 +61,11 @@ public:
 	// Gets a value indicating whether a map build is scheduled or in progress.
 	//-----------------------------------------------------------------------------
 	virtual bool IsBuildingMission() = 0;
+
+	//-----------------------------------------------------------------------------
+	// Schedules an engine command to run when the current map is generated.
+	//-----------------------------------------------------------------------------
+	virtual void RunCommandWhenFinished(const char *pCommand) = 0;
 };
 
 

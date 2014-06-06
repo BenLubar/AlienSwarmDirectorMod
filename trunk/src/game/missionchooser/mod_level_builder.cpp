@@ -78,17 +78,27 @@ void MOD_Level_Builder::SetIsBuildingLevel(bool value)
 	g_IsBuildingLevel = value;
 }
 
-void MOD_Level_Builder::BuildMapForMissionFromLayoutFile( const char *szMissionName, const int iDifficultLevel, bool bCompileLevel)
+void MOD_Level_Builder::BuildMapForMissionFromLayoutFile(const char *szMissionName, const int iDifficultLevel, bool bCompileLevel)
 {
-	SetIsBuildingLevel( true );
+	SetIsBuildingLevel(true);
 
 	//format: tilegen\\new_missions\\Mission1_2.txt
 	char missionRuleFileNameBuffer[1024];
-	Q_snprintf(missionRuleFileNameBuffer, sizeof(missionRuleFileNameBuffer), "%s%s_%d%s",
-		MISSION_RULES_DIRECTORY,
-		szMissionName,
-		iDifficultLevel,
-		MISSION_RULE_EXTENSION);
+	if (iDifficultLevel == 0)
+	{
+		Q_snprintf(missionRuleFileNameBuffer, sizeof(missionRuleFileNameBuffer), "%s%s%s",
+			MISSION_RULES_DIRECTORY,
+			szMissionName,
+			MISSION_RULE_EXTENSION);
+	}
+	else
+	{
+		Q_snprintf(missionRuleFileNameBuffer, sizeof(missionRuleFileNameBuffer), "%s%s_%d%s",
+			MISSION_RULES_DIRECTORY,
+			szMissionName,
+			iDifficultLevel,
+			MISSION_RULE_EXTENSION);
+	}
 
 	//format: \\maps\\Mission1.layout
 	char layoutFileNameBuffer[1024];

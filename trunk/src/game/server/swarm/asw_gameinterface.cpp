@@ -11,7 +11,10 @@
 #include "fmtstr.h"
 #include "missionchooser/iasw_mission_chooser.h"
 #include "missionchooser/iasw_mission_chooser_source.h"
+#include "missionchooser/iasw_map_builder.h"
+#include "missionchooser/imod_level_builder.h"
 #include "matchmaking/swarm/imatchext_swarm.h"
+#include "asw_campaign_info.h"
 
 extern ConVar sv_force_transmit_ents;
 
@@ -189,10 +192,28 @@ void CServerGameDLL::ApplyGameSettings( KeyValues *pKV )
 			return;
 		}
 
-		engine->ServerCommand( CFmtStr( "%s %s campaign %s reserved\n",
-			szMapCommand,
-			szStartingMission ? szStartingMission : "lobby",
-			szSaveFilename ) );
+		Assert(szCampaignName);
+		Assert(szStartingMission);
+		CASW_Campaign_Info campaignInfo;
+
+		campaignInfo.LoadCampaign(szCampaignName);
+		CASW_Campaign_Info::CASW_Campaign_Mission_t *pMission = campaignInfo.GetMissionByMapName(szStartingMission);
+		Assert(pMission);
+		if (pMission->m_bRandomlyGenerated)
+		{
+			missionchooser->modLevel_Builder()->BuildMapForMissionFromLayoutFile(szStartingMission, 0);
+			missionchooser->MapBuilder()->RunCommandWhenFinished( CFmtStr( "%s %s campaign %s reserved\n",
+				szMapCommand,
+				szStartingMission ? szStartingMission : "lobby",
+				szSaveFilename ) );
+		}
+		else
+		{
+			engine->ServerCommand( CFmtStr( "%s %s campaign %s reserved\n",
+				szMapCommand,
+				szStartingMission ? szStartingMission : "lobby",
+				szSaveFilename ) );
+		}
 	}
 	else if ( !Q_stricmp( szMode, "single_mission" ) )
 	{

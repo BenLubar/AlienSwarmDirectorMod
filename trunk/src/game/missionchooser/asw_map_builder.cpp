@@ -205,6 +205,7 @@ m_pMissionSettings( NULL ),
 m_pMissionDefinition( NULL ),
 m_pWorkerThread( NULL )
 {
+	m_szCommandWhenFinished[0] = '\0';
 	m_szLayoutName[0] = '\0';
 	m_iCurrentBuildSearch = 0;
 	m_bRunningProcess = false;
@@ -407,7 +408,7 @@ void CASW_Map_Builder::ProcessExecution()
 		Msg(m_szProcessBuffer);
 	}
 	// check process termination
-	else if ( WaitForSingleObject(m_hProcess, 1000) != WAIT_TIMEOUT )
+	else if ( WaitForSingleObject(m_hProcess, 50) != WAIT_TIMEOUT )
 	{
 		if(m_bFinishedExecution)
 		{
@@ -449,6 +450,11 @@ void CASW_Map_Builder::FinishExecution()
 			Msg("Map Build finished!\n");
 			m_flProgress = 1.0f;
 			Q_snprintf( m_szStatusMessage, sizeof( m_szStatusMessage ), "Build complete!" );
+			if (m_szCommandWhenFinished[0])
+			{
+				engine->ServerCmd(m_szCommandWhenFinished);
+				m_szCommandWhenFinished[0] = '\0';
+			}
 		}
 		else
 		{
@@ -464,6 +470,11 @@ void CASW_Map_Builder::FinishExecution()
 		Msg("Map Build finished!\n");
 		m_flProgress = 1.0f;
 		Q_snprintf( m_szStatusMessage, sizeof( m_szStatusMessage ), "Build complete!" );
+		if (m_szCommandWhenFinished[0])
+		{
+			engine->ClientCmd_Unrestricted(m_szCommandWhenFinished);
+			m_szCommandWhenFinished[0] = '\0';
+		}
 	}
 	if (m_iProcessReturnValue == -1)
 	{
@@ -484,6 +495,7 @@ static char const *s_szProgressTerms[]={
 	"PortalFlow:",
 	"Valve Software - vrad.exe",
 	"BuildFacelights:",
+	"BuildVisLeafs:",
 	"FinalLightFace:",
 	"ThreadComputeLeafAmbient:",
 	"Computing static prop lighting"
@@ -499,6 +511,7 @@ static char const *s_szStatusLabels[]={
 	"Calculating visibility...",
 	"Calculating visibility...",
 	"Calculating visibility...",
+	"Calculating lighting...",
 	"Calculating lighting...",
 	"Calculating lighting...",
 	"Calculating lighting...",
