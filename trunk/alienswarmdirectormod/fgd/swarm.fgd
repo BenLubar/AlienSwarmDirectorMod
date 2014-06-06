@@ -5249,7 +5249,7 @@
 	]
 ]
 
-@PointClass color(0 0 200) studio("models/items/Ammobag/AmmoBag.mdl") = asw_ammo_drop : "Generic ammo pile" []
+@PointClass base(Targetname, Angles) color(0 0 200) studio("models/items/Ammobag/AmmoBag.mdl") = asw_ammo_drop : "Generic ammo pile" []
 
 @PointClass base(ASWPickup) studio("models/swarm/ammo/ammoassaultrifle.mdl")= asw_ammo_rifle : "Box of Rifle ammo" []
 
@@ -6336,7 +6336,7 @@
 [
 ]
 
-@PointClass base(Node) studio("models/editor/ground_node.mdl") color(8 64 232) = info_node_marine_hint :
+@PointClass base(Node, Angles) studio("models/editor/ground_node.mdl") color(8 64 232) = info_node_marine_hint :
 	"Follow hint node for marines.  It is also a navigation node for ground moving NPCs. Navigation nodes are baked into the nodegraph so that NPCs can move " +
 	"to them. Ground nodes fall to the ground when they spawn."
 [
