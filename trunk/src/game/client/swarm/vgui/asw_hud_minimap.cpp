@@ -1352,23 +1352,18 @@ void CASWHudMinimap::SetMap(const char * levelname)
 	char tempfile[MAX_PATH];
 	Q_snprintf( tempfile, sizeof( tempfile ), "resource/overviews/%s.txt", levelname );
 	
-	if ( !m_MapKeyValues->LoadFromFile( filesystem, tempfile, "GAME" ) )
+	if ( !m_MapKeyValues->LoadFromFile( filesystem, tempfile, "GAME" ) || !m_MapKeyValues->GetBool( "use_overview", true ) )
 	{
-		// try to load it directly from the maps folder
-		Q_snprintf( tempfile, sizeof( tempfile ), "maps/%s.txt", levelname );
-		if ( !m_MapKeyValues->LoadFromFile( filesystem, tempfile, "GAME" ) || !m_MapKeyValues->GetBool( "use_overview", true ) )
-		{
-			//DevMsg( 1, "CASWHudMinimap::SetMap: couldn't load overview file for map %s.\n", levelname );
-			m_nMapTextureID = surface()->CreateNewTextureID();
-			surface()->DrawSetTextureFile( m_nMapTextureID, "vgui/swarm/hud/scanner", true, false);
-			// put in some default numbers so the scanner works
-			m_MapOrigin.x	= 0;
-			m_MapOrigin.y	= 0;
-			m_fMapScale		= 25.0f;
-			Q_snprintf(m_szMissionTitle, sizeof(m_szMissionTitle), m_MapKeyValues->GetString("missiontitle", "Unnamed Mission"));
-			m_bHasOverview = false;
-			return;
-		}
+		//DevMsg( 1, "CASWHudMinimap::SetMap: couldn't load overview file for map %s.\n", levelname );
+		m_nMapTextureID = surface()->CreateNewTextureID();
+		surface()->DrawSetTextureFile( m_nMapTextureID, "vgui/swarm/hud/scanner", true, false);
+		// put in some default numbers so the scanner works
+		m_MapOrigin.x	= 0;
+		m_MapOrigin.y	= 0;
+		m_fMapScale		= 25.0f;
+		Q_snprintf(m_szMissionTitle, sizeof(m_szMissionTitle), m_MapKeyValues->GetString("missiontitle", "Unnamed Mission"));
+		m_bHasOverview = false;
+		return;
 	}	
 
 	// TODO release old texture ?
