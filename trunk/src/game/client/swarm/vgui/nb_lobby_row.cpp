@@ -375,7 +375,7 @@ void CNB_Lobby_Row::UpdateDetails()
 	}
 }
 
-void CNB_Lobby_Row::CheckTooltip( CNB_Lobby_Tooltip *pTooltip )
+bool CNB_Lobby_Row::CheckTooltip( CNB_Lobby_Tooltip *pTooltip )
 {
 	if ( CControllerFocus::IsPanelReallyVisible( m_pPortraitButton ) && m_pPortraitButton->IsCursorOver() )
 	{
@@ -397,6 +397,11 @@ void CNB_Lobby_Row::CheckTooltip( CNB_Lobby_Tooltip *pTooltip )
 	{
 		pTooltip->ShowMarinePromotionTooltip( m_nLobbySlot );
 	}
+	else
+	{
+		return false;
+	}
+	return true;
 }
 
 extern ConVar developer;

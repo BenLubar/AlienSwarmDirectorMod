@@ -231,7 +231,7 @@ void CNB_Select_Marine_Panel::OnCommand( const char *command )
 				// is this the first marine we've selected?
 				if ( Briefing()->IsOfflineGame() && ASWGameResource() && ASWGameResource()->GetNumMarines( NULL ) <= 0 )
 				{
-					Briefing()->AutoSelectFullSquadForSingleplayer( nProfileIndex );
+					//Briefing()->AutoSelectFullSquadForSingleplayer( nProfileIndex );
 				}
 
 				bool bHasPointsToSpend = Briefing()->IsCampaignGame() && !Briefing()->UsingFixedSkillPoints() && ( Briefing()->GetProfileSkillPoints( nProfileIndex, ASW_SKILL_SLOT_SPARE ) > 0 );

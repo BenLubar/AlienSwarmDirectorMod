@@ -8,7 +8,6 @@
 #include "nb_lobby_tooltip.h"
 #include "nb_lobby_row.h"
 #include "nb_lobby_row_small.h"
-#include "nb_lobby_row_xsmall.h"
 #include "nb_select_marine_panel.h"
 #include "nb_select_weapon_panel.h"
 #include "nb_vote_panel.h"
@@ -70,10 +69,10 @@ CNB_Main_Panel::CNB_Main_Panel( vgui::Panel *parent, const char *name ) : BaseCl
 	m_pLobbyRow1 = new CNB_Lobby_Row_Small( this, "LobbyRow1" );
 	m_pLobbyRow2 = new CNB_Lobby_Row_Small( this, "LobbyRow2" );
 	m_pLobbyRow3 = new CNB_Lobby_Row_Small( this, "LobbyRow3" );
-	m_pLobbyRow4 = new CNB_Lobby_Row_XSmall( this, "LobbyRow4" );
-	m_pLobbyRow5 = new CNB_Lobby_Row_XSmall( this, "LobbyRow5" );
-	m_pLobbyRow6 = new CNB_Lobby_Row_XSmall( this, "LobbyRow6" );
-	m_pLobbyRow7 = new CNB_Lobby_Row_XSmall( this, "LobbyRow7" );
+	m_pLobbyRow4 = new CNB_Lobby_Row_Small( this, "LobbyRow4" );
+	m_pLobbyRow5 = new CNB_Lobby_Row_Small( this, "LobbyRow5" );
+	m_pLobbyRow6 = new CNB_Lobby_Row_Small( this, "LobbyRow6" );
+	m_pLobbyRow7 = new CNB_Lobby_Row_Small( this, "LobbyRow7" );
 	m_pLobbyTooltip = new CNB_Lobby_Tooltip( this, "LobbyTooltip" );
 	m_pMissionSummary = new CNB_Mission_Summary( this, "MissionSummary" );
 	// == MANAGED_MEMBER_CREATION_END ==
@@ -190,14 +189,18 @@ void CNB_Main_Panel::OnThink()
 
 	if ( !m_hSubScreen.Get() )
 	{
-		m_pLobbyRow0->CheckTooltip( m_pLobbyTooltip );
-		m_pLobbyRow1->CheckTooltip( m_pLobbyTooltip );
-		m_pLobbyRow2->CheckTooltip( m_pLobbyTooltip );
-		m_pLobbyRow3->CheckTooltip( m_pLobbyTooltip );
-		m_pLobbyRow4->CheckTooltip( m_pLobbyTooltip );
-		m_pLobbyRow5->CheckTooltip( m_pLobbyTooltip );
-		m_pLobbyRow6->CheckTooltip( m_pLobbyTooltip );
-		m_pLobbyRow7->CheckTooltip( m_pLobbyTooltip );
+		bool bTooltipVisible =
+				m_pLobbyRow0->CheckTooltip( m_pLobbyTooltip ) ||
+				m_pLobbyRow1->CheckTooltip( m_pLobbyTooltip ) ||
+				m_pLobbyRow2->CheckTooltip( m_pLobbyTooltip ) ||
+				m_pLobbyRow3->CheckTooltip( m_pLobbyTooltip ) ||
+				m_pLobbyRow4->CheckTooltip( m_pLobbyTooltip ) ||
+				m_pLobbyRow5->CheckTooltip( m_pLobbyTooltip ) ||
+				m_pLobbyRow6->CheckTooltip( m_pLobbyTooltip ) ||
+				m_pLobbyRow7->CheckTooltip( m_pLobbyTooltip );
+
+		m_pLobbyTooltip->SetVisible( bTooltipVisible );
+		m_pMissionSummary->SetVisible( !bTooltipVisible );
 
 		ProcessSkillSpendQueue();
 	}

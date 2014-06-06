@@ -37,7 +37,7 @@ public:
 	void OpenPlayerFlyout();
 
 	virtual void UpdateDetails();
-	virtual void CheckTooltip( CNB_Lobby_Tooltip *pTooltip );
+	virtual bool CheckTooltip( CNB_Lobby_Tooltip *pTooltip );
 	
 	// == MANAGED_MEMBER_POINTERS_START: Do not edit by hand ==
 	vgui::ImagePanel	*m_pBackground;
