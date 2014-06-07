@@ -266,7 +266,7 @@ bool HUDTraceToWorld(float screenx, float screeny, Vector &HitLocation, bool bUs
 		Ray_t ray2;
 		trace_t tr;
 		ray2.Init( traceStart, traceEnd, ASW_MARINE_HULL_MINS, ASW_MARINE_HULL_MAXS );
-		UTIL_TraceRay( ray2, MASK_SOLID_BRUSHONLY, NULL, COLLISION_GROUP_NONE, &tr );
+		UTIL_TraceRay( ray2, MASK_VISIBLE, NULL, COLLISION_GROUP_NONE, &tr );
 		if ( tr.fraction >= 1.0f )
 			return false;
 
@@ -309,7 +309,7 @@ bool HUDTraceToWorld(float screenx, float screeny, Vector &HitLocation, bool bUs
 	{
 		// do a trace into the world to see what we've pointing directly at
 		trace_t tr;
-		UTIL_TraceLine(traceStart, traceEnd, MASK_SOLID_BRUSHONLY, pPlayer, COLLISION_GROUP_NONE, &tr);
+		UTIL_TraceLine(traceStart, traceEnd, MASK_VISIBLE, pPlayer, COLLISION_GROUP_NONE, &tr);
 		if ( tr.fraction >= 1.0f )
 			return false;
 		// if we hit tools no light texture, retrace through it
