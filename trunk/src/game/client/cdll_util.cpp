@@ -72,7 +72,7 @@ char *VarArgs( const char *format, ... )
 //-----------------------------------------------------------------------------
 bool IsPlayerIndex( int index )
 {
-	return ( index >= 1 && index <= gpGlobals->maxClients ) ? true : false;
+	return ( index >= 1 && index <= gpGlobals->maxClients );
 }
 
 int GetLocalPlayerIndex( void )

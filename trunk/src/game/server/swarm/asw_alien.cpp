@@ -588,7 +588,7 @@ void CASW_Alien::NPCThink( void )
 		}
 	}
 
-	if (gpGlobals->maxClients > 1)
+	//if (gpGlobals->maxClients > 1)
 		m_LagCompensation.StorePositionHistory();
 	// Update range attack
 	if ( m_nVolleyType >= 0 )

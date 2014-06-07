@@ -193,7 +193,7 @@ void CASW_Lag_Compensation::RequestLagCompensation(CASW_Player *player, const CU
 
 	if ( !player
 		 || !player->m_bLagCompensation		// Player not wanting lag compensation
-		 || (gpGlobals->maxClients <= 1)	// no lag compensation in single player
+		 //|| (gpGlobals->maxClients <= 1)	// no lag compensation in single player
 		 || !asw_alien_unlag.GetBool()				// disabled by server admin
 		 || player->IsBot() 				// not for bots
 		 //|| player->IsObserver()			// not for spectators

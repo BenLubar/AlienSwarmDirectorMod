@@ -2251,7 +2251,7 @@ void CASW_Buzzer::NPCThink( void )
 	if (m_bElectroStunned && m_flElectroStunSlowMoveTime < gpGlobals->curtime)
 		m_bElectroStunned = false;
 
-	if (gpGlobals->maxClients > 1)
+	//if (gpGlobals->maxClients > 1)
 		m_LagCompensation.StorePositionHistory();
 }
 

@@ -212,7 +212,7 @@ bool MarineControllingTurret()
 
 bool ValidOrderingSurface(const trace_t &tr)
 {
-	if (!Q_strcmp("TOOLS/TOOLSNOLIGHT", tr.surface.name))
+	if (!Q_strncmp("TOOLS/", tr.surface.name, 6))
 		return false;
 
 	// check marine hull can fit in this spot

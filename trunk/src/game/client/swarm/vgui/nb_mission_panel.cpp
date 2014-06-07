@@ -242,8 +242,8 @@ void CNB_Mission_Panel::OnThink()
 	}
 
 	// only show insane in multiplayer
-	m_drpDifficulty->SetFlyoutItemEnabled( "BtnImpossible", gpGlobals->maxClients > 1 );
-	m_drpDifficulty->SetFlyoutItemEnabled( "BtnImba", gpGlobals->maxClients > 1 );
+	m_drpDifficulty->SetFlyoutItemEnabled( "BtnImpossible", true );//gpGlobals->maxClients > 1 );
+	m_drpDifficulty->SetFlyoutItemEnabled( "BtnImba", true );//gpGlobals->maxClients > 1 );
 
 	if ( ASWGameRules()->IsCampaignGame() && ASWGameRules()->GetCampaignSave() && ASWGameRules()->GetGameState() != ASW_GS_INGAME )
 	{

@@ -1778,7 +1778,7 @@ void CASW_Marine::ASWThinkEffects()
 		m_flNextPositionHistoryTime = gpGlobals->curtime + asw_movement_direction_interval.GetFloat();
 	}
 
-	if ( gpGlobals->maxClients > 1 )
+	//if ( gpGlobals->maxClients > 1 )
 	{
 		m_LagCompensation.StorePositionHistory();
 	}

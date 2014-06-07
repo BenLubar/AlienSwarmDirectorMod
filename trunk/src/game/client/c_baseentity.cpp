@@ -5696,8 +5696,7 @@ float C_BaseEntity::GetInterpolationAmount( int flags )
 	}
 
 	// Always fully interpolate during multi-player or during demo playback...
-	if ( ( gpGlobals->maxClients > 1 ) || 
-		engine->IsPlayingDemo() )
+	//if ( ( gpGlobals->maxClients > 1 ) ||	engine->IsPlayingDemo() )
 	{
 		return AdjustInterpolationAmount( this, TICKS_TO_TIME ( TIME_TO_TICKS( GetClientInterpAmount() ) + serverTickMultiple ) );
 	}
