@@ -59,7 +59,7 @@ static ConVar ui_play_online_browser( "ui_play_online_browser",
 #endif
 									 "Whether play online displays a browser or plain search dialog." );
 
-ConVar asw_show_all_singleplayer_maps( "asw_show_all_singleplayer_maps", "0", FCVAR_NONE, "If set, offline practice option on the main menu will show all maps." );
+ConVar asw_show_all_singleplayer_maps( "asw_show_all_singleplayer_maps", "1", FCVAR_CHEAT, "If set, offline practice option on the main menu will show all maps." );
 
 void Demo_DisableButton( Button *pButton );
 void OpenGammaDialog( VPANEL parent );

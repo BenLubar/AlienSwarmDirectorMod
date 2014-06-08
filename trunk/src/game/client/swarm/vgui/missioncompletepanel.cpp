@@ -67,7 +67,7 @@ extern ConVar asw_unlock_all_weapons;
 #endif
 ConVar asw_success_sound_delay( "asw_success_sound_delay", "0.0", FCVAR_CHEAT, "Delay before playing mission success music" );
 ConVar asw_fail_sound_delay( "asw_fail_sound_delay", "0.0", FCVAR_CHEAT, "Delay before playing mission fail music" );
-ConVar asw_show_stats_in_singleplayer( "asw_show_stats_in_singleplayer", "0", FCVAR_NONE, "Show stats screen in singleplayer" );
+ConVar asw_show_stats_in_singleplayer( "asw_show_stats_in_singleplayer", "1", FCVAR_CHEAT, "Show stats screen in singleplayer" );
 
 extern ConVar mod_rebuild_map_on_restart;
 extern ConVar mod_player_performance_value;

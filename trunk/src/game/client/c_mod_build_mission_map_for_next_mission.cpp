@@ -68,12 +68,7 @@ void C_MOD_Build_Mission_Map_For_Next_Mission::OnMissionComplete(bool bSuccess)
 		BuildMissionMapForMission(iNextMission, mod_player_performance_value.GetInt());
 		
 	}
-	else if (mod_rebuild_map_on_restart.GetInt() > 0 
-		&& pSave->m_iCurrentPosition > 1)
-		//&& !ASWGameRules()->IsIntroMap())
-		//&& ASWGameRules()->GetCampaignInfo()->GetMission(1)->
-
-		//&& pSave->m_iNumMissionsComplete > 1) //Don't rebuild first mission, it takes too long
+	else if (mod_rebuild_map_on_restart.GetInt() > 0)
 	{
 		//Rebuild level for restart
 		int iCurrentMission = pSave->m_iNumMissionsComplete + 1;

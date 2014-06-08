@@ -56,7 +56,7 @@
 		"labelText"				"#L4D360UI_MainMenu_CoOp"
 		"tooltiptext"			"#L4D360UI_MainMenu_CoOp_Tip"
 		"style"					"AlienSwarmMenuButton"
-		"command"				"CreateGame"	
+		"command"				"SoloPlay"//"CreateGame"	
 		"ActivationType"		"1"
 	}
 			

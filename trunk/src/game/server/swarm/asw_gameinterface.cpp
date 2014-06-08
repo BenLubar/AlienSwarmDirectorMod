@@ -25,7 +25,7 @@ extern ConVar sv_force_transmit_ents;
 void CServerGameClients::GetPlayerLimits( int& minplayers, int& maxplayers, int &defaultMaxPlayers ) const
 {
 	minplayers = 1; 
-	defaultMaxPlayers = 1;
+	defaultMaxPlayers = 8;
 	maxplayers = ASW_MAX_PLAYERS;
 }
 
@@ -87,7 +87,7 @@ void CServerGameDLL::ApplyGameSettings( KeyValues *pKV )
 		{
 			// We are already reserved, but we still need to let the engine
 			// baseserver know how many human slots to allocate
-			pKV->SetInt( "members/numSlots", 1 );
+			pKV->SetInt( "members/numSlots", g_bOfflineGame ? 1 : 8  );
 			return;
 		}
 
