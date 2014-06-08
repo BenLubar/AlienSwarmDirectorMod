@@ -1,0 +1,9 @@
+GAME {
+	"MailFrom1"	"From: Ben Lubar"
+	"MailDate1"	"Date: 08/03/86"
+	"MailSubject1"	"Subject: Well, here we are again."
+	"MailBody1A"	"Hello there!"
+	"MailBody1B"	""
+	"MailBody1C"	""
+	"MailBody1D"	""
+}

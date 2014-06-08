@@ -66,10 +66,17 @@ CASW_VGUI_Computer_Mail::CASW_VGUI_Computer_Mail( vgui::Panel *pParent, const ch
 		if (m_pHackComputer && m_pHackComputer->GetComputerArea())
 		{
 			// set the label based on PDA name
-			char namebuffer[64];
-			Q_snprintf(namebuffer, sizeof(namebuffer), "%s", m_pHackComputer->GetComputerArea()->m_PDAName.Get());
+			char namebuffer[256];
+			Q_strncpy(namebuffer, m_pHackComputer->GetComputerArea()->m_PDAName.Get(), sizeof(namebuffer));
 
-			wchar_t wnamebuffer[64];
+			if (!Q_strcmp(namebuffer, "##PLAYER_NAME"))
+			{
+				C_ASW_Player *pPlayer = C_ASW_Player::GetLocalASWPlayer();
+				Assert(pPlayer);
+				Q_strncpy(namebuffer, pPlayer->GetPlayerName(), sizeof(namebuffer));
+			}
+
+			wchar_t wnamebuffer[256];
 			g_pVGuiLocalize->ConvertANSIToUnicode(namebuffer, wnamebuffer, sizeof( wnamebuffer ));
 			
 			wchar_t wbuffer[256];		
