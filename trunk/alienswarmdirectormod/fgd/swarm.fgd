@@ -5425,7 +5425,7 @@
 @PointClass base(Targetname, Parentname, Angles, Global, Studiomodel) studioprop() = asw_door : 
 	"An entity used to place a Swarm sliding door in the world."
 [
-	slavename(string) : "Slave Name" : "" : "If this is a double door, put the name of the second half of the door here.  They will become linked."
+	slavename(target_destination) : "Slave Name" : "" : "If this is a double door, put the name of the second half of the door here.  They will become linked."
 	model(studio) : "World Model" : "models/swarm/doors/swarm_singleDoor.mdl"
 	rendercolor(color255) : "Color (R G B)" : "255 255 255"
 	spawnpos(choices) : "Spawn Position" : 0 =
