@@ -86,6 +86,12 @@ void CNB_Select_Campaign_Panel::OnThink()
 			pEntry->m_nCampaignIndex = -1;
 		}
 	}
+
+	// BenLubar: Unfortunately, we don't have access to the actual VGUI code that controls the scrollbar,
+	// so this hack is the only way we can make the menu scroll to the right place before the user
+	// scrolls to the right.
+	m_pHorizList->ChangeScrollValue(1);
+	m_pHorizList->ChangeScrollValue(-1);
 }
 
 
