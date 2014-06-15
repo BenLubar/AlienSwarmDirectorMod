@@ -197,19 +197,12 @@ void CASW_Player::CalculateEarnedXP()
 	if ( !ASWGameResource() || !ASWGameResource()->GetFirstMarineResourceForPlayer( this ) )
 		return;
 
-	// no earning XP in singleplayer
-	if ( gpGlobals->maxClients <= 1 )
-		return;
-
 	if ( ASWGameRules() && ASWGameRules()->m_bCheated.Get() )
 		return;
 	
 #ifdef CLIENT_DLL
 	if ( engine->IsPlayingDemo() )
 		return;
-
-	//if ( GetClientModeASW() && !GetClientModeASW()->IsOfficialMap() )
-		//return;
 #endif
 
 	int iNumObjectives = 0;
