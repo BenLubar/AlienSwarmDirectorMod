@@ -1,0 +1,21 @@
+GameInfo {
+	Game			"Swarm Director 2"
+	Type			"multiplayer_only"
+	GameData		"../../../sourcemods/swarmdirector2/fgd/alienswarmdirectormod.fgd"
+	InstancePath	"tilegen/instances/"
+
+	SupportsDX8     "0"
+
+	FileSystem {
+		SteamAppId	"630"
+		ToolsAppId	"211"
+		
+		SearchPaths {
+			Game	"|gameinfo_path|."
+			Game	"swarm"
+			Game	"swarm_tempcontent"
+			Game	"swarm_base"
+			Game	"platform"
+		}
+	}
+}
