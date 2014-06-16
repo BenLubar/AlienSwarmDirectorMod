@@ -165,6 +165,9 @@ private:
 
 	bool			UseStrongOptimizations();
 
+	AI_Waypoint_t *BuildNavRoute(CNavArea *startArea, CNavArea *goalArea, const Vector &from, AI_Waypoint_t *waypoint, Navigation_t curNavType);
+
+private:
 	// --------------------------------
 	// Debugging fields and functions
 

@@ -26,6 +26,11 @@
 //@todo: bad dependency!
 #include "ai_navigator.h"
 
+// support for nav mesh
+#include "nav_mesh.h"
+#include "nav_pathfind.h"
+#include "nav_area.h"
+
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
@@ -1494,12 +1499,63 @@ AI_Waypoint_t *CAI_Pathfinder::BuildLocalRoute(const Vector &vStart, const Vecto
 	return NULL;
 }
 
+#define MAX_NAV_TRIES 8
+
+//-----------------------------------------------------------------------------
+// Purpose: Builds a route to the given vecGoal using the navigation mesh result
+//-----------------------------------------------------------------------------
+AI_Waypoint_t *CAI_Pathfinder::BuildNavRoute(CNavArea *startArea, CNavArea *goalArea, const Vector &from, AI_Waypoint_t *waypoint, Navigation_t curNavType)
+{
+	AI_PROFILE_SCOPE(CAI_Pathfinder_BuildNavRoute);
+
+	if( !goalArea )
+		return waypoint;
+
+	int flags = 0;
+	Vector closest;
+	if (waypoint)
+	{
+		goalArea->GetClosestPointOnArea(from, &closest);
+		for (int i = 0; i < MAX_NAV_TRIES && GetOuter()->GetLocalNavigator()->IsSegmentBlockedByGlobalObstacles(closest, from); i++)
+		{
+			closest = goalArea->GetRandomPoint();
+		}
+	}
+	else
+	{
+		closest = from;
+		flags |= bits_WP_TO_GOAL;
+	}
+
+	AI_Waypoint_t *newway = new AI_Waypoint_t(closest, 0, curNavType, flags, NO_NODE);
+
+	if (waypoint)
+	{
+		newway->SetNext(waypoint);
+		waypoint->SetPrev(newway);
+	}
+
+	if (goalArea->GetParent())
+	{
+		Vector closestParent;
+		goalArea->GetParent()->GetClosestPointOnArea(newway->GetPos(), &closestParent);
+		if (fabs(closestParent.z - closest.z) > StepHeight)
+		{
+			newway->SetNavType(NAV_JUMP);
+		}
+	}
+
+	return BuildNavRoute(startArea, goalArea->GetParent(), newway->GetPos(), newway, curNavType);
+}
+
 //-----------------------------------------------------------------------------
 // Purpose: Builds a route to the given vecGoal using either local movement
 //			or nodes
 //-----------------------------------------------------------------------------
 
-ConVar ai_no_local_paths( "ai_no_local_paths", "0" );
+ConVar ai_no_local_paths( "ai_no_local_paths", "0", FCVAR_CHEAT );
+ConVar ai_no_navmesh_paths( "ai_no_navmesh_paths", "0", FCVAR_CHEAT );
+ConVar ai_no_node_paths( "ai_no_node_paths", "0", FCVAR_CHEAT );
 
 AI_Waypoint_t *CAI_Pathfinder::BuildRoute( const Vector &vStart, const Vector &vEnd, 
 	CBaseEntity *pTarget, float goalTolerance, Navigation_t curNavType, int nBuildFlags )
@@ -1550,11 +1606,28 @@ AI_Waypoint_t *CAI_Pathfinder::BuildRoute( const Vector &vStart, const Vector &v
 								  nLocalBuildFlags, goalTolerance);
 	}
 
-	//  If the fails, try a node route
-	if ( !pResult )
+	//  If the local fails, try a nav mesh route
+	// the nav mesh doesn't supports flying npc's, like the strider or gunship
+	if ( !pResult && !ai_no_navmesh_paths.GetBool() && curNavType != NAV_FLY )
+	{
+		CNavArea *closestArea = NULL;
+		CNavArea *startArea = TheNavMesh->GetNearestNavArea(vStart);
+		CNavArea *goalArea = TheNavMesh->GetNearestNavArea(vEnd);
+
+		ShortestPathCost costfunc;
+
+		if( NavAreaBuildPath( startArea, goalArea, &vEnd, costfunc, &closestArea) )
+		{
+			pResult = BuildNavRoute( startArea, closestArea, vEnd, NULL, curNavType );
+		}
+	}
+
+	// If the navmesh fails, try a node route
+	if( !pResult && !ai_no_node_paths.GetBool() )
 	{
 		pResult = BuildNodeRoute( vStart, vEnd, nBuildFlags, goalTolerance );
 	}
+
 
 	m_bIgnoreStaleLinks = false;
 
