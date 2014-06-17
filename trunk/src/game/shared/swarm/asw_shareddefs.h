@@ -6,8 +6,9 @@
 
 #include "const.h"
 
-#define ASW_MAX_PLAYER_NAME_LENGTH 32
-#define ASW_MAX_PLAYER_NAME_LENGTH_3D 20
+// WHY DO WE HAVE THESE? --Casimer the Adequat[ely Skilled]
+#define ASW_MAX_PLAYER_NAME_LENGTH MAX_PLAYER_NAME_LENGTH /* was 32 */
+#define ASW_MAX_PLAYER_NAME_LENGTH_3D ASW_MAX_PLAYER_NAME_LENGTH /* was 20?!?!?!?!? */
 
 enum ASW_Inventory_slot_t
 {
