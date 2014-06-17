@@ -1518,11 +1518,10 @@ AI_Waypoint_t *CAI_Pathfinder::BuildNavRoute(CNavArea *startArea, CNavArea *goal
 		// make sure we fit
 		trace_t tr;
 		CTraceFilterWorldOnly traceFilter;
-		AI_TraceHull(closest + (from - closest).Normalized(), closest, WorldAlignMins(), WorldAlignMaxs(), GetHullTraceMask(), &traceFilter, &tr);
+		AI_TraceHull(closest, closest, WorldAlignMins(), WorldAlignMaxs(), GetHullTraceMask(), &traceFilter, &tr);
 		if (tr.fraction != 1.0f)
 		{
-			closest += tr.plane.normal * GetHullWidth() * 0.75f;
-			Msg("%f %f %f\n", tr.plane.normal);
+			closest += (goalArea->GetCenter() - closest).Normalized() * GetHullWidth() * 0.75f;
 		}
 	}
 	else
@@ -1544,10 +1543,12 @@ AI_Waypoint_t *CAI_Pathfinder::BuildNavRoute(CNavArea *startArea, CNavArea *goal
 			goalArea->GetParent()->GetClosestPointOnArea(newway->GetPos(), &closestParent);
 			if (fabs(closestParent.z - closest.z) > StepHeight)
 			{
+				Vector closestChild;
+				goalArea->GetClosestPointOnArea(closestParent, &closestChild);
 				Vector nextWithHull;
 				DirectionToVector2D((NavDirType) goalArea->GetParentHow(), &nextWithHull.AsVector2D());
 				nextWithHull *= GetOuter()->GetHullWidth() * 1.5f;
-				nextWithHull += closestParent;
+				nextWithHull += closestChild;
 				nextWithHull.z = goalArea->GetZ(nextWithHull);
 				AI_Waypoint_t *jumpway = new AI_Waypoint_t(nextWithHull, 0, NAV_JUMP, flags, NO_NODE);
 
