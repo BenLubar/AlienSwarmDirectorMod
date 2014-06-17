@@ -1499,8 +1499,6 @@ AI_Waypoint_t *CAI_Pathfinder::BuildLocalRoute(const Vector &vStart, const Vecto
 	return NULL;
 }
 
-#define MAX_NAV_TRIES 8
-
 //-----------------------------------------------------------------------------
 // Purpose: Builds a route to the given vecGoal using the navigation mesh result
 //-----------------------------------------------------------------------------
@@ -1516,9 +1514,15 @@ AI_Waypoint_t *CAI_Pathfinder::BuildNavRoute(CNavArea *startArea, CNavArea *goal
 	if (waypoint)
 	{
 		goalArea->GetClosestPointOnArea(from, &closest);
-		for (int i = 0; i < MAX_NAV_TRIES && GetOuter()->GetLocalNavigator()->IsSegmentBlockedByGlobalObstacles(closest, from); i++)
+
+		// make sure we fit
+		trace_t tr;
+		CTraceFilterWorldOnly traceFilter;
+		AI_TraceHull(closest + (from - closest).Normalized(), closest, WorldAlignMins(), WorldAlignMaxs(), GetHullTraceMask(), &traceFilter, &tr);
+		if (tr.fraction != 1.0f)
 		{
-			closest = goalArea->GetRandomPoint();
+			closest += tr.plane.normal * GetHullWidth() * 0.75f;
+			Msg("%f %f %f\n", tr.plane.normal);
 		}
 	}
 	else
@@ -1533,19 +1537,29 @@ AI_Waypoint_t *CAI_Pathfinder::BuildNavRoute(CNavArea *startArea, CNavArea *goal
 	{
 		newway->SetNext(waypoint);
 		waypoint->SetPrev(newway);
-	}
 
-	if (goalArea->GetParent())
-	{
-		Vector closestParent;
-		goalArea->GetParent()->GetClosestPointOnArea(newway->GetPos(), &closestParent);
-		if (fabs(closestParent.z - closest.z) > StepHeight)
+		if (goalArea->GetParent())
 		{
-			newway->SetNavType(NAV_JUMP);
+			Vector closestParent;
+			goalArea->GetParent()->GetClosestPointOnArea(newway->GetPos(), &closestParent);
+			if (fabs(closestParent.z - closest.z) > StepHeight)
+			{
+				Vector nextWithHull;
+				DirectionToVector2D((NavDirType) goalArea->GetParentHow(), &nextWithHull.AsVector2D());
+				nextWithHull *= GetOuter()->GetHullWidth() * 1.5f;
+				nextWithHull += closestParent;
+				nextWithHull.z = goalArea->GetZ(nextWithHull);
+				AI_Waypoint_t *jumpway = new AI_Waypoint_t(nextWithHull, 0, NAV_JUMP, flags, NO_NODE);
+
+				jumpway->SetNext(newway);
+				newway->SetPrev(jumpway);
+
+				newway = jumpway;
+			}
 		}
 	}
 
-	return BuildNavRoute(startArea, goalArea->GetParent(), newway->GetPos(), newway, curNavType);
+	return BuildNavRoute(startArea, waypoint ? goalArea->GetParent() : goalArea, newway->GetPos(), newway, curNavType);
 }
 
 //-----------------------------------------------------------------------------
