@@ -4470,7 +4470,11 @@ void CASW_Marine::PhysicsLandedOnGround( float fFallSpeed )
 				//Msg("Marine fell with speed %f modded to %f damage is %f\n", fFallVel, fFallVelMod, flFallDamage);
 				if ( flFallDamage > 0 )
 				{
-					TakeDamage( CTakeDamageInfo( GetContainingEntity(INDEXENT(0)), GetContainingEntity(INDEXENT(0)), flFallDamage, DMG_FALL ) ); 
+					// fixed fall damage for bots by adding this check 
+					if ( asw_marine_fall_damage.GetBool() )
+					{
+						TakeDamage( CTakeDamageInfo( GetContainingEntity(INDEXENT(0)), GetContainingEntity(INDEXENT(0)), flFallDamage, DMG_FALL ) ); 
+					}
 					CRecipientFilter filter;
 					filter.AddRecipientsByPAS( GetAbsOrigin() );
 
