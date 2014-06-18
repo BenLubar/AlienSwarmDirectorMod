@@ -31,6 +31,9 @@
 #include "nav_pathfind.h"
 #include "nav_area.h"
 
+// for Class_T definitions
+#include "asw_shareddefs.h"
+
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
@@ -1499,6 +1502,76 @@ AI_Waypoint_t *CAI_Pathfinder::BuildLocalRoute(const Vector &vStart, const Vecto
 	return NULL;
 }
 
+class ASWPathCost
+{
+private:
+	Class_T m_iType;
+
+public:
+	ASWPathCost(Class_T type) : m_iType(type) {}
+
+	float operator() (CNavArea *area, CNavArea *fromArea, const CNavLadder *ladder, const CFuncElevator *elevator, float length)
+	{
+		if (fromArea == NULL)
+		{
+			// first area in path, no cost
+			return 0.0f;
+		}
+		else
+		{
+			// compute distance traveled along path so far
+			float dist;
+
+			if (ladder)
+			{
+				dist = ladder->m_length;
+			}
+			else if (length > 0.0)
+			{
+				dist = length;
+			}
+			else
+			{
+				dist = (area->GetCenter() - fromArea->GetCenter()).Length();
+			}
+
+			float cost = dist + fromArea->GetCostSoFar();
+
+			// if this is a "crouch" area, add penalty
+			if (area->GetAttributes() & NAV_MESH_CROUCH)
+			{
+				const float crouchPenalty = 20.0f;		// 10
+				cost += crouchPenalty * dist;
+			}
+
+			// if this is a "jump" area, add penalty
+			if (area->GetAttributes() & NAV_MESH_JUMP)
+			{
+				const float jumpPenalty = 5.0f;
+				cost += jumpPenalty * dist;
+			}
+
+			if (m_iType != CLASS_ASW_DRONE)
+			{
+				const float upPenalty = 9999999.0f;
+				const float downPenalty = 5.0f;
+
+				Vector v1, v2;
+				area->GetClosestPointOnArea(fromArea->GetCenter(), &v1);
+				fromArea->GetClosestPointOnArea(area->GetCenter(), &v2);
+
+				if (v1.z - v2.z > StepHeight) {
+					cost += upPenalty * (v1.z - v2.z) * dist;
+				} else if (v2.z - v1.z > StepHeight) {
+					cost += downPenalty * (v2.z - v1.z) * dist;
+				}
+			}
+
+			return cost;
+		}
+	}
+};
+
 //-----------------------------------------------------------------------------
 // Purpose: Builds a route to the given vecGoal using the navigation mesh result
 //-----------------------------------------------------------------------------
@@ -1516,13 +1589,7 @@ AI_Waypoint_t *CAI_Pathfinder::BuildNavRoute(CNavArea *startArea, CNavArea *goal
 		goalArea->GetClosestPointOnArea(from, &closest);
 
 		// make sure we fit
-		trace_t tr;
-		CTraceFilterWorldOnly traceFilter;
-		AI_TraceHull(closest, closest, WorldAlignMins(), WorldAlignMaxs(), GetHullTraceMask(), &traceFilter, &tr);
-		if (tr.fraction != 1.0f)
-		{
-			closest += (goalArea->GetCenter() - closest).Normalized() * GetHullWidth() * 0.75f;
-		}
+		closest += (goalArea->GetCenter() - closest).Normalized() * GetHullWidth() * 0.75f;
 	}
 	else
 	{
@@ -1539,17 +1606,18 @@ AI_Waypoint_t *CAI_Pathfinder::BuildNavRoute(CNavArea *startArea, CNavArea *goal
 
 		if (goalArea->GetParent())
 		{
-			Vector closestParent;
+			Vector closestParent, closestChild;
 			goalArea->GetParent()->GetClosestPointOnArea(newway->GetPos(), &closestParent);
-			if (fabs(closestParent.z - closest.z) > StepHeight)
+			goalArea->GetClosestPointOnArea(closestParent, &closestChild);
+			if (fabs(closestParent.z - closestChild.z) > StepHeight)
 			{
-				Vector closestChild;
-				goalArea->GetClosestPointOnArea(closestParent, &closestChild);
+				// offset the jump destination by a little more than our width
 				Vector nextWithHull;
 				DirectionToVector2D((NavDirType) goalArea->GetParentHow(), &nextWithHull.AsVector2D());
 				nextWithHull *= GetOuter()->GetHullWidth() * 1.5f;
 				nextWithHull += closestChild;
 				nextWithHull.z = goalArea->GetZ(nextWithHull);
+
 				AI_Waypoint_t *jumpway = new AI_Waypoint_t(nextWithHull, 0, NAV_JUMP, flags, NO_NODE);
 
 				jumpway->SetNext(newway);
@@ -1629,7 +1697,7 @@ AI_Waypoint_t *CAI_Pathfinder::BuildRoute( const Vector &vStart, const Vector &v
 		CNavArea *startArea = TheNavMesh->GetNearestNavArea(vStart);
 		CNavArea *goalArea = TheNavMesh->GetNearestNavArea(vEnd);
 
-		ShortestPathCost costfunc;
+		ASWPathCost costfunc(GetOuter()->Classify());
 
 		if( NavAreaBuildPath( startArea, goalArea, &vEnd, costfunc, &closestArea) )
 		{
