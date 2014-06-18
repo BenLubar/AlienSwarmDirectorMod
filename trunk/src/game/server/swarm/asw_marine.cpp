@@ -1720,11 +1720,6 @@ void CASW_Marine::PostThink()
 		
 	ASWThinkEffects();
 
-	if ( NeedToUpdateSquad() )
-	{
-		GetSquadFormation()->UpdateFollowPositions();
-	}
-
 	// check for pushing out phys props jammed inside us
 	if ( VPhysicsGetObject() )
 	{
@@ -2125,6 +2120,11 @@ void CASW_Marine::ASWThinkEffects()
 		// additionally, if our initial burn time is over the time-to-ignite time, reset
 		if ( (gpGlobals->curtime - m_flFirstBurnTime) > flGraceTime + 1.0f )
 			m_flFirstBurnTime = 0;
+	}
+
+	if (NeedToUpdateSquad())
+	{
+		GetSquadFormation()->UpdateFollowPositions();
 	}
 
 	m_fLastASWThink = gpGlobals->curtime;
