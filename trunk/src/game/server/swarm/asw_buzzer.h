@@ -45,6 +45,8 @@ public:
 
 	Class_T		Classify( void ) { return (Class_T) CLASS_ASW_BUZZER; }
 
+	virtual bool	ShouldAlwaysThink();
+
 	bool			CorpseGib( const CTakeDamageInfo &info );
 	void			Event_Dying(void);
 	void			Event_Killed( const CTakeDamageInfo &info );

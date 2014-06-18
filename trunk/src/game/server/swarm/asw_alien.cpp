@@ -45,8 +45,8 @@ extern ConVar asw_stun_grenade_time;
 extern ConVar asw_drone_zig_zagging;
 extern ConVar asw_draw_awake_ai;
 extern ConVar asw_alien_debug_death_style;
-// asw - how much extra damage to do to burning aliens
-ConVar asw_fire_alien_damage_scale("asw_fire_alien_damage_scale", "3.0", FCVAR_CHEAT );
+
+ConVar asw_fire_alien_damage_scale("asw_fire_alien_damage_scale", "3.0", FCVAR_CHEAT, "how much extra damage to do to burning aliens" );
 ConVar asw_alien_speed_scale_easy("asw_alien_speed_scale_easy", "0");
 ConVar asw_alien_speed_scale_normal("asw_alien_speed_scale_normal", "0");
 ConVar asw_alien_speed_scale_hard("asw_alien_speed_scale_hard", "0");
@@ -70,6 +70,8 @@ ConVar asw_springcol_core( "asw_springcol_core", "0.33", FCVAR_CHEAT, "Fraction 
 ConVar asw_springcol_radius( "asw_springcol_radius", "50.0", FCVAR_CHEAT, "Radius of the alien's pushaway cylinder" );
 ConVar asw_springcol_force_scale( "asw_springcol_force_scale", "3.0", FCVAR_CHEAT, "Multiplier for each individual push force" );
 ConVar asw_springcol_debug( "asw_springcol_debug", "0", FCVAR_CHEAT, "Display the direction of the pushaway vector. Set to entity index or -1 to show all." );
+
+ConVar asw_no_sleeping( "asw_no_sleeping", "0", FCVAR_CHEAT, "NPCs keep thinking even when they are far from a marine." );
 
 float CASW_Alien::sm_flLastHurlTime = 0;
 
@@ -512,6 +514,12 @@ void CASW_Alien::UpdateSleepState(bool bInPVS)
 		}
 	}
 }
+
+bool CASW_Alien::ShouldAlwaysThink()
+{
+	return asw_no_sleeping.GetBool() || BaseClass::ShouldAlwaysThink();
+}
+
 
 void CASW_Alien::UpdateOnRemove()
 {

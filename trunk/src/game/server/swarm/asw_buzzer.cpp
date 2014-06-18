@@ -90,6 +90,7 @@ extern ConVar asw_alien_speed_scale_normal;
 extern ConVar asw_alien_speed_scale_hard;
 extern ConVar asw_alien_speed_scale_insane;
 extern ConVar asw_stun_grenade_time;
+extern ConVar asw_no_sleeping;
 
 extern void		SpawnBlood(Vector vecSpot, const Vector &vAttackDir, int bloodColor, float flDamage);
 extern float	GetFloorZ(const Vector &origin);
@@ -237,6 +238,11 @@ CASW_Buzzer::CASW_Buzzer()
 
 CASW_Buzzer::~CASW_Buzzer()
 {
+}
+
+bool CASW_Buzzer::ShouldAlwaysThink()
+{
+	return asw_no_sleeping.GetBool() || BaseClass::ShouldAlwaysThink();
 }
 
 //-----------------------------------------------------------------------------

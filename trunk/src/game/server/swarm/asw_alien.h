@@ -94,6 +94,7 @@ public:
 	void UpdateSleepState( bool bInPVS );
 	void UpdateEfficiency( bool bInPVS );
 	virtual void UpdateOnRemove();
+	virtual bool ShouldAlwaysThink();
 	bool m_bRegisteredAsAwake;
 	float m_fLastSleepCheckTime;
 	bool m_bVisibleWhenAsleep;
