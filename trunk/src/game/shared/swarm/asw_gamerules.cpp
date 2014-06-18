@@ -2304,6 +2304,7 @@ bool CAlienSwarm::SpawnNextMarine()
 			if (!m_pSpawningSpot)
 			{
 				Warning("Failed to find a pMarine spawn point.  Map must have 8 info_player_start points!\n");
+				m_pSpawningSpot = GetMarineSpawnPoint(NULL);
 				return false;
 			}
 		}
