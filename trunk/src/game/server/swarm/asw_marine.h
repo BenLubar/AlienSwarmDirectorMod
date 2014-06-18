@@ -78,7 +78,7 @@ public:
 	void	SetModelFromProfile();
 	void	SelectModelFromProfile();
 	void	SelectModel();
-	
+
 	CAI_Senses *CreateSenses();
 
 	void SetHeightLook( float flHeightLook );
@@ -87,6 +87,7 @@ public:
 	virtual void Think(void);
 	void PostThink();	
 	virtual void ASWThinkEffects();
+	virtual bool ShouldAlwaysThink() { return true; }
 	
 	// Networking
 	virtual int ShouldTransmit( const CCheckTransmitInfo *pInfo );
