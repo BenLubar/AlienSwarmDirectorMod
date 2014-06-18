@@ -1561,9 +1561,9 @@ public:
 				fromArea->GetClosestPointOnArea(area->GetCenter(), &v2);
 
 				if (v1.z - v2.z > StepHeight) {
-					cost += upPenalty * (v1.z - v2.z) * dist;
+					cost += upPenalty * (v1.z - v2.z);
 				} else if (v2.z - v1.z > StepHeight) {
-					cost += downPenalty * (v2.z - v1.z) * dist;
+					cost += downPenalty * (v2.z - v1.z);
 				}
 			}
 
