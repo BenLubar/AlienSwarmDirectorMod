@@ -1567,6 +1567,10 @@ public:
 				}
 			}
 
+			// don't always use the same path to get from point A to point B - mix it up a bit.
+			const float maxRandomPenalty = 0.125f;
+			cost += RandomFloat(0, maxRandomPenalty) * dist;
+
 			return cost;
 		}
 	}
