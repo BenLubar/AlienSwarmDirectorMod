@@ -89,6 +89,8 @@ ConVar asw_debug_marine_aim( "asw_debug_marine_aim", "0", FCVAR_CHEAT, "Shows de
 ConVar asw_debug_throw( "asw_debug_throw", "0", FCVAR_CHEAT, "Show node debug info on throw visibility checks" );
 ConVar asw_debug_order_weld( "asw_debug_order_weld", "0", FCVAR_DEVELOPMENTONLY, "Debug lines for ordering marines to offhand weld a door" );
 
+ConVar asw_marine_test_new_ai("asw_marine_test_new_ai", "0", FCVAR_CHEAT, "enable Swarm Director 2 marine AI", true, 0, true, 1);
+
 extern ConVar ai_lead_time;
 
 #define ASW_MARINE_GOO_SCAN_TIME 0.5f
@@ -274,7 +276,7 @@ int CASW_Marine::SelectSchedule()
 
 	ClearCondition( COND_ASW_NEW_ORDERS );
 
-	if ( HasCondition( COND_PATH_BLOCKED_BY_PHYSICS_PROP ) || HasCondition( COND_COMPLETELY_OUT_OF_AMMO ) )
+	if ( HasCondition( COND_PATH_BLOCKED_BY_PHYSICS_PROP ) || HasCondition( COND_COMPLETELY_OUT_OF_AMMO ) || (asw_marine_test_new_ai.GetBool() && m_fLastMobDamageTime > gpGlobals->curtime - 2.0f && RandomFloat() < 0.8f) )
 	{
 		int iMeleeSchedule = SelectMeleeSchedule();
 		if( iMeleeSchedule != -1 )
@@ -415,7 +417,7 @@ int CASW_Marine::SelectHackingSchedule()
 	if ( !GetMarineProfile() || GetMarineProfile()->GetMarineClass() != MARINE_CLASS_TECH )
 		return -1;
 
-	if ( asw_marine_auto_hack.GetBool() )
+	if ( asw_marine_auto_hack.GetBool() || (asw_marine_test_new_ai.GetBool() && GetSquadFormation()->Leader() && !GetSquadFormation()->Leader()->IsInhabited()) )
 	{
 		CASW_Use_Area *pClosestArea = NULL;
 		float flClosestDist = FLT_MAX;
@@ -505,8 +507,8 @@ void CASW_Marine::OrderHackArea( CASW_Use_Area *pArea )
 		if ( !pButton->IsLocked() || !pButton->HasPower() )
 			return;
 
-		float flDist = GetAbsOrigin().DistTo( pArea->WorldSpaceCenter() );
-		if ( flDist < AUTO_HACK_DIST )
+		float flDist = GetAbsOrigin().DistToSqr( pArea->WorldSpaceCenter() );
+		if ( flDist < Square(AUTO_HACK_DIST) )
 		{
 			m_hAreaToUse = pArea;
 			bHackOrdered = true;
@@ -517,8 +519,8 @@ void CASW_Marine::OrderHackArea( CASW_Use_Area *pArea )
 		CASW_Computer_Area *pComputer = assert_cast< CASW_Computer_Area* >( pArea );
 		if ( pComputer->IsLocked() || ( pComputer->HasDownloadObjective() && pComputer->GetHackProgress() < 1.0f ) )
 		{
-			float flDist = GetAbsOrigin().DistTo( pArea->WorldSpaceCenter() );
-			if ( flDist < AUTO_HACK_DIST )
+			float flDist = GetAbsOrigin().DistToSqr( pArea->WorldSpaceCenter() );
+			if ( flDist < Square(AUTO_HACK_DIST) )
 			{
 				m_hAreaToUse = pArea;
 				bHackOrdered = true;

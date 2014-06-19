@@ -118,7 +118,10 @@ void CASW_Egg::Spawn( void )
 	SetModel(EGG_MODEL);
 	ResetSequence( LookupSequence( EGG_CLOSED_ANIM ) );
 	SetPlaybackRate( RandomFloat( 0.95, 1.05 ) ); // Slightly randomize the playback rate so they don't all match
-	m_bStoredEggSize = false;	
+	m_bStoredEggSize = false;
+
+	ChangeFaction( FACTION_ALIENS );
+	ChangeTeam( TEAM_ALIENS );
 
 	BaseClass::Spawn();
 

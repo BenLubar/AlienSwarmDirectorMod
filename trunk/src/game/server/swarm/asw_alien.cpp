@@ -227,6 +227,7 @@ void CASW_Alien::Spawn()
 	}
 
 	ChangeFaction( FACTION_ALIENS );
+	ChangeTeam( TEAM_ALIENS );
 
 	// get pointers to behaviors
 	GetBehavior( &m_pFlinchBehavior );

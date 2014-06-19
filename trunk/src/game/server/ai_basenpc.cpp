@@ -682,6 +682,9 @@ void CAI_BaseNPC::Event_Killed( const CTakeDamageInfo &info )
 	}
 
 	Wake( false );
+
+	TheNavMesh->IncreaseDangerNearby(GetTeamNumber(), 1.0f, TheNavMesh->GetNearestNavArea(this),
+			info.GetAttacker() ? info.GetAttacker()->GetAbsOrigin() : GetAbsOrigin(), 1024.0f);
 	
 	//Adrian: Select a death pose to extrapolate the ragdoll's velocity.
 	SelectDeathPose( info );

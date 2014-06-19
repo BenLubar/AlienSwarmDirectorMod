@@ -31,9 +31,6 @@
 #include "nav_pathfind.h"
 #include "nav_area.h"
 
-// for Class_T definitions
-#include "asw_shareddefs.h"
-
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
@@ -1505,10 +1502,11 @@ AI_Waypoint_t *CAI_Pathfinder::BuildLocalRoute(const Vector &vStart, const Vecto
 class ASWPathCost
 {
 private:
-	Class_T m_iType;
+	int m_bits;
+	int m_team;
 
 public:
-	ASWPathCost(Class_T type) : m_iType(type) {}
+	ASWPathCost(int bits, int team) : m_bits(bits), m_team(team) {}
 
 	float operator() (CNavArea *area, CNavArea *fromArea, const CNavLadder *ladder, const CFuncElevator *elevator, float length)
 	{
@@ -1551,7 +1549,12 @@ public:
 				cost += jumpPenalty * dist;
 			}
 
-			if (m_iType != CLASS_ASW_DRONE)
+			// danger is scary. 1 danger is around 1 ally dying within the last 2 minutes.
+			const float dangerPenalty = 50.0f;
+			cost += area->GetDanger(m_team) * dangerPenalty * dist;
+
+			// don't try to jump up cliffs if we can't do that
+			if (!(m_bits & (bits_BUILD_JUMP | bits_BUILD_FLY)))
 			{
 				const float upPenalty = 9999999.0f;
 				const float downPenalty = 5.0f;
@@ -1622,7 +1625,7 @@ AI_Waypoint_t *CAI_Pathfinder::BuildNavRoute(CNavArea *startArea, CNavArea *goal
 				nextWithHull += closestChild;
 				nextWithHull.z = goalArea->GetZ(nextWithHull);
 
-				AI_Waypoint_t *jumpway = new AI_Waypoint_t(nextWithHull, 0, NAV_JUMP, flags, NO_NODE);
+				AI_Waypoint_t *jumpway = new AI_Waypoint_t(nextWithHull, 0, curNavType == NAV_GROUND ? NAV_JUMP : curNavType, flags, NO_NODE);
 
 				jumpway->SetNext(newway);
 				newway->SetPrev(jumpway);
@@ -1693,15 +1696,14 @@ AI_Waypoint_t *CAI_Pathfinder::BuildRoute( const Vector &vStart, const Vector &v
 								  nLocalBuildFlags, goalTolerance);
 	}
 
-	//  If the local fails, try a nav mesh route
-	// the nav mesh doesn't supports flying npc's, like the strider or gunship
-	if ( !pResult && !ai_no_navmesh_paths.GetBool() && curNavType != NAV_FLY )
+	// If the local fails, try a nav mesh route
+	if ( !pResult && !ai_no_navmesh_paths.GetBool() )
 	{
 		CNavArea *closestArea = NULL;
 		CNavArea *startArea = TheNavMesh->GetNearestNavArea(vStart);
 		CNavArea *goalArea = TheNavMesh->GetNearestNavArea(vEnd);
 
-		ASWPathCost costfunc(GetOuter()->Classify());
+		ASWPathCost costfunc(nBuildFlags, GetOuter()->GetTeamNumber());
 
 		if( NavAreaBuildPath( startArea, goalArea, &vEnd, costfunc, &closestArea) )
 		{

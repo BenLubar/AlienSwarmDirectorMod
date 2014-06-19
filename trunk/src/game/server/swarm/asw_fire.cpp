@@ -34,6 +34,8 @@
 #define ASW_MIN_FIRE_HEIGHT 50		// minimum units high the bounding box should be (so horizontal aiming of fire extinguisher always hits the fire when going over it, no matter how small it is)
 #endif
 
+#include "nav_mesh.h"
+
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
@@ -62,6 +64,8 @@
 
 #define	FIRE_HEIGHT				256.0f
 #define FIRE_SCALE_FROM_SIZE(firesize)		(firesize * (1/FIRE_HEIGHT))
+
+#define FIRE_NAV_DANGER 0.01f
 
 #define	FIRE_MAX_GROUND_OFFSET	24.0f	//(2 feet)
 
@@ -1314,6 +1318,14 @@ void CFire::DestroyEffect()
 void CFire::BurnThink( void )
 {
 	SetNextThink( gpGlobals->curtime + FIRE_THINK_INTERVAL );
+
+	CNavArea *pArea = TheNavMesh->GetNearestNavArea(this, GETNAVAREA_ALLOW_BLOCKED_AREAS, FIRE_WIDTH);
+	if (pArea)
+	{
+		// fire is scary
+		pArea->IncreaseDanger(TEAM_MARINES, FIRE_THINK_INTERVAL * FIRE_NAV_DANGER);
+		pArea->IncreaseDanger(TEAM_ALIENS, FIRE_THINK_INTERVAL * FIRE_NAV_DANGER);
+	}
 
 	Update( FIRE_THINK_INTERVAL );
 }

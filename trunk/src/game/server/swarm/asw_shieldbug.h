@@ -80,6 +80,8 @@ public:
 
 	virtual int GetMoneyCount( const CTakeDamageInfo &info );
 
+	virtual Vector BodyTarget( const Vector &posSrc, bool bNoisy = true );
+
 	float m_fMarineBlockCounter;
 	float m_fLastMarineBlockTime;
 	float m_flDefendDuration;

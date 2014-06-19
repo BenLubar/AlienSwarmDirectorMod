@@ -2154,6 +2154,7 @@ void CASW_Buzzer::Spawn(void)
 	}
 
 	ChangeFaction( FACTION_ALIENS );
+	ChangeTeam( TEAM_ALIENS );
 		 
 	AddEFlags( EFL_NO_DISSOLVE | EFL_NO_MEGAPHYSCANNON_RAGDOLL );
 	SetBloodColor( DONT_BLEED );

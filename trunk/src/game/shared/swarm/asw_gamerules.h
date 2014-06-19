@@ -70,6 +70,12 @@ enum
 	ASW_SM_HARDCORE	=				(1<<2),	// Instakill sites, no friendly fire damage reduction, etc.
 };
 
+// Team defines
+#define TEAM_MARINES                ( LAST_SHARED_TEAM + 1 )
+#define TEAM_ALIENS                 ( LAST_SHARED_TEAM + 1 )
+#define LAST_ASW_TEAM               ( TEAM_ALIENS )
+#define NUM_ASW_TEAMS               ( LAST_ASW_TEAM + 1 )
+
 // Faction defines
 #define FACTION_MARINES				( LAST_SHARED_FACTION + 1 )
 #define FACTION_ALIENS				( LAST_SHARED_FACTION + 2 )

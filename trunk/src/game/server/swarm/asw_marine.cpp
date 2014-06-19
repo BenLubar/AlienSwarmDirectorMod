@@ -392,6 +392,8 @@ extern ConVar asw_marine_ff_absorption;
 ConVar asw_movement_direction_tolerance( "asw_movement_direction_tolerance", "30.0", FCVAR_CHEAT );
 ConVar asw_movement_direction_interval( "asw_movement_direction_interval", "0.5", FCVAR_CHEAT );
 
+extern ConVar asw_marine_test_new_ai;
+
 float CASW_Marine::s_fNextMadFiringChatter = 0;
 float CASW_Marine::s_fNextIdleChatterTime = 0;
 
@@ -642,6 +644,7 @@ void CASW_Marine::Spawn( void )
 
 	// join the marines team
 	ChangeFaction( FACTION_MARINES );
+	ChangeTeam( TEAM_MARINES );
 
 	SetHealth( 100 );
 
@@ -1038,7 +1041,7 @@ int CASW_Marine::OnTakeDamage_Alive( const CTakeDamageInfo &info )
 			pOtherMarine->GetMarineResource()->m_iAliensKilledSinceLastFriendlyFireIncident = 0;
 		}
 
-		if ( pOtherMarine && !pOtherMarine->IsInhabited() && !(newInfo.GetDamageType() & DMG_DIRECT) )
+		if ( pOtherMarine && !pOtherMarine->IsInhabited() && !(newInfo.GetDamageType() & DMG_DIRECT) && !asw_marine_test_new_ai.GetBool() )
 		{
 			// don't allow any damage if it's an AI firing:  NOTE: This isn't 100% accurate, since the AI could've fired the shot, then a player switched into the marine while the projectile was in the air
 			if (asw_debug_marine_damage.GetBool())
@@ -1221,9 +1224,8 @@ int CASW_Marine::OnTakeDamage_Alive( const CTakeDamageInfo &info )
 							m_fLastMobDamageTime = 0.0f;
 						}
 					}
-
-					m_fLastMobDamageTime = gpGlobals->curtime;
 				}
+				m_fLastMobDamageTime = gpGlobals->curtime;
 			}
 		}
 	}
@@ -1448,10 +1450,10 @@ int CASW_Marine::OnTakeDamage_Alive( const CTakeDamageInfo &info )
 			Msg("marine took damage %f (total taken %f, ff taken %f)\n",
 					newInfo.GetDamage(), pMR->m_fDamageTaken, m_fFriendlyFireDamage);
 
-		// if we take fire damage, catch on fire
-		float fPainInterval = 0.7f;
+		const float fPainInterval = 0.7f;
 
-		if ( info.GetDamageType() & DMG_BURN )
+		// if we take fire damage, catch on fire
+		if (info.GetDamageType() & DMG_BURN)
 		{
 			ASW_Ignite( 1.0f, 0, newInfo.GetAttacker(), info.GetWeapon() );
 		}
@@ -1473,7 +1475,13 @@ int CASW_Marine::OnTakeDamage_Alive( const CTakeDamageInfo &info )
 				GetMarineSpeech()->PersonalChatter(CHATTER_PAIN_SMALL);
 
 			m_fNextPainSoundTime = gpGlobals->curtime + fPainInterval;
-		}		
+		}
+
+		// call for medic
+		if (asw_marine_test_new_ai.GetBool() && !IsInhabited() && iPreDamageHealth <= iDamageTaken)
+		{
+			DoEmote(0);
+		}
 	}
 
 	return result;
