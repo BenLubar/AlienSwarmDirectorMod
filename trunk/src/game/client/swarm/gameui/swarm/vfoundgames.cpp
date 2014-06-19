@@ -93,8 +93,8 @@ bool BaseModUI::FoundGameListItem::Info::IsDLC() const
 
 char const * BaseModUI::FoundGameListItem::Info::IsOtherTitle() const
 {
-	if ( mchOtherTitle[0] )
-		return mchOtherTitle;
+	//if ( mchOtherTitle[0] )
+	//	return mchOtherTitle;
 
 	return NULL;
 }

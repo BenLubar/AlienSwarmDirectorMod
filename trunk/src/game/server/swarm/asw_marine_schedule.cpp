@@ -68,6 +68,7 @@
 #include "asw_alien_goo_shared.h"
 #include "asw_prop_physics.h"
 #include "asw_weapon_heal_gun_shared.h"
+#include "asw_spawn_manager.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -338,7 +339,7 @@ int CASW_Marine::SelectSchedule()
 		float dist = GetAbsOrigin().DistTo(m_vecMoveToOrderPos);
 		if ( dist > 30 )
 		{
-			return SCHED_ASW_MOVE_TO_ORDER_POS;			
+			return SCHED_ASW_MOVE_TO_ORDER_POS;
 		}
 		SetASWOrders(ASW_ORDER_HOLD_POSITION, m_fHoldingYaw);
 	}
@@ -350,8 +351,15 @@ int CASW_Marine::SelectSchedule()
 		CBaseEntity* pEnemy = GetEnemy();
 		if (pEnemy)		// don't shoot unless we actually have an enemy
 			return SCHED_RANGE_ATTACK1;
-	}		
+	}
 	
+	if (asw_marine_test_new_ai.GetBool() && GetSquadLeader() == this && ASWSpawnManager()->m_EscapeTriggers.Count() > 0)
+	{
+		Vector vecEscape = ASWSpawnManager()->m_EscapeTriggers.Head()->WorldSpaceCenter();
+		SetASWOrders(ASW_ORDER_MOVE_TO, m_fHoldingYaw, &vecEscape);
+		return SCHED_ASW_MOVE_TO_ORDER_POS;
+	}
+
 	//Msg("Marine's select schedule returning SCHED_ASW_HOLD_POSITION\n");
 	return SCHED_ASW_HOLD_POSITION;
 }
@@ -884,7 +892,8 @@ void CASW_Marine::SetASWOrders(ASW_Orders NewOrders, float fHoldingYaw, const Ve
 	}
 	if ( NewOrders != ASW_ORDER_FOLLOW )
 	{
-		GetSquadFormation()->Remove(this, true);
+		if (GetSquadLeader() != this)
+			GetSquadFormation()->Remove(this, true);
 		m_hMarineFollowTarget = NULL;
 	}
 	m_bWasFollowing = ( NewOrders == ASW_ORDER_FOLLOW || ( NewOrders != ASW_ORDER_HOLD_POSITION && m_ASWOrders == ASW_ORDER_FOLLOW ) );		// keeps track of follow vs hold, so we can return to the right orders after completing the new ones

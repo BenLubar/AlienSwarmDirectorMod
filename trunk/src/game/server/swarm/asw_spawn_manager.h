@@ -76,6 +76,9 @@ public:
 	bool SpawnRandomShieldbug();
 	bool SpawnRandomParasitePack( int nParasites );
 
+	typedef CHandle<CTriggerMultiple> TriggerMultiple_t;
+	CUtlVector<TriggerMultiple_t> m_EscapeTriggers;
+
 private:
 	void UpdateCandidateNodes();
 	bool FindHordePosition();
@@ -100,9 +103,6 @@ private:
 	CUtlVector<int> m_northCandidateNodes;
 	CUtlVector<int> m_southCandidateNodes;
 	CountdownTimer m_CandidateUpdateTimer;
-
-	typedef CHandle<CTriggerMultiple> TriggerMultiple_t;
-	CUtlVector<TriggerMultiple_t> m_EscapeTriggers;
 };
 
 extern const int g_nDroneClassEntry;

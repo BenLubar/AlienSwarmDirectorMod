@@ -684,7 +684,7 @@ void CAI_BaseNPC::Event_Killed( const CTakeDamageInfo &info )
 	Wake( false );
 
 	TheNavMesh->IncreaseDangerNearby(GetTeamNumber(), 1.0f, TheNavMesh->GetNearestNavArea(this),
-			info.GetAttacker() ? info.GetAttacker()->GetAbsOrigin() : GetAbsOrigin(), 1024.0f);
+			info.GetAttacker() ? info.GetAttacker()->GetAbsOrigin() : GetAbsOrigin(), 256.0f);
 	
 	//Adrian: Select a death pose to extrapolate the ragdoll's velocity.
 	SelectDeathPose( info );
@@ -7727,6 +7727,12 @@ void CAI_BaseNPC::TaskFail( AI_TaskFailureCode_t code )
 	//{
 	//	int put_breakpoint_here = 5;
 	//}
+
+	if (GetNavigator() && GetNavigator()->GetPath() && GetNavigator()->GetPath()->GetCurWaypoint())
+	{
+		// avoid areas that cause navigation failures
+		TheNavMesh->IncreaseDangerNearby(GetTeamNumber(), 0.01f, TheNavMesh->GetNearestNavArea(GetNavigator()->GetCurWaypointPos()), GetAbsOrigin(), 32.0f);
+	}
 
 	// If in developer mode save the fail text for debug output
 	if (g_pDeveloper->GetInt())
