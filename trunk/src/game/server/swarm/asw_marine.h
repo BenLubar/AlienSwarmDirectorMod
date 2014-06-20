@@ -337,7 +337,6 @@ public:
 	virtual void RunTask( const Task_t *pTask );
 	virtual void StartTask(const Task_t *pTask);
 	virtual void UpdateEfficiency( bool bInPVS );
-	//virtual void TaskFail( AI_TaskFailureCode_t );
 	virtual void		TaskFail( AI_TaskFailureCode_t );
 	void				TaskFail( const char *pszGeneralFailText )	{ TaskFail( MakeFailCode( pszGeneralFailText ) ); }
 	void CheckForAIWeaponSwitch();

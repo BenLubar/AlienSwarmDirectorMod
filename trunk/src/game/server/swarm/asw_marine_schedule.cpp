@@ -290,10 +290,17 @@ int CASW_Marine::SelectSchedule()
 
 	int iHackingSchedule = SelectHackingSchedule();
 	if ( iHackingSchedule != -1 )
-		return iHackingSchedule;	
+		return iHackingSchedule;
 
 	if ( m_hUsingEntity.Get() )
+	{
+		if (asw_marine_test_new_ai.GetBool() && GetSquadLeader() != NULL && !GetSquadLeader()->IsInhabited() && GetSquadLeader() != this)
+		{
+			// make the squad leader think about protecting us instead of charging ahead
+			GetSquadLeader()->SetASWOrders(ASW_ORDER_HOLD_POSITION);
+		}
 		return SCHED_ASW_USING_OVER_TIME;
+	}
 
 	int iHealSchedule = SelectHealSchedule();
 	if( iHealSchedule != -1)
@@ -325,7 +332,7 @@ int CASW_Marine::SelectSchedule()
 			return iFollowSchedule;
 	}
 
-	if ( GetASWOrders() == ASW_ORDER_MOVE_TO )
+	if ( GetASWOrders() == ASW_ORDER_MOVE_TO && !(asw_marine_test_new_ai.GetBool() && GetSquadLeader() == this) )
 	{/*
 		if ( HasCondition(COND_CAN_RANGE_ATTACK1) )
 		{
@@ -353,11 +360,48 @@ int CASW_Marine::SelectSchedule()
 			return SCHED_RANGE_ATTACK1;
 	}
 	
-	if (asw_marine_test_new_ai.GetBool() && GetSquadLeader() == this && ASWSpawnManager()->m_EscapeTriggers.Count() > 0)
+	if (asw_marine_test_new_ai.GetBool() && GetSquadLeader() == this)
 	{
-		Vector vecEscape = ASWSpawnManager()->m_EscapeTriggers.Head()->WorldSpaceCenter();
-		SetASWOrders(ASW_ORDER_MOVE_TO, m_fHoldingYaw, &vecEscape);
-		return SCHED_ASW_MOVE_TO_ORDER_POS;
+		CASW_SquadFormation *pFormation = GetSquadFormation();
+		for (int i = 0; i < CASW_SquadFormation::MAX_SQUAD_SIZE; i++)
+		{
+			CASW_Marine *pSquaddie = pFormation->Squaddie(i);
+			if (pSquaddie && pSquaddie->GetUsingEntity())
+			{
+				// protect the tech!
+				pSquaddie->SetASWOrders(ASW_ORDER_HOLD_POSITION);
+				SetASWOrders(ASW_ORDER_FOLLOW);
+				pFormation->ChangeLeader(pSquaddie, true);
+
+				int iFollowSchedule = SelectFollowSchedule();
+				if (iFollowSchedule != -1)
+					return iFollowSchedule;
+				break;
+			}
+		}
+		for (int i = 0; i < CASW_SquadFormation::MAX_SQUAD_SIZE; i++)
+		{
+			CASW_Marine *pSquaddie = pFormation->Squaddie(i);
+			if (pSquaddie && pSquaddie->GetMarineProfile()->GetMarineClass() < GetMarineProfile()->GetMarineClass())
+			{
+				// officer > special weapons > medic > tech
+				pSquaddie->SetASWOrders(ASW_ORDER_HOLD_POSITION);
+				SetASWOrders(ASW_ORDER_FOLLOW);
+				pFormation->ChangeLeader(pSquaddie, true);
+
+				int iFollowSchedule = SelectFollowSchedule();
+				if (iFollowSchedule != -1)
+					return iFollowSchedule;
+				break;
+			}
+		}
+		if (ASWSpawnManager()->m_EscapeTriggers.Count() > 0)
+		{
+			// path toward the exit
+			Vector vecEscape = ASWSpawnManager()->m_EscapeTriggers.Head()->WorldSpaceCenter();
+			SetASWOrders(ASW_ORDER_MOVE_TO, m_fHoldingYaw, &vecEscape);
+			return SCHED_ASW_MOVE_TO_ORDER_POS;
+		}
 	}
 
 	//Msg("Marine's select schedule returning SCHED_ASW_HOLD_POSITION\n");
@@ -1482,12 +1526,12 @@ bool CASW_Marine::NeedToFollowMove()
 	if ( !pLeader || pLeader == this )
 		return false;
 
-	if (GetEnemy() && GetEnemy()->GetAbsOrigin().DistToSqr(GetAbsOrigin()) < ( ASW_FORMATION_ATTACK_DISTANCE * ASW_FORMATION_ATTACK_DISTANCE ))
+	if (GetEnemy() && GetEnemy()->GetAbsOrigin().DistToSqr(GetAbsOrigin()) < Square( ASW_FORMATION_ATTACK_DISTANCE ))
 		return false;
 
 	// only move if we're not near our saved follow point
 	float dist = GetAbsOrigin().DistToSqr(GetFollowPos());
-	return dist > ( ASW_FORMATION_FOLLOW_DISTANCE * ASW_FORMATION_FOLLOW_DISTANCE );
+	return dist > Square( ASW_FORMATION_FOLLOW_DISTANCE );
 }
 
 static bool ValidMarineMeleeTarget( CBaseEntity *pEnt )
@@ -1575,12 +1619,17 @@ int CASW_Marine::SelectFollowSchedule()
 	}
 
 	// check if we're too near another marine
-	//CASW_Marine *pCloseMarine = TooCloseToAnotherMarine();
-	//if (pCloseMarine)
-	//{
+	CASW_Marine *pCloseMarine = TooCloseToAnotherMarine();
+	if (pCloseMarine)
+	{
 		//Msg("marine is too close to %d\n", pCloseMarine->entindex());
-		//return SCHED_ASW_FOLLOW_BACK_OFF;
-	//}
+		return SCHED_ASW_FOLLOW_BACK_OFF;
+	}
+
+	if (GetSquadLeader() == NULL || GetSquadLeader() == this)
+	{
+		return -1;
+	}
 
 	return SCHED_ASW_FOLLOW_WAIT;
 }

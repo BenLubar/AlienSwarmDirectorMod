@@ -17,6 +17,7 @@
 ConVar asw_barrel_health_base( "asw_barrel_health_base", "3", FCVAR_CHEAT, "Health of barrel at level 1" );
 ConVar asw_barrel_health_growth( "asw_barrel_health_growth", "0.15", FCVAR_CHEAT, "% change in health per level" );
 
+extern ConVar asw_marine_test_new_ai;
 
 LINK_ENTITY_TO_CLASS( asw_barrel_explosive, CASW_Barrel_Explosive );
 
@@ -75,7 +76,7 @@ int CASW_Barrel_Explosive::OnTakeDamage( const CTakeDamageInfo &info )
 
 		pMarine = assert_cast< CASW_Marine* >( info.GetAttacker() );
 		// prevent AI marines blowing up barrels as it makes the player ANGRY ANGRY
-		if ( pMarine && !pMarine->IsInhabited() )
+		if ( pMarine && !pMarine->IsInhabited() && !asw_marine_test_new_ai.GetBool() )
 			return 0;
 	}
 

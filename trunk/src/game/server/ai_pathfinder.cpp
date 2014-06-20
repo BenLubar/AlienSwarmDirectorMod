@@ -1550,7 +1550,7 @@ public:
 			}
 
 			// danger is scary. 1 danger is around 1 ally dying within the last 2 minutes.
-			const float dangerPenalty = 50.0f;
+			const float dangerPenalty = 1024.0f;
 			cost += area->GetDanger(m_team) * dangerPenalty * dist;
 
 			// don't try to jump up cliffs if we can't do that

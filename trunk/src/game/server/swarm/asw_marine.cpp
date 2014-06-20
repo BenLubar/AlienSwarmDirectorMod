@@ -1478,7 +1478,7 @@ int CASW_Marine::OnTakeDamage_Alive( const CTakeDamageInfo &info )
 		}
 
 		// call for medic
-		if (asw_marine_test_new_ai.GetBool() && !IsInhabited() && iPreDamageHealth <= iDamageTaken)
+		if (asw_marine_test_new_ai.GetBool() && !IsInhabited() && iPreDamageHealth <= iDamageTaken * 4 && GetHealth() > 0)
 		{
 			DoEmote(0);
 		}
@@ -3231,7 +3231,7 @@ void CASW_Marine::Event_Killed( const CTakeDamageInfo &info )
 		}
 	}
 
-	if ( ASWGameRules() )
+	if ( ASWGameRules() && GetMarineResource() )
 	{
 		ASWGameRules()->MarineKilled( this, info );
 

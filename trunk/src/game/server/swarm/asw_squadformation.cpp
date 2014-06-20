@@ -8,6 +8,7 @@
 #include "asw_boomer_blob.h"
 #include "ai_network.h"
 #include "triggers.h"
+#include "asw_player.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -21,7 +22,8 @@ ConVar asw_follow_velocity_predict( "asw_follow_velocity_predict", "0.3", FCVAR_
 ConVar asw_follow_threshold( "asw_follow_threshold", "40", FCVAR_CHEAT, "Marines in diamond formation will move after leader has moved this much" );
 ConVar asw_squad_debug( "asw_squad_debug", "1", FCVAR_CHEAT, "Draw debug overlays for squad movement" );
 
-#define OUT_OF_BOOMER_BOMB_RANGE FLT_MAX
+// TODO: is boomer bomb radius ever larger than 500 units?
+#define OUT_OF_BOOMER_BOMB_RANGE 500
 
 void CASW_SquadFormation::LevelInitPostEntity()
 {
@@ -200,13 +202,13 @@ float CASW_SquadFormation::GetYaw( unsigned slotnum )
 	return anglemod( m_flCurrentForwardAbsoluteEulerYaw + s_MarineFollowDirection[ slotnum ] );
 }
 
-
-
-#if 1
 void CASW_SquadFormation::RecomputeFollowerOrder(  const Vector &vProjectedLeaderPos, QAngle qLeaderAim )  ///< reorganize the follower slots so that each follower has the least distance to move
 {
 	VPROF("CASW_Marine::RecomputeFollowerOrder");
 
+	// because 7! is 5040, it's probably best that we don't re-order the squad, since that would require more iterations than just letting them cross paths.
+
+#if 0
 //#pragma message("TODO: this algorithm should be SIMD optimized.")
 	// all the possible orderings of three followers ( 3! == 6 )
 	const static uint8 sFollowerOrderings[6][MAX_SQUAD_SIZE] =
@@ -318,8 +320,8 @@ void CASW_SquadFormation::RecomputeFollowerOrder(  const Vector &vProjectedLeade
 			}
 		}
 	}
-}
 #endif
+}
 
 Vector CASW_SquadFormation::GetLdrAnglMatrix( const Vector &origin, const QAngle &ang, matrix3x4_t * RESTRICT pout ) RESTRICT
 {
@@ -356,18 +358,17 @@ Vector CASW_SquadFormation::GetLdrAnglMatrix( const Vector &origin, const QAngle
 	return vecLeaderAim;
 }
 
-// returns OUT_OF_BOOMER_BOMB_RANGE if not within blast radius of any boomer bomb
+// returns Square(OUT_OF_BOOMER_BOMB_RANGE) if not within blast radius of any boomer bomb
 float GetClosestBoomerBlobDistSqr( const Vector &vecPosition )
 {
-	float flClosestBoomerBlobDistSqr = OUT_OF_BOOMER_BOMB_RANGE;
+	float flClosestBoomerBlobDistSqr = Square(OUT_OF_BOOMER_BOMB_RANGE);
 
 	for( int iBoomerBlob = 0; iBoomerBlob < g_aExplosiveProjectiles.Count(); iBoomerBlob++ )
 	{
  		CBaseEntity *pExplosive = g_aExplosiveProjectiles[ iBoomerBlob ];
-		const float flExplosiveRadius = 240.0f;	// bad hardcoded to match boomer blob radius
 
 		float flDistSqr = pExplosive->GetAbsOrigin().DistToSqr( vecPosition );
-		if( flDistSqr < Square( flExplosiveRadius ) && flDistSqr < flClosestBoomerBlobDistSqr )
+		if( flDistSqr < flClosestBoomerBlobDistSqr )
 		{
 			flClosestBoomerBlobDistSqr = flDistSqr;
 		}
@@ -378,7 +379,7 @@ float GetClosestBoomerBlobDistSqr( const Vector &vecPosition )
 
 bool WithinBoomerBombRadius( const Vector &vecPosition )
 {
-	return ( GetClosestBoomerBlobDistSqr( vecPosition ) < OUT_OF_BOOMER_BOMB_RANGE );
+	return ( GetClosestBoomerBlobDistSqr( vecPosition ) < Square(OUT_OF_BOOMER_BOMB_RANGE) );
 }
 
 void CASW_SquadFormation::UpdateFollowPositions()
@@ -464,7 +465,7 @@ void CASW_SquadFormation::UpdateFollowPositions()
 				if( !bNodeTaken )
 				{
 					float flClosestBoomerBlobDistSqr = GetClosestBoomerBlobDistSqr( vecNodeLocation );
-					if( flClosestBoomerBlobDistSqr == OUT_OF_BOOMER_BOMB_RANGE )
+					if( flClosestBoomerBlobDistSqr >= Square(OUT_OF_BOOMER_BOMB_RANGE) )
 					{
 						// if closer than the previous closest node, and the current node isn't taken, reserve it
 						float flSafeNodeDistSqr = vecNodeLocation.DistToSqr( pMarine->GetAbsOrigin() );
@@ -587,6 +588,15 @@ void CASW_SquadFormation::ChangeLeader( CASW_Marine *pNewLeader, bool bUpdateLea
 	{
 		Leader( pNewLeader );
 		return;
+	}
+
+	for (int i = 0; i < gpGlobals->maxClients; i++)
+	{
+		CASW_Player *pPlayer = dynamic_cast<CASW_Player *>(UTIL_PlayerByIndex(i));
+		if (pPlayer && pPlayer->GetSpectatingMarine() == pOldLeader)
+		{
+			pPlayer->SetSpectatingMarine(pNewLeader);
+		}
 	}
 
 	// if we're trying to wipe out the leader, do so if there are no followers

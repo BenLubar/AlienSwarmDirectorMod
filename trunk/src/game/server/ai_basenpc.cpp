@@ -7731,7 +7731,12 @@ void CAI_BaseNPC::TaskFail( AI_TaskFailureCode_t code )
 	if (GetNavigator() && GetNavigator()->GetPath() && GetNavigator()->GetPath()->GetCurWaypoint())
 	{
 		// avoid areas that cause navigation failures
-		TheNavMesh->IncreaseDangerNearby(GetTeamNumber(), 0.01f, TheNavMesh->GetNearestNavArea(GetNavigator()->GetCurWaypointPos()), GetAbsOrigin(), 32.0f);
+		TheNavMesh->IncreaseDangerNearby(GetTeamNumber(), 0.05f, TheNavMesh->GetNearestNavArea(GetNavigator()->GetCurWaypointPos()), GetAbsOrigin(), 32.0f);
+	}
+	else
+	{
+		// avoid areas that cause other kinds of failures, but with lower priority
+		TheNavMesh->IncreaseDangerNearby(GetTeamNumber(), 0.02f, TheNavMesh->GetNearestNavArea(GetAbsOrigin()), GetAbsOrigin(), 32.0f);
 	}
 
 	// If in developer mode save the fail text for debug output
