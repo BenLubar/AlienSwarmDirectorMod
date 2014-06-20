@@ -373,7 +373,7 @@ int CASW_Marine::SelectSchedule()
 		for (int i = 0; i < CASW_SquadFormation::MAX_SQUAD_SIZE; i++)
 		{
 			CASW_Marine *pSquaddie = pFormation->Squaddie(i);
-			if (pSquaddie && pSquaddie->GetUsingEntity() || pSquaddie->m_bWaitingForWeld)
+			if (pSquaddie && (pSquaddie->GetUsingEntity() || pSquaddie->m_bWaitingForWeld))
 			{
 				// protect the tech!
 				pSquaddie->SetASWOrders(ASW_ORDER_HOLD_POSITION);
@@ -521,7 +521,17 @@ int CASW_Marine::SelectHackingSchedule()
 
 	if ( m_hAreaToUse.Get() )
 	{
-		if ( m_hAreaToUse->IsUsable( this ) )
+		CASW_Button_Area *pButton = dynamic_cast<CASW_Button_Area *>(m_hAreaToUse.Get());
+		CASW_Computer_Area *pComputer = dynamic_cast<CASW_Computer_Area *>(m_hAreaToUse.Get());
+		if ( pButton && pButton->m_bIsInUse.Get() )
+		{
+			m_hAreaToUse = NULL;
+		}
+		else if ( pComputer && pComputer->m_bIsInUse.Get() )
+		{
+			m_hAreaToUse = NULL;
+		}
+		else if ( m_hAreaToUse->IsUsable( this ) )
 		{
 			// notify to kill the effect in a couple of seconds
 			CASW_Player *pPlayer = GetCommander();
