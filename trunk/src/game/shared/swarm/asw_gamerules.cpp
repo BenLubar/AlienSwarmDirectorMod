@@ -3551,7 +3551,7 @@ void CAlienSwarm::MarineKilled( CASW_Marine *pMarine, const CTakeDamageInfo &inf
 	if (asw_marine_test_new_ai.GetBool() && !pMarine->IsInhabited())
 	{
 		CASW_SquadFormation *pFormation = pMarine->GetSquadFormation();
-		if (pFormation && pFormation->Leader() == pMarine && pFormation->Count() > 0)
+		if (pFormation && pFormation->Leader() == pMarine)
 		{
 			for (int i = 0; i < CASW_SquadFormation::MAX_SQUAD_SIZE; i++)
 			{
@@ -3560,6 +3560,7 @@ void CAlienSwarm::MarineKilled( CASW_Marine *pMarine, const CTakeDamageInfo &inf
 				{
 					pSquaddie->SetASWOrders(ASW_ORDER_HOLD_POSITION);
 					pFormation->ChangeLeader(pSquaddie, true);
+					pFormation->Remove(pMarine);
 					break;
 				}
 			}

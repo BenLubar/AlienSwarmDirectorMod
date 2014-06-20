@@ -3444,7 +3444,7 @@ void CASW_Marine::Event_Killed( const CTakeDamageInfo &info )
 					if ( GetMarineProfile()->m_bFemale )
 						UTIL_ClientPrintAll( ASW_HUD_PRINTTALKANDCONSOLE, "#asw_suicide_female", szName );
 					else
-						UTIL_ClientPrintAll( ASW_HUD_PRINTTALKANDCONSOLE, "#asw_suicide_male", GetMarineProfile()->m_ShortName );
+						UTIL_ClientPrintAll( ASW_HUD_PRINTTALKANDCONSOLE, "#asw_suicide_male", szName );
 				}
 				else
 				{

@@ -286,7 +286,14 @@ int CASW_Marine::SelectSchedule()
 
 	int iOffhandSchedule = SelectOffhandItemSchedule();
 	if ( iOffhandSchedule != -1 )
+	{
+		if (asw_marine_test_new_ai.GetBool() && m_bWaitingForWeld && GetSquadLeader() != NULL && !GetSquadLeader()->IsInhabited() && GetSquadLeader() != this)
+		{
+			// make the squad leader think about protecting us instead of charging ahead
+			GetSquadLeader()->SetASWOrders(ASW_ORDER_HOLD_POSITION);
+		}
 		return iOffhandSchedule;
+	}
 
 	int iHackingSchedule = SelectHackingSchedule();
 	if ( iHackingSchedule != -1 )
@@ -366,7 +373,7 @@ int CASW_Marine::SelectSchedule()
 		for (int i = 0; i < CASW_SquadFormation::MAX_SQUAD_SIZE; i++)
 		{
 			CASW_Marine *pSquaddie = pFormation->Squaddie(i);
-			if (pSquaddie && pSquaddie->GetUsingEntity())
+			if (pSquaddie && pSquaddie->GetUsingEntity() || pSquaddie->m_bWaitingForWeld)
 			{
 				// protect the tech!
 				pSquaddie->SetASWOrders(ASW_ORDER_HOLD_POSITION);
@@ -1591,8 +1598,9 @@ int CASW_Marine::SelectFollowSchedule()
 	// if we don't have anyone to follow, revert to holding position orders
 	if ( !GetSquadLeader() && ASWGameRules() && gpGlobals->curtime > ASWGameRules()->m_fMissionStartedTime + 4.0f )
 	{
-		SetASWOrders(ASW_ORDER_HOLD_POSITION, GetAbsAngles()[YAW], &GetAbsOrigin());
-		return SCHED_ASW_HOLD_POSITION;
+		//SetASWOrders(ASW_ORDER_HOLD_POSITION, GetAbsAngles()[YAW], &GetAbsOrigin());
+		//return SCHED_ASW_HOLD_POSITION;
+		return -1;
 	}
 
 	if (NeedToFollowMove())

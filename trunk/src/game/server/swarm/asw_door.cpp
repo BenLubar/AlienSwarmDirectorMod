@@ -1293,6 +1293,11 @@ int CASW_Door::OnTakeDamage( const CTakeDamageInfo &info )
 			SetDentSequence();
 
 		}
+
+		if (!info.GetAttacker() || info.GetAttacker()->Classify() != CLASS_ASW_MARINE)
+		{
+			TheNavMesh->IncreaseDangerNearby(TEAM_MARINES, damage / float(m_iDoorStrength), TheNavMesh->GetNearestNavArea(WorldSpaceCenter()), WorldSpaceCenter(), 128.0f);
+		}
 	}
 
 	return 1;
