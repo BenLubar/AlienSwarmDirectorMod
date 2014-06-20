@@ -133,10 +133,9 @@ bool CASW_VGUI_Stylin_Cam::ShouldShowStylinCam()
 	bool bHasMarine = pLocal && pLocal->GetMarine();
 
 	bool bAdrenalineActive = GameTimescale()->GetCurrentTimescale() <= asw_stim_cam_time.GetFloat() && ASWGameRules()->GetStimEndTime() >= gpGlobals->curtime;
-	bool bShowCam = ASWGameRules()->ShouldForceStylinCam() ||
-		( bAdrenalineActive && bHasMarine );
+	bool bShowCam = ASWGameRules()->ShouldForceStylinCam() || bAdrenalineActive;
 
-	if ( bShowCam && !ASWGameRules()->ShouldShowCommanderFace() )
+	if ( bShowCam )
 	{
 		// check if there's a mapper designed camera turned on
 		C_PointCamera *pCameraEnt = GetPointCameraList();
@@ -151,8 +150,8 @@ bool CASW_VGUI_Stylin_Cam::ShouldShowStylinCam()
 			}
 			++cameraNum;
 		}
-		if ( !bMapperCam && !asw_spinning_stim_cam.GetBool() && !ASWGameRules()->ShouldShowCommanderFace() )	// don't show the cam if the mapper hasn't set a specific view, unless the convar is set
-			bShowCam = false;
+		if ( !asw_spinning_stim_cam.GetBool() || !bHasMarine )	// don't show the cam if the mapper hasn't set a specific view, unless the convar is set
+			bShowCam = bMapperCam;
 	}
 
 	return bShowCam;
