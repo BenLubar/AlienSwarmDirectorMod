@@ -72,7 +72,7 @@ enum
 
 // Team defines
 #define TEAM_MARINES                ( LAST_SHARED_TEAM + 1 )
-#define TEAM_ALIENS                 ( LAST_SHARED_TEAM + 1 )
+#define TEAM_ALIENS                 ( LAST_SHARED_TEAM + 2 )
 #define LAST_ASW_TEAM               ( TEAM_ALIENS )
 #define NUM_ASW_TEAMS               ( LAST_ASW_TEAM + 1 )
 

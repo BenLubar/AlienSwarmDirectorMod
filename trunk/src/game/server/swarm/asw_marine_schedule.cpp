@@ -1379,7 +1379,8 @@ void CASW_Marine::FinishedUsingOffhandItem( bool bItemThrown, bool bFailed )
 	}
 	else
 	{
-		OrdersFromPlayer( NULL, ASW_ORDER_HOLD_POSITION, this, true, GetLocalAngles().y);
+		//OrdersFromPlayer( NULL, ASW_ORDER_HOLD_POSITION, this, true, GetLocalAngles().y);
+		SetASWOrders(ASW_ORDER_FOLLOW);
 	}
 }
 
