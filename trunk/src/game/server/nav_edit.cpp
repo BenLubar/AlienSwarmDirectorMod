@@ -21,6 +21,7 @@
 #include "functorutils.h"
 #include "team.h"
 
+#include "asw_gamerules.h"
 
 // NOTE: This has to be the last file included!
 #include "tier0/memdbgon.h"
@@ -963,8 +964,9 @@ void CNavMesh::DrawEditMode( void )
 					if ( attributes & NAV_MESH_STAIRS )		Q_strncat( attrib, "STAIRS ", sizeof( attrib ), -1 );
 					if ( attributes & NAV_MESH_OBSTACLE_TOP ) Q_strncat( attrib, "OBSTACLE ", sizeof( attrib ), -1 );
 					if ( attributes & NAV_MESH_CLIFF )		Q_strncat( attrib, "CLIFF ", sizeof( attrib ), -1 );
-
-					if ( m_selectedArea->IsBlocked( TEAM_ANY ) ) Q_strncat( attrib, "BLOCKED ", sizeof( attrib ), -1 );
+					
+					if ( m_selectedArea->IsBlocked( TEAM_MARINES ) ) Q_strncat( attrib, "BLOCKED_MARINES ", sizeof( attrib ), -1 );
+					if ( m_selectedArea->IsBlocked( TEAM_ALIENS ) ) Q_strncat( attrib, "BLOCKED_ALIENS ", sizeof( attrib ), -1 );
 
 					if ( m_selectedArea->HasAvoidanceObstacle() )	Q_strncat( attrib, "OBSTRUCTED ", sizeof( attrib ), -1 );
 					if ( m_selectedArea->IsDamaging() )		Q_strncat( attrib, "DAMAGING ", sizeof( attrib ), -1 );

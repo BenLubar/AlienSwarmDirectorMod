@@ -1271,7 +1271,7 @@ StairTestType IsStairs( const Vector &start, const Vector &end, StairTestType re
 	if ( abs( start.z - end.z ) > StepHeight )
 	{
 		// initialize the height delta
-		UTIL_TraceHull( start + traceOffset, start - traceOffset, hullMins, hullMaxs, MASK_NPCSOLID, &filter, &trace );
+		UTIL_TraceHull( start + traceOffset, start - traceOffset, hullMins, hullMaxs, MASK_SOLID, &filter, &trace );
 		if ( trace.startsolid || trace.IsDispSurface() )
 		{
 			return STAIRS_NO;
@@ -1287,7 +1287,7 @@ StairTestType IsStairs( const Vector &start, const Vector &end, StairTestType re
 		{
 			pos = start + t * ( end - start );
 
-			UTIL_TraceHull( pos + traceOffset, pos - traceOffset, hullMins, hullMaxs, MASK_NPCSOLID, &filter, &trace );
+			UTIL_TraceHull( pos + traceOffset, pos - traceOffset, hullMins, hullMaxs, MASK_SOLID, &filter, &trace );
 			if ( trace.startsolid || trace.IsDispSurface() )
 			{
 				return STAIRS_NO;

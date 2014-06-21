@@ -2829,9 +2829,9 @@ void CNavMesh::OnAreaUnblocked( CNavArea *area )
 void CNavMesh::UpdateBlockedAreas( void )
 {
 	VPROF( "CNavMesh::UpdateBlockedAreas" );
-	for ( int i=0; i<m_blockedAreas.Count(); ++i )
+	FOR_EACH_VEC( TheNavAreas, it )
 	{
-		CNavArea *area = m_blockedAreas[i];
+		CNavArea *area = TheNavAreas[ it ];
 		area->UpdateBlocked();
 	}
 }

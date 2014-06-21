@@ -1705,7 +1705,7 @@ AI_Waypoint_t *CAI_Pathfinder::BuildRoute( const Vector &vStart, const Vector &v
 
 		ASWPathCost costfunc(nBuildFlags, GetOuter()->GetTeamNumber());
 
-		if( NavAreaBuildPath( startArea, goalArea, &vEnd, costfunc, &closestArea) )
+		if ( NavAreaBuildPath( startArea, goalArea, &vEnd, costfunc, &closestArea, 0.0f, GetOuter()->GetTeamNumber() ) )
 		{
 			pResult = BuildNavRoute( startArea, closestArea, vEnd, NULL, curNavType );
 		}

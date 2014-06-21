@@ -36,8 +36,10 @@ Color NavColors[] =
 	Color( 0, 255, 255 ),		// NavMarkedColor
 	Color( 255, 0, 0 ),			// NavNormalColor
 	Color( 0, 0, 255 ),			// NavCornerColor
-	Color( 0, 0, 255 ),			// NavBlockedByDoorColor
-	Color( 0, 255, 255 ),		// NavBlockedByFuncNavBlockerColor
+	Color( 0, 0, 255 ),			// NavBlockedByDoorAliensColor
+	Color( 0, 255, 255 ),		// NavBlockedByFuncNavBlockerAliensColor
+	Color( 0, 0, 255 ),			// NavBlockedByDoorMarinesColor
+	Color( 0, 255, 255 ),		// NavBlockedByFuncNavBlockerMarinesColor
 
 	// Hiding spot colors
 	Color( 255, 0, 0 ),			// NavIdealSniperColor

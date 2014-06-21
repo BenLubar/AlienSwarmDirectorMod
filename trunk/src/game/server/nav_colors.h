@@ -27,8 +27,10 @@ enum NavEditColor
 	NavMarkedColor,
 	NavNormalColor,
 	NavCornerColor,
-	NavBlockedByDoorColor,
-	NavBlockedByFuncNavBlockerColor,
+	NavBlockedByDoorAliensColor,
+	NavBlockedByFuncNavBlockerAliensColor,
+	NavBlockedByDoorMarinesColor,
+	NavBlockedByFuncNavBlockerMarinesColor,
 
 	// Hiding spot colors
 	NavIdealSniperColor,

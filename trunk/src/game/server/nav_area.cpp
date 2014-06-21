@@ -24,7 +24,7 @@
 #include "props_shared.h"
 #include "func_breakablesurf.h"
 
-
+#include "asw_gamerules.h"
 
 #include "Color.h"
 #include "collisionutils.h"
@@ -2971,9 +2971,26 @@ void CNavArea::Draw( void ) const
 		NavDrawTriangle( m_center + Vector( 0, -bottomHeight, 0 ), m_center + Vector( -bottomWidth, -bottomHeight*2, 0 ), m_center + Vector( bottomWidth, -bottomHeight*2, 0 ), color );
 	}
 
-	if ( IsBlocked( TEAM_ANY ) || HasAvoidanceObstacle() || IsDamaging() )
+	if ( IsBlocked( TEAM_ALIENS ) || HasAvoidanceObstacle() || IsDamaging() )
 	{
-		NavEditColor color = (IsBlocked( TEAM_ANY ) && ( m_attributeFlags & NAV_MESH_NAV_BLOCKER ) ) ? NavBlockedByFuncNavBlockerColor : NavBlockedByDoorColor;
+		NavEditColor color = (IsBlocked( TEAM_ALIENS ) && ( m_attributeFlags & NAV_MESH_NAV_BLOCKER ) ) ? NavBlockedByFuncNavBlockerAliensColor : NavBlockedByDoorAliensColor;
+		const float blockedInset = 2.0f;
+		nw.x += blockedInset;
+		nw.y += blockedInset;
+		ne.x -= blockedInset;
+		ne.y += blockedInset;
+		sw.x += blockedInset;
+		sw.y -= blockedInset;
+		se.x -= blockedInset;
+		se.y -= blockedInset;
+		NavDrawLine( nw, ne, color );
+		NavDrawLine( ne, se, color );
+		NavDrawLine( se, sw, color );
+		NavDrawLine( sw, nw, color );
+	}
+	if ( IsBlocked( TEAM_MARINES ) || HasAvoidanceObstacle() || IsDamaging() )
+	{
+		NavEditColor color = (IsBlocked( TEAM_MARINES ) && ( m_attributeFlags & NAV_MESH_NAV_BLOCKER ) ) ? NavBlockedByFuncNavBlockerMarinesColor : NavBlockedByDoorMarinesColor;
 		const float blockedInset = 4.0f;
 		nw.x += blockedInset;
 		nw.y += blockedInset;
@@ -4494,8 +4511,6 @@ bool CNavArea::IsBlocked( int teamID, bool ignoreNavBlockers ) const
 		return false;
 	}
 
-
-
 	if ( teamID == TEAM_ANY )
 	{
 		bool isBlocked = false;
@@ -4703,61 +4718,30 @@ void CNavArea::UpdateBlocked( bool force, int teamID )
 	bounds.lo.Init( -sizeX, -sizeY, 0 );
 	bounds.hi.Init( sizeX, sizeY, VEC_DUCK_HULL_MAX.z - HalfHumanHeight );
 
-	bool wasBlocked = IsBlocked( TEAM_ANY );
+	bool wasBlocked = IsBlocked( teamID );
 
 	// See if spot is valid
 
 	CTraceFilterWalkableEntities filter( NULL, COLLISION_GROUP_PLAYER_MOVEMENT, WALK_THRU_DOORS | WALK_THRU_BREAKABLES );
 
-	trace_t tr;
 	{
-	VPROF( "CNavArea::UpdateBlocked-Trace" );
-	UTIL_TraceHull(
-		origin,
-		origin,
-		bounds.lo,
-		bounds.hi,
-		MASK_NPCSOLID_BRUSHONLY,
-		&filter,
-		&tr );
-
-	}
-
-	if ( !tr.startsolid )
-	{
-		// unblock ourself
-
-		if ( false )
-
-
+		VPROF("CNavArea::UpdateBlocked-Trace");
+		Assert(teamID == TEAM_ANY || teamID == TEAM_MARINES || teamID == TEAM_ALIENS);
+		if (teamID == TEAM_ANY || teamID == TEAM_MARINES)
 		{
-			NDebugOverlay::Box( origin, bounds.lo, bounds.hi, 0, 255, 0, 10, 5.0f );
+			trace_t tr_marines;
+			UTIL_TraceHull(origin, origin, bounds.lo, bounds.hi, MASK_PLAYERSOLID_BRUSHONLY, &filter, &tr_marines);
+			m_isBlocked[TEAM_MARINES % MAX_NAV_TEAMS] = tr_marines.startsolid;
 		}
-		else
+		if (teamID == TEAM_ANY || teamID == TEAM_ALIENS)
 		{
-			for ( int i=0; i<MAX_NAV_TEAMS; ++i )
-			{
-				m_isBlocked[ i ] = false;
-			}
-		}
-	}
-	else if ( force )
-	{
-		if ( teamID == TEAM_ANY )
-		{
-			for ( int i=0; i<MAX_NAV_TEAMS; ++i )
-			{
-				m_isBlocked[ i ] = true;
-			}
-		}
-		else
-		{
-			int teamIdx = teamID % MAX_NAV_TEAMS;
-			m_isBlocked[ teamIdx ] = true;
+			trace_t tr_aliens;
+			UTIL_TraceHull(origin, origin, bounds.lo, bounds.hi, MASK_NPCSOLID_BRUSHONLY, &filter, &tr_aliens);
+			m_isBlocked[TEAM_ALIENS % MAX_NAV_TEAMS] = tr_aliens.startsolid;
 		}
 	}
 
-	bool isBlocked = IsBlocked( TEAM_ANY );
+	bool isBlocked = IsBlocked( teamID );
 
 	if ( wasBlocked != isBlocked )
 	{
