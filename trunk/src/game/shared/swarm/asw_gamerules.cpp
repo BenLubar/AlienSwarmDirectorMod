@@ -126,7 +126,7 @@ extern ConVar old_radius_damage;
 	ConVar asw_compliment_chatter_interval_min("asw_compliment_chatter_interval_min", "180", 0, "Min time between kill compliments");
 	ConVar asw_compliment_chatter_interval_max("asw_compliment_chatter_interval_max", "240", 0, "Max time between kill compliments");	
 	ConVar asw_default_campaign("asw_default_campaign", "jacob", FCVAR_ARCHIVE, "Default campaign used when dedicated server restarts");
-	ConVar asw_fair_marine_rules("asw_fair_marine_rules", "1", FCVAR_ARCHIVE, "If set, fair marine selection rules are enforced during the briefing");
+	ConVar asw_fair_marine_rules("asw_fair_marine_rules", "0", FCVAR_NONE, "If set, fair marine selection rules are enforced during the briefing");
 	ConVar asw_override_max_marines("asw_override_max_marines", "0", FCVAR_CHEAT, "Overrides how many marines can be selected for (testing).");
 	ConVar asw_last_game_variation("asw_last_game_variation", "0", FCVAR_ARCHIVE, "Which game variation was used last game");
 	ConVar asw_bonus_charges("asw_bonus_charges", "0", FCVAR_CHEAT, "Bonus ammo given to starting equipment");
@@ -1380,23 +1380,6 @@ void CAlienSwarm::SetMaxMarines( CASW_Player *pException )
 
 	CASW_Game_Resource *pGameResource = ASWGameResource();
 
-	// count number of player starts
-	int iPlayerStarts = 0;
-	if (IsTutorialMap())	// in the tutorial map we just assume max players starts, since briefing isn't used
-	{
-		iPlayerStarts = 8;
-	}
-	else
-	{
-		CBaseEntity *pStartEntity = NULL;
-		do
-		{
-			pStartEntity = gEntList.FindEntityByClassname( pStartEntity, "info_player_start");
-			if (pStartEntity && IsValidMarineStart(pStartEntity))
-				iPlayerStarts++;
-		} while (pStartEntity!=NULL);
-	}
-
 	// count number of non spectating players
 	int iPlayers = 0;	
 	for ( int i = 1; i <= gpGlobals->maxClients; i++ )	
@@ -1410,27 +1393,14 @@ void CAlienSwarm::SetMaxMarines( CASW_Player *pException )
 		}
 	}	
 
-	if (iPlayers < ASW_MAX_MARINE_RESOURCES)
+	if (asw_fair_marine_rules.GetBool())
 	{
-		pGameResource->SetMaxMarines(ASW_MAX_MARINE_RESOURCES, false);
+		pGameResource->SetMaxMarines(ASW_MAX_MARINE_RESOURCES, true);
+		EnforceFairMarineRules();
 	}
 	else
 	{
-		if (asw_fair_marine_rules.GetBool())
-		{
-			pGameResource->SetMaxMarines(iPlayers, true);
-			EnforceFairMarineRules();
-		}
-		else
-		{
-			pGameResource->SetMaxMarines(iPlayers, false);
-		}
-	}
-
-	// if we don't have enough player starts, lower the max
-	if (iPlayerStarts < pGameResource->m_iMaxMarines)
-	{
-		pGameResource->SetMaxMarines(iPlayerStarts, pGameResource->m_bOneMarineEach);
+		pGameResource->SetMaxMarines(ASW_MAX_MARINE_RESOURCES, false);
 	}
 
 	if (asw_override_max_marines.GetInt() > 0)
