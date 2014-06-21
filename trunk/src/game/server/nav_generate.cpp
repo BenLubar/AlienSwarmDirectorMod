@@ -593,7 +593,23 @@ private:
 //--------------------------------------------------------------------------------------------------------------
 void CNavMesh::MarkPlayerClipAreas( void )
 {
+	FOR_EACH_VEC( TheNavAreas, it )
+	{
+		CNavArea *area = TheNavAreas[it];
 
+		trace_t tr_nomarines, tr_noaliens;
+		Vector start = area->GetCenter() + Vector(0.0f, 0.0f, 16.0f );
+		Vector end = area->GetCenter() + Vector(0.0f, 0.0f, 32.0f );
+
+		UTIL_TraceHull(start, end, Vector(0, 0, 0), Vector(GenerationStepSize, GenerationStepSize, GenerationStepSize), CONTENTS_PLAYERCLIP, NULL, &tr_nomarines);
+		UTIL_TraceHull(start, end, Vector(0, 0, 0), Vector(GenerationStepSize, GenerationStepSize, GenerationStepSize), CONTENTS_MONSTERCLIP, NULL, &tr_noaliens);
+
+		if (tr_nomarines.fraction < 1.0)
+			area->SetAttributes(area->GetAttributes() | NAV_MESH_ALIENS);
+
+		if (tr_noaliens.fraction < 1.0)
+			area->SetAttributes(area->GetAttributes() | NAV_MESH_MARINES);
+	}
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -3243,8 +3259,11 @@ int CNavMesh::BuildArea( CNavNode *node, int width, int height )
 void CNavMesh::CreateNavAreasFromNodes( void )
 {
 	// haven't yet seen a map use larger than 30...
-	int tryWidth = nav_area_max_size.GetInt();
-	int tryHeight = tryWidth;
+	//int tryWidth = nav_area_max_size.GetInt();
+	//int tryHeight = tryWidth;
+
+	// BenLubar: We need to prevent areas from being merged in MarkPlayerClipAreas, so we can't merge areas before then.
+	int tryWidth = 1, tryHeight = 1;
 	int uncoveredNodes = CNavNode::GetListLength();
 
 	while( uncoveredNodes > 0 )

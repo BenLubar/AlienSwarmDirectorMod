@@ -3950,7 +3950,7 @@ void CNavArea::AddSpotEncounters( const CNavArea *from, NavDirType fromDir, cons
 
 			// check if we have LOS
 			// BOTPORT: ignore glass here
-			UTIL_TraceLine( eye, Vector( spotPos.x, spotPos.y, spotPos.z + HalfHumanHeight ), MASK_NPCSOLID_BRUSHONLY, NULL, COLLISION_GROUP_NONE, &result );
+			UTIL_TraceLine( eye, Vector( spotPos.x, spotPos.y, spotPos.z + HalfHumanHeight ), MASK_SOLID_BRUSHONLY, NULL, COLLISION_GROUP_NONE, &result );
 			if (result.fraction != 1.0f)
 				continue;
 
@@ -4784,7 +4784,7 @@ void CNavArea::UpdateBlocked( bool force, int teamID )
  */
 void CNavArea::CheckFloor( CBaseEntity *ignore )
 {
-	if ( IsBlocked( TEAM_ANY ) )
+	if ( IsBlocked( TEAM_MARINES ) && IsBlocked( TEAM_ALIENS ) )
 		return;
 
 	Vector origin = GetCenter();
@@ -4795,33 +4795,15 @@ void CNavArea::CheckFloor( CBaseEntity *ignore )
 	Vector maxs = Vector( size, size, JumpCrouchHeight + 10.0f );
 
 	// See if spot is valid
-	trace_t tr;
-	UTIL_TraceHull(
-		origin,
-		origin,
-		mins,
-		maxs,
-		MASK_NPCSOLID_BRUSHONLY,
-		ignore,
-		COLLISION_GROUP_PLAYER_MOVEMENT,
-		&tr );
+	trace_t tr_marines, tr_aliens;
+	UTIL_TraceHull(origin, origin, mins, maxs, MASK_PLAYERSOLID_BRUSHONLY, ignore, COLLISION_GROUP_PLAYER_MOVEMENT, &tr_marines);
+	UTIL_TraceHull(origin, origin, mins, maxs, MASK_NPCSOLID_BRUSHONLY, ignore, COLLISION_GROUP_PLAYER_MOVEMENT, &tr_aliens);
 
 	// If the center is open space, we're effectively blocked
-	if ( !tr.startsolid )
-	{
-		MarkAsBlocked( TEAM_ANY, NULL );
-	}
-
-	/*
-	if ( IsBlocked( TEAM_ANY ) )
-	{
-		NDebugOverlay::Box( origin, mins, maxs, 255, 0, 0, 64, 3.0f );
-	}
-	else
-	{
-		NDebugOverlay::Box( origin, mins, maxs, 0, 255, 0, 64, 3.0f );
-	}
-	*/
+	if ( !tr_marines.startsolid )
+		MarkAsBlocked( TEAM_MARINES, NULL );
+	if ( !tr_aliens.startsolid )
+		MarkAsBlocked( TEAM_ALIENS, NULL );
 }
 
 

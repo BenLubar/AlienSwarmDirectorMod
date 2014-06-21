@@ -86,6 +86,8 @@ enum NavAttributeType
 	NAV_MESH_CLIFF			= 0x0008000,				// this nav area is adjacent to a drop of at least CliffHeight
 
 	NAV_MESH_FIRST_CUSTOM	= 0x00010000,				// apps may define custom app-specific bits starting with this value
+	NAV_MESH_MARINES        = 0x00010000,               // defined on areas with npcclip to avoid merging
+	NAV_MESH_ALIENS         = 0x00020000,               // defined on areas with playerclip to avoid merging
 	NAV_MESH_LAST_CUSTOM	= 0x04000000,				// apps must not define custom app-specific bits higher than with this value
 
 	NAV_MESH_HAS_ELEVATOR	= 0x40000000,				// area is in an elevator's path
@@ -387,10 +389,10 @@ inline bool IsEntityWalkable( CBaseEntity *entity, unsigned int flags )
 		return false;
 
 	// if we hit a door, assume its walkable because it will open when we touch it
-	if (FClassnameIs( entity, "func_door*" ))
+	if (FClassnameIs( entity, "func_door*" ) || FClassnameIs( entity, "func_movelinear" ))
 		return (flags & WALK_THRU_FUNC_DOORS) ? true : false;
 
-	if (FClassnameIs( entity, "prop_door*" ))
+	if (FClassnameIs( entity, "prop_door*" ) || FClassnameIs( entity, "asw_door" ))
 		return (flags & WALK_THRU_PROP_DOORS) ? true : false;
 
 	// if we hit a clip brush, ignore it if it is not BRUSHSOLID_ALWAYS
@@ -414,9 +416,6 @@ inline bool IsEntityWalkable( CBaseEntity *entity, unsigned int flags )
 
 	if (FClassnameIs( entity, "func_breakable_surf" ) && entity->m_takedamage == DAMAGE_YES)
 		return (flags & WALK_THRU_BREAKABLES) ? true : false;
-
-	if ( FClassnameIs( entity, "func_playerinfected_clip" ) == true )
-		return true;
 
 	if ( nav_solid_props.GetBool() && FClassnameIs( entity, "prop_*" ) )
 		return true;

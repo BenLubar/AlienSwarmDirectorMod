@@ -315,7 +315,7 @@ bool CNavMesh::FindActiveNavArea( void )
 
 	trace_t result;
 	CTraceFilterWalkableEntities filter( NULL, COLLISION_GROUP_NONE, WALK_THRU_EVERYTHING );
-	UTIL_TraceLine( from, to, (nav_solid_props.GetBool()) ? MASK_NPCSOLID : MASK_NPCSOLID_BRUSHONLY, &filter, &result );
+	UTIL_TraceLine( from, to, (nav_solid_props.GetBool()) ? MASK_SOLID : MASK_SOLID_BRUSHONLY, &filter, &result );
 
 	if (result.fraction != 1.0f)
 	{
