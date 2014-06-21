@@ -421,6 +421,8 @@ int CASW_Marine::TranslateSchedule( int scheduleType )
 	return result;
 }
 
+#define AUTO_HACK_DIST 768.0f
+
 //-----------------------------------------------------------------------------
 void CASW_Marine::TaskFail( AI_TaskFailureCode_t code )
 {
@@ -441,8 +443,38 @@ void CASW_Marine::TaskFail( AI_TaskFailureCode_t code )
 			m_flResetAmmoIgnoreListTime = gpGlobals->curtime + 15.0f;
 		}
 
+		if (asw_marine_test_new_ai.GetBool() && !m_hAreaToUse.Get() && GetSquadLeader() && !GetSquadLeader()->IsInhabited())
+		{
+			CASW_Use_Area *pClosestArea = NULL;
+			float flClosestDist = FLT_MAX;
+
+			// check for a button to push nearby
+			for (int i = 0; i < IASW_Use_Area_List::AutoList().Count(); i++)
+			{
+				CASW_Use_Area *pArea = static_cast<CASW_Use_Area*>(IASW_Use_Area_List::AutoList()[i]);
+				if (pArea->Classify() == CLASS_ASW_BUTTON_PANEL)
+				{
+					CASW_Button_Area *pButton = assert_cast<CASW_Button_Area*>(pArea);
+					if (pButton->IsLocked() || !pButton->HasPower())
+						continue;
+
+					float flDist = GetAbsOrigin().DistTo(pArea->WorldSpaceCenter());
+					if (flDist < flClosestDist && flDist < AUTO_HACK_DIST)
+					{
+						flClosestDist = flDist;
+						pClosestArea = pArea;
+					}
+				}
+			}
+
+			m_hAreaToUse = pClosestArea;
+		}
+		else
+		{
+			m_hAreaToUse = NULL;
+		}
+
 		// change orders back to hold/follow
-		m_hAreaToUse = NULL;
 		if ( m_bWasFollowing )
 		{
 			SetASWOrders( ASW_ORDER_FOLLOW );
@@ -462,14 +494,12 @@ void CASW_Marine::TaskFail( AI_TaskFailureCode_t code )
 
 ConVar asw_marine_auto_hack( "asw_marine_auto_hack", "0", FCVAR_CHEAT, "If set to 1, marine will automatically hack nearby computers and button panels" );
 
-#define AUTO_HACK_DIST 768.0f
-
 int CASW_Marine::SelectHackingSchedule()
 {
-	if ( !GetMarineProfile() || GetMarineProfile()->GetMarineClass() != MARINE_CLASS_TECH )
+	if ( !GetMarineProfile() || (GetMarineProfile()->GetMarineClass() != MARINE_CLASS_TECH && !m_hAreaToUse.Get()) )
 		return -1;
 
-	if ( asw_marine_auto_hack.GetBool() || (asw_marine_test_new_ai.GetBool() && GetSquadFormation()->Leader() && !GetSquadFormation()->Leader()->IsInhabited()) )
+	if (GetMarineProfile()->GetMarineClass() == MARINE_CLASS_TECH && (asw_marine_auto_hack.GetBool() || (asw_marine_test_new_ai.GetBool() && GetSquadFormation()->Leader() && !GetSquadFormation()->Leader()->IsInhabited())))
 	{
 		CASW_Use_Area *pClosestArea = NULL;
 		float flClosestDist = FLT_MAX;
@@ -1528,7 +1558,7 @@ int CASW_Marine::FindThrowNode( const Vector &vThreatPos, float flMinThreatDist,
 bool CASW_Marine::NeedToUpdateSquad()
 {
 	// basically, if I am a leader and I've moved, an update is needed.
-	return ( GetSquadLeader() == this && GetSquadFormation()->ShouldUpdateFollowPositions() );
+	return ( GetSquadLeader() == this && (GetSquadFormation()->ShouldUpdateFollowPositions() || m_hUsingEntity.Get()) );
 }
 
 bool CASW_Marine::NeedToFollowMove()
@@ -1666,7 +1696,7 @@ CASW_Marine* CASW_Marine::TooCloseToAnotherMarine()
 		float dist = pMarine->GetAbsOrigin().DistTo(GetAbsOrigin());		
 		if ( dist < ASW_MARINE_TOO_CLOSE)
 		{
-			Msg("marine %d is %f away\n", i, dist);
+			//Msg("marine %d is %f away\n", i, dist);
 			return pMarine;
 		}
 	}
@@ -1698,6 +1728,7 @@ void CASW_Marine::StartTask(const Task_t *pTask)
 			if ( m_hAreaToUse.Get() && m_hAreaToUse->IsUsable( this ) )
 			{
 				m_hAreaToUse->ActivateUseIcon( this, ASW_USE_RELEASE_QUICK );
+				m_hAreaToUse = NULL;
 			}
 			TaskComplete();
 			break;
@@ -2496,6 +2527,9 @@ void CASW_Marine::RunTask( const Task_t *pTask )
 void CASW_Marine::CheckForAIWeaponSwitch()
 {
 	if ( !GetEnemy() )
+		return;
+
+	if (m_hHealTarget.Get())
 		return;
 
 	CASW_Weapon *pWeapon = GetActiveASWWeapon();

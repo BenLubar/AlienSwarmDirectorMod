@@ -7,6 +7,7 @@
 #include "particle_parse.h"
 #include "asw_util_shared.h"
 #include "cvisibilitymonitor.h"
+#include "ai_senses.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -44,6 +45,8 @@ void CASW_Barrel_Explosive::Spawn()
 	InitHealth();
 
 	VisibilityMonitor_AddEntity( this, asw_visrange_generic.GetFloat() * 0.9f, NULL, NULL );
+
+	g_AI_SensedObjectsManager.AddEntity( this );
 }
 
 void CASW_Barrel_Explosive::Precache()

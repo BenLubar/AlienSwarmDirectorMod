@@ -55,6 +55,9 @@ public:
 	// Classification
 	virtual Class_T		Classify( void ) { return (Class_T) CLASS_ASW_EXPLOSIVE_BARREL; }
 
+	// Allow marines to sense us.
+	virtual bool IsAlive() { return GetHealth() > 0; }
+
 protected:
 	// from CASW_Exploding_Prop:
 	virtual void ExplodeNow( const CTakeDamageInfo &info );
