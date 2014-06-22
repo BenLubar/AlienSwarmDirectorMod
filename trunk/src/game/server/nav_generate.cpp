@@ -591,24 +591,22 @@ private:
 };
 
 //--------------------------------------------------------------------------------------------------------------
-void CNavMesh::MarkPlayerClipAreas( void )
+void CNavMesh::MarkClipNodes( void )
 {
-	FOR_EACH_VEC( TheNavAreas, it )
+	for (CNavNode *node = CNavNode::GetFirst(); node; node = node->GetNext())
 	{
-		CNavArea *area = TheNavAreas[it];
-
 		trace_t tr_nomarines, tr_noaliens;
-		Vector start = area->GetCenter() + Vector(0.0f, 0.0f, 16.0f );
-		Vector end = area->GetCenter() + Vector(0.0f, 0.0f, 32.0f );
+		Vector start = *node->GetPosition() + Vector(0.0f, 0.0f, 16.0f );
+		Vector end = *node->GetPosition() + Vector(0.0f, 0.0f, 32.0f );
 
 		UTIL_TraceHull(start, end, Vector(0, 0, 0), Vector(GenerationStepSize, GenerationStepSize, GenerationStepSize), CONTENTS_PLAYERCLIP, NULL, &tr_nomarines);
 		UTIL_TraceHull(start, end, Vector(0, 0, 0), Vector(GenerationStepSize, GenerationStepSize, GenerationStepSize), CONTENTS_MONSTERCLIP, NULL, &tr_noaliens);
 
 		if (tr_nomarines.fraction < 1.0)
-			area->SetAttributes(area->GetAttributes() | NAV_MESH_ALIENS);
+			node->SetAttributes(node->GetAttributes() | NAV_MESH_ALIENS);
 
 		if (tr_noaliens.fraction < 1.0)
-			area->SetAttributes(area->GetAttributes() | NAV_MESH_MARINES);
+			node->SetAttributes(node->GetAttributes() | NAV_MESH_MARINES);
 	}
 }
 
@@ -3258,12 +3256,11 @@ int CNavMesh::BuildArea( CNavNode *node, int width, int height )
  */
 void CNavMesh::CreateNavAreasFromNodes( void )
 {
-	// haven't yet seen a map use larger than 30...
-	//int tryWidth = nav_area_max_size.GetInt();
-	//int tryHeight = tryWidth;
+	MarkClipNodes();
 
-	// BenLubar: We need to prevent areas from being merged in MarkPlayerClipAreas, so we can't merge areas before then.
-	int tryWidth = 1, tryHeight = 1;
+	// haven't yet seen a map use larger than 30...
+	int tryWidth = nav_area_max_size.GetInt();
+	int tryHeight = tryWidth;
 	int uncoveredNodes = CNavNode::GetListLength();
 
 	while( uncoveredNodes > 0 )
@@ -3335,7 +3332,6 @@ void CNavMesh::CreateNavAreasFromNodes( void )
 
 	
 	ConnectGeneratedAreas();
-	MarkPlayerClipAreas();
 	MarkJumpAreas();	// mark jump areas before we merge generated areas, so we don't merge jump and non-jump areas
 	MergeGeneratedAreas();
 	SplitAreasUnderOverhangs();

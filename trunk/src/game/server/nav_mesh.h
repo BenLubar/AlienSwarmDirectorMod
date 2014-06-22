@@ -838,7 +838,7 @@ private:
 	int BuildArea( CNavNode *node, int width, int height );		// create a CNavArea of size (width, height) starting fom node at upper left corner
 	bool CheckObstacles( CNavNode *node, int width, int height, int x, int y );
 
-	void MarkPlayerClipAreas( void );
+	void MarkClipNodes( void );
 	void MarkJumpAreas( void );
 	void StichAndRemoveJumpAreas( void );
 	void RemoveJumpAreas( void );	
