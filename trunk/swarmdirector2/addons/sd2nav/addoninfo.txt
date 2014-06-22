@@ -1,0 +1,10 @@
+AddonInfo {
+     addonSteamAppID         630
+     addontitle              "Swarm Director 2 - Navigation Meshes"
+     addonversion            1.0
+     addontagline            "Contains optimized navmeshes for several campaigns."
+     addonauthor             "Ben Lubar"
+     addonSteamGroupName     "Swarm-Director-2"
+     addonauthorSteamID      "nightgunner5"
+     addonDescription        "Contains optimized navmeshes for several campaigns."
+}

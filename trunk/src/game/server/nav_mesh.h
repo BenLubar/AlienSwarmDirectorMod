@@ -996,7 +996,8 @@ inline int CNavMesh::WorldToGridY( float wy ) const
 //--------------------------------------------------------------------------------------------------------------
 inline unsigned int CNavMesh::GetGenerationTraceMask( void ) const
 {
-	return MASK_SOLID_BRUSHONLY;
+	extern ConVar nav_solid_props;
+	return nav_solid_props.GetBool() ? MASK_SOLID : MASK_SOLID_BRUSHONLY;
 }
 
 
