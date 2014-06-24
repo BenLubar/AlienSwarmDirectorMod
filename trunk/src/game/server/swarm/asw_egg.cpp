@@ -16,6 +16,8 @@
 #include "asw_game_resource.h"
 #include "asw_player.h"
 #include "asw_achievements.h"
+#include "ai_senses.h"
+#include "cvisibilitymonitor.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -120,7 +122,6 @@ void CASW_Egg::Spawn( void )
 	SetPlaybackRate( RandomFloat( 0.95, 1.05 ) ); // Slightly randomize the playback rate so they don't all match
 	m_bStoredEggSize = false;
 
-	ChangeFaction( FACTION_ALIENS );
 	ChangeTeam( TEAM_ALIENS );
 
 	BaseClass::Spawn();
@@ -164,6 +165,10 @@ void CASW_Egg::Spawn( void )
 	{
 		ASWGameResource()->m_iStartingEggsInMap++;
 	}
+
+	VisibilityMonitor_AddEntity(this, asw_visrange_generic.GetFloat() * 0.9f, NULL, NULL);
+
+	g_AI_SensedObjectsManager.AddEntity(this);
 }
 
 bool CASW_Egg::CreateVPhysics()
@@ -285,7 +290,7 @@ void CASW_Egg::AnimThink( void )
 			{
 				Open(pMarine);
 			}
-			else if ( marine_distance <= ASW_EGG_BURST_DISTANCE && RandomFloat() < 0.1f )
+			else if ( marine_distance <= flOpenDist && RandomFloat() < 0.1f )
 			{
 				Open(pMarine);
 			}

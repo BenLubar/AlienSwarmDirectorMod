@@ -6,10 +6,10 @@
 
 class CASW_Parasite;
 
-class CASW_Egg : public CBaseCombatCharacter
+class CASW_Egg : public CBaseFlex
 {
 public:
-	DECLARE_CLASS( CASW_Egg, CBaseCombatCharacter );
+	DECLARE_CLASS( CASW_Egg, CBaseFlex );
 	DECLARE_SERVERCLASS();
 	DECLARE_DATADESC();
 
@@ -56,6 +56,9 @@ public:
 	virtual void Ignite( float flFlameLifetime, bool bNPCOnly = true, float flSize = 0.0f, bool bCalledByLevelDesigner = false );
 	virtual void TraceAttack( const CTakeDamageInfo &info, const Vector &vecDir, trace_t *ptr );
 	virtual void Bleed( const CTakeDamageInfo &info, const Vector &vecPos, const Vector &vecDir, trace_t *ptr );
+
+	// Allow marines to sense us.
+	virtual bool IsAlive() { return GetHealth() > 0; }
 	
 	EHANDLE m_hBurner;
 	EHANDLE m_hBurnerWeapon;

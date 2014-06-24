@@ -7,10 +7,10 @@
 
 class CNewParticleEffect;
 
-class C_ASW_Egg : public C_BaseCombatCharacter, public IASW_Client_Aim_Target
+class C_ASW_Egg : public C_BaseFlex, public IASW_Client_Aim_Target
 {
 public:
-	DECLARE_CLASS( C_ASW_Egg, C_BaseCombatCharacter );
+	DECLARE_CLASS( C_ASW_Egg, C_BaseFlex );
 	DECLARE_CLIENTCLASS();
 
 					C_ASW_Egg();

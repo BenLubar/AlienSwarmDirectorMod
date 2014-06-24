@@ -1,5 +1,6 @@
 #include "cbase.h"
 #include "asw_marker.h"
+#include "asw_objective.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -79,4 +80,11 @@ void CASW_Marker::InputEnable( inputdata_t &inputdata )
 void CASW_Marker::InputDisable( inputdata_t &inputdata )
 {
 	m_bEnabled = false;
+}
+
+CASW_Objective *CASW_Marker::GetObjective()
+{
+	CASW_Objective *pObj = dynamic_cast<CASW_Objective *>(gEntList.FindEntityByName(NULL, m_ObjectiveName.Get()));
+	Assert(pObj);
+	return pObj;
 }

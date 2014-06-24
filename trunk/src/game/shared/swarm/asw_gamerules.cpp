@@ -2949,10 +2949,13 @@ void CAlienSwarm::InitDefaultAIRelationships()
 
 	CAI_BaseNPC::SetDefaultFactionRelationship(FACTION_ALIENS, FACTION_ALIENS, D_LIKE, 0 );
 	CAI_BaseNPC::SetDefaultFactionRelationship(FACTION_ALIENS, FACTION_MARINES, D_HATE, 0 );
-	CAI_BaseNPC::SetDefaultFactionRelationship(FACTION_ALIENS, FACTION_BAIT, D_HATE, 999 );
+	CAI_BaseNPC::SetDefaultFactionRelationship(FACTION_ALIENS, FACTION_BAIT, D_HATE, 999);
 
 	// make marines want to blow stuff up
 	CBaseCombatCharacter::SetDefaultRelationship((Class_T) CLASS_ASW_MARINE, (Class_T) CLASS_ASW_EXPLOSIVE_BARREL, D_HATE, 0);
+
+	// and kill eggs. eggs are nasty.
+	CBaseCombatCharacter::SetDefaultRelationship((Class_T) CLASS_ASW_MARINE, (Class_T) CLASS_ASW_EGG, D_HATE, 10);
 
 	/*
 	int iNumClasses = GameRules() ? GameRules()->NumEntityClasses() : LAST_SHARED_ENTITY_CLASS;

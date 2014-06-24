@@ -1024,7 +1024,7 @@ int CASW_Marine::OnTakeDamage_Alive( const CTakeDamageInfo &info )
 	}
 
 	// AI marines take much less damage from explosive barrels since they're too dumb to not get near them
-	if ( !IsInhabited() && info.GetAttacker() && info.GetAttacker()->Classify() == CLASS_ASW_EXPLOSIVE_BARREL )
+	if ( !IsInhabited() && info.GetAttacker() && info.GetAttacker()->Classify() == CLASS_ASW_EXPLOSIVE_BARREL && !asw_marine_test_new_ai.GetBool() )
 	{
 		newInfo.ScaleDamage( 0.1f );
 		if ( asw_debug_marine_damage.GetBool() )

@@ -68,7 +68,13 @@
 #include "asw_alien_goo_shared.h"
 #include "asw_prop_physics.h"
 #include "asw_weapon_heal_gun_shared.h"
+#include "asw_marker.h"
 #include "asw_spawn_manager.h"
+#include "asw_objective.h"
+#include "asw_objective_kill_aliens.h"
+#include "asw_objective_kill_eggs.h"
+#include "asw_objective_kill_goo.h"
+#include "asw_objective_kill_queen.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -95,6 +101,8 @@ ConVar asw_marine_test_new_ai("asw_marine_test_new_ai", "0", FCVAR_CHEAT, "enabl
 extern ConVar ai_lead_time;
 
 #define ASW_MARINE_GOO_SCAN_TIME 0.5f
+
+#define AUTO_HACK_DIST 768.0f
 
 bool CASW_Marine::CreateBehaviors()
 {
@@ -256,7 +264,17 @@ int CASW_Marine::RangeAttack1Conditions ( float flDot, float flDist )
 
 // ========== ASW Schedule Stuff =========
 int CASW_Marine::SelectSchedule()
-{	
+{
+	if (GetEnemy() && GetEnemy()->Classify() == CLASS_ASW_PARASITE)
+	{
+		CASW_Parasite *pParasite = assert_cast<CASW_Parasite *>(GetEnemy());
+		if (pParasite->GetEgg() && pParasite->GetEgg()->m_bHatched)
+		{
+			// switch our enemy to the egg if the parasite hasn't hatched yet.
+			SetEnemy(pParasite->GetEgg());
+		}
+	}
+
 	if ( (HasCondition(COND_ENEMY_DEAD) || HasCondition(COND_ENEMY_OCCLUDED) || HasCondition(COND_WEAPON_SIGHT_OCCLUDED))
 		&& m_fOverkillShootTime > gpGlobals->curtime)
 	{
@@ -395,13 +413,121 @@ int CASW_Marine::SelectSchedule()
 				break;
 			}
 		}
-		if (ASWSpawnManager()->m_EscapeTriggers.Count() > 0)
+		for (int i = 0; i < ASW_MAX_OBJECTIVES; i++)
 		{
-			// path toward the exit
-			Vector vecEscape = ASWSpawnManager()->m_EscapeTriggers.Head()->WorldSpaceCenter();
-			SetASWOrders(ASW_ORDER_MOVE_TO, m_fHoldingYaw, &vecEscape);
-			return SCHED_ASW_MOVE_TO_ORDER_POS;
+			CASW_Objective *pObj = ASWGameResource()->GetObjective(i);
+			if (pObj && pObj->GetObjectiveProgress() < 1.0f)
+			{
+				float flMinDist = Square(MAX_TRACE_LENGTH);
+				Vector vecBest;
+				CASW_Marker *pMarker = NULL;
+				bool bInMarker = false;
+
+				while ((pMarker = dynamic_cast<CASW_Marker *>(gEntList.FindEntityByClassname(pMarker, "asw_marker"))) != NULL)
+				{
+					if (pMarker->GetObjective() == pObj && !pMarker->IsObjectiveComplete() && pMarker->IsMarkerEnabled())
+					{
+						Vector vecMarker = pMarker->GetAbsOrigin();
+						vecMarker.x += RandomInt(-pMarker->GetMapWidth() / 2, pMarker->GetMapWidth() / 2);
+						vecMarker.y += RandomInt(-pMarker->GetMapHeight() / 2, pMarker->GetMapHeight() / 2);
+
+						float flDist = vecMarker.DistToSqr(GetAbsOrigin());
+						if (flDist < flMinDist)
+						{
+							flMinDist = flDist;
+							vecBest = vecMarker;
+
+							bInMarker = fabs(pMarker->GetAbsOrigin().x - GetAbsOrigin().x) <= (pMarker->GetMapWidth() / 2.0f) &&
+										fabs(pMarker->GetAbsOrigin().y - GetAbsOrigin().y) <= (pMarker->GetMapHeight() / 2.0f);
+						}
+					}
+				}
+				if (bInMarker)
+				{
+					if (!m_hAreaToUse.Get() && GetSquadLeader() && !GetSquadLeader()->IsInhabited())
+					{
+						CASW_Use_Area *pClosestArea = NULL;
+						float flClosestDist = FLT_MAX;
+
+						// check for a button to push nearby
+						for (int i = 0; i < IASW_Use_Area_List::AutoList().Count(); i++)
+						{
+							CASW_Use_Area *pArea = static_cast<CASW_Use_Area*>(IASW_Use_Area_List::AutoList()[i]);
+							if (pArea->Classify() == CLASS_ASW_BUTTON_PANEL)
+							{
+								CASW_Button_Area *pButton = assert_cast<CASW_Button_Area*>(pArea);
+								if (pButton->IsLocked() || !pButton->HasPower())
+									continue;
+
+								float flDist = GetAbsOrigin().DistTo(pArea->WorldSpaceCenter());
+								if (flDist < flClosestDist && flDist < AUTO_HACK_DIST)
+								{
+									flClosestDist = flDist;
+									pClosestArea = pArea;
+								}
+							}
+						}
+
+						m_hAreaToUse = pClosestArea;
+
+						int iHackSchedule = SelectHackingSchedule();
+						if (iHackSchedule != -1)
+							return iHackSchedule;
+					}
+					if (dynamic_cast<CASW_Objective_Kill_Aliens *>(pObj))
+					{
+						ASW_Alien_Class_Entry *pEntry = ASWSpawnManager()->GetAlienClass(dynamic_cast<CASW_Objective_Kill_Aliens *>(pObj)->m_AlienClassNum);
+						Assert(pEntry);
+						if (pEntry)
+						{
+							CBaseEntity *pEnt = gEntList.FindEntityByClassnameNearestFast(pEntry->m_iszAlienClass, GetAbsOrigin(), 0);
+							Assert(pEnt);
+							if (pEnt)
+							{
+								vecBest = pEnt->GetAbsOrigin();
+							}
+						}
+					}
+					else if (dynamic_cast<CASW_Objective_Kill_Eggs *>(pObj))
+					{
+						CBaseEntity *pEnt = gEntList.FindEntityByClassnameNearest("asw_egg", GetAbsOrigin(), 0);
+						Assert(pEnt);
+						if (pEnt)
+						{
+							vecBest = pEnt->GetAbsOrigin();
+						}
+					}
+					else if (dynamic_cast<CASW_Objective_Kill_Goo *>(pObj))
+					{
+						CBaseEntity *pEnt = gEntList.FindEntityByClassnameNearest("asw_alien_goo", GetAbsOrigin(), 0);
+						Assert(pEnt);
+						if (pEnt)
+						{
+							vecBest = pEnt->GetAbsOrigin();
+						}
+					}
+					else if (dynamic_cast<CASW_Objective_Kill_Queen *>(pObj))
+					{
+						CBaseEntity *pEnt = gEntList.FindEntityByClassnameNearest("asw_queen", GetAbsOrigin(), 0);
+						Assert(pEnt);
+						if (pEnt)
+						{
+							vecBest = pEnt->GetAbsOrigin();
+						}
+					}
+					else
+					{
+						AssertMsg(false, "not prepared for this objective type");
+					}
+				}
+				if (flMinDist != Square(MAX_TRACE_LENGTH))
+				{
+					SetASWOrders(ASW_ORDER_MOVE_TO, m_fHoldingYaw, &vecBest);
+					return SCHED_ASW_MOVE_TO_ORDER_POS;
+				}
+			}
 		}
+		DevWarning("%s: Could not find an incomplete objective with a marker.\n", GetDebugName());
 	}
 
 	//Msg("Marine's select schedule returning SCHED_ASW_HOLD_POSITION\n");
@@ -420,8 +546,6 @@ int CASW_Marine::TranslateSchedule( int scheduleType )
 
 	return result;
 }
-
-#define AUTO_HACK_DIST 768.0f
 
 //-----------------------------------------------------------------------------
 void CASW_Marine::TaskFail( AI_TaskFailureCode_t code )

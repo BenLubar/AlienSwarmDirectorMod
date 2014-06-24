@@ -7,6 +7,8 @@
 #include "baseentity.h"
 
 
+class CASW_Objective;
+
 // This class is used for marking world positions of objectives
 
 
@@ -23,7 +25,12 @@ public:
 
 	virtual void SetComplete( bool bComplete );
 
+	virtual CASW_Objective *GetObjective();
 	virtual bool IsObjectiveComplete() { return m_bComplete; }
+	virtual bool IsMarkerEnabled() { return m_bEnabled; }
+
+	virtual int GetMapWidth() { return m_nMapWidth; }
+	virtual int GetMapHeight() { return m_nMapHeight; }
 
 	void InputSetComplete( inputdata_t &inputdata );
 	void InputEnable( inputdata_t &inputdata );

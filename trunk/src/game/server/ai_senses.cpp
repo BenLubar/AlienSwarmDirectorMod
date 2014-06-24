@@ -684,6 +684,9 @@ void CAI_SensedObjectsManager::OnEntitySpawned( CBaseEntity *pEntity )
 {
 	if ( ( pEntity->GetFlags() & FL_OBJECT ) && !pEntity->IsPlayer() && !pEntity->IsNPC() )
 	{
+		if (m_SensedObjects.Find(pEntity) != m_SensedObjects.InvalidIndex())
+			return;
+
 		m_SensedObjects.AddToTail( pEntity );
 	}
 }
