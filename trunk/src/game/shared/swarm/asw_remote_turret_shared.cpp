@@ -41,7 +41,7 @@ BEGIN_NETWORK_TABLE( CASW_Remote_Turret, DT_ASW_Remote_Turret )
 	RecvPropQAngles	(RECVINFO(m_angDefault)),
 	RecvPropQAngles	(RECVINFO(m_angViewLimit)),
 #else
-	SendPropExclude( "DT_BaseEntity", "m_angRotation" ),
+	//SendPropExclude( "DT_BaseEntity", "m_angRotation" ),
 	SendPropEHandle( SENDINFO( m_hUser ) ),
 	SendPropAngle( SENDINFO_VECTORELEM(m_angEyeAngles, 0), 11, SPROP_CHANGES_OFTEN ),
 	SendPropAngle( SENDINFO_VECTORELEM(m_angEyeAngles, 1), 11, SPROP_CHANGES_OFTEN ),
@@ -80,7 +80,7 @@ CASW_Remote_Turret::CASW_Remote_Turret()
 	m_pLoopingSound = NULL;
 	m_bLastPlaySound = false;
 #else
-	m_hUser = false;
+	m_hUser = NULL;
 #endif	
 }
 
@@ -105,10 +105,10 @@ void CASW_Remote_Turret::Spawn()
 	m_iMaxHealth = m_iHealth;
 
 	m_angDefault = GetAbsAngles();
-	if (m_angViewLimit.Get()[0] == 0)
-		m_angViewLimit.GetForModify()[0] = 60;
-	if (m_angViewLimit.Get()[1] == 0)
-		m_angViewLimit.GetForModify()[1] = 60;
+	if (m_angViewLimit.Get()[PITCH] <= 0)
+		m_angViewLimit.GetForModify()[PITCH] = 60;
+	if (m_angViewLimit.Get()[YAW] <= 0)
+		m_angViewLimit.GetForModify()[YAW] = 60;
 }
 
 void CASW_Remote_Turret::Precache()
@@ -140,7 +140,7 @@ void CASW_Remote_Turret::SmoothTurretAngle(QAngle &ang)
 	ang[YAW] = ASW_ClampYaw( asw_turret_turn_rate.GetFloat(), m_angEyeAngles[YAW], ang[YAW], dt );
 	ang[PITCH] = ASW_ClampYaw( asw_turret_turn_rate.GetFloat()*0.8f, m_angEyeAngles[PITCH], ang[PITCH], dt );	
 
-	m_angEyeAngles = ang;//GetMarine()->EyeAngles()[YAW];
+	m_angEyeAngles = ang;
 }
 
 void CASW_Remote_Turret::ProcessMovement( CBasePlayer *pPlayer, CMoveData *pMoveData )
@@ -185,7 +185,7 @@ const QAngle& CASW_Remote_Turret::EyeAngles()
 	return m_angEyeAngles;
 }
 
-const QAngle& CASW_Remote_Turret::GetRenderAngles()
+/*const QAngle& CASW_Remote_Turret::GetRenderAngles()
 {
 	bool bLocallyControlled = false;
 	if (m_hUser.Get())
@@ -204,7 +204,7 @@ const QAngle& CASW_Remote_Turret::GetRenderAngles()
 	if (m_bUpsideDown)
 		ang[ROLL] = 180;
 	return ang;
-}
+}*/
 
 int CASW_Remote_Turret::GetMuzzleAttachment( void )
 {

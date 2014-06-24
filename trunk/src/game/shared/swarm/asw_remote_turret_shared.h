@@ -50,7 +50,7 @@ public:
 #else	
 	virtual void ClientThink();
 	QAngle m_angEyeAngles;
-	const QAngle& GetRenderAngles();
+	//const QAngle& GetRenderAngles();
 	float GetMuzzleFlashScale();
 	int GetMuzzleAttachment();
 	void ProcessMuzzleFlashEvent();
