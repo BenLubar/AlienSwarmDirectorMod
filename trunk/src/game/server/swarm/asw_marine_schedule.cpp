@@ -418,8 +418,19 @@ int CASW_Marine::SelectSchedule()
 			CASW_Objective *pObj = ASWGameResource()->GetObjective(i);
 			if (pObj && pObj->GetObjectiveProgress() < 1.0f)
 			{
-				float flMinDist = Square(MAX_TRACE_LENGTH);
+				float flMinDist = -1;
 				Vector vecBest;
+				vecBest.Init();
+
+				Vector2D oldStyleMarker = pObj->GetOldStyleMarkerLocation();
+				if (oldStyleMarker != vec2_invalid)
+				{
+					vecBest.x = oldStyleMarker.x;
+					vecBest.y = oldStyleMarker.y;
+					// TODO: is there a better value for z than 0 here?
+					flMinDist = vecBest.DistToSqr(GetAbsOrigin());
+				}
+
 				CASW_Marker *pMarker = NULL;
 				bool bInMarker = false;
 
@@ -432,7 +443,7 @@ int CASW_Marine::SelectSchedule()
 						vecMarker.y += RandomInt(-pMarker->GetMapHeight() / 2, pMarker->GetMapHeight() / 2);
 
 						float flDist = vecMarker.DistToSqr(GetAbsOrigin());
-						if (flDist < flMinDist)
+						if (flMinDist == -1 || flDist < flMinDist)
 						{
 							flMinDist = flDist;
 							vecBest = vecMarker;
@@ -520,14 +531,15 @@ int CASW_Marine::SelectSchedule()
 						AssertMsg(false, "not prepared for this objective type");
 					}
 				}
-				if (flMinDist != Square(MAX_TRACE_LENGTH))
+				if (flMinDist != -1)
 				{
 					SetASWOrders(ASW_ORDER_MOVE_TO, m_fHoldingYaw, &vecBest);
 					return SCHED_ASW_MOVE_TO_ORDER_POS;
 				}
 			}
 		}
-		DevWarning("%s: Could not find an incomplete objective with a marker.\n", GetDebugName());
+		if (ASWGameRules() && ASWGameRules()->GetGameState() == ASW_GS_INGAME)
+			DevWarning("%s: Could not find an incomplete objective with a marker.\n", GetDebugName());
 	}
 
 	//Msg("Marine's select schedule returning SCHED_ASW_HOLD_POSITION\n");

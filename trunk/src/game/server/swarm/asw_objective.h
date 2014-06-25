@@ -47,6 +47,7 @@ public:
 	virtual bool IsObjectiveHidden() { return !m_bVisible; }
 	virtual float GetObjectiveProgress() { return IsObjectiveComplete() ? 1.0f : 0.0f; }
 
+	virtual Vector2D GetOldStyleMarkerLocation();
 
 	CNetworkString( m_ObjectiveTitle, 255 );
 	CNetworkString( m_ObjectiveDescription1, 255 );
@@ -71,6 +72,10 @@ public:
 	
 	COutputEvent m_OnObjectiveComplete;
 	void InputSetVisible( inputdata_t &inputdata );
+
+private:
+	int FindNextToken(const char *);
+	char szTokenBuffer[256];
 };
 
 #endif /* ASW_OBJECTIVEINFO_H */

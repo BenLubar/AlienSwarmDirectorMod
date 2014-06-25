@@ -225,3 +225,68 @@ void CASW_Objective::InputSetVisible( inputdata_t &inputdata )
 	WRITE_FLOAT( 5.0f );
 	MessageEnd();
 }
+
+Vector2D CASW_Objective::GetOldStyleMarkerLocation()
+{
+	// don't load the file if we aren't going to look at it.
+	if (m_MapMarkings.Get()[0] == '\0')
+		return vec2_invalid;
+
+	KeyValues *pMission = new KeyValues(STRING(gpGlobals->mapname));
+
+	char tempfile[MAX_PATH];
+	Q_snprintf(tempfile, sizeof(tempfile), "resource/overviews/%s.txt", STRING(gpGlobals->mapname));
+	if (!pMission->LoadFromFile(filesystem, tempfile, "GAME"))
+		return vec2_invalid;
+
+	int offset_x = pMission->GetInt("pos_x");
+	int offset_y = pMission->GetInt("pos_y");
+	float scale = pMission->GetFloat("scale", 1.0f);
+
+	// the Alien Swarm devs put this ugly hack in, so I guess now I have to as well.
+	offset_x += 128 * scale;
+
+	int pos = FindNextToken(m_MapMarkings.Get());
+	if (!Q_stricmp(szTokenBuffer, "BRACKETS"))
+	{
+		Vector2D min, max;
+		pos += FindNextToken(m_MapMarkings.Get() + pos);
+		min.x = atoi(szTokenBuffer);
+		pos += FindNextToken(m_MapMarkings.Get() + pos);
+		min.y = atoi(szTokenBuffer);
+		pos += FindNextToken(m_MapMarkings.Get() + pos);
+		max.x = min.x + atoi(szTokenBuffer);
+		pos += FindNextToken(m_MapMarkings.Get() + pos);
+		max.y = min.y + atoi(szTokenBuffer);
+
+
+		// now we un-offset the coordinates.
+		min.x = (min.x * scale) + offset_x;
+		min.y = (min.y * -scale) + offset_y;
+		max.x = (max.x * scale) + offset_x;
+		max.y = (max.y * -scale) + offset_y;
+
+		return Vector2D(RandomFloat(min.x, max.x), RandomFloat(min.y, max.y));
+	}
+	return vec2_invalid;
+}
+
+// returns the next word from a string (copied from C_ASW_Objective)
+int CASW_Objective::FindNextToken(const char* pText)
+{
+	int iTextLength = V_strlen(pText);
+	for (int i = 0; i < iTextLength; i++)
+	{
+		if (pText[i] == ' ' || pText[i] == '\0')
+		{
+			szTokenBuffer[i] = '\0';
+			//if (pText[i] != '\0')
+			//Msg("FindNextToken: Tokenbuffer = %s (ptext: %s)\n", szTokenBuffer, pText + i+1);
+			return i + 1;
+		}
+		szTokenBuffer[i] = pText[i];
+	}
+	szTokenBuffer[iTextLength] = '\0';
+	//Msg("FindNextToken end of string. Tokenbuffer = %s\n", szTokenBuffer);
+	return iTextLength + 1;
+}

@@ -110,7 +110,7 @@ void C_ASW_Objective::ClientThink( void )
 // returns the next word from a string
 int C_ASW_Objective::FindNextToken(const char* pText)
 {
-	int iTextLength = strlen(pText);
+	int iTextLength = V_strlen(pText);
 	for ( int i = 0; i < iTextLength; i++ )
 	{
 		if ( pText[i]==' ' || pText[i]=='\0' )
