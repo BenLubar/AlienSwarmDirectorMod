@@ -89,6 +89,7 @@ int ACT_MARINE_LAYING_ON_FLOOR;
 
 ConVar asw_marine_aim_error_max("asw_marine_aim_error_max", "20.0f", FCVAR_CHEAT, "Maximum firing error angle for AI marines with base accuracy skill\n");
 ConVar asw_marine_aim_error_min("asw_marine_aim_error_min", "5.0f", FCVAR_CHEAT, "Minimum firing error angle for AI marines with base accuracy skill\n");
+ConVar asw_marine_aim_error_correction("asw_marine_aim_error_correction", "10.0f", FCVAR_CHEAT, "Maximum amount to reduce AI aim error based on target velocity\n", true, 0, false, 0);
 // todo: have this value vary based on marine skill/level/distance
 ConVar asw_marine_aim_error_decay_multiplier("asw_marine_aim_error_decay_multiplier", "0.9f", FCVAR_CHEAT, "Value multiplied per turn to reduce aim error over time\n");
 ConVar asw_blind_follow( "asw_blind_follow", "0", FCVAR_NONE, "Set to 1 to give marines short sight range while following (old school alien swarm style)" );
@@ -2786,13 +2787,28 @@ bool CASW_Marine::SetNewAimError(CBaseEntity *pTarget)
 
 	// find our current yaw to the enemy
 	float currentYaw = UTIL_AngleMod( GetLocalAngles().y );
-	Vector	enemyDir = GetEnemy()->WorldSpaceCenter() - WorldSpaceCenter();
+	Vector	enemyDir = pTarget->WorldSpaceCenter() - WorldSpaceCenter();
 	VectorNormalize( enemyDir );
 	float angleDiff = VecToYaw( enemyDir );
 	angleDiff = UTIL_AngleDiff( angleDiff, currentYaw );
 	
 	//  create some random error amount, within our angle
 	m_fMarineAimError = random->RandomFloat( asw_marine_aim_error_min.GetFloat(), asw_marine_aim_error_max.GetFloat() );
+
+	if ( asw_marine_test_new_ai.GetBool() )
+	{
+		float enemySpeed = pTarget->GetBaseAnimating() ? pTarget->GetBaseAnimating()->m_flGroundSpeed : 0;
+		if (enemySpeed < 1)
+			enemySpeed = 1;
+		float dot = DotProduct(pTarget->Forward(), Forward());
+
+		float adjustment = 1 + (2 - dot) / 2 / enemySpeed * asw_marine_aim_error_correction.GetFloat();
+
+		//DevMsg("%s: enemy facing (%f, %f, %f) facing (%f, %f, %f) enemy speed (%f) dot product (%f) adjustment (%f)\n", GetDebugName(), pTarget->Forward().x, pTarget->Forward().y, pTarget->Forward().z, Forward().x, Forward().y, Forward().z, enemySpeed, dot, adjustment);
+
+		m_fMarineAimError /= adjustment;
+	}
+
 	if ( m_fMarineAimError > fabs( angleDiff ) )
 	{
 		m_fMarineAimError = fabs( angleDiff );
