@@ -423,9 +423,11 @@ int CASW_Marine::SelectSchedule()
 				Vector vecBest;
 				vecBest.Init();
 
+				bool bUsedOldStyleMarker = false;
 				Vector2D oldStyleMarker = pObj->GetOldStyleMarkerLocation();
 				if (oldStyleMarker != vec2_invalid)
 				{
+					bUsedOldStyleMarker = true;
 					vecBest.x = oldStyleMarker.x;
 					vecBest.y = oldStyleMarker.y;
 					// TODO: is there a better value for z than 0 here?
@@ -444,10 +446,11 @@ int CASW_Marine::SelectSchedule()
 						vecMarker.y += RandomInt(-pMarker->GetMapHeight() / 2, pMarker->GetMapHeight() / 2);
 
 						float flDist = vecMarker.DistToSqr(GetAbsOrigin());
-						if (flMinDist == -1 || flDist < flMinDist)
+						if (bUsedOldStyleMarker || flMinDist == -1 || flDist < flMinDist)
 						{
 							flMinDist = flDist;
 							vecBest = vecMarker;
+							bUsedOldStyleMarker = false;
 
 							bInMarker = fabs(pMarker->GetAbsOrigin().x - GetAbsOrigin().x) <= (pMarker->GetMapWidth() / 2.0f) &&
 										fabs(pMarker->GetAbsOrigin().y - GetAbsOrigin().y) <= (pMarker->GetMapHeight() / 2.0f);
@@ -1798,12 +1801,12 @@ int CASW_Marine::SelectFollowSchedule()
 	}
 
 	// check if we're too near another marine
-	CASW_Marine *pCloseMarine = TooCloseToAnotherMarine();
+	/*CASW_Marine *pCloseMarine = TooCloseToAnotherMarine();
 	if (pCloseMarine)
 	{
 		//Msg("marine is too close to %d\n", pCloseMarine->entindex());
 		return SCHED_ASW_FOLLOW_BACK_OFF;
-	}
+	}*/
 
 	if (GetSquadLeader() == NULL || GetSquadLeader() == this)
 	{
