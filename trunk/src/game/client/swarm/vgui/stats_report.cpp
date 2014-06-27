@@ -47,6 +47,11 @@ StatsReport::StatsReport( vgui::Panel *parent, const char *name ) : vgui::Editab
 	m_rgbaStatsReportPlayerColors[ 1 ] = Color( 200, 200, 60, 255 );
 	m_rgbaStatsReportPlayerColors[ 2 ] = Color( 60, 225, 60, 255 );
 	m_rgbaStatsReportPlayerColors[ 3 ] = Color( 30, 90, 225, 255 );
+	m_rgbaStatsReportPlayerColors[ 4 ] = Color( 60, 225, 225, 255 );
+	m_rgbaStatsReportPlayerColors[ 5 ] = Color( 225, 60, 145, 255 );
+	m_rgbaStatsReportPlayerColors[ 6 ] = Color( 145, 30, 225, 255 );
+	m_rgbaStatsReportPlayerColors[ 7 ] = Color( 225, 120, 60, 255 );
+	COMPILE_TIME_ASSERT( ASW_STATS_REPORT_MAX_PLAYERS == 8 );
 }
 
 StatsReport::~StatsReport()
@@ -56,7 +61,7 @@ StatsReport::~StatsReport()
 
 void StatsReport::ApplySchemeSettings(vgui::IScheme *pScheme)
 {
-	LoadControlSettings( "resource/UI/StatsReport.res" );
+	LoadControlSettings( "resource/UI/StatsReport_asdm.res" );
 
 	m_pObjectiveMap->m_pMapImage->SetAlpha( 90 );
 

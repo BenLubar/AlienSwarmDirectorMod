@@ -8,6 +8,7 @@
 #include <vgui/VGUI.h>
 #include <vgui_controls/EditablePanel.h>
 #include "steam/steam_api.h"
+#include "asw_shareddefs.h"
 
 namespace vgui
 {
@@ -21,7 +22,7 @@ class DebriefTextPage;
 class CAvatarImagePanel;
 
 
-#define ASW_STATS_REPORT_MAX_PLAYERS 4
+#define ASW_STATS_REPORT_MAX_PLAYERS ASW_MAX_MARINE_RESOURCES
 #define ASW_STATS_REPORT_CATEGORIES 4
 
 
