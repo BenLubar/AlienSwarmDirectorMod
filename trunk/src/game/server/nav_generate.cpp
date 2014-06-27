@@ -4472,6 +4472,13 @@ bool CNavMesh::SampleStep( void )
 					return true;
 				}
 
+				// Don't generate nodes on top of walls.
+				if ( !V_stricmp( result.surface.name, "TOOLS/TOOLSNOLIGHT" ) )
+				{
+					return true;
+				}
+
+
 				// If we're incrementally generating, don't overlap existing nav areas.
 				Vector testPos( to );
 				bool overlapSE = IsNodeOverlapped( testPos, Vector(  1,  1, HalfHumanHeight ) );
