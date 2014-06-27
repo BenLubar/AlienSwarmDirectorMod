@@ -1826,14 +1826,12 @@ void CBaseModPanel::ApplySchemeSettings(IScheme *pScheme)
 	surface()->GetScreenSize( screenWide, screenTall );
 
 	char filename[MAX_PATH];
-	V_snprintf( filename, sizeof( filename ), "VGUI/swarm/loading/BGFX01" ); // TODO: engine->GetStartupImage( filename, sizeof( filename ), screenWide, screenTall );
+	V_snprintf( filename, sizeof( filename ), "console/SwarmSelectionScreen_widescreen" ); // TODO: engine->GetStartupImage( filename, sizeof( filename ), screenWide, screenTall );
 	m_iBackgroundImageID = surface()->CreateNewTextureID();
 	surface()->DrawSetTextureFile( m_iBackgroundImageID, filename, true, false );
 
 	m_iProductImageID = surface()->CreateNewTextureID();
-	//Mod - Draw custom loading file
-	//surface()->DrawSetTextureFile( m_iProductImageID, "console/startup_loading", true, false );
-	surface()->DrawSetTextureFile( m_iProductImageID, "console/asdm_startup_loading", true, false );
+	surface()->DrawSetTextureFile( m_iProductImageID, "console/startup_loading", true, false );
 
 	// need these to be anchored now, can't come into existence during load
 	PrecacheLoadingTipIcons();
@@ -1862,15 +1860,11 @@ void CBaseModPanel::ApplySchemeSettings(IScheme *pScheme)
 	if ( aspectRatio >= 1.6f )
 	{
 		// use the widescreen version
-		//Mod - Use custom startup screen
-		//Q_snprintf( m_szFadeFilename, sizeof( m_szFadeFilename ), "materials/console/%s_widescreen.vtf", "SwarmSelectionScreen" );
-		Q_snprintf( m_szFadeFilename, sizeof( m_szFadeFilename ), "materials/console/%s_widescreen.vtf", "asdm_selectionscreen" );
+		Q_snprintf( m_szFadeFilename, sizeof( m_szFadeFilename ), "materials/console/%s_widescreen.vtf", "SwarmSelectionScreen" );
 	}
 	else
 	{
-		//Mod - Use custom startup screen
-		//Q_snprintf( m_szFadeFilename, sizeof( m_szFadeFilename ), "materials/console/%s_widescreen.vtf", "SwarmSelectionScreen" );
-		Q_snprintf( m_szFadeFilename, sizeof( m_szFadeFilename ), "materials/console/%s_widescreen.vtf", "asdm_selectionscreen" );
+		Q_snprintf( m_szFadeFilename, sizeof( m_szFadeFilename ), "materials/console/%s.vtf", "SwarmSelectionScreen" );
 	}
 
 	// TODO: GetBackgroundMusic

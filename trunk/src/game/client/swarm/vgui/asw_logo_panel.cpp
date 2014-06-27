@@ -8,10 +8,7 @@
 
 CASW_Logo_Panel::CASW_Logo_Panel(vgui::Panel *parent, const char *name) : vgui::ImagePanel(parent, name)
 {
-	//SetImage( "../console/startup_loading" );
-	////Mod - Draw custom loading file
-	
-	SetImage("../console/asdm_startup_loading");
+	SetImage( "../console/startup_loading" );
 	SetShouldScaleImage(true);
 }
 

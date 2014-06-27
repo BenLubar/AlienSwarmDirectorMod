@@ -719,11 +719,8 @@ void MainMenu::OnCommand( const char *command )
 
 		char const *szGameMode = "campaign";
 		pSettings->SetString( "game/mode", szGameMode );
-		//Mod - Default to Mod Campaign		
-		//pSettings->SetString( "game/campaign", "jacob" );
-		//pSettings->SetString( "game/mission", "asi-jac1-landingbay_01" );
-		pSettings->SetString("game/campaign", "DirectorModCampaign");
-		pSettings->SetString("game/mission", "Mission1");
+		pSettings->SetString( "game/campaign", "jacob" );
+		pSettings->SetString( "game/mission", "asi-jac1-landingbay_01" );
 
 		if ( !CUIGameData::Get()->SignedInToLive() )
 		{
@@ -1048,9 +1045,7 @@ void MainMenu::ApplySchemeSettings( IScheme *pScheme )
 {
 	BaseClass::ApplySchemeSettings( pScheme );
 
-	//Mod - Use custom mainmenu.res file
-	//const char *pSettings = "Resource/UI/BaseModUI/MainMenu.res";
-	const char *pSettings = "Resource/UI/BaseModUI/MainMenu_asdm.res";
+	const char *pSettings = "Resource/UI/BaseModUI/MainMenu.res";
 
 #if !defined( _X360 )
 	if ( !g_pMatchFramework->GetMatchSystem() )

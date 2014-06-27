@@ -176,9 +176,7 @@ void CASW_Background_Movie::Update()
 		if ( nGameState != m_nLastGameState )
 		{
 #ifdef ASW_BINK_MOVIES
-			//Mod - Set a different movie file so we look different from the normal game
-			//SetCurrentMovie( "media/BG_02.bik" );
-			SetCurrentMovie("media/bg_01.bik");
+			SetCurrentMovie( "media/BG_02.bik" );
 #else
 			SetCurrentMovie( "media/test.avi" );
 #endif
