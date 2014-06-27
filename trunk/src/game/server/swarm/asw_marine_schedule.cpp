@@ -459,7 +459,7 @@ int CASW_Marine::SelectSchedule()
 				}
 				if (bInMarker)
 				{
-					if (!m_hAreaToUse.Get() && GetSquadLeader() && !GetSquadLeader()->IsInhabited())
+					if (!m_hAreaToUse.Get() && GetSquadLeader() && !GetSquadLeader()->IsInhabited() && m_flLastUsedButton < gpGlobals->curtime - 15)
 					{
 						CASW_Use_Area *pClosestArea = NULL;
 						float flClosestDist = FLT_MAX;
@@ -485,9 +485,12 @@ int CASW_Marine::SelectSchedule()
 
 						m_hAreaToUse = pClosestArea;
 
-						int iHackSchedule = SelectHackingSchedule();
-						if (iHackSchedule != -1)
-							return iHackSchedule;
+						iHackingSchedule = SelectHackingSchedule();
+						if (iHackingSchedule != -1)
+						{
+							m_flLastUsedButton = gpGlobals->curtime;
+							return iHackingSchedule;
+						}
 					}
 					if (dynamic_cast<CASW_Objective_Kill_Aliens *>(pObj))
 					{
@@ -583,7 +586,7 @@ void CASW_Marine::TaskFail( AI_TaskFailureCode_t code )
 			m_flResetAmmoIgnoreListTime = gpGlobals->curtime + 15.0f;
 		}
 
-		if (asw_marine_test_new_ai.GetBool() && !m_hAreaToUse.Get() && GetSquadLeader() && !GetSquadLeader()->IsInhabited())
+		if (asw_marine_test_new_ai.GetBool() && !m_hAreaToUse.Get() && GetSquadLeader() && !GetSquadLeader()->IsInhabited() && m_flLastUsedButton < gpGlobals->curtime - 15)
 		{
 			CASW_Use_Area *pClosestArea = NULL;
 			float flClosestDist = FLT_MAX;
@@ -607,6 +610,10 @@ void CASW_Marine::TaskFail( AI_TaskFailureCode_t code )
 				}
 			}
 
+			if (pClosestArea)
+			{
+				m_flLastUsedButton = gpGlobals->curtime;
+			}
 			m_hAreaToUse = pClosestArea;
 		}
 		else
@@ -651,7 +658,7 @@ int CASW_Marine::SelectHackingSchedule()
 			if ( pArea->Classify() == CLASS_ASW_BUTTON_PANEL )
 			{
 				CASW_Button_Area *pButton = assert_cast< CASW_Button_Area* >( pArea );
-				if ( !pButton->IsLocked() || !pButton->HasPower() )
+				if ( !pButton->IsLocked() || !pButton->HasPower() || !pButton->m_bUseAreaEnabled.Get() )
 					continue;
 
 				float flDist = GetAbsOrigin().DistTo( pArea->WorldSpaceCenter() );
@@ -1868,6 +1875,11 @@ void CASW_Marine::StartTask(const Task_t *pTask)
 			if ( m_hAreaToUse.Get() && m_hAreaToUse->IsUsable( this ) )
 			{
 				m_hAreaToUse->ActivateUseIcon( this, ASW_USE_RELEASE_QUICK );
+				m_hAreaToUse = NULL;
+			}
+			else if ( m_hAreaToUse.Get() && !m_hAreaToUse->m_bUseAreaEnabled.Get() )
+			{
+				// if the use area was disabled while we tried to access it, someone else used it and we don't have to.
 				m_hAreaToUse = NULL;
 			}
 			TaskComplete();

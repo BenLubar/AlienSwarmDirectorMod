@@ -262,6 +262,8 @@ public:
 
 	CBaseTrigger* IsInEscapeVolume();		// returns pointer to current escape volume, if marine is in the exit
 
+	float m_flLastUsedButton; // timer for pushing buttons
+
 	// Custom conditions, schedules and tasks
 	enum
 	{

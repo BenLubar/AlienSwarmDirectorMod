@@ -548,6 +548,8 @@ CASW_Marine::CASW_Marine() : m_RecentMeleeHits( 16, 16 )
 
 	m_nFastReloadsInARow = 0;
 
+	m_flLastUsedButton = 0;
+
 	for ( int i = 0; i < ASW_MARINE_HISTORY_POSITIONS; i++ )
 	{
 		m_PositionHistory[ i ].vecPosition = vec3_origin;
