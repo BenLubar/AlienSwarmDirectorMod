@@ -2327,6 +2327,9 @@
     <ClCompile Include="mod_player_performance_calculators.cpp">
       <Filter>Source Files\Mod</Filter>
     </ClCompile>
+    <ClCompile Include="swarm\asw_campaign_fixes.cpp">
+      <Filter>Source Files\Swarm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\shared\achievement_saverestore.h">

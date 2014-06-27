@@ -757,6 +757,7 @@ exit 1
     <ClCompile Include="sun.cpp" />
     <ClCompile Include="sunlightshadowcontrol.cpp" />
     <ClCompile Include="..\shared\takedamageinfo.cpp" />
+    <ClCompile Include="swarm\asw_campaign_fixes.cpp" />
     <ClCompile Include="tanktrain.cpp" />
     <ClCompile Include="team.cpp" />
     <ClCompile Include="..\shared\teamplay_gamerules.cpp" />

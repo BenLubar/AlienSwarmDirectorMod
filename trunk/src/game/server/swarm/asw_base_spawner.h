@@ -59,6 +59,7 @@ protected:
 	// skill level
 	int m_iMinSkillLevel;
 	int m_iMaxSkillLevel;
+	friend class CASW_Campaign_Fixes;
 
 	// give the alien this order when it spawns	
 	AlienOrder_t m_AlienOrders;
