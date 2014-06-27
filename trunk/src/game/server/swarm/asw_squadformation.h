@@ -8,30 +8,29 @@
 #include "asw_shareddefs.h"
 */
 
+class CASW_Marine;
 class CAI_Hint;
 class HintData_t;
 
-/*!  Aggregates state about all marines assigned to a squad,
-	 eg, AI marines following a leader in formation.
+extern bool g_bLevelHasFollowHints;
 
- */
-class CASW_SquadFormation : protected CAutoGameSystem
+// Aggregates state about all marines assigned to a squad,
+// eg, AI marines following a leader in formation.
+class CASW_SquadFormation : public CServerOnlyPointEntity
 {
-	typedef CAutoGameSystem BaseClass;
+	DECLARE_CLASS(CASW_SquadFormation, CServerOnlyPointEntity);
 
 public:
 	/// local compiler constants
 	enum 
 	{
-		MAX_SQUAD_SIZE = ASW_MAX_MARINE_RESOURCES - 1, ///< NOT including the leader.
+		MAX_SQUAD_SIZE = ASW_MAX_MARINE_RESOURCES - 1, // NOT including the leader.
 		INVALID_SQUADDIE,
 	};
 
-	virtual void LevelInitPostEntity();
-
-	inline CHandle<CASW_Marine> Leader() const { return m_hLeader; }
-	inline void Leader(CHandle<CASW_Marine> val) { m_hLeader = val; }
-	inline int Count() const ;  ///< number of followers 
+	inline CASW_Marine *Leader() const { return m_hLeader; }
+	inline void Leader(CASW_Marine *val) { m_hLeader = val; }
+	inline int Count() const ;  // number of followers 
 
 
 	inline CASW_Marine *Squaddie( unsigned int slotnum ) const ;
@@ -51,20 +50,19 @@ public:
 
 	void ChangeLeader( CASW_Marine *pNewLeader, bool bUpdateLeaderPos = false );
 
-	/// reorganize the follower slots so that each follower has the least distance to move
+	// reorganize the follower slots so that each follower has the least distance to move
 	void RecomputeFollowerOrder( const Vector &vProjectedLeaderPos, QAngle qLeaderAim ) ; 
 	
-	/// recompute the array of positions that squaddies should head towards.
+	// recompute the array of positions that squaddies should head towards.
 	void UpdateFollowPositions();
 
-	/// should the squaddie positions be recomputed -- assumed this function is called from a marine's Think
+	// should the squaddie positions be recomputed -- assumed this function is called from a marine's Think
 	bool ShouldUpdateFollowPositions() const ;
 
-	/// Current notion of "forward", is updated/cached in calls to GetLdrAnglMatrix
+	// Current notion of "forward", is updated/cached in calls to GetLdrAnglMatrix
 	inline const Vector &Forward() const;
 
-	// disallow inadvertent construction
-	explicit CASW_SquadFormation() : m_flLastSquadUpdateTime(0), CAutoGameSystem( "asw_squadformation" ) {Reset();};
+	CASW_SquadFormation() : m_flLastSquadUpdateTime(0) {Reset();};
 	bool SanityCheck() const ;
 
 	void FindFollowHintNodes();
@@ -119,21 +117,7 @@ protected:
 
 private:
 	Vector GetLdrAnglMatrix( const Vector &origin, const QAngle &ang, matrix3x4_t *pout );
-
-#pragma region From IGameSystem
-protected:
-	virtual void LevelInitPreEntity();
-#pragma endregion 
-
-private:
-	bool m_bLevelHasFollowHints;
-
-	// thou shalt not copy
-	CASW_SquadFormation( const CASW_SquadFormation & );
 };
-
-extern CASW_SquadFormation g_ASWSquadFormation;
-
 
 inline CASW_Marine *CASW_SquadFormation::Squaddie( unsigned int slotnum ) const 
 {

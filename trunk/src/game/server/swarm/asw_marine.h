@@ -7,6 +7,7 @@
 #include "asw_shareddefs.h"
 #include "asw_playeranimstate.h"
 #include "asw_lag_compensation.h"
+#include "asw_squadformation.h"
 
 class CASW_Player;
 class CASW_Marine_Resource;
@@ -417,7 +418,8 @@ public:
 
 	virtual bool FValidateHintType( CAI_Hint *pHint );
 
-	inline CASW_SquadFormation *GetSquadFormation(); // get the formation in which I participate
+	CHandle<CASW_SquadFormation> m_hSquadFormation;
+	inline CASW_SquadFormation *GetSquadFormation() { return m_hSquadFormation; } // get the formation in which I participate
 	CASW_Marine *GetSquadLeader();  // If I'm following in a squad, get the leader I'm following
 
 	// tracking movement through the level
@@ -702,16 +704,6 @@ private:
 	float m_flNextBreadcrumbTime;
 
 };
-
-
-#include "asw_squadformation.h"
-
-
-inline CASW_SquadFormation *CASW_Marine::GetSquadFormation() // get the formation in which I participate; in the future there may be more than one per universe
-{
-	return &g_ASWSquadFormation;
-}
-
 
 inline CASW_Marine *CASW_Marine::AsMarine( CBaseEntity *pEnt )
 {

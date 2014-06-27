@@ -22,23 +22,34 @@ ConVar asw_follow_velocity_predict( "asw_follow_velocity_predict", "0.3", FCVAR_
 ConVar asw_follow_threshold( "asw_follow_threshold", "40", FCVAR_CHEAT, "Marines in diamond formation will move after leader has moved this much" );
 ConVar asw_squad_debug( "asw_squad_debug", "1", FCVAR_CHEAT, "Draw debug overlays for squad movement" );
 
+bool g_bLevelHasFollowHints;
+
+class CASW_SquadFormationAuto : public CAutoGameSystem
+{
+public:
+	CASW_SquadFormationAuto() : CAutoGameSystem("asw_squadformation") {}
+
+	virtual void LevelInitPostEntity()
+	{
+#ifdef HL2_HINTS
+		CHintCriteria hintCriteria;
+		hintCriteria.SetHintType(HINT_FOLLOW_WAIT_POINT);
+
+		g_bLevelHasFollowHints = (CAI_HintManager::FindHint(vec3_origin, hintCriteria) != NULL);
+#else
+		g_bLevelHasFollowHints = (MarineHintManager()->GetHintCount() > 0);
+#endif
+		Msg("Level has follow hints %d\n", g_bLevelHasFollowHints);
+	}
+};
+static CASW_SquadFormationAuto s_SquadFormationAuto;
+
+
 // TODO: is boomer bomb radius ever larger than 500 units?
 #define OUT_OF_BOOMER_BOMB_RANGE 500
 
-void CASW_SquadFormation::LevelInitPostEntity()
-{
-	BaseClass::LevelInitPostEntity();
 
-	CHintCriteria hintCriteria;
-	hintCriteria.SetHintType( HINT_FOLLOW_WAIT_POINT );
-
-#ifdef HL2_HINTS
-	m_bLevelHasFollowHints = ( CAI_HintManager::FindHint( vec3_origin, hintCriteria ) != NULL );
-#else
-	m_bLevelHasFollowHints = ( MarineHintManager()->GetHintCount() > 0 );
-#endif
-	Msg( "Level has follow hints %d\n", m_bLevelHasFollowHints );
-}
+LINK_ENTITY_TO_CLASS(asw_squadformation, CASW_SquadFormation);
 
 unsigned int CASW_SquadFormation::Add( CASW_Marine *pMarine )
 {
@@ -165,7 +176,7 @@ float CASW_SquadFormation::GetYaw( unsigned slotnum )
 		}
 		return 0.0f;
 	}
-	else if ( m_bLevelHasFollowHints && asw_follow_use_hints.GetBool() && Leader() && ( Leader()->IsInCombat() || asw_follow_use_hints.GetInt() == 2 ) )
+	else if ( g_bLevelHasFollowHints && asw_follow_use_hints.GetBool() && Leader() && ( Leader()->IsInCombat() || asw_follow_use_hints.GetInt() == 2 ) )
 	{
 #ifdef HL2_HINTS
 		if ( m_hFollowHint[ slotnum ].Get() )
@@ -394,7 +405,7 @@ void CASW_SquadFormation::UpdateFollowPositions()
 	}
 	m_flLastSquadUpdateTime = gpGlobals->curtime;
 
-	if ( m_bLevelHasFollowHints && asw_follow_use_hints.GetBool() && ( pLeader->IsInCombat() || asw_follow_use_hints.GetInt() ) )
+	if ( g_bLevelHasFollowHints && asw_follow_use_hints.GetBool() && ( pLeader->IsInCombat() || asw_follow_use_hints.GetInt() ) )
 	{
 		FindFollowHintNodes();
 	}
@@ -499,7 +510,7 @@ void CASW_SquadFormation::UpdateFollowPositions()
 				m_bFleeingBoomerBombs[ i ] = true;
 			}
 		}
-		else if ( m_bLevelHasFollowHints && asw_follow_use_hints.GetBool() && ( pLeader->IsInCombat() || asw_follow_use_hints.GetInt() == 2 ) )
+		else if ( g_bLevelHasFollowHints && asw_follow_use_hints.GetBool() && ( pLeader->IsInCombat() || asw_follow_use_hints.GetInt() == 2 ) )
 		{
 #ifdef HL2_HINTS
 			if ( m_hFollowHint[i].Get() )
@@ -640,11 +651,6 @@ void CASW_SquadFormation::ChangeLeader( CASW_Marine *pNewLeader, bool bUpdateLea
 	}
 }
 
-void CASW_SquadFormation::LevelInitPreEntity()
-{
-	Reset();
-}
-
 void CASW_SquadFormation::Reset()
 {
 	m_hLeader = NULL;
@@ -661,7 +667,6 @@ void CASW_SquadFormation::Reset()
 #endif
 	}
 	m_flLastSquadUpdateTime = 0;
-	m_bLevelHasFollowHints = false;
 	m_vLastLeaderVelocity.Zero();
 }
 
@@ -972,6 +977,3 @@ void CASW_SquadFormation::DrawDebugGeometryOverlays()
 	}
 	*/
 }
-
-
-CASW_SquadFormation g_ASWSquadFormation;

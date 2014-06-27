@@ -36,6 +36,7 @@
 	class CASW_Info_Heal;
 	class IASW_Map_Builder;
 	class CASW_Weapon;
+	class CASW_SquadFormation;
 #endif
 
 class CASW_Marine_Resource;
@@ -144,6 +145,7 @@ public:
 	virtual bool			ClientCommand( CBaseEntity *pEdict, const CCommand &args );
 	virtual void			ClientCommandKeyValues( edict_t *pEntity, KeyValues *pKeyValues );
 	void OnPlayerFullyJoined( CASW_Player *pPlayer );
+	CHandle<CASW_SquadFormation> m_hPlayerSquad;
 
 	// powerups
 	virtual void DropPowerup( CBaseEntity *pSource, const CTakeDamageInfo &info, const char *pszSourceClass );

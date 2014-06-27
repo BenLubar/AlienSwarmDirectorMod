@@ -85,6 +85,8 @@
 	#include "asw_buffgrenade_projectile.h"
 	#include "asw_achievements.h"
 	#include "asw_director.h"
+
+	#include "asw_squadformation.h"
 #endif
 #include "game_timescale_shared.h"
 #include "asw_gamerules.h"
@@ -674,6 +676,7 @@ CAlienSwarm::CAlienSwarm()
 	// create the profile list for the server
 	//  clients do this is in c_asw_player.cpp
 	MarineProfileList();
+	m_hPlayerSquad = NULL;
 
 	ASWEquipmentList();
 
@@ -2315,6 +2318,11 @@ bool CAlienSwarm::SpawnMarineAt( CASW_Marine_Resource * RESTRICT pMR, const Vect
 	pMarine->SetMarineResource(pMR);
 	pMarine->SetCommander(pMR->m_Commander);
 	pMarine->SetInitialCommander( pMR->m_Commander.Get() );
+	if (!m_hPlayerSquad.Get())
+	{
+		m_hPlayerSquad = assert_cast<CASW_SquadFormation *>(CreateEntityByName("asw_squadformation"));
+	}
+	pMarine->m_hSquadFormation = m_hPlayerSquad;
 	int iMarineHealth = MarineSkills()->GetSkillBasedValueByMarineResource(pMR, ASW_MARINE_SKILL_HEALTH);
 	int iMarineMaxHealth = iMarineHealth;
 

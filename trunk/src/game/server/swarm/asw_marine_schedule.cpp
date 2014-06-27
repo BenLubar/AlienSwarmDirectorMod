@@ -675,7 +675,7 @@ int CASW_Marine::SelectHackingSchedule()
 	if ( !GetMarineProfile() || (GetMarineProfile()->GetMarineClass() != MARINE_CLASS_TECH && !m_hAreaToUse.Get()) )
 		return -1;
 
-	if (GetMarineProfile()->GetMarineClass() == MARINE_CLASS_TECH && (asw_marine_auto_hack.GetBool() || (asw_marine_test_new_ai.GetBool() && GetSquadFormation()->Leader() && !GetSquadFormation()->Leader()->IsInhabited())))
+	if (GetMarineProfile()->GetMarineClass() == MARINE_CLASS_TECH && (asw_marine_auto_hack.GetBool() || (asw_marine_test_new_ai.GetBool() && GetSquadLeader() && !GetSquadLeader()->IsInhabited())))
 	{
 		CASW_Use_Area *pClosestArea = NULL;
 		float flClosestDist = FLT_MAX;
@@ -1150,12 +1150,6 @@ void CASW_Marine::SetASWOrders(ASW_Orders NewOrders, float fHoldingYaw, const Ve
 			}
 		}
 	}
-	if ( NewOrders != ASW_ORDER_FOLLOW )
-	{
-		if (GetSquadLeader() != this)
-			GetSquadFormation()->Remove(this, true);
-		m_hMarineFollowTarget = NULL;
-	}
 	m_bWasFollowing = ( NewOrders == ASW_ORDER_FOLLOW || ( NewOrders != ASW_ORDER_HOLD_POSITION && m_ASWOrders == ASW_ORDER_FOLLOW ) );		// keeps track of follow vs hold, so we can return to the right orders after completing the new ones
 	m_ASWOrders = NewOrders;
 	m_vecMoveToOrderPos = vecPos;
@@ -1167,9 +1161,8 @@ void CASW_Marine::SetASWOrders(ASW_Orders NewOrders, float fHoldingYaw, const Ve
 void CASW_Marine::OrdersFromPlayer(CASW_Player *pPlayer, ASW_Orders NewOrders, CBaseEntity *pMarine, bool bChatter, float fHoldingYaw, Vector *pVecOrderPos)
 {
 	MDLCACHE_CRITICAL_SECTION();
-	// asw temp - AI ignore follow orders in SP
-	//if (gpGlobals->maxClients <= 1 && NewOrders == ASW_ORDER_FOLLOW)
-		//return;
+
+	Assert( GetSquadFormation() );
 
 	if (fHoldingYaw == -1)
 		fHoldingYaw = GetAbsAngles()[YAW];
@@ -1181,18 +1174,12 @@ void CASW_Marine::OrdersFromPlayer(CASW_Player *pPlayer, ASW_Orders NewOrders, C
 	{
 		if ( pMarine && pMarine->Classify() == CLASS_ASW_MARINE )
 		{
-			// Assert( assert_cast<CASW_Marine*>( pMarine )->GetSquadFormation()->Leader() == pMarine );
 			CASW_Marine *pReallyMarine = assert_cast<CASW_Marine*>( pMarine );
 			if ( pReallyMarine != GetSquadLeader() )
 				GetSquadFormation()->ChangeLeader( pReallyMarine );
 			if ( !GetSquadFormation()->IsValid( GetSquadFormation()->Find(this) ) )
 				pReallyMarine->GetSquadFormation()->Add( this );
 		}
-		else
-		{
-			GetSquadFormation()->Remove( this, true );
-		}
-		//DoEmote(2);	// make them smile on receiving orders
 		// make sure his move_x/y pose parameters are at full moving forwards, so the AI follow movement will detect some sequence motion when calculating goal speed
 		SetPoseParameter( "move_x", 1.0f );
 		SetPoseParameter( "move_y", 0.0f );
@@ -1734,7 +1721,7 @@ int CASW_Marine::FindThrowNode( const Vector &vThreatPos, float flMinThreatDist,
 bool CASW_Marine::NeedToUpdateSquad()
 {
 	// basically, if I am a leader and I've moved, an update is needed.
-	return ( GetSquadLeader() == this && (GetSquadFormation()->ShouldUpdateFollowPositions() || m_hUsingEntity.Get()) );
+	return ( GetSquadLeader() == this && ( GetSquadFormation()->ShouldUpdateFollowPositions() || m_hUsingEntity.Get() ) );
 }
 
 bool CASW_Marine::NeedToFollowMove()
@@ -1743,11 +1730,11 @@ bool CASW_Marine::NeedToFollowMove()
 	if ( !pLeader || pLeader == this )
 		return false;
 
-	if (GetEnemy() && GetEnemy()->GetAbsOrigin().DistToSqr(GetAbsOrigin()) < Square( ASW_FORMATION_ATTACK_DISTANCE ))
+	if ( GetEnemy() && GetEnemy()->GetAbsOrigin().DistToSqr(GetAbsOrigin()) < Square( ASW_FORMATION_ATTACK_DISTANCE ) )
 		return false;
 
 	// only move if we're not near our saved follow point
-	float dist = GetAbsOrigin().DistToSqr(GetFollowPos());
+	float dist = GetAbsOrigin().DistToSqr( GetFollowPos() );
 	return dist > Square( ASW_FORMATION_FOLLOW_DISTANCE );
 }
 
@@ -3164,10 +3151,11 @@ inline const Vector & CASW_Marine::GetFollowPos()
 	// if I'm in a squad and it has a leader, then
 	// use the computed position. Otherwise fall
 	// back to current pos.
-	unsigned slot = GetSquadFormation()->Find(this);
-	return ( GetSquadFormation()->IsValid(slot) ? 
-		GetSquadFormation()->GetIdealPosition(slot) :
-	GetAbsOrigin()	);
+	unsigned slot = GetSquadFormation() ? GetSquadFormation()->Find(this) : CASW_SquadFormation::INVALID_SQUADDIE;
+	if ( GetSquadFormation() && GetSquadFormation()->IsValid(slot) )
+		return GetSquadFormation()->GetIdealPosition(slot);
+	else
+		return GetAbsOrigin();
 }
 
 // ===== Rappeling ===================================

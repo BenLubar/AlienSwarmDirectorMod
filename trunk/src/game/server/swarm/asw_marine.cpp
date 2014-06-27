@@ -896,7 +896,6 @@ void CASW_Marine::InhabitedBy(CASW_Player *player)
 	m_fMarineAimError = 0;
 
 	ClearForcedActionRequest();
-	GetSquadFormation()->Remove( this, true );
 
 	// always interrupt our current task when inhabiting a marine
 	TaskFail(FAIL_NO_PLAYER);
