@@ -75,6 +75,7 @@
 #include "asw_objective_kill_eggs.h"
 #include "asw_objective_kill_goo.h"
 #include "asw_objective_kill_queen.h"
+#include "asw_objective_escape.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -269,7 +270,7 @@ int CASW_Marine::SelectSchedule()
 	if (GetEnemy() && GetEnemy()->Classify() == CLASS_ASW_PARASITE)
 	{
 		CASW_Parasite *pParasite = assert_cast<CASW_Parasite *>(GetEnemy());
-		if (pParasite->GetEgg() && pParasite->GetEgg()->m_bHatched)
+		if (pParasite->GetEgg() && !pParasite->GetEgg()->m_bHatched)
 		{
 			// switch our enemy to the egg if the parasite hasn't hatched yet.
 			SetEnemy(pParasite->GetEgg());
@@ -414,23 +415,23 @@ int CASW_Marine::SelectSchedule()
 				break;
 			}
 		}
+
 		for (int i = 0; i < ASW_MAX_OBJECTIVES; i++)
 		{
 			CASW_Objective *pObj = ASWGameResource()->GetObjective(i);
-			if (pObj && pObj->GetObjectiveProgress() < 1.0f)
+			if (pObj && !pObj->IsObjectiveComplete() && !pObj->IsObjectiveFailed() && !pObj->IsObjectiveHidden() && !pObj->IsObjectiveDummy())
 			{
 				float flMinDist = -1;
-				Vector vecBest;
-				vecBest.Init();
+				Vector vecBest = vec3_origin;
 
-				bool bUsedOldStyleMarker = false;
+				bool bLowPriority = false;
 				Vector2D oldStyleMarker = pObj->GetOldStyleMarkerLocation();
 				if (oldStyleMarker != vec2_invalid)
 				{
-					bUsedOldStyleMarker = true;
+					bLowPriority = true;
 					vecBest.x = oldStyleMarker.x;
 					vecBest.y = oldStyleMarker.y;
-					// TODO: is there a better value for z than 0 here?
+					vecBest.z = GetAbsOrigin().z; // assume the objective is around the same z-height as where we are now.
 					flMinDist = vecBest.DistToSqr(GetAbsOrigin());
 				}
 
@@ -446,11 +447,28 @@ int CASW_Marine::SelectSchedule()
 						vecMarker.y += RandomInt(-pMarker->GetMapHeight() / 2, pMarker->GetMapHeight() / 2);
 
 						float flDist = vecMarker.DistToSqr(GetAbsOrigin());
-						if (bUsedOldStyleMarker || flMinDist == -1 || flDist < flMinDist)
+						if (bLowPriority || flMinDist == -1 || flDist < flMinDist)
 						{
 							flMinDist = flDist;
 							vecBest = vecMarker;
-							bUsedOldStyleMarker = false;
+							bLowPriority = false;
+
+							bInMarker = fabs(pMarker->GetAbsOrigin().x - GetAbsOrigin().x) <= (pMarker->GetMapWidth() / 2.0f) &&
+										fabs(pMarker->GetAbsOrigin().y - GetAbsOrigin().y) <= (pMarker->GetMapHeight() / 2.0f);
+						}
+					}
+					else if (bLowPriority)
+					{
+						Vector vecMarker = pMarker->GetAbsOrigin();
+						vecMarker.x += RandomInt(-pMarker->GetMapWidth() / 2, pMarker->GetMapWidth() / 2);
+						vecMarker.y += RandomInt(-pMarker->GetMapHeight() / 2, pMarker->GetMapHeight() / 2);
+
+						float flDist = vecMarker.DistToSqr(GetAbsOrigin());
+
+						if (flMinDist > flDist)
+						{
+							flMinDist = flDist;
+							vecBest = vecMarker;
 
 							bInMarker = fabs(pMarker->GetAbsOrigin().x - GetAbsOrigin().x) <= (pMarker->GetMapWidth() / 2.0f) &&
 										fabs(pMarker->GetAbsOrigin().y - GetAbsOrigin().y) <= (pMarker->GetMapHeight() / 2.0f);
@@ -531,6 +549,17 @@ int CASW_Marine::SelectSchedule()
 						if (pEnt)
 						{
 							vecBest = pEnt->GetAbsOrigin();
+						}
+					}
+					else if (dynamic_cast<CASW_Objective_Escape *>(pObj))
+					{
+						Assert(ASWSpawnManager());
+						Assert(ASWSpawnManager()->m_EscapeTriggers.Count() == 1);
+						CTriggerMultiple *pEnt = (ASWSpawnManager() && ASWSpawnManager()->m_EscapeTriggers.Count()) ? ASWSpawnManager()->m_EscapeTriggers.Head() : NULL;
+						Assert(pEnt);
+						if (pEnt)
+						{
+							vecBest = pEnt->WorldSpaceCenter();
 						}
 					}
 					else
