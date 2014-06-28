@@ -98,7 +98,7 @@ ConVar asw_debug_marine_aim( "asw_debug_marine_aim", "0", FCVAR_CHEAT, "Shows de
 ConVar asw_debug_throw( "asw_debug_throw", "0", FCVAR_CHEAT, "Show node debug info on throw visibility checks" );
 ConVar asw_debug_order_weld( "asw_debug_order_weld", "0", FCVAR_DEVELOPMENTONLY, "Debug lines for ordering marines to offhand weld a door" );
 
-ConVar asw_marine_test_new_ai("asw_marine_test_new_ai", "0", FCVAR_CHEAT, "enable Swarm Director 2 marine AI", true, 0, true, 1);
+ConVar asw_marine_test_new_ai("asw_marine_test_new_ai", "1", FCVAR_CHEAT, "enable Swarm Director 2 marine AI", true, 0, true, 1);
 
 extern ConVar ai_lead_time;
 
@@ -424,11 +424,11 @@ int CASW_Marine::SelectSchedule()
 				float flMinDist = -1;
 				Vector vecBest = vec3_origin;
 
-				bool bLowPriority = false;
+				int iPriority = 0;
 				Vector2D oldStyleMarker = pObj->GetOldStyleMarkerLocation();
 				if (oldStyleMarker != vec2_invalid)
 				{
-					bLowPriority = true;
+					iPriority = 1;
 					vecBest.x = oldStyleMarker.x;
 					vecBest.y = oldStyleMarker.y;
 					vecBest.z = GetAbsOrigin().z; // assume the objective is around the same z-height as where we are now.
@@ -447,17 +447,17 @@ int CASW_Marine::SelectSchedule()
 						vecMarker.y += RandomInt(-pMarker->GetMapHeight() / 2, pMarker->GetMapHeight() / 2);
 
 						float flDist = vecMarker.DistToSqr(GetAbsOrigin());
-						if (bLowPriority || flMinDist == -1 || flDist < flMinDist)
+						if (iPriority < 3 || flMinDist == -1 || flDist < flMinDist)
 						{
 							flMinDist = flDist;
 							vecBest = vecMarker;
-							bLowPriority = false;
+							iPriority = 3;
 
 							bInMarker = fabs(pMarker->GetAbsOrigin().x - GetAbsOrigin().x) <= (pMarker->GetMapWidth() / 2.0f) &&
 										fabs(pMarker->GetAbsOrigin().y - GetAbsOrigin().y) <= (pMarker->GetMapHeight() / 2.0f);
 						}
 					}
-					else if (bLowPriority)
+					else if (iPriority <= 2)
 					{
 						Vector vecMarker = pMarker->GetAbsOrigin();
 						vecMarker.x += RandomInt(-pMarker->GetMapWidth() / 2, pMarker->GetMapWidth() / 2);
@@ -465,10 +465,11 @@ int CASW_Marine::SelectSchedule()
 
 						float flDist = vecMarker.DistToSqr(GetAbsOrigin());
 
-						if (flMinDist > flDist)
+						if (iPriority < 2 || flMinDist > flDist)
 						{
 							flMinDist = flDist;
 							vecBest = vecMarker;
+							iPriority = 2;
 
 							bInMarker = fabs(pMarker->GetAbsOrigin().x - GetAbsOrigin().x) <= (pMarker->GetMapWidth() / 2.0f) &&
 										fabs(pMarker->GetAbsOrigin().y - GetAbsOrigin().y) <= (pMarker->GetMapHeight() / 2.0f);
@@ -1097,27 +1098,52 @@ bool CASW_Marine::CanHeal() const
 
 int CASW_Marine::SelectHealSchedule()
 {
-	// iterate over all teammates, looking for most needy target for health
-	CASW_Game_Resource *pGameResource = ASWGameResource();
-	for ( int i=0; i<pGameResource->GetMaxMarineResources(); i++ )
+	if (!CanHeal())
 	{
-		CASW_Marine_Resource* pMarineResource = pGameResource->GetMarineResource(i);
-		if ( !pMarineResource )
-			continue;
+		m_hHealTarget = NULL;
+		return -1;
+	}
 
-		CASW_Marine* pMarine = pMarineResource->GetMarineEntity();
-		if ( !pMarine )
-			continue;
+	CASW_SquadFormation *pSquad = GetSquadFormation();
+	if (!pSquad)
+		return -1;
 
-		// see if the current marine can use ammo I have
-		if ( CanHeal() && pMarine->GetHealth() < pMarine->GetMaxHealth() * MARINE_START_HEAL_THRESHOLD )
+	// assume there is at most one other medic in the squad.
+	CASW_Marine *pOtherMedic = NULL;
+	if (pSquad->Leader() && pSquad->Leader() != this && pSquad->Leader()->CanHeal())
+	{
+		pOtherMedic = pSquad->Leader();
+	}
+	else
+	{
+		for (int i = 0; i < CASW_SquadFormation::MAX_SQUAD_SIZE; i++) {
+			if (pSquad->Squaddie(i) && pSquad->Squaddie(i) != this && pSquad->Squaddie(i)->CanHeal())
+			{
+				pOtherMedic = pSquad->Squaddie(i);
+				break;
+			}
+		}
+	}
+	CASW_Marine *pOtherMedicTarget = NULL;
+	if (pOtherMedic)
+		pOtherMedicTarget = pOtherMedic->m_hHealTarget;
+
+	// iterate over all squadmates, looking for most needy target for health
+	if (pSquad->Leader() && pSquad->Leader()->GetHealth() < pSquad->Leader()->GetMaxHealth() * MARINE_START_HEAL_THRESHOLD && pOtherMedicTarget != pSquad->Leader())
+	{
+		if (!m_hHealTarget.Get() || m_hHealTarget->GetHealth() > pSquad->Leader()->GetHealth())
+			m_hHealTarget = pSquad->Leader();
+	}
+	for (int i = 0; i < CASW_SquadFormation::MAX_SQUAD_SIZE; i++) {
+		if (pSquad->Squaddie(i) && pSquad->Squaddie(i)->GetHealth() < pSquad->Squaddie(i)->GetMaxHealth() * MARINE_START_HEAL_THRESHOLD && pOtherMedicTarget != pSquad->Squaddie(i))
 		{
-			m_hHealTarget = pMarine;
-			return SCHED_ASW_HEAL_MARINE;
+			if (!m_hHealTarget.Get() || m_hHealTarget->GetHealth() > pSquad->Squaddie(i)->GetHealth())
+				m_hHealTarget = pSquad->Squaddie(i);
 		}
 	}
 
-	m_hHealTarget = NULL;
+	if (m_hHealTarget.Get())
+		return SCHED_ASW_HEAL_MARINE;
 	return -1;
 }
 
