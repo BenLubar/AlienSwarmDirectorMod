@@ -14,7 +14,7 @@
 #include "tier0/memdbgon.h"
 
 ConVar asw_marine_ai_followspot( "asw_marine_ai_followspot", "0", FCVAR_CHEAT );
-ConVar asw_follow_hint_max_range("asw_follow_hint_max_range", "300", FCVAR_CHEAT);
+ConVar asw_follow_hint_max_range("asw_follow_hint_max_range", "900", FCVAR_CHEAT);
 ConVar asw_follow_hint_max_z_dist("asw_follow_hint_max_z_dist", "120", FCVAR_CHEAT);
 ConVar asw_follow_use_hints( "asw_follow_use_hints", "2", FCVAR_CHEAT, "0 = follow formation, 1 = use hints when in combat, 2 = always use hints" );
 ConVar asw_follow_hint_debug( "asw_follow_hint_debug", "0", FCVAR_CHEAT );
@@ -538,7 +538,7 @@ void CASW_SquadFormation::UpdateFollowPositions()
 		}
 		if ( asw_marine_ai_followspot.GetBool() )
 		{
-			static float colors[3][3] =	{ { 255, 64, 64	}, { 64, 255, 64 }, { 64, 64, 255 }	};
+			static float colors[MAX_SQUAD_SIZE][3] = { { 255, 64, 64 }, { 64, 255, 64 }, { 64, 64, 255 }, { 255, 255, 64 }, { 255, 64, 255 }, { 64, 255, 255 }, { 64, 64, 64 } };
 			NDebugOverlay::HorzArrow( pLeader->GetAbsOrigin(), m_vFollowPositions[i], 3, 
 				colors[i][0], colors[i][1], colors[i][2], 255, false, 0.35f );
 		}
