@@ -92,7 +92,7 @@ void CASW_Door_Area::ActivateMultiTrigger(CBaseEntity *pActivator)
 							}
 							m_fNextCutCheck = gpGlobals->curtime + 2.0f;	// check again sooner if we tried to say the line but couldn't for some reason
 
-							if (asw_marine_test_new_ai.GetBool())
+							if (asw_marine_test_new_ai.GetBool() && !pMarine->IsInhabited())
 							{
 								// use our position because we're the closest to the door.
 								pFound->OrderUseOffhandItem(2, (pMarine->GetAbsOrigin() + pDoor->GetAbsOrigin()) / 2);
