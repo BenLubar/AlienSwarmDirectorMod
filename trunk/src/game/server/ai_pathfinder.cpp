@@ -1597,6 +1597,9 @@ AI_Waypoint_t *CAI_Pathfinder::BuildNavRoute(CNavArea *startArea, CNavArea *goal
 
 		// make sure we fit
 		closest += (goalArea->GetCenter() - closest).Normalized() * GetHullWidth() * 0.75f;
+
+		if (curNavType == NAV_FLY)
+			closest.z += GetHullHeight() + RandomFloat(0, 128);
 	}
 	else
 	{
@@ -1604,14 +1607,14 @@ AI_Waypoint_t *CAI_Pathfinder::BuildNavRoute(CNavArea *startArea, CNavArea *goal
 		flags |= bits_WP_TO_GOAL;
 	}
 
-	AI_Waypoint_t *newway = new AI_Waypoint_t(closest, 0, curNavType, flags, NO_NODE);
+	AI_Waypoint_t *newway = new AI_Waypoint_t(closest, 0, curNavType == NAV_JUMP ? NAV_GROUND : curNavType, flags, NO_NODE);
 
 	if (waypoint)
 	{
 		newway->SetNext(waypoint);
 		waypoint->SetPrev(newway);
 
-		if (goalArea->GetParent())
+		if (goalArea->GetParent() && (curNavType == NAV_JUMP || curNavType == NAV_GROUND))
 		{
 			Vector closestParent, closestChild;
 			goalArea->GetParent()->GetClosestPointOnArea(newway->GetPos(), &closestParent);
