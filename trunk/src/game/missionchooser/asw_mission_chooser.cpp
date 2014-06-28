@@ -187,4 +187,18 @@ void *CASW_Mission_Chooser::QueryInterface( const char *pInterfaceName )
 	return factory( pInterfaceName, NULL );				// to prevent the LTCG compiler from crashing.
 }
 
+CON_COMMAND(asw_mission_reload, "Clear the mission chooser's mission list and regenerate it.")
+{
+	g_LocalMissionSource.m_bBuildingCampaignList = false;
+	g_LocalMissionSource.m_bBuiltCampaignList = false;
+	g_LocalMissionSource.m_bBuildingMapList = false;
+	g_LocalMissionSource.m_bBuiltMapList = false;
+	g_LocalMissionSource.m_bBuildingSavedCampaignList = false;
+	g_LocalMissionSource.m_bBuiltSavedCampaignList = false;
+
+	g_LocalMissionSource.BuildCampaignList();
+	g_LocalMissionSource.BuildMapList();
+	g_LocalMissionSource.BuildSavedCampaignList();
+}
+
 EXPOSE_SINGLE_INTERFACE( CASW_Mission_Chooser, IASW_Mission_Chooser, ASW_MISSION_CHOOSER_VERSION );

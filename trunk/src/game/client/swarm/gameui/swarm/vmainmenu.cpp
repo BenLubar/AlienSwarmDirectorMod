@@ -4,6 +4,8 @@
 //
 //=====================================================================================//
 
+#include "cbase.h"
+
 #include "VMainMenu.h"
 #include "EngineInterface.h"
 #include "VFooterPanel.h"
@@ -39,6 +41,9 @@
 #include "fmtstr.h"
 
 #include "matchmaking/swarm/imatchext_swarm.h"
+
+#include "missionchooser/iasw_mission_chooser.h"
+#include "missionchooser/iasw_mission_chooser_source.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -676,27 +681,6 @@ void MainMenu::OnCommand( const char *command )
 	{
 		CBaseModPanel::GetSingleton().OpenWindow( WT_ADDONS, this, true );
 	}
-	else if (!Q_strcmp( command, "CreateGame_MOD" ))
-	{
-		KeyValues *pSettings = KeyValues::FromString(
-				"Settings",
-				" System { "
-				" network offline "
-				" } "
-				" Game { "
-				" mode campaign "
-				" campaign DirectorModCampaign "
-				" mission Mission1 "
-				" } "
-				);
-		KeyValues::AutoDelete autodelete( pSettings );
-
-		// TCR: We need to respect the default difficulty
-		pSettings->SetString( "Game/difficulty", GameModeGetDefaultDifficulty( pSettings->GetString( "Game/mode" ) ) );
-
-		g_pMatchFramework->CreateSession( pSettings );
-	}
-
 	else if( !Q_strcmp( command, "CreateGame" ) )
 	{
 		KeyValues *pSettings = KeyValues::FromString(
@@ -1004,6 +988,7 @@ void MainMenu::OnOpen()
 //=============================================================================
 void MainMenu::RunFrame()
 {
+	missionchooser->LocalMissionSource()->IdleThink();
 	BaseClass::RunFrame();
 }
 
