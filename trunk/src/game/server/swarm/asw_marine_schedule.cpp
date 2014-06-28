@@ -1143,7 +1143,12 @@ int CASW_Marine::SelectHealSchedule()
 	}
 
 	if (m_hHealTarget.Get())
-		return SCHED_ASW_HEAL_MARINE;
+	{
+		if (m_hHealTarget->GetHealth() >= m_hHealTarget->GetMaxHealth() * MARINE_STOP_HEAL_THRESHOLD)
+			m_hHealTarget = NULL;
+		else
+			return SCHED_ASW_HEAL_MARINE;
+	}
 	return -1;
 }
 
