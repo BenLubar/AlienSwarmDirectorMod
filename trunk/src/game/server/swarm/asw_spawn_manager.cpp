@@ -305,8 +305,10 @@ bool CASW_Spawn_Manager::SpawnAlientAtRandomNode()
 
 	int nHull = 0;
 	Vector vecMins, vecMaxs;
-	Assert( GetAlienHull( szAlienClass, nHull ) );
-	Assert( GetAlienBounds( szAlienClass, vecMins, vecMaxs ) );
+	bool ok = GetAlienHull(szAlienClass, nHull);
+	Assert( ok );
+	ok = GetAlienBounds(szAlienClass, vecMins, vecMaxs);
+	Assert( ok );
 
 	int iMaxTries = 4;
 	for ( int i=0 ; i<iMaxTries ; i++ )
@@ -338,10 +340,11 @@ bool CASW_Spawn_Manager::SpawnAlientAtRandomNode()
 			continue;
 		}
 		
-		Vector vecSpawnPos = pNode->GetPosition( nHull ) + Vector( 0, 0, 32 );
+		Vector vecSpawnPos = pNode->GetPosition( nHull ) + Vector( 0, 0, V_stricmp( "asw_buzzer", szAlienClass ) ? 32 : 128 );
 		if ( ValidSpawnPoint( vecSpawnPos, vecMins, vecMaxs, true, MARINE_NEAR_DISTANCE ) )
 		{
-			if ( SpawnAlienAt( szAlienClass, vecSpawnPos, vec3_angle ) )
+			QAngle angle(0, RandomFloat(0, 360), 0);
+			if ( SpawnAlienAt( szAlienClass, vecSpawnPos, angle ) )
 			{
 				if ( asw_director_debug.GetBool() )
 				{
@@ -529,7 +532,8 @@ bool CASW_Spawn_Manager::FindHordePosition()
 	}
 
 	int nHull = 0;
-	Assert( GetAlienHull ( asw_horde_class.GetString(), nHull ) );
+	bool ok = GetAlienHull(asw_horde_class.GetString(), nHull);
+	Assert( ok );
 
 	int iMaxTries = 3;
 	for ( int i=0 ; i<iMaxTries ; i++ )
@@ -758,8 +762,8 @@ CBaseEntity* CASW_Spawn_Manager::SpawnAlienAt(const char* szAlienClass, const Ve
 	pEntity->SetAbsAngles( angles );
 	UTIL_DropToFloor( pEntity, MASK_SOLID );
 
-	IASW_Spawnable_NPC* pSpawnable = dynamic_cast<IASW_Spawnable_NPC*>(pEntity);
-	ASSERT(pSpawnable);	
+	IASW_Spawnable_NPC* pSpawnable = dynamic_cast<IASW_Spawnable_NPC*>( pEntity );
+	ASSERT( pSpawnable );
 	if ( !pSpawnable )
 	{
 		Warning("NULL Spawnable Ent in CASW_Spawn_Manager::SpawnAlienAt! AlienClass = %s\n", szAlienClass);
