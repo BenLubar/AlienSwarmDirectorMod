@@ -6454,3 +6454,19 @@
 	
 	output OnEscapeRoomStart(void) : "Fired when marine enters the escape room with all objectives (except for escape) complete.  NOTE: If you rely on this output, you must ship the .layout file along with your map."
 ]
+
+@NPCClass base(BaseNPC) studio("models/swarm/marine/marine.mdl") sphere() = asw_marine :
+	"IAF marine"
+[
+	profile(choices) : "Profile" : "0" : "Marine character profile" =
+	[
+		0 : "Sarge"
+		1 : "Wildcat"
+		2 : "Faith"
+		3 : "Crash"
+		4 : "Jaeger"
+		5 : "Wolfe"
+		6 : "Bastille"
+		7 : "Vegas"
+	]
+]

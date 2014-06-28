@@ -240,6 +240,7 @@ END_SEND_TABLE()
 // Save/Restore
 //---------------------------------------------------------
 BEGIN_DATADESC( CASW_Marine )
+	DEFINE_KEYFIELD( m_iProfile, FIELD_INTEGER, "profile" ),
 	DEFINE_FIELD( m_bSlowHeal, FIELD_BOOLEAN ),
 	DEFINE_FIELD( m_iSlowHealAmount, FIELD_INTEGER ),
 	DEFINE_FIELD( m_vecFacingPointFromServer, FIELD_VECTOR ),
@@ -486,6 +487,7 @@ CASW_Marine::CASW_Marine() : m_RecentMeleeHits( 16, 16 )
 	m_flNextYawOffsetTime = 0;
 	m_bAICrouch = false;
 	m_MarineResource = NULL;
+	m_iProfile = -1;
 	m_fUnfreezeTime = 0;
 	m_PlayerAnimState = CreatePlayerAnimState(this, this, LEGANIM_9WAY, false);
 	UseClientSideAnimation();
@@ -825,7 +827,7 @@ CASW_Marine_Profile* CASW_Marine::GetMarineProfile()
 	CASW_Marine_Resource* pMR = GetMarineResource();
 	if ( !pMR )
 	{
-		return NULL;
+		return MarineProfileList()->GetProfile(m_iProfile);
 	}
 
 	return pMR->GetProfile();

@@ -114,6 +114,7 @@ public:
 	CASW_Marine_Resource* GetMarineResource() const;
 	CASW_Marine_Profile* GetMarineProfile();
 	EHANDLE m_MarineResource;
+	int m_iProfile;
 
 	// Commander/Inhabiting	
 	void SetCommander(CASW_Player *player);		// sets which player commands this marine
