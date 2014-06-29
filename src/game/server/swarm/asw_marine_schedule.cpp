@@ -3014,6 +3014,23 @@ void CASW_Marine::UpdateFacing()
 		float flAimYaw = UTIL_VecToYaw( m_vecFacingPointFromServer.Get() - GetAbsOrigin() );
 		GetMotor()->SetIdealYawAndUpdate( flAimYaw );
 	}
+	else if ( IsCurSchedule( SCHED_ASW_HEAL_MARINE ) )		// face the marine that we want to heal
+	{
+		if ( m_hHealTarget.Get() )
+		{
+			float flAimYaw = CalcIdealYaw( m_hHealTarget.Get()->GetAbsOrigin() );
+			GetMotor()->SetIdealYawAndUpdate( flAimYaw );
+
+			if ( asw_debug_marine_aim.GetBool() )
+			{
+				Vector vecAim;
+				QAngle angAim = QAngle( 0, flAimYaw, 0 );
+				AngleVectors( angAim, &vecAim );
+
+				NDebugOverlay::Line( GetAbsOrigin(), GetAbsOrigin() + vecAim * 50, 0, 255, 0, false, 0.2f );
+			}
+		}
+	}
 	else if ( GetEnemy() )
 	{
 		Vector vecEnemyLKP = GetEnemyLKP();
@@ -3050,23 +3067,6 @@ void CASW_Marine::UpdateFacing()
 			NDebugOverlay::Line( GetAbsOrigin(), GetAbsOrigin() + vecAim * 50, 255, 255, 0, false, 0.1f );
 			NDebugOverlay::Line( GetAbsOrigin(), vecEnemyLKP, 255, 255, 255, false, 0.1f );
 			Msg( "aim error = %f fAimYaw = %f\n", m_fMarineAimError, flAimYaw );
-		}
-	}
-	else if ( IsCurSchedule( SCHED_ASW_HEAL_MARINE ) )		// face the marine that we want to heal
-	{
-		if ( m_hHealTarget.Get() )
-		{
-			float flAimYaw = CalcIdealYaw( m_hHealTarget.Get()->GetAbsOrigin() );
-			GetMotor()->SetIdealYawAndUpdate( flAimYaw );
-
-			if ( asw_debug_marine_aim.GetBool() )
-			{
-				Vector vecAim;
-				QAngle angAim = QAngle( 0, flAimYaw, 0 );
-				AngleVectors( angAim, &vecAim );
-
-				NDebugOverlay::Line( GetAbsOrigin(), GetAbsOrigin() + vecAim * 50, 0, 255, 0, false, 0.2f );
-			}
 		}
 	}
 	else if ( GetASWOrders() == ASW_ORDER_FOLLOW )
