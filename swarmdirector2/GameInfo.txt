@@ -1,8 +1,11 @@
 GameInfo {
 	Game			"Swarm Director 2"
-	Type			"multiplayer_only"
 	GameData		"../../../sourcemods/swarmdirector2/fgd/alienswarmdirectormod.fgd"
 	InstancePath	"tilegen/instances/"
+	Developer		"Ben Lubar"
+	Developer_URL	"https://github.com/BenLubar/AlienSwarmDirectorMod"
+	Manual			"https://steamcommunity.com/groups/swarm-director-2"
+	Icon			"resource/logo"
 
 	SupportsDX8     "0"
 
