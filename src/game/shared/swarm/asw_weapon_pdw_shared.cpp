@@ -217,7 +217,7 @@ void CASW_Weapon_PDW::PrimaryAttack()
 #ifndef CLIENT_DLL
 		if (asw_debug_marine_damage.GetBool())
 			Msg("Weapon dmg = %f\n", info.m_flDamage);
-		info.m_flDamage *= pMarine->GetMarineResource()->OnFired_GetDamageScale();
+		info.m_flDamage *= pMarine->OnFired_GetDamageScale();
 #endif
 
 		pMarine->FireBullets( info );

@@ -95,7 +95,6 @@ public:
 	bool IsReloading();
 
 	// leadership effects
-	float OnFired_GetDamageScale();	// called whenever a weapon is fired.  Leadership and damage amp scaling is done here
 	int m_iLeadershipCount;
 	Vector m_vecDeathPosition;	// position of the marine when he died
 	float m_fDeathTime;

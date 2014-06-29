@@ -266,6 +266,10 @@ public:
 
 	float m_flLastUsedButton; // timer for pushing buttons
 
+	virtual bool KeyValue(const char *szKeyName, const char *szValue);
+
+	float OnFired_GetDamageScale();	// called whenever a weapon is fired.  Leadership and damage amp scaling is done here
+
 	// Custom conditions, schedules and tasks
 	enum
 	{

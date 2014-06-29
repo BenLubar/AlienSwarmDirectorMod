@@ -128,7 +128,8 @@ void CASW_Ammo_Drop::ActivateUseIcon( CASW_Marine* pMarine, int nHoldType )
 		pMarine->SetAmmoCount( MIN( iBullets + pWeapon->GetMaxClip1() * iClipsToGive, iMaxAmmoCount ), iAmmoType );
 		m_iAmmoUnitsRemaining -= iAmmoCost;
 
-		pMarine->GetMarineSpeech()->Chatter(CHATTER_USE);
+		if (pMarine->GetMarineResource()) // NPC marines can't talk
+			pMarine->GetMarineSpeech()->Chatter(CHATTER_USE);
 
 		IGameEvent * event = gameeventmanager->CreateEvent( "ammo_pickup" );
 		if ( event )

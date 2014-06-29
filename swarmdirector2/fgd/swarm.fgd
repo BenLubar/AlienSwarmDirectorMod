@@ -4959,7 +4959,7 @@
 	input TurnOff(void) : "Turns the emitter off"
 ]
 
-@NPCClass base(BaseNPC) studio("models/swarm/drone/drone.mdl") sphere() = asw_simple_drone :
+@NPCClass base(BaseNPC) studio("models/aliens/drone/drone.mdl") sphere() = asw_simple_drone :
     "Simple version of alien drone"
 [
 
@@ -4997,7 +4997,7 @@
 	output	OnReachedFightGoal(void) : "Fires when the drone reaches his specified fight-to location"
 ]
 
-@NPCClass base(BaseNPC) studio("models/swarm/drone/uberdrone.mdl") sphere() = asw_drone_uber :
+@NPCClass base(BaseNPC) studio("models/aliens/drone/drone.mdl") sphere() = asw_drone_uber :
 	"Larger, stronger version of the asw_drone"
 [
 	sleepstate(choices) : "Sleep State" : 1 : "Holds the NPC in stasis until specified condition. See also 'Wake Radius' and 'Wake Squad'." =
@@ -5026,7 +5026,7 @@
 	output	OnReachedFightGoal(void) : "Fires when the drone reaches his specified fight-to location"
 ]
 
-@NPCClass base(BaseNPC) studio("models/swarm/drone/drone.mdl") sphere() = asw_drone_jumper :
+@NPCClass base(BaseNPC) studio("models/aliens/drone/drone.mdl") sphere() = asw_drone_jumper :
 	"A vicious killing machine with bladed limbs and sharp teeth, easily able to tear a man to pieces, even an armoured IAF marine.  This jumping variation can leap over large distances."
 [
 	sleepstate(choices) : "Sleep State" : 1 : "Holds the NPC in stasis until specified condition. See also 'Wake Radius' and 'Wake Squad'." =
@@ -5822,7 +5822,7 @@
 	equipclass3(string) : "Equipment class 3" : "" : "Third equipment class that needs to be selected before mission can begin."
 ]
 
-@NPCClass base(BaseNPC) studio("models/swarm/Buzzer/buzzer.mdl") = asw_buzzer : "Buzzer"
+@NPCClass base(BaseNPC) studio("models/aliens/buzzer/buzzer.mdl") = asw_buzzer : "Buzzer"
 [
 	spawnflags(Flags) = 
 	[
@@ -6468,5 +6468,85 @@
 		5 : "Wolfe"
 		6 : "Bastille"
 		7 : "Vegas"
+	]
+
+	weapon_0(choices) : "Primary weapon" : "-1" : "" =
+	[
+		-1 : "(none)"
+		0 : "22A3-1 Assault Rifle"
+		1 : "22A7-Z Prototype Assault Rifle"
+		2 : "S23A SynTek Autogun"
+		3 : "M42 Vindicator"
+		4 : "M73 Twin Pistols"
+		5 : "IAF Advanced Sentry Gun"
+		6 : "IAF Heal Beacon"
+		7 : "IAF Ammo Satchel"
+		8 : "Model 35 Pump-action Shotgun"
+		9 : "IAF Tesla Cannon"
+		10 : "Precision Rail Rifle"
+		11 : "IAF Medical Gun"
+		12 : "K80 Personal Defense Weapon"
+		13 : "M868 Flamer Unit"
+		14 : "IAF Freeze Sentry Gun"
+		15 : "IAF Minigun"
+		16 : "AVK-36 Marksman Rifle"
+		17 : "IAF Incendiary Sentry Gun"
+		18 : "Chainsaw"
+		19 : "IAF High Velocity Sentry Cannon"
+		20 : "Grenade Launcher"
+		21 : "Fire Extinguisher"
+		22 : "Mining Laser"
+		23 : "T75 Explosives"
+	]
+	weapon_1(choices) : "Secondary weapon" : "-1" : "" =
+	[
+		-1 : "(none)"
+		0 : "22A3-1 Assault Rifle"
+		1 : "22A7-Z Prototype Assault Rifle"
+		2 : "S23A SynTek Autogun"
+		3 : "M42 Vindicator"
+		4 : "M73 Twin Pistols"
+		5 : "IAF Advanced Sentry Gun"
+		6 : "IAF Heal Beacon"
+		7 : "IAF Ammo Satchel"
+		8 : "Model 35 Pump-action Shotgun"
+		9 : "IAF Tesla Cannon"
+		10 : "Precision Rail Rifle"
+		11 : "IAF Medical Gun"
+		12 : "K80 Personal Defense Weapon"
+		13 : "M868 Flamer Unit"
+		14 : "IAF Freeze Sentry Gun"
+		15 : "IAF Minigun"
+		16 : "AVK-36 Marksman Rifle"
+		17 : "IAF Incendiary Sentry Gun"
+		18 : "Chainsaw"
+		19 : "IAF High Velocity Sentry Cannon"
+		20 : "Grenade Launcher"
+		21 : "Fire Extinguisher"
+		22 : "Mining Laser"
+		23 : "T75 Explosives"
+	]
+	weapon_2(choices) : "Off-hand item" : "-1" : "" =
+	[
+		-1 : "(none)"
+		0 : "IAF Personal Healing Kit"
+		1 : "Hand Welder"
+		2 : "SM75 Combat Flares"
+		3 : "ML30 Laser Trip Mine"
+		4 : "l3a Tactical Heavy Armor"
+		5 : "X33 Damage Amplifier"
+		6 : "Hornet Barrage"
+		7 : "Freeze Grenades"
+		8 : "Adrenaline"
+		9 : "IAF Tesla Sentry Coil"
+		10 : "v45 Electric Charged Armor"
+		11 : "M478 Proximity Incendiary Mines"
+		12 : "Flashlight Attachment"
+		13 : "IAF Power Fist Attachment"
+		14 : "Hand Grenades"
+		15 : "MNV34 Nightvision Goggles"
+		16 : "MTD6 Smart Bomb"
+		17 : "Displacement 'Blink' Pack"
+		18 : "Short Range Assault Jets"
 	]
 ]

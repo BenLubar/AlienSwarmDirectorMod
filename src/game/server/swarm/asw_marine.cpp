@@ -624,6 +624,7 @@ void CASW_Marine::Spawn( void )
 	SetModel( STRING( GetModelName() ) );
 	SetHullType(HULL_HUMAN);
 	SetHullSizeNormal();
+	SetBodygroup(1, m_nSkin);
 
 	SetSolid( SOLID_BBOX );
 	AddSolidFlags( FSOLID_NOT_STANDABLE );
@@ -1577,6 +1578,9 @@ void CASW_Marine::HurtJunkItem(CBaseEntity *pEnt, const CTakeDamageInfo &info)
 
 void CASW_Marine::HurtAlien(CBaseEntity *pAlien, const CTakeDamageInfo &info)
 {
+	if (!GetMarineResource()) // NPC marines can't talk
+		return;
+
 	bool bMeleeDamage = ( info.GetDamageType() & DMG_CLUB ) != 0;
 	if ( !bMeleeDamage )
 	{
@@ -2015,7 +2019,7 @@ void CASW_Marine::ASWThinkEffects()
 	}
 	else
 	{		
-		if (gpGlobals->curtime > m_fLastStillTime + m_fIdleChatterDelay && m_fLastStillTime != 0)
+		if (gpGlobals->curtime > m_fLastStillTime + m_fIdleChatterDelay && m_fLastStillTime != 0 && GetMarineResource()) // NPC marines can't talk
 		{			
 			if (asw_debug_marine_chatter.GetBool())
 				Msg("%s trying to idle chatter (cur=%f snextidle=%f idlechatdelay=%f(%f)\n", 
@@ -2808,7 +2812,8 @@ bool CASW_Marine::DropWeapon(CASW_Weapon* pWeapon, bool bNoSwap, const Vector *p
 		}
 	}
 
-	GetMarineResource()->UpdateWeaponIndices();
+	if (GetMarineResource())
+		GetMarineResource()->UpdateWeaponIndices();
 		
 	return true;
 }
@@ -3296,7 +3301,7 @@ void CASW_Marine::Event_Killed( const CTakeDamageInfo &info )
 	}
 
 	// see if any other marines are nearby to shout out about us
-	if ( ASWGameResource() )
+	if ( ASWGameResource() && GetMarineResource() ) // NPC marines can't talk
 	{
 		CASW_Game_Resource *pGameResource = ASWGameResource();
 		if (pGameResource)
@@ -3480,6 +3485,9 @@ void CASW_Marine::AimGun()
 void CASW_Marine::DoEmote(int iEmote)
 {
 	if (GetFlags() & FL_FROZEN || !GetMarineSpeech())	// don't allow this if the marine is frozen
+		return;
+
+	if (!GetMarineResource()) // NPC marines can't talk
 		return;
 
 	switch (iEmote)
@@ -4781,4 +4789,65 @@ CBaseTrigger* CASW_Marine::IsInEscapeVolume()
 		}
 	}
 	return NULL;
+}
+
+bool CASW_Marine::KeyValue(const char *szKeyName, const char *szValue)
+{
+	if (!Q_stricmp(szKeyName, "weapon_0"))
+	{
+		Assert(ASWGameRules());
+		ASWGameRules()->GiveStartingWeaponToMarine(this, atoi(szValue), 0);
+	}
+	else if (!Q_stricmp(szKeyName, "weapon_1"))
+	{
+		Assert(ASWGameRules());
+		ASWGameRules()->GiveStartingWeaponToMarine(this, atoi(szValue), 1);
+	}
+	else if (!Q_stricmp(szKeyName, "weapon_2"))
+	{
+		Assert(ASWGameRules());
+		ASWGameRules()->GiveStartingWeaponToMarine(this, atoi(szValue), 2);
+	}
+	else
+	{
+		return BaseClass::KeyValue(szKeyName, szValue);
+	}
+
+	return true;
+}
+
+// a game event has happened that is potentially affected by leadership or other damage scaling
+float CASW_Marine::OnFired_GetDamageScale()
+{
+	float flDamageScale = 1.0f;
+
+	// damage amp causes double damage always
+	if (GetDamageBuffEndTime() > gpGlobals->curtime)
+	{
+		flDamageScale *= 2.0f;
+	}
+
+	//m_iLeadershipCount++;
+
+	// find the shortest leadership interval of our nearby leaders
+	float fChance = MarineSkills()->GetHighestSkillValueNearby(GetAbsOrigin(),
+		asw_leadership_radius.GetFloat(),
+		ASW_MARINE_SKILL_LEADERSHIP, ASW_MARINE_SUBSKILL_LEADERSHIP_ACCURACY_CHANCE);
+	float f = random->RandomFloat();
+	static int iLeadershipAccCount = 0;
+	if (f < fChance)
+	{
+		iLeadershipAccCount++;
+
+		flDamageScale *= 2.0f;
+	}
+
+	if (asw_debug_marine_damage.GetBool())
+	{
+		Msg("Doing leadership accuracy test.  Chance is %f random float is %f\n", fChance, f);
+		Msg("  Leadership accuracy applied %d times so far\n", iLeadershipAccCount);
+		Msg("   OnFired_GetDamageScale returning scale of %f\n", flDamageScale);
+	}
+
+	return flDamageScale;
 }

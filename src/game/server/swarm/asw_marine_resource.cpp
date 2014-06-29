@@ -301,43 +301,6 @@ bool CASW_Marine_Resource::IsFiring()
 	return (m_iServerFiring > 0);
 }
 
-// a game event has happened that is potentially affected by leadership or other damage scaling
-float CASW_Marine_Resource::OnFired_GetDamageScale()
-{
-	float flDamageScale = 1.0f;
-
-	// damage amp causes double damage always
-	CASW_Marine *pMarine = GetMarineEntity();
-	if ( pMarine && pMarine->GetDamageBuffEndTime() > gpGlobals->curtime )
-	{
-		flDamageScale *= 2.0f;
-	}
-
-	//m_iLeadershipCount++;
-
-	// find the shortest leadership interval of our nearby leaders
-	float fChance = MarineSkills()->GetHighestSkillValueNearby(GetMarineEntity()->GetAbsOrigin(),
-		asw_leadership_radius.GetFloat(),
-		ASW_MARINE_SKILL_LEADERSHIP, ASW_MARINE_SUBSKILL_LEADERSHIP_ACCURACY_CHANCE );
-	float f = random->RandomFloat();
-	static int iLeadershipAccCount = 0;
-	if ( f < fChance )
-	{		
-		iLeadershipAccCount++;
-
-		flDamageScale *= 2.0f;
-	}
-
-	if (asw_debug_marine_damage.GetBool())
-	{
-		Msg("Doing leadership accuracy test.  Chance is %f random float is %f\n", fChance, f);
-		Msg("  Leadership accuracy applied %d times so far\n", iLeadershipAccCount);
-		Msg( "   OnFired_GetDamageScale returning scale of %f\n", flDamageScale );
-	}
-		
-	return flDamageScale;
-}
-
 // marine has just used the weapon specified - track stats
 void CASW_Marine_Resource::UsedWeapon(int iWeaponEquipIndex, bool bWeaponExtra, int iShots)
 {

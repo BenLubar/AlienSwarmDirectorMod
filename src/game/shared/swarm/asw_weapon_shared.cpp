@@ -679,7 +679,7 @@ void CASW_Weapon::PrimaryAttack( void )
 #ifndef CLIENT_DLL
 	if (asw_debug_marine_damage.GetBool())
 		Msg("Weapon dmg = %f\n", info.m_flDamage);
-	info.m_flDamage *= pMarine->GetMarineResource()->OnFired_GetDamageScale();
+	info.m_flDamage *= pMarine->OnFired_GetDamageScale();
 	if (asw_DebugAutoAim.GetBool())
 	{
 		NDebugOverlay::Line(info.m_vecSrc, info.m_vecSrc + info.m_vecDirShooting * info.m_flDistance, 64, 0, 64, true, 1.0);
@@ -737,7 +737,7 @@ bool CASW_Weapon::Reload( void )
 		CASW_Marine *pMarine = GetMarine();
 		if ( pMarine )
 		{
-			if ( pMarine->IsAlienNear() )
+			if ( pMarine->IsAlienNear() && pMarine->GetMarineResource() ) // NPC marines can't talk
 			{
 				pMarine->GetMarineSpeech()->Chatter(CHATTER_RELOADING);
 			}

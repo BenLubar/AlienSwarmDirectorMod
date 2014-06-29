@@ -2385,6 +2385,8 @@ void CASW_Marine::RunTask( const Task_t *pTask )
 	{
 	case TASK_ASW_FACE_HOLDING_YAW:
 		{
+			if (!GetMarineResource())
+				m_fHoldingYaw = GetAbsAngles()[YAW];
 			GetMotor()->SetIdealYawAndUpdate( m_fHoldingYaw );
 			Scan();
 

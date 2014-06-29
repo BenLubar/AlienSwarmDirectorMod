@@ -269,7 +269,7 @@ void CASW_Weapon_Ricochet::PrimaryAttack()
 #ifndef CLIENT_DLL
 		if (asw_debug_marine_damage.GetBool())
 			Msg("Weapon dmg = %f\n", info.m_flDamage);
-		info.m_flDamage *= pMarine->GetMarineResource()->OnFired_GetDamageScale();
+		info.m_flDamage *= pMarine->OnFired_GetDamageScale();
 #endif
 
 		// make bullets bounce if secondary fire is held down
@@ -543,7 +543,7 @@ CASW_Bouncing_Pellet*  CASW_Weapon_Ricochet::CreatePellet(Vector vecSrc, Vector 
 	if (asw_debug_marine_damage.GetBool())
 		Msg("Weapon dmg = %f\n", flDamage);
 
-	flDamage *= pMarine->GetMarineResource()->OnFired_GetDamageScale();
+	flDamage *= pMarine->OnFired_GetDamageScale();
 #endif
 	return CASW_Bouncing_Pellet::CreatePellet( vecSrc, newVel, pMarine, flDamage);
 }

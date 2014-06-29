@@ -1558,7 +1558,7 @@ void CASW_Drone_Advanced::StartTask( const Task_t *pTask )
 			if (!m_bDoneAlienCloseChatter && gpGlobals->curtime > s_fNextTooCloseChatterTime)
 			{
 				CASW_Marine *pMarine = dynamic_cast<CASW_Marine*>(GetEnemy());
-				if (pMarine)
+				if (pMarine && pMarine->GetMarineResource()) // NPC marines can't talk
 				{
 					pMarine->GetMarineSpeech()->Chatter(CHATTER_ALIEN_TOO_CLOSE);
 					m_bDoneAlienCloseChatter = true;

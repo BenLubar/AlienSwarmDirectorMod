@@ -2317,7 +2317,7 @@ bool CAlienSwarm::SpawnMarineAt( CASW_Marine_Resource * RESTRICT pMR, const Vect
 	// set the pMarine's commander, pMarine resource, etc
 	pMarine->SetMarineResource(pMR);
 	pMarine->SetCommander(pMR->m_Commander);
-	pMarine->SetInitialCommander( pMR->m_Commander.Get() );
+	pMarine->SetInitialCommander(pMR->m_Commander);
 	if (!m_hPlayerSquad.Get())
 	{
 		m_hPlayerSquad = assert_cast<CASW_SquadFormation *>(CreateEntityByName("asw_squadformation"));

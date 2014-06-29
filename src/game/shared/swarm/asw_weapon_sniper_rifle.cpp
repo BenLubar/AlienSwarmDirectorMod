@@ -183,7 +183,7 @@ void CASW_Weapon_Sniper_Rifle::PrimaryAttack( void )
 #ifndef CLIENT_DLL
 	if (asw_debug_marine_damage.GetBool())
 		Msg("Weapon dmg = %f\n", info.m_flDamage);
-	info.m_flDamage *= pMarine->GetMarineResource()->OnFired_GetDamageScale();
+	info.m_flDamage *= pMarine->OnFired_GetDamageScale();
 #endif
 
 	int iPenetration = 1;

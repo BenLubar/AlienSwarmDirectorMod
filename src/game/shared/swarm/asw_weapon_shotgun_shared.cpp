@@ -170,7 +170,7 @@ void CASW_Weapon_Shotgun::PrimaryAttack( void )
 	#ifndef CLIENT_DLL
 				if (asw_debug_marine_damage.GetBool())
 					Msg("Weapon dmg = %f\n", info.m_flDamage);
-				info.m_flDamage *= pMarine->GetMarineResource()->OnFired_GetDamageScale();
+				info.m_flDamage *= pMarine->OnFired_GetDamageScale();
 	#endif
 				// shotgun bullets have a base 50% chance of piercing
 				//float fPiercingChance = 0.5f;
@@ -288,7 +288,7 @@ bool CASW_Weapon_Shotgun::ShouldMarineMoveSlow()
 		float flDamage = GetWeaponDamage();
 		if (asw_debug_marine_damage.GetBool())
 			Msg("Weapon dmg = %f\n", flDamage);
-		flDamage *= pMarine->GetMarineResource()->OnFired_GetDamageScale();
+		flDamage *= pMarine->OnFired_GetDamageScale();
 		Msg("Creating shotgun pellet\n");
 		return CASW_Shotgun_Pellet::Shotgun_Pellet_Create( vecSrc, QAngle(0,0,0),
 				newVel, rotSpeed, pMarine, flDamage);
