@@ -17,6 +17,7 @@ ConVar asw_marine_ai_followspot( "asw_marine_ai_followspot", "0", FCVAR_CHEAT );
 ConVar asw_follow_hint_max_range("asw_follow_hint_max_range", "900", FCVAR_CHEAT);
 ConVar asw_follow_hint_max_z_dist("asw_follow_hint_max_z_dist", "120", FCVAR_CHEAT);
 ConVar asw_follow_use_hints( "asw_follow_use_hints", "2", FCVAR_CHEAT, "0 = follow formation, 1 = use hints when in combat, 2 = always use hints" );
+ConVar asw_follow_hint_delay( "asw_follow_hint_delay", "5", FCVAR_CHEAT, "The number of seconds marines will ignore follow hints after being told to follow" );
 ConVar asw_follow_hint_debug( "asw_follow_hint_debug", "0", FCVAR_CHEAT );
 ConVar asw_follow_velocity_predict( "asw_follow_velocity_predict", "0.3", FCVAR_CHEAT, "Marines travelling in diamond follow formation will predict their leader's movement ahead by this many seconds" );
 ConVar asw_follow_threshold( "asw_follow_threshold", "40", FCVAR_CHEAT, "Marines in diamond formation will move after leader has moved this much" );
@@ -176,7 +177,7 @@ float CASW_SquadFormation::GetYaw( unsigned slotnum )
 		}
 		return 0.0f;
 	}
-	else if ( g_bLevelHasFollowHints && asw_follow_use_hints.GetBool() && Leader() && ( Leader()->IsInCombat() || asw_follow_use_hints.GetInt() == 2 ) )
+	else if ( g_bLevelHasFollowHints && m_flUseHintsAfter < gpGlobals->curtime && asw_follow_use_hints.GetBool() && Leader() && ( Leader()->IsInCombat() || asw_follow_use_hints.GetInt() == 2 ) )
 	{
 #ifdef HL2_HINTS
 		if ( m_hFollowHint[ slotnum ].Get() )
@@ -243,7 +244,7 @@ void CASW_SquadFormation::RecomputeFollowerOrder(  const Vector &vProjectedLeade
 	Vector vProjectedFollowPos[ MAX_SQUAD_SIZE ];
 	for ( int i = 0 ; i < MAX_SQUAD_SIZE ; ++i )
 	{
-		if ( m_bLevelHasFollowHints && asw_follow_use_hints.GetBool() && m_hLeader.Get() && ( m_hLeader->IsInCombat() || asw_follow_use_hints.GetInt() == 2 ) )
+		if ( m_bLevelHasFollowHints && m_flUseHintsAfter < gpGlobals->curtime && asw_follow_use_hints.GetBool() && m_hLeader.Get() && ( m_hLeader->IsInCombat() || asw_follow_use_hints.GetInt() == 2 ) )
 		{
 #ifdef HL2_HINTS
 			if ( m_hFollowHint[i].Get() )
@@ -405,7 +406,7 @@ void CASW_SquadFormation::UpdateFollowPositions()
 	}
 	m_flLastSquadUpdateTime = gpGlobals->curtime;
 
-	if ( g_bLevelHasFollowHints && asw_follow_use_hints.GetBool() && ( pLeader->IsInCombat() || asw_follow_use_hints.GetInt() ) )
+	if ( g_bLevelHasFollowHints && m_flUseHintsAfter < gpGlobals->curtime && asw_follow_use_hints.GetBool() && ( pLeader->IsInCombat() || asw_follow_use_hints.GetInt() ) )
 	{
 		FindFollowHintNodes();
 	}
@@ -510,7 +511,7 @@ void CASW_SquadFormation::UpdateFollowPositions()
 				m_bFleeingBoomerBombs[ i ] = true;
 			}
 		}
-		else if ( g_bLevelHasFollowHints && asw_follow_use_hints.GetBool() && ( pLeader->IsInCombat() || asw_follow_use_hints.GetInt() == 2 ) )
+		else if ( g_bLevelHasFollowHints && m_flUseHintsAfter < gpGlobals->curtime && asw_follow_use_hints.GetBool() && ( pLeader->IsInCombat() || asw_follow_use_hints.GetInt() == 2 ) )
 		{
 #ifdef HL2_HINTS
 			if ( m_hFollowHint[i].Get() )
@@ -653,6 +654,7 @@ void CASW_SquadFormation::ChangeLeader( CASW_Marine *pNewLeader, bool bUpdateLea
 
 void CASW_SquadFormation::Reset()
 {
+	m_flUseHintsAfter = 0;
 	m_hLeader = NULL;
 	for ( int i = 0 ; i < MAX_SQUAD_SIZE ; ++i )
 	{
@@ -976,4 +978,9 @@ void CASW_SquadFormation::DrawDebugGeometryOverlays()
 		NDebugOverlay::EntityText( pMarine->entindex(), 0, CFmtStr( "Squad slot: %d", p ), 0.05f, 255, 255, 255, 255 );
 	}
 	*/
+}
+
+void CASW_SquadFormation::FollowCommandUsed()
+{
+	m_flUseHintsAfter = gpGlobals->curtime + asw_follow_hint_delay.GetFloat();
 }

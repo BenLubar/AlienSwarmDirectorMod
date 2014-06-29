@@ -2553,6 +2553,9 @@ void OrderNearbyMarines(CASW_Player *pPlayer, ASW_Orders NewOrders, bool bAcknow
 		if ( pMyMarine->GetFlags() & FL_FROZEN )	// don't allow this if the marine is frozen
 			return;
 
+		if (NewOrders == ASW_ORDER_FOLLOW && pMyMarine->GetSquadFormation())
+			pMyMarine->GetSquadFormation()->FollowCommandUsed();
+
 		// go through all marines and tell them to follow our marine
 		CASW_Game_Resource *pGameResource = ASWGameResource();
 		if ( !pGameResource )
@@ -2561,12 +2564,12 @@ void OrderNearbyMarines(CASW_Player *pPlayer, ASW_Orders NewOrders, bool bAcknow
 		// do an emote
 		if ( NewOrders == ASW_ORDER_HOLD_POSITION && bAcknowledge )
 		{
-			pMyMarine->DoEmote( 3 );	// go
+			pMyMarine->DoEmote( 3 );	// stop
 		}
 
 		else if ( NewOrders == ASW_ORDER_FOLLOW && bAcknowledge )
 		{
-			pMyMarine->DoEmote( 4 );	// stop
+			pMyMarine->DoEmote( 4 );	// go
 		}
 
 		// first count how many marines are in range

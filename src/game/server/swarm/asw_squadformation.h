@@ -30,8 +30,7 @@ public:
 
 	inline CASW_Marine *Leader() const { return m_hLeader; }
 	inline void Leader(CASW_Marine *val) { m_hLeader = val; }
-	inline int Count() const ;  // number of followers 
-
+	inline int Count() const; // number of followers
 
 	inline CASW_Marine *Squaddie( unsigned int slotnum ) const ;
 	inline CASW_Marine *operator[]( unsigned int slotnum ) const { return Squaddie(slotnum); }
@@ -51,19 +50,23 @@ public:
 	void ChangeLeader( CASW_Marine *pNewLeader, bool bUpdateLeaderPos = false );
 
 	// reorganize the follower slots so that each follower has the least distance to move
-	void RecomputeFollowerOrder( const Vector &vProjectedLeaderPos, QAngle qLeaderAim ) ; 
+	void RecomputeFollowerOrder( const Vector &vProjectedLeaderPos, QAngle qLeaderAim ); 
 	
 	// recompute the array of positions that squaddies should head towards.
 	void UpdateFollowPositions();
 
 	// should the squaddie positions be recomputed -- assumed this function is called from a marine's Think
-	bool ShouldUpdateFollowPositions() const ;
+	bool ShouldUpdateFollowPositions() const;
+
+	// follow in formation instead of using hints for asw_follow_hint_delay seconds
+	void FollowCommandUsed();
+	float m_flUseHintsAfter;
 
 	// Current notion of "forward", is updated/cached in calls to GetLdrAnglMatrix
 	inline const Vector &Forward() const;
 
 	CASW_SquadFormation() : m_flLastSquadUpdateTime(0) {Reset();};
-	bool SanityCheck() const ;
+	bool SanityCheck() const;
 
 	void FindFollowHintNodes();
 
