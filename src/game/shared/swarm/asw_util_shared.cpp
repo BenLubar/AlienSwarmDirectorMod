@@ -982,8 +982,6 @@ int UTIL_ASW_GetNumPlayers()
 
 bool UTIL_ASW_MissionHasBriefing(const char* mapname)
 {
-
-	//TODO: Update swarmselectionscreen to asdm_...?
 	bool bSpecialMap = (!Q_strnicmp(mapname, "intro_", 6) ||
 			!Q_strnicmp(mapname, "outro_", 6) ||
 			!Q_strnicmp(mapname, "tutorial", 8) ||

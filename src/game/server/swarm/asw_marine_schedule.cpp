@@ -2215,7 +2215,7 @@ CBaseEntity *CASW_Marine::BestAlienGooTarget()
 			continue;
 	
 		float flDistSqr = GetAbsOrigin().DistToSqr( pAlienGoo->GetAbsOrigin() );
-		if( flDistSqr < flClosestDistSqr && FInViewCone( pAlienGoo->GetAbsOrigin() ) && !pAlienGoo->m_bHasGrubs )	// grubs = decorative, not a target
+		if ( flDistSqr < flClosestDistSqr && FInViewCone( pAlienGoo->GetAbsOrigin() ) && !pAlienGoo->m_bHasGrubs && !pAlienGoo->m_bOnFire ) // grubs = decorative, not a target
 		{
 			flClosestDistSqr = flDistSqr;
 			pAlienGooTarget = pAlienGoo;
@@ -2229,35 +2229,47 @@ bool CASW_Marine::EngageNewAlienGooTarget()
 {
 	CASW_Weapon *pActiveWeapon = GetActiveASWWeapon();
 	CASW_Weapon *pFlamer = NULL;
+	CASW_Weapon *pMiningLaser = NULL;
 
-	if( pActiveWeapon && pActiveWeapon->Classify() == CLASS_ASW_FLAMER && pActiveWeapon->HasAmmo() )
+	if (pActiveWeapon && pActiveWeapon->Classify() == CLASS_ASW_FLAMER && pActiveWeapon->HasAmmo())
 	{
 		pFlamer = pActiveWeapon;
 	}
+	else if (pActiveWeapon && pActiveWeapon->Classify() == CLASS_ASW_MINING_LASER && pActiveWeapon->HasAmmo())
+	{
+		pMiningLaser = pActiveWeapon;
+	}
 	else
 	{
-		for ( int iWeapon = 0; iWeapon < ASW_NUM_INVENTORY_SLOTS; iWeapon++ )
+		for (int iWeapon = 0; iWeapon < ASW_NUM_INVENTORY_SLOTS; iWeapon++)
 		{
-			CASW_Weapon *pWeapon = GetASWWeapon( iWeapon );
-			if ( pWeapon && pWeapon->Classify() == CLASS_ASW_FLAMER && pWeapon->HasAmmo() )
+			CASW_Weapon *pWeapon = GetASWWeapon(iWeapon);
+			if (pWeapon && pWeapon->Classify() == CLASS_ASW_FLAMER && pWeapon->HasAmmo())
 			{
 				pFlamer = pWeapon;
+				break;
+			}
+			if (pWeapon && pWeapon->Classify() == CLASS_ASW_MINING_LASER && pWeapon->HasAmmo())
+			{
+				pMiningLaser = pWeapon;
 				break;
 			}
 		}
 	}
 
-	if( pFlamer )
+	if (pFlamer || pMiningLaser)
 	{
-		EHANDLE hAlienGooTarget = BestAlienGooTarget();
-		if( hAlienGooTarget.Get() )
+		SetAlienGooTarget(BestAlienGooTarget());
+		if (GetAlienGooTarget())
 		{
-			SetAlienGooTarget( hAlienGooTarget );
-
 			// only switch weapons if we have a valid target and the weapon is usable
-			if( pFlamer != pActiveWeapon )
+			if (pFlamer && pFlamer != pActiveWeapon)
 			{
-				Weapon_Switch( pFlamer );
+				Weapon_Switch(pFlamer);
+			}
+			else if (pMiningLaser && pMiningLaser != pActiveWeapon)
+			{
+				Weapon_Switch(pMiningLaser);
 			}
 
 			return true;
@@ -3604,7 +3616,7 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 		"		TASK_ASW_GET_PATH_TO_ORDER_POS		0"
 		"		TASK_ASW_CHATTER_CONFIRM		0.4"
 		"		TASK_RUN_PATH					0"	
-		"		TASK_ASW_WAIT_FOR_MOVEMENT			0"
+		"		TASK_ASW_WAIT_FOR_MOVEMENT			1"
 		"		TASK_STOP_MOVING				1"		
 		""
 		"	Interrupts"
