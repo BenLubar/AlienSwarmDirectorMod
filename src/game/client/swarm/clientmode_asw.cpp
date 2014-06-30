@@ -1198,7 +1198,7 @@ void ClientModeASW::OnColorCorrectionWeightsReset( void )
 
 	if ( m_CCInfestedHandle != INVALID_CLIENT_CCHANDLE && ASWGameRules() )
 	{
-		C_ASW_Marine *pMarine = C_ASW_Marine::GetLocalMarine();
+		C_ASW_Marine *pMarine = C_ASW_Marine::GetLocalMarine() ? C_ASW_Marine::GetLocalMarine() : C_ASW_Player::GetLocalASWPlayer()->GetSpectatingMarine();
 		m_fInfestedCCWeight = Approach( pMarine && pMarine->IsInfested() ? 1.0f : 0.0f, m_fInfestedCCWeight, gpGlobals->frametime * ( 1.0f / INFESTED_CC_FADE_TIME ) );
 		g_pColorCorrectionMgr->SetColorCorrectionWeight( m_CCInfestedHandle, m_fInfestedCCWeight );
 
