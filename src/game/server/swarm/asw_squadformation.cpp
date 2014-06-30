@@ -914,20 +914,8 @@ void CASW_SquadFormation::FindFollowHintNodes()
 
 bool CASW_SquadFormation::ShouldUpdateFollowPositions() const
 {
-	// update if a heal beacon was placed/removed
-	if ( m_iLastHealBeaconCount != IHealGrenadeAutoList::AutoList().Count() )
-		return true;
-
-	bool bBoomerBombs = g_aExplosiveProjectiles.Count() > 0;
-
-	// leader's more than epsilon from previous position, 
-	// and we haven't updated in a quarter second.
-	// force a reupdate if leader's velocity has changed by 50% or more or boomer bombs are deployed
-	return ( Leader() &&
-			( gpGlobals->curtime > m_flLastSquadUpdateTime + 0.33f ||
-			  ( Leader()->GetAbsVelocity() - m_vLastLeaderVelocity ).LengthSqr() * FastRecip(m_vLastLeaderVelocity.LengthSqr() ) > ( 0.5f * 0.5f )  ||
-				( Leader()->GetAbsVelocity().IsZeroFast() && !m_vLastLeaderVelocity.IsZeroFast() ) ) &&
-			( Leader()->GetAbsOrigin().DistToSqr(m_vLastLeaderPos) > Sqr(asw_follow_threshold.GetFloat()) || bBoomerBombs ) );
+	// we haven't updated in a quarter second.
+	return Leader() && gpGlobals->curtime > m_flLastSquadUpdateTime + 0.25f;
 }
 
 void CASW_SquadFormation::DrawDebugGeometryOverlays()
