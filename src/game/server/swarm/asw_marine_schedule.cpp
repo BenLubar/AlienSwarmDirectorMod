@@ -97,6 +97,7 @@ ConVar asw_blind_follow( "asw_blind_follow", "0", FCVAR_NONE, "Set to 1 to give 
 ConVar asw_debug_marine_aim( "asw_debug_marine_aim", "0", FCVAR_CHEAT, "Shows debug info on marine aiming" );
 ConVar asw_debug_throw( "asw_debug_throw", "0", FCVAR_CHEAT, "Show node debug info on throw visibility checks" );
 ConVar asw_debug_order_weld( "asw_debug_order_weld", "0", FCVAR_DEVELOPMENTONLY, "Debug lines for ordering marines to offhand weld a door" );
+ConVar asw_marine_melee_approach_distance("asw_marine_melee_approach_distance", "120.0f", FCVAR_CHEAT, "maximum enemy distance for melee", true, 0, false, 0);
 
 ConVar asw_marine_test_new_ai("asw_marine_test_new_ai", "1", FCVAR_CHEAT, "enable Swarm Director 2 marine AI", true, 0, true, 1);
 
@@ -297,7 +298,10 @@ int CASW_Marine::SelectSchedule()
 
 	ClearCondition( COND_ASW_NEW_ORDERS );
 
-	if ( HasCondition( COND_PATH_BLOCKED_BY_PHYSICS_PROP ) || HasCondition( COND_COMPLETELY_OUT_OF_AMMO ) || (asw_marine_test_new_ai.GetBool() && m_fLastMobDamageTime > gpGlobals->curtime - 2.0f && RandomFloat() < 0.8f) )
+	bool bUsingFlamer = GetActiveASWWeapon() && GetActiveASWWeapon()->Classify() == CLASS_ASW_FLAMER;
+
+	if ( HasCondition( COND_PATH_BLOCKED_BY_PHYSICS_PROP ) || ( HasCondition( COND_COMPLETELY_OUT_OF_AMMO ) && GetEnemyLKP().DistToSqr( GetAbsOrigin() ) < Square( asw_marine_melee_approach_distance.GetFloat() ) ) ||
+		( bUsingFlamer && HasCondition( COND_ENEMY_ON_FIRE ) ) || ( asw_marine_test_new_ai.GetBool() && m_fLastMobDamageTime > gpGlobals->curtime - 2.0f && RandomFloat() < 0.8f ) )
 	{
 		int iMeleeSchedule = SelectMeleeSchedule();
 		if( iMeleeSchedule != -1 )
@@ -1037,6 +1041,15 @@ void CASW_Marine::GatherConditions()
 	ClearCondition( COND_PATH_BLOCKED_BY_PHYSICS_PROP );
 	ClearCondition( COND_PROP_DESTROYED );
 	ClearCondition( COND_COMPLETELY_OUT_OF_AMMO );
+
+	if ( GetEnemy() && GetEnemy()->GetBaseAnimating() && GetEnemy()->GetBaseAnimating()->IsOnFire() )
+	{
+		SetCondition( COND_ENEMY_ON_FIRE );
+	}
+	else
+	{
+		ClearCondition( COND_ENEMY_ON_FIRE );
+	}
 
 	if( !GetCurSchedule() )
 		return;
@@ -3521,6 +3534,7 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 	DECLARE_CONDITION( COND_PATH_BLOCKED_BY_PHYSICS_PROP )
 	DECLARE_CONDITION( COND_PROP_DESTROYED )
 	DECLARE_CONDITION( COND_COMPLETELY_OUT_OF_AMMO )
+	DECLARE_CONDITION( COND_ENEMY_ON_FIRE )
 
 	DECLARE_TASK( TASK_ASW_FACE_HOLDING_YAW )
 	DECLARE_TASK( TASK_ASW_FACE_USING_ITEM )

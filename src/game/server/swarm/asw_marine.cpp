@@ -4851,3 +4851,14 @@ float CASW_Marine::OnFired_GetDamageScale()
 
 	return flDamageScale;
 }
+
+bool CASW_Marine::IsValidEnemy(CBaseEntity *pEnemy)
+{
+	if (!BaseClass::IsValidEnemy(pEnemy))
+		return false;
+
+	if (GetActiveASWWeapon() && GetActiveASWWeapon()->Classify() == CLASS_ASW_FLAMER && pEnemy && pEnemy->GetAbsOrigin().DistToSqr(GetAbsOrigin()) > Square(160))
+		return false;
+
+	return true;
+}

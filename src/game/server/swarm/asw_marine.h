@@ -281,6 +281,7 @@ public:
 		COND_PROP_DESTROYED,
 		COND_COMPLETELY_OUT_OF_AMMO,
 		COND_ASW_ORDER_TIME_OUT,
+		COND_ENEMY_ON_FIRE,
 		NEXT_CONDITION,
 
 		SCHED_ASW_HOLD_POSITION = BaseClass::NEXT_SCHEDULE,
@@ -388,6 +389,7 @@ public:
 	void CheckForDisablingAICollision( CBaseEntity *pEntity );
 
 	virtual const Vector &		GetEnemyLKP() const;
+	virtual bool IsValidEnemy(CBaseEntity *pEnemy);
 
 	// hacking
 	CHandle<CASW_Use_Area> m_hAreaToUse;
