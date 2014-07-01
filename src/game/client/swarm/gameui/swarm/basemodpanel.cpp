@@ -1826,7 +1826,7 @@ void CBaseModPanel::ApplySchemeSettings(IScheme *pScheme)
 	surface()->GetScreenSize( screenWide, screenTall );
 
 	char filename[MAX_PATH];
-	V_snprintf( filename, sizeof( filename ), "console/SwarmSelectionScreen_widescreen" ); // TODO: engine->GetStartupImage( filename, sizeof( filename ), screenWide, screenTall );
+	V_snprintf( filename, sizeof( filename ), "VGUI/swarm/loading/BGFX01" ); // TODO: engine->GetStartupImage( filename, sizeof( filename ), screenWide, screenTall );
 	m_iBackgroundImageID = surface()->CreateNewTextureID();
 	surface()->DrawSetTextureFile( m_iBackgroundImageID, filename, true, false );
 
@@ -1864,7 +1864,7 @@ void CBaseModPanel::ApplySchemeSettings(IScheme *pScheme)
 	}
 	else
 	{
-		Q_snprintf( m_szFadeFilename, sizeof( m_szFadeFilename ), "materials/console/%s.vtf", "SwarmSelectionScreen" );
+		Q_snprintf( m_szFadeFilename, sizeof( m_szFadeFilename ), "materials/console/%s_widescreen.vtf", "SwarmSelectionScreen" );
 	}
 
 	// TODO: GetBackgroundMusic
