@@ -5714,6 +5714,11 @@
 		0 : "Hidden"
 		1 : "Visible"
 	]
+	Optional(choices) : "Optional" : 1 : "Whether the mission can be completed without this objective" =
+	[
+		0 : "Required"
+		1 : "Optional"
+	]
 	
 	output OnObjectiveComplete(void) : "Fired when the objective is completed."
 	input SetVisible(bool) : "Hide or show the objective"
