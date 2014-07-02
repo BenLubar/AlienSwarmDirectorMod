@@ -5714,7 +5714,7 @@
 		0 : "Hidden"
 		1 : "Visible"
 	]
-	Optional(choices) : "Optional" : 1 : "Whether the mission can be completed without this objective" =
+	Optional(choices) : "Optional" : 0 : "Whether the mission can be completed without this objective" =
 	[
 		0 : "Required"
 		1 : "Optional"
