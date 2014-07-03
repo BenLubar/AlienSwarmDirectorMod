@@ -76,6 +76,7 @@
 #include "asw_objective_kill_goo.h"
 #include "asw_objective_kill_queen.h"
 #include "asw_objective_escape.h"
+#include "asw_objective_triggered.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -565,7 +566,37 @@ int CASW_Marine::SelectSchedule()
 						Assert(pEnt);
 						if (pEnt)
 						{
-							vecBest = pEnt->WorldSpaceCenter();
+							Vector mins = pEnt->CollisionProp()->OBBMins();
+							Vector maxs = pEnt->CollisionProp()->OBBMaxs();
+							if (pEnt->CollisionProp()->IsBoundsDefinedInEntitySpace())
+							{
+								mins += pEnt->GetAbsOrigin();
+								maxs += pEnt->GetAbsOrigin();
+							}
+							vecBest.x = RandomFloat(mins.x, maxs.x);
+							vecBest.y = RandomFloat(mins.y, maxs.y);
+							vecBest.z = RandomFloat(mins.z, maxs.z);
+						}
+					}
+					else if (dynamic_cast<CASW_Objective_Triggered *>(pObj))
+					{
+						string_t iName = pObj->GetEntityName();
+						Assert(iName);
+
+						CBaseEntity *pEnt = assert_cast<CASW_Objective_Triggered *>(pObj)->FindTriggerEnt();
+						Assert(pEnt);
+						if (pEnt)
+						{
+							Vector mins = pEnt->CollisionProp()->OBBMins();
+							Vector maxs = pEnt->CollisionProp()->OBBMaxs();
+							if (pEnt->CollisionProp()->IsBoundsDefinedInEntitySpace())
+							{
+								mins += pEnt->GetAbsOrigin();
+								maxs += pEnt->GetAbsOrigin();
+							}
+							vecBest.x = RandomFloat(mins.x, maxs.x);
+							vecBest.y = RandomFloat(mins.y, maxs.y);
+							vecBest.z = RandomFloat(mins.z, maxs.z);
 						}
 					}
 					else
@@ -680,6 +711,19 @@ void CASW_Marine::TaskFail( AI_TaskFailureCode_t code )
 			m_flResetAmmoIgnoreListTime = gpGlobals->curtime + 15.0f;
 		}
 
+		if (asw_marine_test_new_ai.GetBool())
+		{
+			CBaseEntity *pEnt = gEntList.FindEntityByClassnameNearest("prop_physics", GetAbsOrigin(), 128);
+			if (!pEnt || pEnt->m_takedamage == DAMAGE_NO || pEnt->GetHealth() <= 0)
+				pEnt = gEntList.FindEntityByClassnameNearest("prop_physics_override", GetAbsOrigin(), 128);
+			if (!pEnt || pEnt->m_takedamage == DAMAGE_NO || pEnt->GetHealth() <= 0)
+				pEnt = gEntList.FindEntityByClassnameNearest("physics_prop", GetAbsOrigin(), 128);
+			if (!pEnt || pEnt->m_takedamage == DAMAGE_NO || pEnt->GetHealth() <= 0)
+				pEnt = gEntList.FindEntityByClassnameNearest("asw_prop_physics", GetAbsOrigin(), 128);
+			if (pEnt && pEnt->m_takedamage != DAMAGE_NO && pEnt->GetHealth() > 0)
+				SetPhysicsPropTarget(pEnt);
+		}
+
 		if (asw_marine_test_new_ai.GetBool() && !m_hAreaToUse.Get() && GetSquadLeader() && !GetSquadLeader()->IsInhabited() && m_flLastUsedButton < gpGlobals->curtime - 15)
 		{
 			CASW_Use_Area *pClosestArea = NULL;
@@ -692,7 +736,7 @@ void CASW_Marine::TaskFail( AI_TaskFailureCode_t code )
 				if (pArea->Classify() == CLASS_ASW_BUTTON_PANEL)
 				{
 					CASW_Button_Area *pButton = assert_cast<CASW_Button_Area*>(pArea);
-					if (pButton->IsLocked() || !pButton->HasPower())
+					if (pButton->IsLocked() || !pButton->HasPower() || !pButton->m_bUseAreaEnabled.Get())
 						continue;
 
 					float flDist = GetAbsOrigin().DistTo(pArea->WorldSpaceCenter());
@@ -787,11 +831,11 @@ int CASW_Marine::SelectHackingSchedule()
 	{
 		CASW_Button_Area *pButton = dynamic_cast<CASW_Button_Area *>(m_hAreaToUse.Get());
 		CASW_Computer_Area *pComputer = dynamic_cast<CASW_Computer_Area *>(m_hAreaToUse.Get());
-		if ( pButton && pButton->m_bIsInUse.Get() )
+		if ( pButton && ( pButton->m_bIsInUse.Get() || !pButton->m_bUseAreaEnabled.Get() ) )
 		{
 			m_hAreaToUse = NULL;
 		}
-		else if ( pComputer && pComputer->m_bIsInUse.Get() )
+		else if ( pComputer && ( pComputer->m_bIsInUse.Get()|| !pComputer->m_bUseAreaEnabled.Get() ) )
 		{
 			m_hAreaToUse = NULL;
 		}
@@ -4055,7 +4099,7 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 		"		TASK_ASW_GET_PATH_TO_ORDER_POS		0"
 		"		TASK_ASW_CHATTER_CONFIRM		0.4"
 		"		TASK_RUN_PATH					0"	
-		"		TASK_ASW_WAIT_FOR_MOVEMENT			1"
+		"		TASK_ASW_WAIT_FOR_MOVEMENT			0"
 		"		TASK_STOP_MOVING				1"		
 		""
 		"	Interrupts"

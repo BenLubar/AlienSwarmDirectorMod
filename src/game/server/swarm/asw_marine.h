@@ -379,13 +379,13 @@ public:
 	float m_flLastGooScanTime;
 	CBaseEntity *BestAlienGooTarget();
 	void SetAlienGooTarget( CBaseEntity *pAlienGooTarget )	{ m_hAlienGooTarget = pAlienGooTarget; }
-	EHANDLE GetAlienGooTarget() { return m_hAlienGooTarget.Get(); }
-	EHANDLE GetAlienGooTarget() const { return m_hAlienGooTarget.Get(); }
+	CBaseEntity *GetAlienGooTarget() { return m_hAlienGooTarget.Get(); }
+	CBaseEntity *GetAlienGooTarget() const { return m_hAlienGooTarget.Get(); }
 	bool EngageNewAlienGooTarget();
 
 	void SetPhysicsPropTarget( CBaseEntity *pPhysicsPropTarget ) { m_hPhysicsPropTarget = pPhysicsPropTarget; }
-	EHANDLE GetPhysicsPropTarget() { return m_hPhysicsPropTarget.Get(); }
-	EHANDLE GetPhysicsPropTarget() const { return m_hPhysicsPropTarget.Get(); }
+	CBaseEntity *GetPhysicsPropTarget() { return m_hPhysicsPropTarget.Get(); }
+	CBaseEntity *GetPhysicsPropTarget() const { return m_hPhysicsPropTarget.Get(); }
 	void CheckForDisablingAICollision( CBaseEntity *pEntity );
 
 	virtual const Vector &		GetEnemyLKP() const;

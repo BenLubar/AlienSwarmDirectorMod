@@ -14,6 +14,11 @@ public:
 
 	CASW_Objective_Triggered();
 	virtual ~CASW_Objective_Triggered();
+
+	EHANDLE m_hTrigger;
+	float m_flTriggerValid;
+
+	CBaseEntity *FindTriggerEnt();
 	 
 	// inputs
 	void InputSetComplete( inputdata_t &inputdata );
