@@ -4860,5 +4860,8 @@ bool CASW_Marine::IsValidEnemy(CBaseEntity *pEnemy)
 	if (GetActiveASWWeapon() && GetActiveASWWeapon()->Classify() == CLASS_ASW_FLAMER && pEnemy && pEnemy->GetAbsOrigin().DistToSqr(GetAbsOrigin()) > Square(160))
 		return false;
 
+	if (pEnemy->Classify() == CLASS_ASW_ALIEN_GOO && pEnemy->GetBaseAnimating()->IsOnFire())
+		return false;
+
 	return true;
 }
