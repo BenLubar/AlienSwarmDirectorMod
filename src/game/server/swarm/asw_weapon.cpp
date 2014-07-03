@@ -263,12 +263,13 @@ bool CASW_Weapon::WeaponLOSCondition( const Vector &ownerPos, const Vector &targ
 
 	// if the weapon has LOS, then do another wider trace to check we don't hit any friendlies
 	//   this is to stop the AI marines shooting way too close to other marines, which stops the player thinking about positioning so much
-	if (bHasLOS && GetOwner() && asw_weapon_safety_hull.GetFloat() > 0)
+	if (bHasLOS && GetOwner() && asw_weapon_safety_hull.GetFloat() >= 0)
 	{
 		CAI_BaseNPC* npcOwner = GetOwner()->MyNPCPointer();	
 		Vector vecRelativeShootPosition;
 		VectorSubtract( npcOwner->Weapon_ShootPosition(), npcOwner->GetAbsOrigin(), vecRelativeShootPosition );	// Find its relative shoot position
-		Vector barrelPos = ownerPos + vecRelativeShootPosition;	
+		Vector barrelPos = ownerPos;
+		barrelPos.z += vecRelativeShootPosition.z;
 		CASWWeaponLOSFilter traceFilter( GetOwner(), npcOwner->GetEnemy(), COLLISION_GROUP_BREAKABLE_GLASS );	// Use the custom LOS trace filter
 		trace_t tr;
 		UTIL_TraceHull( barrelPos, targetPos, Vector(-asw_weapon_safety_hull.GetFloat(), -asw_weapon_safety_hull.GetFloat(), -asw_weapon_safety_hull.GetFloat()),

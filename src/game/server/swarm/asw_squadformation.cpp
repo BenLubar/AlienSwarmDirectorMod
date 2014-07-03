@@ -654,7 +654,7 @@ void CASW_SquadFormation::ChangeLeader( CASW_Marine *pNewLeader, bool bUpdateLea
 
 void CASW_SquadFormation::Reset()
 {
-	m_flUseHintsAfter = 0;
+	m_flUseHintsAfter = -1;
 	m_hLeader = NULL;
 	for ( int i = 0 ; i < MAX_SQUAD_SIZE ; ++i )
 	{
@@ -970,5 +970,9 @@ void CASW_SquadFormation::DrawDebugGeometryOverlays()
 
 void CASW_SquadFormation::FollowCommandUsed()
 {
-	m_flUseHintsAfter = gpGlobals->curtime + asw_follow_hint_delay.GetFloat();
+	// skip the follow hint delay when the first (automated) follow command comes through at mission start.
+	if (m_flUseHintsAfter == -1)
+		m_flUseHintsAfter = 0;
+	else
+		m_flUseHintsAfter = gpGlobals->curtime + asw_follow_hint_delay.GetFloat();
 }

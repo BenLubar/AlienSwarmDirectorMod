@@ -91,6 +91,7 @@ int ACT_MARINE_LAYING_ON_FLOOR;
 ConVar asw_marine_aim_error_max("asw_marine_aim_error_max", "20.0f", FCVAR_CHEAT, "Maximum firing error angle for AI marines with base accuracy skill\n");
 ConVar asw_marine_aim_error_min("asw_marine_aim_error_min", "5.0f", FCVAR_CHEAT, "Minimum firing error angle for AI marines with base accuracy skill\n");
 ConVar asw_marine_aim_error_correction("asw_marine_aim_error_correction", "10.0f", FCVAR_CHEAT, "Maximum amount to reduce AI aim error based on target velocity\n", true, 0, false, 0);
+ConVar asw_marine_aim_error_direction("asw_marine_aim_error_direction", "0", FCVAR_CHEAT, "Bias aim error towards far (-1) near (1) or either (0) side\n", true, -1, true, 1);
 // todo: have this value vary based on marine skill/level/distance
 ConVar asw_marine_aim_error_decay_multiplier("asw_marine_aim_error_decay_multiplier", "0.9f", FCVAR_CHEAT, "Value multiplied per turn to reduce aim error over time\n");
 ConVar asw_blind_follow( "asw_blind_follow", "0", FCVAR_NONE, "Set to 1 to give marines short sight range while following (old school alien swarm style)" );
@@ -356,7 +357,7 @@ int CASW_Marine::SelectSchedule()
 			return iFollowSchedule;
 	}
 
-	if ( GetASWOrders() == ASW_ORDER_MOVE_TO && !(asw_marine_test_new_ai.GetBool() && GetSquadLeader() == this) )
+	if ( GetASWOrders() == ASW_ORDER_MOVE_TO && ( !asw_marine_test_new_ai.GetBool() || GetSquadLeader() != this ) )
 	{/*
 		if ( HasCondition(COND_CAN_RANGE_ATTACK1) )
 		{
@@ -575,7 +576,13 @@ int CASW_Marine::SelectSchedule()
 				if (flMinDist != -1)
 				{
 					SetASWOrders(ASW_ORDER_MOVE_TO, m_fHoldingYaw, &vecBest);
-					return SCHED_ASW_MOVE_TO_ORDER_POS;
+
+					float dist = GetAbsOrigin().DistTo(vecBest);
+					if (dist > 30)
+					{
+						return SCHED_ASW_MOVE_TO_ORDER_POS;
+					}
+					return SCHED_ASW_HOLD_POSITION;
 				}
 			}
 		}
@@ -2026,7 +2033,7 @@ void CASW_Marine::StartTask(const Task_t *pTask)
 	case TASK_ASW_GET_PATH_TO_ORDER_POS:
 		{			
 			//NDebugOverlay::Line( GetAbsOrigin(), m_vecMoveToOrderPos, 255, 0, 0, true, 4.0f );
-			float flTolerance = AIN_HULL_TOLERANCE;
+			float flTolerance = 100.0f; //AIN_HULL_TOLERANCE;
 			if ( m_vecMoveToOrderPos == m_vecOffhandItemSpot )
 			{
 				flTolerance = 100.0f;
@@ -2944,27 +2951,62 @@ bool CASW_Marine::SetNewAimError(CBaseEntity *pTarget)
 			enemySpeed = 1;
 		float dot = DotProduct(pTarget->Forward(), Forward());
 
-		float adjustment = 1 + (2 - dot) / 2 / enemySpeed * asw_marine_aim_error_correction.GetFloat();
+		float adjustment = (1 - fabs(dot)) / enemySpeed * asw_marine_aim_error_correction.GetFloat();
 
-		//DevMsg("%s: enemy facing (%f, %f, %f) facing (%f, %f, %f) enemy speed (%f) dot product (%f) adjustment (%f)\n", GetDebugName(), pTarget->Forward().x, pTarget->Forward().y, pTarget->Forward().z, Forward().x, Forward().y, Forward().z, enemySpeed, dot, adjustment);
+		if ( asw_debug_marine_aim.GetBool() )
+			Msg( "%s: enemy facing (%f, %f, %f) facing (%f, %f, %f) enemy speed (%f) dot product (%f) adjustment (%f)\n",
+				GetDebugName(), pTarget->Forward().x, pTarget->Forward().y, pTarget->Forward().z,
+				Forward().x, Forward().y, Forward().z, enemySpeed, dot, adjustment );
 
 		m_fMarineAimError /= adjustment;
 	}
 
 	if ( m_fMarineAimError > fabs( angleDiff ) )
 	{
+		if ( asw_debug_marine_aim.GetBool() )
+			Msg( "%s: new aim error (%f) is more than old aim error (%f). clamping\n", GetDebugName(), m_fMarineAimError, fabs( angleDiff ) );
 		m_fMarineAimError = fabs( angleDiff );
 	}
-	
-	if ( angleDiff > 0 )
+
+	switch ( asw_marine_aim_error_direction.GetInt() )
 	{
-		m_fMarineAimError = -m_fMarineAimError;
+	case -1:
+		if ( angleDiff < 0 )
+		{
+			if ( asw_debug_marine_aim.GetBool() )
+				Msg( "%s: flipping aim error to far side\n", GetDebugName() );
+			m_fMarineAimError = -m_fMarineAimError;
+		}
+		break;
+	case 1:
+		if ( angleDiff > 0 )
+		{
+			if ( asw_debug_marine_aim.GetBool() )
+				Msg( "%s: flipping aim error to near side\n", GetDebugName() );
+			m_fMarineAimError = -m_fMarineAimError;
+		}
+		break;
+	case 0:
+		if ( RandomInt( 0, 1 ) )
+		{
+			if ( angleDiff > 0 )
+			{
+				if ( asw_debug_marine_aim.GetBool() )
+					Msg( "%s: flipping aim error to near side\n", GetDebugName() );
+				m_fMarineAimError = -m_fMarineAimError;
+			}
+			else
+			{
+				if ( asw_debug_marine_aim.GetBool() )
+					Msg( "%s: flipping aim error to far side\n", GetDebugName() );
+				m_fMarineAimError = -m_fMarineAimError;
+			}
+			break;
+		}
 	}
 
 	if ( asw_debug_marine_aim.GetBool() )
-	{
-		Msg( "Set marine's aim error to %f\n", m_fMarineAimError );
-	}
+		Msg( "%s: Final aim error is %f\n", GetDebugName(), m_fMarineAimError );
 
 	return true;
 }
@@ -3179,43 +3221,9 @@ void CASW_Marine::UpdateFacing()
 
 bool CASW_Marine::OverrideMoveFacing( const AILocalMoveGoal_t &move, float flInterval )
 {
-	// make him looking towards his holding direction as he moves
-	/*
-	if (GetASWOrders() == ASW_ORDER_MOVE_TO)
-	{
-		QAngle holding(0, m_fHoldingYaw,0);
-		Vector vecForward;
-		AngleVectors(holding, &vecForward);
-
-		Vector vDest = GetNavigator()->GetGoalPos();
-		Msg("Adding facing target..\n");
-		AddFacingTarget( vDest + vecForward * 100.0f, 10.0f, 1.0f );
-	}*/
-
-	// if we're moving to a specific spot, make sure we face our enemy so we can shoot while on the move
-	if (GetEnemy() && (GetASWOrders()==ASW_ORDER_MOVE_TO || GetASWOrders() == ASW_ORDER_FOLLOW))
-	{
-		// ASWTODO - is this move_yaw set needed? (or needs to be move_x/y?)
-		//float flMoveYaw = UTIL_VecToYaw( move.dir );
-
-		//float idealYaw = UTIL_AngleMod( flMoveYaw );
-		//float flEYaw = UTIL_VecToYaw( GetEnemy()->WorldSpaceCenter() - WorldSpaceCenter() );
-
-		// UpdateFacing();
-
-		// find movement direction to compensate for not being turned far enough
-		// ASWTODO - is this move_yaw set needed? (or needs to be move_x/y?)
-		/*
-		float fSequenceMoveYaw = GetSequenceMoveYaw( GetSequence() );
-		float flDiff = UTIL_AngleDiff( flMoveYaw, GetLocalAngles().y + fSequenceMoveYaw );
-		SetPoseParameter( "move_yaw", GetPoseParameter( "move_yaw" ) + flDiff );
-		*/
-		return true;
-	}
+	UpdateFacing();
 
 	return true;
-
-	return BaseClass::OverrideMoveFacing( move, flInterval );
 }
 
 // check for AI changing weapon if he's getting hurt and has a non-offensive weapon equipped
