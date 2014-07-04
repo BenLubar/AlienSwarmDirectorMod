@@ -557,8 +557,10 @@ void CASW_Hud_Master::Paint( void )
 		PaintLocalMarinePortrait();
 		PaintLocalMarineInventory();
 		PaintFastReload();
+#if 0
 		PaintModPlayerPerformance();
 		PaintModPlayerPerformanceDynamicContentNotification();
+#endif
 	}
 
 	for ( int i = 0; i < MAX_SQUADMATE_HUD_POSITIONS; i++ )
