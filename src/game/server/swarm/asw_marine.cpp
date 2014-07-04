@@ -399,7 +399,8 @@ extern ConVar asw_marine_test_new_ai;
 extern ConVar asw_energy_weapons;
 ConVar asw_energy_weapons_delay("asw_energy_weapons_delay", "0.5", FCVAR_CHEAT);
 ConVar asw_energy_weapons_rate_base("asw_energy_weapons_rate_base", "0.5", FCVAR_CHEAT);
-ConVar asw_energy_weapons_rate_increment("asw_energy_weapons_rate_increment", "0.0625", FCVAR_CHEAT);
+ConVar asw_energy_weapons_rate_increment("asw_energy_weapons_rate_increment", "0.1", FCVAR_CHEAT);
+ConVar asw_energy_weapons_rate_offhand("asw_energy_weapons_rate_offhand", "0.05", FCVAR_CHEAT);
 
 float CASW_Marine::s_fNextMadFiringChatter = 0;
 float CASW_Marine::s_fNextIdleChatterTime = 0;
@@ -4926,6 +4927,11 @@ void CASW_Marine::EnergyThink()
 
 		float flPerSecond1 = asw_energy_weapons_rate_base.GetFloat() + (asw_energy_weapons_rate_increment.GetFloat() * pWeapon->GetMaxClip1());
 		float flPerSecond2 = asw_energy_weapons_rate_base.GetFloat() + (asw_energy_weapons_rate_increment.GetFloat() * pWeapon->GetMaxClip2());
+		if (i == 2)
+		{
+			flPerSecond1 = asw_energy_weapons_rate_offhand.GetFloat();
+			flPerSecond2 = asw_energy_weapons_rate_offhand.GetFloat();
+		}
 
 		int nAddedAmmo1 = (gpGlobals->curtime - m_flLastRechargedAmmo1[i]) * flPerSecond1;
 		int nAddedAmmo2 = (gpGlobals->curtime - m_flLastRechargedAmmo2[i]) * flPerSecond2;
