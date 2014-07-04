@@ -20,8 +20,6 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-#define MEDKIT_HEAL_AMOUNT 50
-
 IMPLEMENT_NETWORKCLASS_ALIASED( ASW_Weapon_Medkit, DT_ASW_Weapon_Medkit )
 
 BEGIN_NETWORK_TABLE( CASW_Weapon_Medkit, DT_ASW_Weapon_Medkit )

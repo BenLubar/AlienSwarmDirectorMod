@@ -36,5 +36,6 @@ public:
 	virtual Class_T		Classify( void ) { return (Class_T) CLASS_ASW_MEDKIT; }
 };
 
+#define MEDKIT_HEAL_AMOUNT 50
 
 #endif /* _INCLUDED_ASW_WEAPON_MEDKIT_H */

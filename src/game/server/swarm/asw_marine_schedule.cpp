@@ -77,6 +77,7 @@
 #include "asw_objective_kill_queen.h"
 #include "asw_objective_escape.h"
 #include "asw_objective_triggered.h"
+#include "asw_weapon_medkit_shared.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -1215,6 +1216,15 @@ bool CASW_Marine::CanHeal() const
 
 int CASW_Marine::SelectHealSchedule()
 {
+	if (GetMaxHealth() - GetHealth() > MEDKIT_HEAL_AMOUNT && !m_bSlowHeal)
+	{
+		CASW_Weapon_Medkit *pMedkit = dynamic_cast<CASW_Weapon_Medkit *>(GetASWWeapon(2));
+		if (pMedkit && pMedkit->Clip1())
+		{
+			pMedkit->OffhandActivate();
+		}
+	}
+
 	if (!CanHeal())
 	{
 		m_hHealTarget = NULL;
