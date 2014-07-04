@@ -30,6 +30,7 @@ using namespace BaseModUI;
 //=============================================================================
 static ConVar ui_public_lobby_filter_difficulty2( "ui_public_lobby_filter_difficulty2", "", FCVAR_ARCHIVE, "Filter type for difficulty on the public lobby display" );
 static ConVar ui_public_lobby_filter_onslaught( "ui_public_lobby_filter_onslaught", "", FCVAR_ARCHIVE, "Filter type for Onslaught mode on the public lobby display");
+static ConVar ui_public_lobby_filter_energyweapons("ui_public_lobby_filter_energyweapons", "", FCVAR_ARCHIVE, "Filter type for energy weapons mode on the public lobby display");
 ConVar ui_public_lobby_filter_campaign( "ui_public_lobby_filter_campaign", "", FCVAR_ARCHIVE, "Filter type for campaigns on the public lobby display" );
 ConVar ui_public_lobby_filter_status( "ui_public_lobby_filter_status", "", FCVAR_ARCHIVE, "Filter type for game status on the public lobby display" );
 
@@ -40,6 +41,7 @@ FoundPublicGames::FoundPublicGames( Panel *parent, const char *panelName ) :
 {
 	m_drpDifficulty = NULL;
 	m_drpOnslaught = NULL;
+	m_drpEnergyWeapons = NULL;
 	m_drpGameStatus = NULL;
 	m_drpCampaign = NULL;
 	
@@ -93,8 +95,11 @@ void FoundPublicGames::ApplySchemeSettings( IScheme *pScheme )
 {
 	BaseClass::ApplySchemeSettings( pScheme );
 
+	LoadControlSettings( "resource/ui/basemodui/foundpublicgames_asdm.res" );
+
 	m_drpDifficulty = dynamic_cast< DropDownMenu* >( FindChildByName( "DrpFilterDifficulty" ) );
 	m_drpOnslaught = dynamic_cast< DropDownMenu* >( FindChildByName( "DrpFilterOnslaught" ) );
+	m_drpEnergyWeapons = dynamic_cast< DropDownMenu* >( FindChildByName( "DrpFilterEnergyWeapons" ) );
 	m_drpGameStatus = dynamic_cast< DropDownMenu* >( FindChildByName( "DrpFilterGameStatus" ) );
 	m_drpCampaign = dynamic_cast< DropDownMenu* >( FindChildByName( "DrpFilterCampaign" ) );
 	m_btnFilters = dynamic_cast< BaseModUI::BaseModHybridButton* >( FindChildByName( "BtnFilters" ) );
@@ -173,7 +178,11 @@ void FoundPublicGames::StartSearching( void )
 
 	char const *szOnslaught = ui_public_lobby_filter_onslaught.GetString();
 	if ( szOnslaught && *szOnslaught )
-		pKeyValuesSearch->SetInt( "game/onslaught", 1 );
+		pKeyValuesSearch->SetString( "game/onslaught", szOnslaught );
+
+	char const *szEnergyWeapons = ui_public_lobby_filter_energyweapons.GetString();
+	if ( szEnergyWeapons && *szEnergyWeapons )
+		pKeyValuesSearch->SetString( "game/energyweapons", szEnergyWeapons );
 
 	char const *szStatus = ui_public_lobby_filter_status.GetString();
 	if ( szStatus && *szStatus )
@@ -513,6 +522,11 @@ void FoundPublicGames::OnCommand( const char *command )
 		ui_public_lobby_filter_onslaught.SetValue( filterOnslaught );
 		StartSearching();
 	}
+	else if ( char const *filterEnergyWeapons = StringAfterPrefix( command, "filter_energyweapons_" ) )
+	{
+		ui_public_lobby_filter_energyweapons.SetValue( filterEnergyWeapons );
+		StartSearching();
+	}
 	else if ( char const *filterCampaign = StringAfterPrefix( command, "filter_campaign_" ) )
 	{
 		ui_public_lobby_filter_campaign.SetValue( filterCampaign );
@@ -559,6 +573,11 @@ void FoundPublicGames::Activate()
 	if ( m_drpOnslaught )
 	{
 		m_drpOnslaught->SetCurrentSelection( CFmtStr( "filter_onslaught_%s", ui_public_lobby_filter_onslaught.GetString() ) );
+	}
+
+	if ( m_drpEnergyWeapons )
+	{
+		m_drpEnergyWeapons->SetCurrentSelection( CFmtStr( "filter_energyweapons_%s", ui_public_lobby_filter_energyweapons.GetString() ) );
 	}
 
 	if ( m_drpGameStatus )

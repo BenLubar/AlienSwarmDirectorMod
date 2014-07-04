@@ -47,6 +47,7 @@ public:
 	BaseModUI::DropDownMenu* m_drpFixedSkillPoints;
 	BaseModUI::DropDownMenu* m_drpFriendlyFire;
 	BaseModUI::DropDownMenu* m_drpOnslaught;
+	BaseModUI::DropDownMenu* m_drpEnergyWeapons;
 
 	ObjectiveListBox* m_pObjectiveList;
 	ObjectiveDetailsPanel* m_pObjectiveDetails;
@@ -63,6 +64,7 @@ public:
 	int m_iLastFixedSkillPoints;
 	int m_iLastHardcoreFF;
 	int m_iLastOnslaught;
+	int m_iLastEnergyWeapons;
 };
 
 class InGameMissionPanelFrame : public vgui::Frame

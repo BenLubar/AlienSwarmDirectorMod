@@ -1,4 +1,4 @@
-"Resource/UI/StatsReport.res"
+"Resource/UI/StatsReport_ASDM.res"
 {
 	"Background1"
 	{
@@ -91,10 +91,10 @@
 		"ypos"			"75"
 		"zpos"			"0"
 		"wide"			"140"
-		"tall"			"20"
+		"tall"			"12"
 
 		"textAlignment"   "west"
-		"font"      "DefaultLarge"
+		"font"      "Default"
 		"fgcolor_override"	"255 255 255 0"
 	}
 	
@@ -105,7 +105,7 @@
 		"zpos"			"0"
 
 		"textAlignment"   "west"
-		"font"      "DefaultLarge"
+		"font"      "Default"
 		"fgcolor_override"	"255 255 255 255"
 	}
 	"PlayerName1"
@@ -115,7 +115,7 @@
 		"zpos"			"0"
 
 		"textAlignment"   "west"
-		"font"      "DefaultLarge"
+		"font"      "Default"
 		"fgcolor_override"	"255 255 255 255"
 	}
 	"PlayerName2"
@@ -125,7 +125,7 @@
 		"zpos"			"0"
 
 		"textAlignment"   "west"
-		"font"      "DefaultLarge"
+		"font"      "Default"
 		"fgcolor_override"	"255 255 255 255"
 	}
 	"PlayerName3"
@@ -135,7 +135,7 @@
 		"zpos"			"0"
 
 		"textAlignment"   "west"
-		"font"      "DefaultLarge"
+		"font"      "Default"
 		"fgcolor_override"	"255 255 255 255"
 	}
 	"PlayerName4"
@@ -145,7 +145,7 @@
 		"zpos"			"0"
 
 		"textAlignment"   "west"
-		"font"      "DefaultLarge"
+		"font"      "Default"
 		"fgcolor_override"	"255 255 255 255"
 	}
 	"PlayerName5"
@@ -155,7 +155,7 @@
 		"zpos"			"0"
 
 		"textAlignment"   "west"
-		"font"      "DefaultLarge"
+		"font"      "Default"
 		"fgcolor_override"	"255 255 255 255"
 	}
 	"PlayerName6"
@@ -165,7 +165,7 @@
 		"zpos"			"0"
 
 		"textAlignment"   "west"
-		"font"      "DefaultLarge"
+		"font"      "Default"
 		"fgcolor_override"	"255 255 255 255"
 	}
 	"PlayerName7"
@@ -175,7 +175,7 @@
 		"zpos"			"0"
 
 		"textAlignment"   "west"
-		"font"      "DefaultLarge"
+		"font"      "Default"
 		"fgcolor_override"	"255 255 255 255"
 	}
 	

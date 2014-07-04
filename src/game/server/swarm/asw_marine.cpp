@@ -344,6 +344,8 @@ BEGIN_DATADESC( CASW_Marine )
 	DEFINE_FIELD( m_iPowerupType, FIELD_INTEGER ),
 	DEFINE_FIELD( m_flPowerupExpireTime, FIELD_FLOAT ),
 	DEFINE_FIELD( m_bPowerupExpires, FIELD_BOOLEAN ),
+
+	DEFINE_THINKFUNC( EnergyThink ),
 END_DATADESC()
 
 extern ConVar weapon_showproficiency;
@@ -394,6 +396,10 @@ ConVar asw_movement_direction_tolerance( "asw_movement_direction_tolerance", "30
 ConVar asw_movement_direction_interval( "asw_movement_direction_interval", "0.5", FCVAR_CHEAT );
 
 extern ConVar asw_marine_test_new_ai;
+extern ConVar asw_energy_weapons;
+ConVar asw_energy_weapons_delay("asw_energy_weapons_delay", "0.5", FCVAR_CHEAT);
+ConVar asw_energy_weapons_rate_base("asw_energy_weapons_rate_base", "0.5", FCVAR_CHEAT);
+ConVar asw_energy_weapons_rate_increment("asw_energy_weapons_rate_increment", "0.0625", FCVAR_CHEAT);
 
 float CASW_Marine::s_fNextMadFiringChatter = 0;
 float CASW_Marine::s_fNextIdleChatterTime = 0;
@@ -552,6 +558,13 @@ CASW_Marine::CASW_Marine() : m_RecentMeleeHits( 16, 16 )
 
 	m_flLastUsedButton = 0;
 
+	for (int i = 0; i < ASW_MAX_EQUIP_SLOTS; i++)
+	{
+		m_flLastFired[i] = 0;
+		m_flLastRechargedAmmo1[i] = 0;
+		m_flLastRechargedAmmo2[i] = 0;
+	}
+
 	for ( int i = 0; i < ASW_MARINE_HISTORY_POSITIONS; i++ )
 	{
 		m_PositionHistory[ i ].vecPosition = vec3_origin;
@@ -675,6 +688,9 @@ void CASW_Marine::Spawn( void )
 	// make sure his move_x/y pose parameters are at full moving forwards, so the AI follow movement will detect some sequence motion when calculating goal speed
 	SetPoseParameter( "move_x", 1.0f );
 	SetPoseParameter( "move_y", 0.0f );
+
+	RegisterThinkContext("EnergyWeapons");
+	SetContextThink(&CASW_Marine::EnergyThink, gpGlobals->curtime, "EnergyWeapons");
 }
 
 void CASW_Marine::NPCInit()
@@ -1714,6 +1730,14 @@ void CASW_Marine::InhabitedPhysicsSimulate()
 			SUB_Remove();
 		}
 	}
+
+	// BenLubar: The Alien Swarm devs thought it would be a great idea to have two kinds of marines that used the same code,
+	// but they also decided they wanted them to use different code. So now we have to do stuff like this to implement core
+	// engine functionality.
+	if ( GetNextThink( "EnergyWeapons" ) < gpGlobals->curtime )
+	{
+		EnergyThink();
+	}
 }
 
 // post think only happens when inhabited
@@ -2243,6 +2267,9 @@ int CASW_Marine::GiveAmmo( int iCount, int iAmmoIndex, bool bSuppressSound)
 		return 0;
 
 	int iMax = GetAmmoDef()->MaxCarry(iAmmoIndex, this) * iGuns;
+	if (asw_energy_weapons.GetBool())
+		iMax = 0;
+
 	int iAdd = MIN( iCount, iMax - m_iAmmo[iAmmoIndex] );
 	if ( iAdd < 1 )
 		return 0;
@@ -4629,6 +4656,15 @@ void CASW_Marine::OnWeaponFired( const CBaseEntity *pWeapon, int nShotsFired, bo
 	if( !pWeapon )
 		return;
 
+	for (int i = 0; i < ASW_MAX_EQUIP_SLOTS; i++)
+	{
+		if (pWeapon == GetASWWeapon(i))
+		{
+			m_flLastFired[i] = gpGlobals->curtime;
+			break;
+		}
+	}
+
 	// Fire weapon fired event for gamestats
 	CASW_GameStats.Event_MarineWeaponFired( pWeapon, this, nShotsFired, bIsSecondary );
 }
@@ -4864,4 +4900,43 @@ bool CASW_Marine::IsValidEnemy(CBaseEntity *pEnemy)
 		return false;
 
 	return true;
+}
+
+void CASW_Marine::EnergyThink()
+{
+	if (!asw_energy_weapons.GetBool())
+	{
+		SetNextThink(gpGlobals->curtime + 15.0f, "EnergyWeapons");
+		return;
+	}
+
+	for (int i = 0; i < ASW_MAX_EQUIP_SLOTS; i++)
+	{
+		if (m_flLastFired[i] > gpGlobals->curtime - asw_energy_weapons_delay.GetFloat())
+			continue;
+			
+		if (m_flLastRechargedAmmo1[i] < m_flLastFired[i] + asw_energy_weapons_delay.GetFloat())
+			m_flLastRechargedAmmo1[i] = m_flLastFired[i] + asw_energy_weapons_delay.GetFloat();
+		if (m_flLastRechargedAmmo2[i] < m_flLastFired[i] + asw_energy_weapons_delay.GetFloat())
+			m_flLastRechargedAmmo2[i] = m_flLastFired[i] + asw_energy_weapons_delay.GetFloat();
+
+		CASW_Weapon *pWeapon = GetASWWeapon(i);
+		if (!pWeapon)
+			continue;
+
+		float flPerSecond1 = asw_energy_weapons_rate_base.GetFloat() + (asw_energy_weapons_rate_increment.GetFloat() * pWeapon->GetMaxClip1());
+		float flPerSecond2 = asw_energy_weapons_rate_base.GetFloat() + (asw_energy_weapons_rate_increment.GetFloat() * pWeapon->GetMaxClip2());
+
+		int nAddedAmmo1 = (gpGlobals->curtime - m_flLastRechargedAmmo1[i]) * flPerSecond1;
+		int nAddedAmmo2 = (gpGlobals->curtime - m_flLastRechargedAmmo2[i]) * flPerSecond2;
+
+		// don't lose fractions of bullets.
+		m_flLastRechargedAmmo1[i] += nAddedAmmo1 / flPerSecond1;
+		m_flLastRechargedAmmo2[i] += nAddedAmmo2 / flPerSecond2;
+
+		pWeapon->m_iClip1 = MIN(pWeapon->m_iClip1 + nAddedAmmo1, pWeapon->GetDefaultClip1());
+		pWeapon->m_iClip2 = MIN(pWeapon->m_iClip2 + nAddedAmmo2, pWeapon->GetDefaultClip2());
+	}
+
+	SetNextThink(gpGlobals->curtime + 0.1f, "EnergyWeapons");
 }

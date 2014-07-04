@@ -51,6 +51,7 @@ END_DATADESC()
 ConVar asw_bait_launch_delay("asw_bait_launch_delay", "0.15f", FCVAR_REPLICATED, "Delay before bait is thrown");
 ConVar asw_bait_refire_time("asw_bait_refire_time", "0.1f", FCVAR_REPLICATED, "Time between starting a new bait throw");
 #define ASW_BAIT_FASTEST_REFIRE_TIME		asw_bait_refire_time.GetFloat()
+extern ConVar asw_energy_weapons;
 
 CASW_Weapon_Bait::CASW_Weapon_Bait()
 {
@@ -86,16 +87,6 @@ void CASW_Weapon_Bait::PrimaryAttack( void )
 	// weapon is lost when all ammo is gone
 	if ( UsesClipsForAmmo1() && !m_iClip1 ) 
 	{
-		//Reload();
-#ifndef CLIENT_DLL
-		if (pMarine)
-		{
-			pMarine->Weapon_Detach(this);
-			if (bThisActive)
-				pMarine->SwitchToNextBestWeapon(NULL);
-		}
-		Kill();
-#endif
 		return;
 	}
 

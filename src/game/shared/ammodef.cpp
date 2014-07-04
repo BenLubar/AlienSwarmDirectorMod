@@ -13,6 +13,8 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
+extern ConVar asw_energy_weapons;
+
 //-----------------------------------------------------------------------------
 // Purpose: Return a pointer to the Ammo at the Index passed in
 //-----------------------------------------------------------------------------
@@ -103,6 +105,9 @@ int	CAmmoDef::NPCDamage(int nAmmoIndex)
 int	CAmmoDef::MaxCarry(int nAmmoIndex, const CBaseCombatCharacter *owner)
 {
 	if ( nAmmoIndex < 1 || nAmmoIndex >= m_nAmmoIndex )
+		return 0;
+
+	if ( asw_energy_weapons.GetBool() )
 		return 0;
 
 	if ( m_AmmoType[nAmmoIndex].pMaxCarry == USE_CVAR )

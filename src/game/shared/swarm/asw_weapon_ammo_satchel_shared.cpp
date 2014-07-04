@@ -22,6 +22,8 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
+extern ConVar asw_energy_weapons;
+
 IMPLEMENT_NETWORKCLASS_ALIASED( ASW_Weapon_Ammo_Satchel, DT_ASW_Weapon_Ammo_Satchel )
 
 BEGIN_NETWORK_TABLE( CASW_Weapon_Ammo_Satchel, DT_ASW_Weapon_Ammo_Satchel )
@@ -92,7 +94,7 @@ void CASW_Weapon_Ammo_Satchel::DeployAmmoDrop()
 
 	if( m_iClip1 <= 0 )
 	{
-		Assert( false );
+		Assert( asw_energy_weapons.GetBool() );
 		return;
 	}
 
@@ -196,7 +198,7 @@ void CASW_Weapon_Ammo_Satchel::DeployAmmoDrop()
 #endif
 
 	m_iClip1--;
-	if ( m_iClip1 <= 0 )
+	if ( m_iClip1 <= 0 && !asw_energy_weapons.GetBool() )
 	{
 #ifndef CLIENT_DLL
 		pMarine->Weapon_Detach(this);

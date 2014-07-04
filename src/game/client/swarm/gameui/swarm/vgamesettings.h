@@ -75,6 +75,7 @@ private:
 	DropDownMenu* m_drpStartingMission;
 	DropDownMenu* m_drpFriendlyFire;
 	DropDownMenu* m_drpOnslaught;
+	DropDownMenu* m_drpEnergyWeapons;
 	CNB_Header_Footer *m_pHeaderFooter;
 	vgui::Label *m_pTitle;
 

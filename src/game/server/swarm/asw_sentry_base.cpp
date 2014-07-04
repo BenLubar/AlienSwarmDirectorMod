@@ -24,6 +24,10 @@ extern int	g_sModelIndexFireball;			// (in combatweapon.cpp) holds the index for
 
 ConVar asw_sentry_gun_type("asw_sentry_gun_type", "-1", FCVAR_CHEAT, "Force the type of sentry guns built to this. -1, the default, reads from the marine attributes.");
 ConVar asw_sentry_infinite_ammo( "asw_sentry_infinite_ammo", "0", FCVAR_CHEAT | FCVAR_DEVELOPMENTONLY );
+extern ConVar asw_energy_weapons;
+ConVar asw_energy_weapons_sentry_delay("asw_energy_weapons_sentry_delay", "0.5", FCVAR_CHEAT);
+ConVar asw_energy_weapons_sentry_rate_base("asw_energy_weapons_sentry_rate_base", "0.5", FCVAR_CHEAT);
+ConVar asw_energy_weapons_sentry_rate_increment("asw_energy_weapons_sentry_rate_increment", "0.0625", FCVAR_CHEAT);
 
 LINK_ENTITY_TO_CLASS( asw_sentry_base, CASW_Sentry_Base );
 PRECACHE_REGISTER( asw_sentry_base );
@@ -356,6 +360,8 @@ void CASW_Sentry_Base::OnFiredShots( int nNumShots )
 
 	if ( !asw_sentry_infinite_ammo.GetBool() )
 		m_iAmmo -= nNumShots;
+
+	m_flLastFiredTime = gpGlobals->curtime;
 }
 
 int CASW_Sentry_Base::OnTakeDamage( const CTakeDamageInfo &info )
@@ -414,6 +420,24 @@ void CASW_Sentry_Base::Event_Killed( const CTakeDamageInfo &info )
 	BaseClass::Event_Killed(info);
 }
 
+int CASW_Sentry_Base::GetAmmo()
+{
+	if (asw_energy_weapons.GetBool())
+	{
+		if (m_flLastFiredTime < gpGlobals->curtime - asw_energy_weapons_sentry_delay.GetFloat())
+		{
+			if (m_flLastRefilledAmmo < m_flLastFiredTime)
+				m_flLastRefilledAmmo = m_flLastFiredTime;
+
+			float flRegenRate = asw_energy_weapons_sentry_rate_base.GetFloat() + asw_energy_weapons_sentry_rate_increment.GetFloat() * GetBaseAmmoForGunType(GetGunType());
+			int nAmmo = (gpGlobals->curtime - m_flLastRefilledAmmo) * flRegenRate;
+			m_flLastRefilledAmmo += nAmmo / flRegenRate;
+			m_iAmmo = MIN(m_iAmmo + nAmmo, GetBaseAmmoForGunType(GetGunType()));
+		}
+	}
+
+	return m_iAmmo;
+}
 
 const char *CASW_Sentry_Base::GetEntityNameForGunType( GunType_t guntype )
 {
@@ -448,7 +472,11 @@ int CASW_Sentry_Base::GetBaseAmmoForGunType( GunType_t guntype )
 	AssertMsg1( static_cast<int>(guntype) >= 0, "Faulty guntype %d passed to CASW_Sentry_Base::GetBaseAmmoForGunType()\n", guntype );
 	if ( guntype < kGUNTYPE_MAX )
 	{
-		return sm_gunTypeToInfo[guntype].m_nBaseAmmo;
+		int nAmmo = sm_gunTypeToInfo[guntype].m_nBaseAmmo;
+		if (asw_energy_weapons.GetBool())
+			nAmmo -= nAmmo / 2; // round up
+
+		return nAmmo;
 	}
 	else
 	{

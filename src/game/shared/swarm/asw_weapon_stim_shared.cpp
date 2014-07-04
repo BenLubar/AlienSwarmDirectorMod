@@ -38,6 +38,7 @@ PRECACHE_WEAPON_REGISTER(asw_weapon_stim);
 #ifndef CLIENT_DLL
 
 ConVar asw_stim_duration("asw_stim_duration", "6.0f", FCVAR_CHEAT, "Default duration of the stimpack slomo (medics with skills will override this number)");
+extern ConVar asw_energy_weapons;
 
 //---------------------------------------------------------
 // Save/Restore
@@ -96,6 +97,9 @@ void CASW_Weapon_Stim::PrimaryAttack( void )
 
 void CASW_Weapon_Stim::InjectStim()
 {
+	if (!m_iClip1)
+		return;
+
 	CASW_Marine *pMarine = GetMarine();
 
 	if (pMarine)		// firing from a marine
@@ -132,13 +136,16 @@ void CASW_Weapon_Stim::InjectStim()
 		{
 			// stim weapon is lost when all stims are gone
 #ifndef CLIENT_DLL
-			if (pMarine)
+			if (!asw_energy_weapons.GetBool())
 			{
-				pMarine->Weapon_Detach(this);
-				if (bThisActive)
-					pMarine->SwitchToNextBestWeapon(NULL);
+				if (pMarine)
+				{
+					pMarine->Weapon_Detach(this);
+					if (bThisActive)
+						pMarine->SwitchToNextBestWeapon(NULL);
+				}
+				Kill();
 			}
-			Kill();
 #endif
 		}		
 	}

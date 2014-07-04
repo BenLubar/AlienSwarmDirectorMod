@@ -1925,6 +1925,15 @@ void CServerGameDLL::GetMatchmakingTags( char *buf, size_t bufSize )
 		bufSize -= len;
 	}
 
+	// energy weapons
+	if (CAlienSwarm::IsEnergyWeapons())
+	{
+		Q_strncpy(buf, "EnergyWeapons,", bufSize);
+		len = strlen(buf);
+		buf += len;
+		bufSize -= len;
+	}
+
 	// difficulty level
 	const char *szSkill = "Normal,";
 	switch( asw_skill.GetInt() )

@@ -57,7 +57,8 @@ GameSettings::GameSettings( vgui::Panel *parent, const char *panelName ):
 	m_bAllowChangeToCustomCampaign( true ),
 	m_bPreventSessionModifications( false ),
 	m_drpFriendlyFire( NULL ),
-	m_drpOnslaught( NULL )
+	m_drpOnslaught( NULL ),
+	m_drpEnergyWeapons( NULL )
 {
 	m_pHeaderFooter = new CNB_Header_Footer( this, "HeaderFooter" );
 	m_pHeaderFooter->SetTitle( "" );
@@ -235,6 +236,21 @@ void GameSettings::Activate()
 		}
 
 		if ( FlyoutMenu* flyout = m_drpOnslaught->GetCurrentFlyout() )
+			flyout->CloseMenu( NULL );
+	}
+
+	if ( m_drpEnergyWeapons )
+	{
+		if ( m_pSettings->GetInt( "game/energyweapons", 0 ) == 1 )
+		{
+			m_drpEnergyWeapons->SetCurrentSelection( "#L4D360UI_EnergyWeaponsEnabled" );
+		}
+		else
+		{
+			m_drpEnergyWeapons->SetCurrentSelection( "#L4D360UI_EnergyWeaponsDisabled" );
+		}
+
+		if ( FlyoutMenu* flyout = m_drpEnergyWeapons->GetCurrentFlyout() )
 			flyout->CloseMenu( NULL );
 	}
 
@@ -701,6 +717,50 @@ void GameSettings::OnCommand(const char *command)
 				pFlyout->SetListener( this );
 		}
 	}
+	else if ( !Q_strcmp( command, "#L4D360UI_EnergyWeaponsDisabled" ) )
+	{
+		KeyValues *pSettings = KeyValues::FromString(
+			"update",
+			" update { "
+			" game { "
+			" energyweapons = "
+			" } "
+			" } "
+			);
+		KeyValues::AutoDelete autodelete( pSettings );
+
+		pSettings->SetInt( "update/game/energyweapons", 0 );
+
+		UpdateSessionSettings( pSettings );
+
+		if( m_drpEnergyWeapons )
+		{
+			if ( FlyoutMenu* pFlyout = m_drpEnergyWeapons->GetCurrentFlyout() )
+				pFlyout->SetListener( this );
+		}
+	}
+	else if ( !Q_strcmp( command, "#L4D360UI_EnergyWeaponsEnabled" ) )
+	{
+		KeyValues *pSettings = KeyValues::FromString(
+			"update",
+			" update { "
+			" game { "
+			" energyweapons = "
+			" } "
+			" } "
+			);
+		KeyValues::AutoDelete autodelete( pSettings );
+
+		pSettings->SetInt( "update/game/energyweapons", 1 );
+
+		UpdateSessionSettings( pSettings );
+
+		if( m_drpEnergyWeapons )
+		{
+			if ( FlyoutMenu* pFlyout = m_drpEnergyWeapons->GetCurrentFlyout() )
+				pFlyout->SetListener( this );
+		}
+	}
 	else if ( const char *szRoundLimitValue = StringAfterPrefix( command, "#L4D360UI_RoundLimit_" ) )
 	{
 		KeyValues *pSettings = new KeyValues( "update" );
@@ -776,6 +836,7 @@ void GameSettings::ApplySchemeSettings( vgui::IScheme *pScheme )
 	m_drpGameType = dynamic_cast< DropDownMenu* >( FindChildByName( "DrpGameType" ) );
 	m_drpFriendlyFire = dynamic_cast< DropDownMenu* >( FindChildByName( "DrpFriendlyFire" ) );
 	m_drpOnslaught = dynamic_cast< DropDownMenu* >( FindChildByName( "DrpOnslaught" ) );
+	m_drpEnergyWeapons = dynamic_cast< DropDownMenu* >( FindChildByName( "DrpEnergyWeapons" ) );
 
 	m_drpGameAccess = dynamic_cast< DropDownMenu* >( FindChildByName( "DrpGameAccess" ) );
 	if ( m_drpGameAccess )
@@ -837,6 +898,9 @@ void GameSettings::OnClose()
 
 	if( m_drpOnslaught )
 		m_drpOnslaught->CloseDropDown();
+
+	if( m_drpEnergyWeapons )
+		m_drpEnergyWeapons->CloseDropDown();
 
 	m_pSettings = NULL;	// NULL out settings in case we get some calls
 	// after we are closed

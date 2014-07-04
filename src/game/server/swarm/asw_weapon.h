@@ -133,6 +133,14 @@ public:
 	IMPLEMENT_NETWORK_VAR_FOR_DERIVED( m_nNextThinkTick );
 	IMPLEMENT_NETWORK_VAR_FOR_DERIVED( m_flTimeWeaponIdle );
 
+	// energy weapons mode
+	virtual bool			UsesClipsForAmmo1(void) const;
+	virtual bool			UsesClipsForAmmo2(void) const;
+	virtual int				GetMaxClip1(void) const;
+	virtual int				GetMaxClip2(void) const;
+	virtual int				GetDefaultClip1(void) const;
+	virtual int				GetDefaultClip2(void) const;
+
 	// effects
 	virtual const char* GetUTracerType();
 

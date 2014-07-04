@@ -1,4 +1,4 @@
-"Resource/UI/NB_Main_Panel.res"
+"Resource/UI/NB_Main_Panel_ASDM.res"
 {
 	"MainPanel"
 	{

@@ -120,16 +120,12 @@ void CNB_Mission_Summary::OnThink()
 		pDifficulty = L"";
 	}
 
-	if ( CAlienSwarm::IsOnslaught() )
-	{
-		wchar_t wszText[ 128 ];
-		_snwprintf( wszText, sizeof( wszText ), L"%s %s", pDifficulty, g_pVGuiLocalize->FindSafe( "#nb_onslaught_title" ) );
-		m_pDifficultyLabel->SetText( wszText );
-	}
-	else
-	{
-		m_pDifficultyLabel->SetText( pDifficulty );
-	}
+	wchar_t wszText[256];
+	V_snwprintf(wszText, NELEMS(wszText), L"%s %s %s %s", pDifficulty,
+		CAlienSwarm::IsHardcoreFF() ? g_pVGuiLocalize->FindSafe( "#asw_difficulty_hardcore" ) : L"",
+		CAlienSwarm::IsEnergyWeapons() ? g_pVGuiLocalize->FindSafe("#nb_energyweapons_title") : L"",
+		CAlienSwarm::IsOnslaught() ? g_pVGuiLocalize->FindSafe( "#nb_onslaught_title" ) : L"" );
+	m_pDifficultyLabel->SetText( wszText );
 
 	CASWHudMinimap *pMap = GET_HUDELEMENT( CASWHudMinimap );
 	if ( pMap )

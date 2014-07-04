@@ -40,8 +40,11 @@ public:
 	float m_fDamageScale;
 	bool m_bAlreadyTaken;
 
+	float m_flLastFiredTime;
+	float m_flLastRefilledAmmo;
+
 	void OnFiredShots( int nNumShots = 1 );
-	inline int GetAmmo() { return m_iAmmo; }
+	int GetAmmo();
 	void SetAmmo( int nAmmo ) { m_iAmmo = nAmmo; }
 
 

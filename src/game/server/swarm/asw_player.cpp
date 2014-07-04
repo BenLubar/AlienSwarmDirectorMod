@@ -859,6 +859,39 @@ bool CASW_Player::ClientCommand( const CCommand &args )
 				}
 				return true;
 			}
+			else if ( FStrEq( pcmd, "cl_energyweapons") )
+			{
+				if ( args.ArgC() < 2 )
+				{
+					Warning("Player sent a bad cl_energyweapons command\n");
+					return false;
+				}
+
+				if ( ASWGameResource() && ASWGameResource()->GetLeader() == this )
+				{
+					bool bOldEnergyWeaponsMode = CAlienSwarm::IsEnergyWeapons();
+					int nEnergyWeapons = atoi( args[1] );
+					nEnergyWeapons = clamp<int>( nEnergyWeapons, 0, 1 );
+
+					extern ConVar asw_energy_weapons;
+					asw_energy_weapons.SetValue( nEnergyWeapons );
+
+					if ( CAlienSwarm::IsEnergyWeapons() != bOldEnergyWeaponsMode )
+					{
+						CReliableBroadcastRecipientFilter filter;
+						filter.RemoveRecipient( this );		// notify everyone except the player changing the setting
+						if ( nEnergyWeapons > 0 )
+						{
+							UTIL_ClientPrintFilter( filter, ASW_HUD_PRINTTALKANDCONSOLE, "#asw_enabled_energyweapons", GetPlayerName() );
+						}
+						else
+						{
+							UTIL_ClientPrintFilter( filter, ASW_HUD_PRINTTALKANDCONSOLE, "#asw_disabled_energyweapons", GetPlayerName() );
+						}
+					}
+				}
+				return true;
+			}
 			else if ( FStrEq( pcmd, "cl_fixedskills") )
 			{
 				/*

@@ -103,16 +103,6 @@ void CASW_Weapon_Laser_Mines::PrimaryAttack( void )
 	// mine weapon is lost when all mines are gone
 	if ( UsesClipsForAmmo1() && !m_iClip1 ) 
 	{
-		//Reload();
-#ifndef CLIENT_DLL
-		if (pMarine)
-		{
-			pMarine->Weapon_Detach(this);
-			if (bThisActive)
-				pMarine->SwitchToNextBestWeapon(NULL);
-		}
-		Kill();
-#endif
 		return;
 	}
 

@@ -35,9 +35,6 @@ void CServerGameClients::GetPlayerLimits( int& minplayers, int& maxplayers, int 
 
 void CServerGameDLL::LevelInit_ParseAllEntities( const char *pMapEntities )
 {
-	// precache even if not in the level, for onslaught mode
-	UTIL_PrecacheOther( "asw_shieldbug" );
-	UTIL_PrecacheOther( "asw_parasite" );
 }
 
 bool g_bOfflineGame = false;
@@ -159,6 +156,17 @@ void CServerGameDLL::ApplyGameSettings( KeyValues *pKV )
 	{
 		asw_horde_override.SetValue( 0 );
 		asw_wanderer_override.SetValue( 0 );
+	}
+
+	extern ConVar asw_energy_weapons;
+	int nEnergyWeapons = pKV->GetInt( "game/energyweapons", 0 );
+	if ( nEnergyWeapons == 1 )
+	{
+		asw_energy_weapons.SetValue( 1 );
+	}
+	else
+	{
+		asw_energy_weapons.SetValue( 0 );
 	}
 
 	char const *szMapCommand = pKV->GetString( "map/mapcommand", "map" );

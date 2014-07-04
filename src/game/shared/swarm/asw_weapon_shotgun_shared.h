@@ -38,7 +38,7 @@ public:
 	Activity	GetPrimaryAttackActivity( void );
 	virtual bool ShouldMarineMoveSlow();
 
-	void	PrimaryAttack();
+	virtual void PrimaryAttack();
 	virtual int ASW_SelectWeaponActivity(int idealActivity);
 
 	virtual const float GetAutoAimAmount() { return 0.26; }

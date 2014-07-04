@@ -394,7 +394,7 @@ void CASW_Player::RequestExperience()
 		m_iPromotion = GetMedalStore()->GetPromotion();
 	}
 #endif
-#if !defined(NO_STEAM)
+#if !defined(NO_STEAM) && !defined(DEBUG)
 
 #ifdef CLIENT_DLL
 

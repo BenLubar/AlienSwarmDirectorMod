@@ -119,13 +119,10 @@ void CASW_Ammo_Drop::ActivateUseIcon( CASW_Marine* pMarine, int nHoldType )
 	if( pWeapon )
 	{
 		int iAmmoType = pWeapon->GetPrimaryAmmoType();
-		int iGuns = pMarine->GetNumberOfWeaponsUsingAmmo( iAmmoType );
-		int iMaxAmmoCount = GetAmmoDef()->MaxCarry( iAmmoType, pMarine ) * iGuns;
-		int iBullets = pMarine->GetAmmoCount( iAmmoType );
 		int iAmmoCost = GetAmmoUnitCost( iAmmoType );
 		int iClipsToGive = CASW_Ammo_Drop_Shared::GetAmmoClipsToGive( iAmmoType );
 
-		pMarine->SetAmmoCount( MIN( iBullets + pWeapon->GetMaxClip1() * iClipsToGive, iMaxAmmoCount ), iAmmoType );
+		pMarine->GiveAmmo( pWeapon->GetMaxClip1() * iClipsToGive, iAmmoType );
 		m_iAmmoUnitsRemaining -= iAmmoCost;
 
 		if (pMarine->GetMarineResource()) // NPC marines can't talk

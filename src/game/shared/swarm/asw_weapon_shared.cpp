@@ -47,6 +47,7 @@ ConVar asw_fast_reload_enabled( "asw_fast_reload_enabled", "1", FCVAR_CHEAT | FC
 extern ConVar asw_debug_marine_damage;
 extern ConVar asw_DebugAutoAim;
 #endif
+extern ConVar asw_energy_weapons;
 
 BEGIN_DEFINE_LOGGING_CHANNEL( LOG_ASW_Weapons, "ASWWeapons", 0, LS_MESSAGE );
 ADD_LOGGING_CHANNEL_TAG( "AlienSwarm" );
@@ -1512,4 +1513,60 @@ void CASW_Weapon::OnStartedRoll()
 	m_bFastReloadSuccess = false;
 	m_bFastReloadFailure = false;
 	m_bInReload = false; 
+}
+
+bool CASW_Weapon::UsesClipsForAmmo1() const
+{
+	if (asw_energy_weapons.GetBool())
+		return true;
+	return BaseClass::UsesClipsForAmmo1();
+}
+
+bool CASW_Weapon::UsesClipsForAmmo2() const
+{
+	if (asw_energy_weapons.GetBool())
+		return true;
+	return BaseClass::UsesClipsForAmmo2();
+}
+
+int CASW_Weapon::GetMaxClip1() const
+{
+	if (asw_energy_weapons.GetBool())
+		return GetDefaultClip1();
+	return BaseClass::GetMaxClip1();
+}
+
+int CASW_Weapon::GetMaxClip2() const
+{
+	if (asw_energy_weapons.GetBool())
+		return GetDefaultClip2();
+	return BaseClass::GetMaxClip2();
+}
+
+int CASW_Weapon::GetDefaultClip1() const
+{
+	if (asw_energy_weapons.GetBool())
+	{
+		int clip = BaseClass::GetMaxClip1();
+		if (clip < 0)
+			clip = BaseClass::GetDefaultClip1();
+
+		clip -= clip / 2; // round up
+		return clip;
+	}
+	return BaseClass::GetDefaultClip1();
+}
+
+int CASW_Weapon::GetDefaultClip2() const
+{
+	if (asw_energy_weapons.GetBool())
+	{
+		int clip = BaseClass::GetMaxClip2();
+		if (clip < 0)
+			clip = BaseClass::GetDefaultClip2();
+
+		clip -= clip / 2; // round up
+		return clip;
+	}
+	return BaseClass::GetDefaultClip2();
 }

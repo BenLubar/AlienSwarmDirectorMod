@@ -100,6 +100,10 @@ void CASW_Weapon_Shotgun::PrimaryAttack( void )
 		Reload();
 		return;
 	}
+	else if ( !HasPrimaryAmmo() )
+	{
+		return;
+	}
 
 	CASW_Player *pPlayer = GetCommander();
 	CASW_Marine *pMarine = GetMarine();

@@ -49,6 +49,7 @@ CNB_Mission_Panel::CNB_Mission_Panel( vgui::Panel *parent, const char *name ) : 
 	m_drpDifficulty = new BaseModUI::DropDownMenu( this, "DrpDifficulty" );
 	m_drpFriendlyFire = new BaseModUI::DropDownMenu( this, "DrpFriendlyFire" );
 	m_drpOnslaught = new BaseModUI::DropDownMenu( this, "DrpOnslaught" );
+	m_drpEnergyWeapons = new BaseModUI::DropDownMenu( this, "DrpEnergyWeapons" );
 	m_drpFixedSkillPoints = new BaseModUI::DropDownMenu( this, "DrpFixedSkillPoints" );
 
 	m_pHeaderFooter->SetTitle( "#nb_mission_details" );
@@ -67,6 +68,7 @@ CNB_Mission_Panel::CNB_Mission_Panel( vgui::Panel *parent, const char *name ) : 
 	m_iLastFixedSkillPoints = -1;
 	m_iLastHardcoreFF = -1;
 	m_iLastOnslaught = -1;
+	m_iLastEnergyWeapons = -1;
 }
 
 CNB_Mission_Panel::~CNB_Mission_Panel()
@@ -78,7 +80,7 @@ void CNB_Mission_Panel::ApplySchemeSettings( vgui::IScheme *pScheme )
 {
 	BaseClass::ApplySchemeSettings( pScheme );
 	
-	LoadControlSettings( "resource/ui/nb_mission_panel.res" );
+	LoadControlSettings( "resource/ui/nb_mission_panel_asdm.res" );
 
 	if ( ASWGameRules()->GetGameState() == ASW_GS_INGAME )
 	{
@@ -173,6 +175,7 @@ void CNB_Mission_Panel::OnThink()
 	m_drpDifficulty->SetEnabled( ASWGameRules()->GetGameState() == ASW_GS_BRIEFING && bLeader );
 	m_drpFriendlyFire->SetEnabled( ASWGameRules()->GetGameState() == ASW_GS_BRIEFING && bLeader );
 	m_drpOnslaught->SetEnabled( ASWGameRules()->GetGameState() == ASW_GS_BRIEFING && bLeader );
+	m_drpEnergyWeapons->SetEnabled( ASWGameRules()->GetGameState() == ASW_GS_BRIEFING && bLeader );
 	m_drpFixedSkillPoints->SetEnabled( false ); //ASWGameRules()->GetGameState() == ASW_GS_BRIEFING && bLeader );
 
 	if (m_iLastSkillLevel != ASWGameRules()->GetSkillLevel())
@@ -232,6 +235,21 @@ void CNB_Mission_Panel::OnThink()
 		else
 		{
 			m_drpOnslaught->SetCurrentSelection( "#L4D360UI_OnslaughtDisabled" );
+		}
+	}
+
+	extern ConVar asw_energy_weapons;
+	int nEnergyWeapons = asw_energy_weapons.GetBool() ? 1 : 0;
+	if ( m_iLastEnergyWeapons != nEnergyWeapons )
+	{
+		m_iLastEnergyWeapons = nEnergyWeapons;
+		if ( nEnergyWeapons == 1 )
+		{
+			m_drpEnergyWeapons->SetCurrentSelection( "#L4D360UI_EnergyWeaponsEnabled" );
+		}
+		else
+		{
+			m_drpEnergyWeapons->SetCurrentSelection( "#L4D360UI_EnergyWeaponsDisabled" );
 		}
 	}
 
@@ -338,6 +356,16 @@ void CNB_Mission_Panel::OnCommand( const char *command )
 	else if ( !Q_stricmp( command, "#L4D360UI_OnslaughtEnabled" ) )
 	{
 		engine->ClientCmd( "cl_onslaught 1" );
+		return;
+	}
+	else if ( !Q_stricmp( command, "#L4D360UI_EnergyWeaponsDisabled" ) )
+	{
+		engine->ClientCmd( "cl_energyweapons 0" );
+		return;
+	}
+	else if ( !Q_stricmp( command, "#L4D360UI_EnergyWeaponsEnabled" ) )
+	{
+		engine->ClientCmd( "cl_energyweapons 1" );
 		return;
 	}
 	BaseClass::OnCommand( command );

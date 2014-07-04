@@ -21,6 +21,7 @@
 #include "tier0/memdbgon.h"
 
 #define ASW_FLARES_FASTEST_REFIRE_TIME		0.1f
+extern ConVar asw_energy_weapons;
 
 IMPLEMENT_NETWORKCLASS_ALIASED( ASW_Weapon_Tesla_Trap, DT_ASW_Weapon_Tesla_Trap )
 
@@ -90,6 +91,9 @@ bool CASW_Weapon_Tesla_Trap::OffhandActivate()
 
 void CASW_Weapon_Tesla_Trap::PrimaryAttack( void )
 {	
+	if (!m_iClip1)
+		return;
+
 	// Only the player fires this way so we can cast
 	CASW_Player *pPlayer = GetCommander();
 
@@ -106,13 +110,16 @@ void CASW_Weapon_Tesla_Trap::PrimaryAttack( void )
 	{
 		//Reload();
 #ifndef CLIENT_DLL
-		if (pMarine)
+		if (!asw_energy_weapons.GetBool())
 		{
-			pMarine->Weapon_Detach(this);
-			if (bThisActive)
-				pMarine->SwitchToNextBestWeapon(NULL);
+			if (pMarine)
+			{
+				pMarine->Weapon_Detach(this);
+				if (bThisActive)
+					pMarine->SwitchToNextBestWeapon(NULL);
+			}
+			Kill();
 		}
-		Kill();
 #endif
 		return;
 	}

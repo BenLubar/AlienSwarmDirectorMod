@@ -177,23 +177,29 @@ ConVar asw_sentry_friendly_fire_scale( "asw_sentry_friendly_fire_scale", "0", FC
 #else
 	 );
 #endif
-ConVar asw_marine_ff_absorption("asw_marine_ff_absorption", "1", FCVAR_REPLICATED, "Friendly fire absorption style (0=none 1=ramp up 2=ramp down)"
+ConVar asw_marine_ff_absorption( "asw_marine_ff_absorption", "1", FCVAR_REPLICATED | FCVAR_ARCHIVE, "Friendly fire absorption style (0=none 1=ramp up 2=ramp down)"
 #ifdef GAME_DLL
 	,UpdateMatchmakingTagsCallback );
 #else
 	);
 #endif
-ConVar asw_horde_override( "asw_horde_override", "0", FCVAR_REPLICATED, "Forces hordes to spawn"
+ConVar asw_horde_override( "asw_horde_override", "0", FCVAR_REPLICATED | FCVAR_ARCHIVE, "Forces hordes to spawn"
 #ifdef GAME_DLL
 	  ,UpdateMatchmakingTagsCallback );
 #else
 	  );
 #endif
-ConVar asw_wanderer_override( "asw_wanderer_override", "0", FCVAR_REPLICATED, "Forces wanderers to spawn"
+ConVar asw_wanderer_override( "asw_wanderer_override", "0", FCVAR_REPLICATED | FCVAR_ARCHIVE, "Forces wanderers to spawn"
 #ifdef GAME_DLL
 	 ,UpdateMatchmakingTagsCallback );
 #else
 	 );
+#endif
+ConVar asw_energy_weapons( "asw_energy_weapons", "0", FCVAR_REPLICATED | FCVAR_ARCHIVE, "Weapons recharge but have less ammo"
+#ifdef GAME_DLL
+	  ,UpdateMatchmakingTagsCallback );
+#else
+	  );
 #endif
 
 // ASW Weapons
@@ -2838,7 +2844,10 @@ void CAlienSwarm::GiveStartingWeaponToMarine(CASW_Marine* pMarine, int iEquipInd
 		return;
 
 	const char* szWeaponClass = STRING( ASWEquipmentList()->GetItemForSlot( iSlot, iEquipIndex )->m_EquipClass );
-		
+
+	if (!V_stricmp(szWeaponClass, "asw_weapon_ammo_satchel") && asw_energy_weapons.GetBool())
+		szWeaponClass = "asw_weapon_pistol";
+
 	CASW_Weapon* pWeapon = dynamic_cast<CASW_Weapon*>(pMarine->Weapon_Create(szWeaponClass));
 	if (!pWeapon)
 		return;
@@ -6824,4 +6833,9 @@ bool CAlienSwarm::IsHardcoreFF()
 bool CAlienSwarm::IsOnslaught()
 {
 	return ( asw_horde_override.GetBool() || asw_wanderer_override.GetBool() );
+}
+
+bool CAlienSwarm::IsEnergyWeapons()
+{
+	return ( asw_energy_weapons.GetBool() );
 }

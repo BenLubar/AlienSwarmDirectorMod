@@ -206,6 +206,14 @@ public:
 	CUtlReference<CNewParticleEffect> m_pMuzzleFlashEffect;
 	float m_fMuzzleFlashTime;
 
+	// energy weapons mode
+	virtual bool			UsesClipsForAmmo1(void) const;
+	virtual bool			UsesClipsForAmmo2(void) const;
+	virtual int				GetMaxClip1(void) const;
+	virtual int				GetMaxClip2(void) const;
+	virtual int				GetDefaultClip1(void) const;
+	virtual int				GetDefaultClip2(void) const;
+
 private:	
 	C_ASW_Weapon( const C_ASW_Weapon & ); // not defined, not accessible
 

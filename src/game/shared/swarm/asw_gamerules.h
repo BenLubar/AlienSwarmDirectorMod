@@ -485,6 +485,7 @@ public:
 	bool IsLobbyMap() { return m_bIsLobby; }
 	static bool IsHardcoreFF();
 	static bool IsOnslaught();
+	static bool IsEnergyWeapons();
 
 	bool m_bIsTutorial;
 	bool m_bIsIntro;

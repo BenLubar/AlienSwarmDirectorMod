@@ -22,6 +22,7 @@
 #include "tier0/memdbgon.h"
 
 #define ASW_FLARES_FASTEST_REFIRE_TIME		0.1f
+extern ConVar asw_energy_weapons;
 
 IMPLEMENT_NETWORKCLASS_ALIASED( ASW_Weapon_Buff_Grenade, DT_ASW_Weapon_Buff_Grenade )
 
@@ -104,16 +105,6 @@ void CASW_Weapon_Buff_Grenade::PrimaryAttack( void )
 	// mine weapon is lost when all mines are gone
 	if ( UsesClipsForAmmo1() && !m_iClip1 ) 
 	{
-		//Reload();
-#ifndef CLIENT_DLL
-		if (pMarine)
-		{
-			pMarine->Weapon_Detach(this);
-			if (bThisActive)
-				pMarine->SwitchToNextBestWeapon(NULL);
-		}
-		Kill();
-#endif
 		return;
 	}
 

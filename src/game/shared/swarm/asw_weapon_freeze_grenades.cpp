@@ -46,6 +46,8 @@ PRECACHE_WEAPON_REGISTER( asw_weapon_freeze_grenades );
 
 #ifndef CLIENT_DLL
 extern ConVar asw_debug_marine_damage;
+extern ConVar asw_energy_weapons;
+
 //---------------------------------------------------------
 // Save/Restore
 //---------------------------------------------------------
@@ -93,7 +95,10 @@ bool CASW_Weapon_Freeze_Grenades::OffhandActivate()
 #define FLARE_PROJECTILE_AIR_VELOCITY	400
 
 void CASW_Weapon_Freeze_Grenades::PrimaryAttack( void )
-{	
+{
+	if (!m_iClip1)
+		return;
+
 	CASW_Player *pPlayer = GetCommander();
 
 	if (!pPlayer)
@@ -104,16 +109,7 @@ void CASW_Weapon_Freeze_Grenades::PrimaryAttack( void )
 
 	// grenade weapon is lost when all grenades are gone
 	if ( UsesClipsForAmmo1() && !m_iClip1 ) 
-	{		
-#ifndef CLIENT_DLL
-		if (pMarine)
-		{
-			pMarine->Weapon_Detach(this);
-			if (bThisActive)
-				pMarine->SwitchToNextBestWeapon(NULL);
-		}
-		Kill();
-#endif
+	{
 		return;
 	}
 

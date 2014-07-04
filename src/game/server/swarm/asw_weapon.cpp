@@ -117,6 +117,7 @@ END_DATADESC()
 
 ConVar asw_weapon_safety_hull("asw_weapon_safety_hull", "0", FCVAR_CHEAT, "Size of hull used to check for AI shots going too near a friendly");
 extern ConVar asw_debug_alien_damage;
+extern ConVar asw_energy_weapons;
 
 CASW_Weapon::CASW_Weapon()
 {
@@ -298,6 +299,9 @@ bool CASW_Weapon::WeaponLOSCondition( const Vector &ownerPos, const Vector &targ
 
 bool CASW_Weapon::DestroyIfEmpty( bool bDestroyWhenActive, bool bCheckSecondaryAmmo )
 {
+	if (asw_energy_weapons.GetBool())
+		return false;
+
 	CASW_Marine *pMarine = GetMarine();
 	if ( !pMarine )
 		return false;

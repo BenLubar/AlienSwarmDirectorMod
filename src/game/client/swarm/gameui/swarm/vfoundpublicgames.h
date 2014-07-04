@@ -56,6 +56,7 @@ namespace BaseModUI {
 
 		DropDownMenu* m_drpDifficulty;
 		DropDownMenu* m_drpOnslaught;
+		DropDownMenu* m_drpEnergyWeapons;
 		DropDownMenu* m_drpGameStatus;
 		DropDownMenu* m_drpCampaign;
 		BaseModUI::BaseModHybridButton *m_btnFilters;

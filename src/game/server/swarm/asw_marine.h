@@ -372,6 +372,11 @@ public:
 	void				TaskFail( const char *pszGeneralFailText )	{ TaskFail( MakeFailCode( pszGeneralFailText ) ); }
 	void CheckForAIWeaponSwitch();
 
+	void EnergyThink(void);
+	float m_flLastFired[ASW_MAX_EQUIP_SLOTS];
+	float m_flLastRechargedAmmo1[ASW_MAX_EQUIP_SLOTS];
+	float m_flLastRechargedAmmo2[ASW_MAX_EQUIP_SLOTS];
+
 private:
 	EHANDLE m_hAlienGooTarget;
 	EHANDLE m_hPhysicsPropTarget;
