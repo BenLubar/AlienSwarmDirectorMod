@@ -1,0 +1,10 @@
+GAME
+{
+"MailFrom1" "From: Lundiplutzmus"
+"MailDate1" "Date: 05/25/53"
+"MailSubject1" "Subject: useless"
+"MailBody1A" "So, you really picked up the PDA?,"
+"MailBody1B" "Why?"
+"MailBody1C" "It's useless!"
+"MailBody1D" "Dont waste your time!"
+}

@@ -1,0 +1,111 @@
+GAME
+{
+	// identifier for this campaign
+	"CampaignName" "Research 7"
+	
+	// description shown on the main menu when choosing which campaign to play
+	"CampaignDescription" "We believe that samples from Vereon XII have made it to Earth and compromised the Research 7 Facility. We're sending in Alpha squad to investigate."
+	
+	// texture used on the main menu when choosing which campaign to play
+	"ChooseCampaignTexture" "swarm/missionPics/RC7-M2MissionPic"
+
+	// custom campaign credits file
+	"CustomCreditsFile"     "resource/rc7credits"
+	
+	// texture used on the campaign screen for the map
+	"CampaignTextureName" "swarm/Campaign/campaignMap"
+	// these textures are overlaid on top of the campaign map in order
+	"CampaignTextureLayer1" "swarm/Campaign/JacobCampaignMap_Haze"
+	"CampaignTextureLayer2" "swarm/Campaign/JacobCampaignMap_SnowNear"
+	"CampaignTextureLayer3" "swarm/Campaign/JacobCampaignMap_SnowFar"
+	
+	// position of this campaign in the galactic map (coords go from 0 to 1023)
+	"GalaxyX"   "660"
+	"GalaxyY"   "262"
+	
+	// searchlights (optional, max of 4)
+	// angle: 0 is right, 90 is up, 180 is left, 270 is down
+	"Searchlight1X" "500"
+	"Searchlight1Y" "500"
+	"Searchlight1Angle" "220"
+	"Searchlight2X" "375"
+	"Searchlight2Y" "500"
+	"Searchlight2Angle" "75"
+	"Searchlight3X" "425"
+	"Searchlight3Y" "450"
+	"Searchlight3Angle" "150"
+	"Searchlight4X" "450"
+	"Searchlight4Y" "450"
+	"Searchlight4Angle" "235"
+	
+	// first mission entry is a dummy for the starting point
+	"MISSION"
+	{
+		"MissionName"	"The Crash Site"
+		"MapName"	"start_area"
+		"LocationX"	"650"
+		"LocationY"	"550"
+		"DifficultyModifier" "-2"
+		"Links"		"forestentrance" 
+		"LocationDescription"  "Crash Site"
+		"ShortBriefing"  "Something's taken down the Albatross, you'll have to continue towards RC7 on foot."
+	}
+	
+	// each mission listed
+	"MISSION"
+	{
+		"MissionName"		"Transport Facility"		// name used on the map screen, etc.
+		"MapName"		"forestentrance"		// name of the map file
+		"LocationX"		"550"				// location of the dot on the map
+		"LocationY"		"500"				// (from 0 to 1023, on the above texture)
+		"ThreatString" 		"1"    				// Threat level string to help players decide where to go next
+		"Links"			"start_area research7"	// map names of neighbours
+		"LocationDescription" 	"Research 7 Shipping and Recieving Facility"
+		"ShortBriefing"  	"Head through the RC7 Transport Facility"
+		"AlwaysVisible"		"1"
+		"NeedsMoreThanOneMarine" "0"				// If set to 1, two players need to be connected to play (no solo play)
+	}
+	"MISSION"
+	{
+		"MissionName"	"Research 7"		// name used on the map screen, etc.
+		"MapName"	"research7"		// name of the map file
+		"LocationX"	"400"			// location of the dot on the map
+		"LocationY"	"475"			// (from 0 to 1023, on the above texture)
+		"DifficultyModifier" "-2"
+		"ThreatString" "1"    // Threat level string to help players decide where to go next
+		"Links"		"forestentrance miningcamp"	// map names of neighbours
+		"LocationDescription" "Research 7 Labs"
+		"ShortBriefing"  "Purge the RC7 complex."
+		"AlwaysVisible"	"1"
+		"NeedsMoreThanOneMarine" "0"
+	}
+	"MISSION"
+	{
+		"MissionName"	"Illyn Forest"
+		"MapName"	"miningcamp"
+		"LocationX"	"370"
+		"LocationY"	"250"
+		"DifficultyModifier" "-1"
+		"ThreatString" "2"    // Threat level string to help players decide where to go next
+		"Links"		"research7 themines2"
+		"LocationDescription" "Illyn Forest"
+		"ShortBriefing"  "Trek through the Illyn Forest and the caves within, to reach the entrance to Jericho Mine."
+		"AlwaysVisible"	"1"
+		"NeedsMoreThanOneMarine" "0"
+	}
+	"MISSION"
+	{
+		"MissionName"	"Jreicho Mine"
+		"MapName"	"themines2"
+		"LocationX"	"425"
+		"LocationY"	"250"
+		"DifficultyModifier" "0"
+		"ThreatString" "3"
+		"Links"		"miningcamp"
+		"LocationDescription" "The Jericho Mines"
+		"ShortBriefing"  "Investigate and eradicate the infection within the Jericho Mines."
+		"AlwaysVisible"	"1"
+		"NeedsMoreThanOneMarine" "0"
+	}
+
+}

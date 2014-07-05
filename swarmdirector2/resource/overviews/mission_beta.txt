@@ -1,0 +1,25 @@
+GAME
+{
+	// radar map position and scale (see the Valve wiki for more information: http://developer.valvesoftware.com/wiki/Main_Page)
+	"pos_x"	"-2800"
+	"pos_y"	"5482"
+	"scale"	"9.0"
+
+	// material used for the radar map (in the bottom left corner)
+	"material" 		"vgui/swarm/Overviews/mission_beta_overview"  			// example: "vgui/swarm/Overviews/landingbay02Overview"
+
+	// material used for the briefing map (shown before the mission starts)
+	"briefingmaterial" 	"vgui/swarm/Overviews/mission_beta_briefing"		// example: "vgui/swarm/Overviews/landingbay02briefingOverview"
+
+	// Title of the mission
+	"missiontitle"		"Cable-Car"
+	// Description text shown for the mission
+	"description"		""
+	
+	// Mission image that shows when selecting this mission
+	"image"			"MissionPics/mission_beta"  			//must be under "vgui" - dont include vgui in the path
+
+	"version"		"1.0"
+	"author"		"lundiplutzmus"
+	"website"		"http://swarmarmory.com/maps?action=view&id=264-ZoidbergReactor"
+}

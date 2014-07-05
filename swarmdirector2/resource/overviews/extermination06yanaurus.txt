@@ -1,0 +1,14 @@
+GAME
+{
+"pos_x" "857"
+"pos_y" "9927"
+"scale" "8.0"
+"material" "vgui/swarm/Overviews/Yanaurus_01Overview"
+"briefingmaterial" "vgui/swarm/Overviews/Yanaurus_01OverviewBriefing"
+"mapyoffset" "-60"
+"missiontitle"		"Yanaurus Mine"
+"description"	"Explore the Yanaurus Mine"
+"image"		"swarm/MissionPics/yanaurus_mission_pic"
+"version"		"1.5"
+"website"		"https://sites.google.com/site/swarmaddons/maps/extermination"
+}

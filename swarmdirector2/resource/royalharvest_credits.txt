@@ -1,0 +1,16 @@
+"Credits"
+{
+// these keys must be in this order!
+"show_credits_logo" "1"
+"custom_logo"	"swarm/missionpics/royalh1_titel"
+"asw_credits_"	"Campaign by"
+"asw_credits_"	"Tobias Gaertner (PokerFlat)"
+"asw_credits_"	"Special Thx to Felix, Hephalistofene and aufklarer"
+"asw_credits_"	""
+"asw_credits_"	""
+"asw_credits_"	"" 
+"asw_credits_"	""
+"asw_credits_"	""
+"asw_credits_"	""
+"asw_credits_"	"http://grinchxl.bplaced.com/RoyalHarvest.rar"
+}

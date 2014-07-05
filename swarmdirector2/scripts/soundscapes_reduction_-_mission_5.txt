@@ -1,0 +1,153 @@
+/////////////PlanetX///////////////////
+
+Facility.Quarters
+//The living quarters where the players spawn.
+
+{
+	"dsp"	"1"
+	
+		"playlooping"
+	{
+		"volume"	"0.5"
+		"pitch"		"100"
+		"wave"		"ambient\water\corridor_water.wav"
+	}
+	
+		"playlooping"
+	{
+		"volume"	"0.2"
+		"pitch"		"100"
+		"wave"		"ambient\atmosphere\engine_room.wav"
+	}
+
+	"playrandom"
+	{
+		"time"		"15,45"
+		"volume"	"0.1"
+		"pitch"		"100"
+		"rndwave"
+		{
+			"wave"	"scapes/2d/random_amb/random_machinery_01.wav"
+			"wave"	"scapes/2d/random_amb/random_machinery_04.wav"
+			"wave"	"scapes/2d/random_amb/random_machinery_05.wav"
+			"wave"	"scapes/2d/random_amb/random_machinery_06.wav"
+			"wave"	"scapes/2d/random_amb/random_machinery_07.wav"
+			"wave"	"scapes/2d/random_amb/random_machinery_08.wav"
+		}
+	}
+}
+
+Facility.Interior
+//Sound of the inside of the train maintenance shop / warehouse.
+
+{
+	"dsp"	"1"
+	
+		"playlooping"
+	{
+		"volume"	"1.0"
+		"pitch"		"100"
+		"wave"		"ambient\atmosphere\engine_room.wav"
+	}
+
+	"playrandom"
+	{
+		"time"		"15,45"
+		"volume"	"0.75,1"
+		"pitch"		"100"
+		"rndwave"
+		{
+			"wave"	"scapes/2d/random_amb/random_machinery_01.wav"
+			"wave"	"scapes/2d/random_amb/random_machinery_04.wav"
+			"wave"	"scapes/2d/random_amb/random_machinery_05.wav"
+			"wave"	"scapes/2d/random_amb/random_machinery_06.wav"
+			"wave"	"scapes/2d/random_amb/random_machinery_07.wav"
+			"wave"	"scapes/2d/random_amb/random_machinery_08.wav"
+		}
+	}
+}
+
+Facility.Exterior
+//Sound of the battle area outside the maintenance shop / warehouse.
+
+{
+	"dsp"			"1"
+	
+	"playlooping"
+	{
+		"volume"	"0.25"
+		"pitch"		"100"
+		"wave"		"scapes/2D/exterior1/icy_wind01.wav"
+	}
+	
+	"playrandom"
+	{
+		"time"		"15,45"
+		"volume"	"0.75,1"
+		"pitch"		"100"
+		"rndwave"
+		{
+			"wave"	"ambient/wind/wind_hit1.wav"
+			"wave"	"ambient/wind/wind_hit2.wav"	
+		}
+	}
+	
+}
+
+Facility.CPArea
+//Sound of the inside of the facility near the command post.
+
+{
+	"dsp"			"1"
+	
+	"playlooping"
+	{
+		"volume"	"1.0"
+		"pitch"		"100"
+		"wave"		"ambient\atmosphere\engine_room.wav"
+	}
+
+	"playrandom"
+	{
+		"time"		"15,45"
+		"volume"	"0.75,1"
+		"pitch"		"100"
+		"rndwave"
+		{
+			"wave"	"scapes/2d/random_amb/random_machinery_01.wav"
+			"wave"	"scapes/2d/random_amb/random_machinery_04.wav"
+			"wave"	"scapes/2d/random_amb/random_machinery_05.wav"
+			"wave"	"scapes/2d/random_amb/random_machinery_06.wav"
+			"wave"	"scapes/2d/random_amb/random_machinery_07.wav"
+			"wave"	"scapes/2d/random_amb/random_machinery_08.wav"
+		}
+	}
+	
+	"playrandom"
+	{
+		"time"		"15,45"
+		"volume"	"1"
+		"pitch"		"100"
+		"rndwave"
+		{
+			"wave"	"ambient\computer\syntekcomputerdownloading.wav"
+		}
+	}
+	
+	"playlooping"
+	{
+		"volume"	"0.5"
+		"pitch"		"100"
+		"wave"		"ambient/computer/downloaddataloop.wav"
+	}
+	
+	"playlooping"
+	{
+		"volume"	"1"
+		"pitch"		"100"
+		"wave"		"ambient\computer\syntekcomputerloop.wav"
+	}
+}
+
+
+

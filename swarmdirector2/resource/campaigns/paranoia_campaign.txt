@@ -1,0 +1,95 @@
+GAME
+{
+	// identifier for this campaign
+	"CampaignName" "Paranoia : Full version."
+	
+	// description shown on the main menu when choosing which campaign to play
+	"CampaignDescription" "Your team has been sent to investigate a distant IAF outpost. All communication between IAF command and the base has ceased some time ago. You should know what happens in this base."
+	
+	// texture used on the main menu when choosing which campaign to play
+	"ChooseCampaignTexture" "image_addon/image_addon"
+	
+	// texture used on the campaign screen for the map
+	"CampaignTextureName" "image_addon/image_addon"
+	
+	// these textures are overlaid on top of the campaign map in order
+	"CampaignTextureLayer1" "swarm/Campaign/CampaignMap_EmptyLayer"			//"CampaignTextureLayer1" "swarm/Campaign/JacobCampaignMap_Haze"
+	"CampaignTextureLayer2" "swarm/Campaign/CampaignMap_EmptyLayer"			//"CampaignTextureLayer2" "swarm/Campaign/JacobCampaignMap_SnowNear"
+	"CampaignTextureLayer3" "swarm/Campaign/CampaignMap_EmptyLayer"			//"CampaignTextureLayer3" "swarm/Campaign/JacobCampaignMap_SnowFar"
+	
+	// custom campaign credits file
+	"CustomCreditsFile" 	"resource/Paranoia_Credits"
+
+	// position of this campaign in the galactic map (coords go from 0 to 1023)
+	"GalaxyX"   "660"
+	"GalaxyY"   "262"
+	
+	// searchlights (optional, max of 4)
+	// angle: 0 is right, 90 is up, 180 is left, 270 is down
+	//"Searchlight1X" "217"
+	//"Searchlight1Y" "860"
+	//"Searchlight1Angle" "80"
+	//"Searchlight2X" "263"
+	//"Searchlight2Y" "751"
+	//"Searchlight2Angle" "100"
+	//"Searchlight3X" "92"
+	//"Searchlight3Y" "446"
+	//"Searchlight3Angle" "90"
+	//"Searchlight4X" "580"
+	//"Searchlight4Y" "266"
+	//"Searchlight4Angle" "90"
+	
+	// first mission entry is a dummy for the starting point
+	"MISSION"
+	{
+		"MissionName"		"Entry Port"
+		"MapName"		"start_area"
+		"LocationX"		"330"
+		"LocationY"		"780"
+		"DifficultyModifier" 	"-2"
+		"Links"			"as_paranoia1" 
+		"LocationDescription"  	"Home Base"
+		"ShortBriefing"  	"Dropship Bloodhound will enter atmosphere at these co-ordinates and proceed to primary objective."
+	}
+	
+	// each mission listed
+	"MISSION"
+	{
+		"MissionName"		"Unexpected encounter."		// name used on the map screen, etc.
+		"MapName"		"as_paranoia1"		// name of the map file
+		"LocationX"		"525"				// location of the dot on the map
+		"LocationY"		"700"				// (from 0 to 1023, on the above texture)
+		"ThreatString" 		"1"    				// Threat level string to help players decide where to go next
+		"Links"			"start_area as_paranoia2"	// map names of neighbours
+		"LocationDescription" 	"A base where we have no signal since a long time."
+		"ShortBriefing"  	"Look for what happened in this base."
+		"AlwaysVisible"		"1"
+		"NeedsMoreThanOneMarine" "0"				// If set to 1, two players need to be connected to play (no solo play)
+	}
+	"MISSION"
+	{
+		"MissionName"		"Hostile places."		// name used on the map screen, etc.
+		"MapName"		"as_paranoia2"			// name of the map file
+		"LocationX"		"360"				// location of the dot on the map
+		"LocationY"		"506"				// (from 0 to 1023, on the above texture)
+		"ThreatString" 		"1"    				// Threat level string to help players decide where to go next
+		"Links"			"as_paranoia1 as_paranoia3"	// map names of neighbours
+		"LocationDescription" 	"Lower level of the base."
+		"ShortBriefing"  	"After cleaning the first level, you decide to learn about recent activities of the base."
+		"AlwaysVisible"		"1"
+		"NeedsMoreThanOneMarine" "0"				// If set to 1, two players need to be connected to play (no solo play)
+	}
+	"MISSION"
+	{
+		"MissionName"		"High tension."		// name used on the map screen, etc.
+		"MapName"		"as_paranoia3"			// name of the map file
+		"LocationX"		"820"				// location of the dot on the map
+		"LocationY"		"200"				// (from 0 to 1023, on the above texture)
+		"ThreatString" 		"1"    				// Threat level string to help players decide where to go next
+		"Links"			"as_paranoia2"	// map names of neighbours
+		"LocationDescription" 	"We are in the exterior part of the base, and we should find something to communicate with our IAF command Center."
+		"ShortBriefing"  	"Looks like they did genetical research in this place, so now that we know what happens there, we should inform the IAF Command Center, that is to say find a communication center."
+		"AlwaysVisible"		"1"
+		"NeedsMoreThanOneMarine" "0"				// If set to 1, two players need to be connected to play (no solo play)
+	}
+}

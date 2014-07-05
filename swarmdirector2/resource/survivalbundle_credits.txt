@@ -1,0 +1,14 @@
+"Credits"
+{
+// these keys must be in this order!
+"show_credits_logo" "0"
+//"custom_logo"	"ExampleCustomLogo/example_custom_logo"
+"asw_credits_"	""
+"asw_credits_"	"Fixed a packed by DIMEDROLL"
+"asw_credits_"	""
+"asw_credits_"	"Thanks to all level designers who created original levels"
+"asw_credits_"	""
+"asw_credits_"	"Killzone map by 'hk'"
+"asw_credits_"	""
+"asw_credits_"	"Frosty map by 'lycosa'"
+}

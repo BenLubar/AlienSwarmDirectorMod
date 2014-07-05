@@ -1,0 +1,179 @@
+"cathlabs.interior" 
+{ 
+"dsp" "10" 
+"playlooping" 
+{ 
+"volume" "0.40" 
+"pitch" "100" 
+"wave" "ambient\levels\citadel\citadel_drone_loop4.wav" 
+} 
+"playrandom" 
+{ 
+"time" "10,30" 
+"volume" ".15,.25" 
+"pitch" "80,100" 
+"position" "random"
+
+"rndwave" 
+{ 
+"wave" "cathalu\Metal_06.wav" 
+"wave" "cathalu\MetalScrape05.wav"
+"wave" "cathalu\MetalScrape04.wav"
+"wave" "physics\metal\metal_grate_impact_hard3.wav"
+"wave" "cathalu\Rattle04.wav"
+"wave" "scapes\2d\interior2\vox_wet01.wav"
+"wave" "scapes\2d\interior2\vox_wet02.wav"
+"wave" "scapes\2d\random_amb\interior_metalmoan_01.wav"
+"wave" "scapes\2d\random_amb\interior_metalmoan_02.wav"
+"wave" "scapes\2d\random_amb\interior_metalmoan_03.wav"
+"wave" "scapes\2d\random_amb\interior_metalmoan_04.wav"
+"wave" "scapes\2d\random_amb\interior_metalmoan_05.wav"
+} 
+}
+}
+
+
+"cathlabs.lab" 
+{ 
+"dsp" "10"
+
+"playlooping"
+{
+"volume" "0.5"
+"pitch" "100"
+"wave" "scapes\2d\interior1\room_large_close.wav"
+}
+
+
+"playlooping"
+{
+"volume" "0.3"
+"pitch" "100"
+"wave" "cathalu\hum.wav"
+}
+
+"playlooping" 
+{ 
+"volume" "0.25" 
+"pitch" "100" 
+"wave" "ambient\levels\citadel\citadel_drone_loop4.wav" 
+} 
+
+"playrandom" 
+{ 
+"time" "10,30" 
+"volume" ".15,.25" 
+"pitch" "80,100" 
+"position" "random"
+
+"rndwave" 
+{ 
+"wave" "cathalu\Metal_06.wav" 
+"wave" "cathalu\MetalScrape05.wav"
+"wave" "cathalu\MetalScrape04.wav"
+"wave" "physics\metal\metal_grate_impact_hard3.wav"
+"wave" "cathalu\Rattle04.wav"
+"wave" "scapes\2d\interior2\vox_wet01.wav"
+"wave" "scapes\2d\interior2\vox_wet02.wav"
+"wave" "scapes\2d\random_amb\interior_metalmoan_01.wav"
+"wave" "scapes\2d\random_amb\interior_metalmoan_02.wav"
+"wave" "scapes\2d\random_amb\interior_metalmoan_03.wav"
+"wave" "scapes\2d\random_amb\interior_metalmoan_04.wav"
+"wave" "scapes\2d\random_amb\interior_metalmoan_05.wav"
+} 
+}
+}
+
+
+"cathlabs.wet" 
+{ 
+"dsp" "10" 
+"playlooping" 
+{ 
+"volume" "0.40" 
+"pitch" "100" 
+"wave" "ambient\levels\citadel\citadel_drone_loop4.wav" 
+}
+
+"playlooping" 
+{ 
+"volume" "0.2" 
+"pitch" "100" 
+"wave" "scapes\2d\interior1\asw_sewer_amb01.wav" 
+} 
+
+"playlooping" 
+{ 
+"volume" "0.15" 
+"pitch" "100" 
+"wave" "scapes\3d\water_drip_loop.wav" 
+} 
+
+"playrandom" 
+{ 
+"time" "10,30" 
+"volume" ".15,.25" 
+"pitch" "80,100" 
+"position" "random"
+
+"rndwave" 
+{ 
+"wave" "cathalu\Metal_06.wav" 
+"wave" "cathalu\MetalScrape05.wav"
+"wave" "cathalu\MetalScrape04.wav"
+"wave" "physics\metal\metal_grate_impact_hard3.wav"
+"wave" "cathalu\Rattle04.wav"
+"wave" "scapes\2d\interior2\vox_wet01.wav"
+"wave" "scapes\2d\interior2\vox_wet02.wav"
+"wave" "scapes\2d\random_amb\interior_metalmoan_01.wav"
+"wave" "scapes\2d\random_amb\interior_metalmoan_02.wav"
+"wave" "scapes\2d\random_amb\interior_metalmoan_03.wav"
+"wave" "scapes\2d\random_amb\interior_metalmoan_04.wav"
+"wave" "scapes\2d\random_amb\interior_metalmoan_05.wav"
+} 
+}
+}
+
+"cathlabs.gen" 
+{ 
+"dsp" "10"
+
+
+"playlooping"
+{
+"volume" "0.25"
+"pitch" "100"
+"wave" "scapes\2d\interior1\gen_room_02_loop.wav"
+}
+
+"playlooping" 
+{ 
+"volume" "0.4" 
+"pitch" "100" 
+"wave" "ambient\levels\citadel\citadel_drone_loop4.wav" 
+} 
+
+"playrandom" 
+{ 
+"time" "10,30" 
+"volume" ".15,.25" 
+"pitch" "80,100" 
+"position" "random"
+
+"rndwave" 
+{ 
+"wave" "cathalu\Metal_06.wav" 
+"wave" "cathalu\MetalScrape05.wav"
+"wave" "cathalu\MetalScrape04.wav"
+"wave" "physics\metal\metal_grate_impact_hard3.wav"
+"wave" "cathalu\Rattle04.wav"
+"wave" "scapes\2d\interior2\vox_wet01.wav"
+"wave" "scapes\2d\interior2\vox_wet02.wav"
+"wave" "scapes\2d\random_amb\interior_metalmoan_01.wav"
+"wave" "scapes\2d\random_amb\interior_metalmoan_02.wav"
+"wave" "scapes\2d\random_amb\interior_metalmoan_03.wav"
+"wave" "scapes\2d\random_amb\interior_metalmoan_04.wav"
+"wave" "scapes\2d\random_amb\interior_metalmoan_05.wav"
+} 
+}
+}

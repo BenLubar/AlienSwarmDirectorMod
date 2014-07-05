@@ -1,0 +1,26 @@
+GAME
+{
+	// radar map position and scale
+	//old "pos_x"			"-2924"
+	"pos_x"			"-2625"
+	"pos_y"			"3826"
+	"scale"			"7"
+
+	// material used for the radar map (in the bottom left corner)
+	"material" 		"vgui/swarm/Overviews/Reduction_-_Mission_3Overview"
+
+	// material used for the briefing map (shown before the mission starts)
+	"briefingmaterial" 	"vgui/swarm/Overviews/Reduction_-_Mission_3BriefingOverview"
+
+	// Title of the mission
+	"missiontitle"		"Reduction - Mission 3"
+	// Description text shown for the mission
+	"description"		"The escape pod has landed on Earth. But where? Contact BigDog..."
+	
+	// Mission image that shows when selecting this mission
+	"image"			"swarm/MissionPics/Reduction_-_Mission3_MissionPic"
+
+	"version"		"3.6"
+	"author"		"Tim Carter"
+	"website"		"http://www.preparetodrop.com/"
+}

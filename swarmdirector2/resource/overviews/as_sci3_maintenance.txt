@@ -1,0 +1,15 @@
+GAME
+{
+"pos_x" "-10940"
+"pos_y" "8168"
+"scale" "9.0"
+"material" "vgui/swarm/overviews/as_sci3_maintenanceoverview"
+"briefingmaterial" "vgui/swarm/overviews/as_sci3_maintenancebriefingoverview"
+"mapyoffset" "-60"
+"missiontitle"		"Lana's Maintenance"
+"description"	"Get the generator back online"
+"image"		"swarm/objectivepics/Objectives/as_sci3_maintenance_obj_3"
+"version"		"1.01"
+"author"		"Hephalistofene"
+"website"		"http://swarmarmory.com/maps?action=view&id=355-Lana%27s+Escape"
+}

@@ -1,0 +1,26 @@
+GAME
+{
+	// radar map position and scale
+	//original "pos_x"		"-13781"
+	"pos_x"		"-13337"
+	"pos_y"		"3985"
+	"scale"		"10.5"
+
+	// material used for the radar map (in the bottom left corner)
+	"material" 		"vgui/swarm/Overviews/Reduction_-_Mission_5Overview"
+
+	// material used for the briefing map (shown before the mission starts)
+	"briefingmaterial" 	"vgui/swarm/Overviews/Reduction_-_Mission_5BriefingOverview"
+
+	// Title of the mission
+	"missiontitle"		"Reduction - Mission 5"
+	// Description text shown for the mission
+	"description"		"In the ''Safe Zone'' (so they tell you). Get up: you have some work to do..."
+	
+	// Mission image that shows when selecting this mission
+	"image"			"swarm/MissionPics/Reduction_-_Mission5_MissionPic"
+
+	"version"		"3.6"
+	"author"		"Tim Carter"
+	"website"		"http://www.preparetodrop.com/"
+}

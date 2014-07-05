@@ -1,0 +1,20 @@
+GAME
+{
+    // PDA belongs to Lucius Pawn
+    
+    // inbox
+    
+	
+	
+	// sent mail
+
+	"MailFrom3"	"To: Lana King"
+	"MailDate3"	"Date: 02/29/53"
+	"MailSubject3"	"Subject: Idea"
+	"MailBody3A"	"Go to the landing bay and get a shuttle ready, I think I just had a great idea with the nuclear warhead here."
+	"MailBody3B"	"I set up the timer. If I'm not with you in three minutes, just go because the whole base is gonna blow up."
+	"MailBody3C"	"If I fail we will never meet again... I really love you Lana, I love you."
+	"MailBody3D"	"Lucius"
+
+
+}

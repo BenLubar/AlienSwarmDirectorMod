@@ -1,0 +1,15 @@
+GAME
+{
+	"pos_x"	"-6494"
+	"pos_y"	"7230"
+	"scale"	"15.0"
+	"material" "vgui/swarm/Overviews/as_city17_03Overview"
+	"briefingmaterial" "vgui/swarm/Overviews/as_city17_03Overview"
+	"missiontitle"		"Tunnel"
+	"description"	""
+	"image"		"swarm/ObjectivePics/obc17tunnel_eggs"
+	"version"		"1"
+	"author"		"Mixmedia & Valve"
+	"website"		"https://sites.google.com/site/ascity17"
+	"builtin"		"1"
+}

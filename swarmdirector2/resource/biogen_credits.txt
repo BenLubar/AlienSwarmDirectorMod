@@ -1,0 +1,9 @@
+"Credits"
+{
+// these keys must be in this order!
+"show_credits_logo" "0"
+"custom_logo"	"ExampleCustomLogo/example_custom_logo"
+"asw_credits_"	"map by Uradzimiru"
+"asw_credits_"	""
+"asw_credits_"	"2 custom textures by TopHATTwaffle"
+}

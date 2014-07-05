@@ -1,0 +1,13 @@
+"Credits"
+{
+// these keys must be in this order!
+"show_credits_logo" "0"
+//"custom_logo"	"ExampleCustomLogo/example_custom_logo"
+"asw_credits_"	"Created by ShadowsInRain"
+"asw_credits_"	""
+"asw_credits_"	""
+//"asw_credits_"	"Thanks to all level designers who created original levels"
+"asw_credits_"	""
+//"asw_credits_"	"killzone map by 'hk'"
+}
+

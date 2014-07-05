@@ -1,0 +1,15 @@
+GAME
+{
+	"pos_x"	          "-6550"
+	"pos_y"	          "6500"
+	"scale"	          "11.0"
+	"material"        "vgui/swarm/overviews/frostyoverview"
+	"briefingmaterial" "vgui/swarm/overviews/frostyoverviewbriefing"
+	"missiontitle"		"Frosty Remake"
+	"description"	    ""
+  "image"			      "swarm/campaignpics/frosty_remake_campaignpic"
+  
+	"version"		      "2.1"
+	"author"		      "Lycosa and DIMEDROLL"
+	"website"		      "https://sites.google.com/site/swarmaddons/maps/survival-bundle"
+}

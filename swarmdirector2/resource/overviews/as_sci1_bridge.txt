@@ -1,0 +1,15 @@
+GAME
+{
+"pos_x" "-8184"
+"pos_y" "3575"
+"scale" "12.0"
+"material" "vgui/swarm/overviews/as_sci1_bridgeoverview"
+"briefingmaterial" "vgui/swarm/overviews/as_sci1_bridgebriefingoverview"
+"mapyoffset" "-60"
+"missiontitle"		"Lana's Bridge"
+"description"	"Find a way to the facility"
+"image"		"swarm/Missionpics/as_sci1_bridgempic"
+"version"		"1.01"
+"author"		"Hephalistofene"
+"website"		"http://swarmarmory.com/maps?action=view&id=355-Lana%27s+Escape"
+}

@@ -1,0 +1,15 @@
+GAME
+{
+"pos_x" "-4592"
+"pos_y" "3731"
+"scale" "7.0"
+"material" "vgui/swarm/overviews/as_sci4_ventoverview"
+"briefingmaterial" "vgui/swarm/overviews/as_sci4_ventbriefingoverview"
+"mapyoffset" "-60"
+"missiontitle"		"Lana's Vents"
+"description"	"Activate explosive charges"
+"image"		"swarm/MissionPics/as_sci4_ventmpic"
+"version"		"1.01"
+"author"		"Hephalistofene"
+"website"		"http://swarmarmory.com/maps?action=view&id=355-Lana%27s+Escape"
+}

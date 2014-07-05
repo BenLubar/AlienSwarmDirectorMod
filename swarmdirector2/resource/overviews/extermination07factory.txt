@@ -1,0 +1,25 @@
+GAME
+{
+	// radar map position and scale (see the Valve wiki for more information: http://developer.valvesoftware.com/wiki/Main_Page)
+	"pos_x"		"-3594"
+	"pos_y"		"4674"
+	"scale"		"8.0"
+
+	// material used for the radar map (in the bottom left corner)
+	"material" 		"vgui/swarm/Overviews/forgotten_factory"  	// example: "vgui/swarm/Overviews/landingbay02Overview"
+
+	// material used for the briefing map (shown before the mission starts)
+	"briefingmaterial" 	"vgui/swarm/Overviews/forgotten_factory"  // example: "vgui/swarm/Overviews/landingbay02briefingOverview"
+
+	// Title of the mission
+	"missiontitle"		"The Factory"
+	// Description text shown for the mission
+	"description"		"There are at least 15 alien eggs inside the factory. Destroy them all."
+	
+	// Mission image that shows when selecting this mission
+	"image"			"forgotten_factory"  			//must be under "vgui" - dont include vgui in the path
+
+	"version"		"1.5"
+	"author"		"Rohschinken"
+	"website"		"https://sites.google.com/site/swarmaddons/maps/extermination"
+}

@@ -1,0 +1,21 @@
+GAME
+{
+"pos_x" 	"-7300"
+"pos_y" 	"4809"
+"scale" 	"11"
+
+"material" 			"vgui/swarm/Overvieuw/LZ_groundOverview"
+
+"briefingmaterial" 	"vgui/swarm/Overvieuw/LZ_briefgroundOverview"
+
+"mapyoffset" 		"-60"
+
+"missiontitle"		"Area9800 Landingzone"
+"description"		"Chek the place out"
+
+"image"				"swarm/MissionPics/LZ_start"
+
+"version" 			"1.4"
+"author" 			"DK9800 productions"
+"website" 			"http://www.xs4all.nl/~arjend/"
+}

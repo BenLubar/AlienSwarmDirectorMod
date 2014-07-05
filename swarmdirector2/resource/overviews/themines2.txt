@@ -1,0 +1,18 @@
+GAME
+{
+	"pos_x"		"-14979"
+	"pos_y"		"2962"
+	"scale"		"10.0"
+
+	"material" 		"vgui/swarm/overviews/themines2overview"
+	"briefingmaterial" 	"vgui/swarm/overviews/themines2overviewbriefing"
+	
+	"missiontitle"		"Heart of the Swarm"
+	"description"		"We detect a high concentration of biomass deep in these minds. It must be destroyed."
+
+	"image"			"swarm/MissionPics/RC7-M4MissionPic"
+
+	"version"		"1.3"
+	"author"		"Will Rogers"
+	"website"		"https://sites.google.com/site/swarmaddons/maps/research7"
+}

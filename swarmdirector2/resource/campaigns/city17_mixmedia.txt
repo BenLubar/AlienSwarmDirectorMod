@@ -1,0 +1,121 @@
+GAME
+{
+	// identifier for this campaign
+	"CampaignName" "City 17"
+	
+	// description shown on the main menu when choosing which campaign to play
+	"CampaignDescription" "IAF command wants your squad to inspect City 17 after its history dramatically changed."
+	
+	// texture used on the main menu when choosing which campaign to play
+	"ChooseCampaignTexture" "swarm/campaign/city17_map"
+	
+	// texture used on the campaign screen for the map
+	"CampaignTextureName" "swarm/campaign/city17_map"
+	
+	// these textures are overlaid on top of the campaign map in order
+	"CampaignTextureLayer1" "swarm/Campaign/JacobCampaignMap_Haze"			//"CampaignTextureLayer1" "swarm/Campaign/JacobCampaignMap_Haze"
+	"CampaignTextureLayer2" "swarm/Campaign/CampaignMap_EmptyLayer"			//"CampaignTextureLayer2" "swarm/Campaign/JacobCampaignMap_SnowNear"
+	"CampaignTextureLayer3" "swarm/Campaign/CampaignMap_EmptyLayer"			//"CampaignTextureLayer3" "swarm/Campaign/JacobCampaignMap_SnowFar"
+	
+	// custom campaign credits file
+	"CustomCreditsFile" 	"resource/City17_credits"
+
+	// position of this campaign in the galactic map (coords go from 0 to 1023)
+	"GalaxyX"   "660"
+	"GalaxyY"   "262"
+	
+	// searchlights (optional, max of 4)
+	// angle: 0 is right, 90 is up, 180 is left, 270 is down
+	//"Searchlight1X" "217"
+	//"Searchlight1Y" "860"
+	//"Searchlight1Angle" "80"
+	//"Searchlight2X" "263"
+	//"Searchlight2Y" "751"
+	//"Searchlight2Angle" "100"
+	//"Searchlight3X" "92"
+	//"Searchlight3Y" "446"
+	//"Searchlight3Angle" "90"
+	//"Searchlight4X" "580"
+	//"Searchlight4Y" "266"
+	//"Searchlight4Angle" "90"
+	
+	// first mission entry is a dummy for the starting point
+	"MISSION"
+	{
+		"MissionName"		"Entry Port"
+		"MapName"		"start_area"
+		"LocationX"		"460"
+		"LocationY"		"950"
+		"DifficultyModifier" 	"-2"
+		"Links"			"start_area" 
+		"LocationDescription"  	"Home Base"
+		"ShortBriefing"  	"Dropship Bloodhound will enter atmosphere at these co-ordinates and proceed to primary objective."
+	}
+	
+	// each mission listed
+	"MISSION"
+	{
+		"MissionName"		"Trainstation"		// name used on the map screen, etc.
+		"MapName"		"as_city17_01"		// name of the map file
+		"LocationX"		"700"				// location of the dot on the map
+		"LocationY"		"860"				// (from 0 to 1023, on the above texture)
+		"ThreatString" 		"1"    				// Threat level string to help players decide where to go next
+		"Links"			"start_area as_city17_02"	// map names of neighbours
+		"LocationDescription" 	"Trainstation"
+		"ShortBriefing"  	"Gordon Freeman has disappeared. After this huge wave of aliens, which combines have not been able to stop, captured whole mainland."
+		"AlwaysVisible"		"1"
+		"NeedsMoreThanOneMarine" "0"				// If set to 1, two players need to be connected to play (no solo play)
+	}
+	"MISSION"
+	{
+		"MissionName"		"City center"		// name used on the map screen, etc.
+		"MapName"		"as_city17_02"			// name of the map file
+		"LocationX"		"800"				// location of the dot on the map
+		"LocationY"		"720"				// (from 0 to 1023, on the above texture)
+		"ThreatString" 		"1"    				// Threat level string to help players decide where to go next
+		"Links"			"as_city17_01 as_city17_03"	// map names of neighbours
+		"LocationDescription" 	"City center"
+		"ShortBriefing"  	"We need to clean up streets from swarm eggs and biomass, so this can stop reproduction."
+		"AlwaysVisible"		"1"
+		"NeedsMoreThanOneMarine" "0"				// If set to 1, two players need to be connected to play (no solo play)
+	}
+	"MISSION"
+	{
+		"MissionName"		"Tunnel"		// name used on the map screen, etc.
+		"MapName"		"as_city17_03"			// name of the map file
+		"LocationX"		"680"				// location of the dot on the map
+		"LocationY"		"630"				// (from 0 to 1023, on the above texture)
+		"ThreatString" 		"1"    				// Threat level string to help players decide where to go next
+		"Links"			"as_city17_02 as_city17_04"	// map names of neighbours
+		"LocationDescription" 	"Tunnel"
+		"ShortBriefing"  	"Geological reports show huge signs of Swarm infestation."
+		"AlwaysVisible"		"1"
+		"NeedsMoreThanOneMarine" "0"				// If set to 1, two players need to be connected to play (no solo play)
+	}
+	"MISSION"
+	{
+		"MissionName"		"Fountain"		// name used on the map screen, etc.
+		"MapName"		"as_city17_04"			// name of the map file
+		"LocationX"		"450"				// location of the dot on the map
+		"LocationY"		"690"				// (from 0 to 1023, on the above texture)
+		"ThreatString" 		"1"    				// Threat level string to help players decide where to go next
+		"Links"			"as_city17_03 as_city17_05"	// map names of neighbours
+		"LocationDescription" 	"Fountain"
+		"ShortBriefing"  	"We heading to the north combine's core system, which must be restarted."
+		"AlwaysVisible"		"1"
+		"NeedsMoreThanOneMarine" "0"				// If set to 1, two players need to be connected to play (no solo play)
+	}
+	"MISSION"
+	{
+		"MissionName"		"Citadel"		// name used on the map screen, etc.
+		"MapName"		"as_city17_05"			// name of the map file
+		"LocationX"		"540"				// location of the dot on the map
+		"LocationY"		"570"				// (from 0 to 1023, on the above texture)
+		"ThreatString" 		"1"    				// Threat level string to help players decide where to go next
+		"Links"			"as_city17_04"	// map names of neighbours
+		"LocationDescription" 	"Citadel"
+		"ShortBriefing"  	"IAF command wants us to detonate the warhead in heart of Swarm, which work was not finished by previous squad."
+		"AlwaysVisible"		"1"
+		"NeedsMoreThanOneMarine" "0"				// If set to 1, two players need to be connected to play (no solo play)
+	}
+}

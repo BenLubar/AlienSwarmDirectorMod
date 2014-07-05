@@ -1,0 +1,25 @@
+GAME
+{
+    // PDA belongs to Jan Anath
+    
+    // inbox
+    
+	"MailFrom1"	"From: Windom King"
+	"MailDate1"	"Date: 02/29/53"
+	"MailSubject1"	"Subject: Security"
+	"MailBody1A"	"Jan, we are getting something on the sensors, I am not quite sure if this is important or not but this is unusual."
+	"MailBody1B"	"It could be an asteroid or a drop pod."
+	"MailBody1C"	""
+	"MailBody1D"	"Chief of Security W. King"
+
+	
+	// sent mail
+	
+	"MailFrom3"	"To: Windom King"
+	"MailDate3"	"Date: 02/29/53"
+	"MailSubject3"	"Subject: Re: Security"
+	"MailBody3A"	"I had received information regarding a possible security threat. It seems that we have an industrial spy around here."
+	"MailBody3B"	"Keep your eyes wide open and have your staff report anything suspicious."
+	"MailBody3C"	"By the way, do NOT call me Jan, Head Administrator Anath will do just fine."
+	"MailBody3D"	"Head Administrator J. Anath"
+}

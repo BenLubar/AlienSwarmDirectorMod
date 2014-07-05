@@ -1,0 +1,21 @@
+GAME
+{
+"pos_x" 	"-7078"
+"pos_y" 	"4838"
+"scale" 	"10"
+
+"material" 			"vgui/swarm/Overvieuw/PP_groundOverview"
+
+"briefingmaterial" 	"vgui/swarm/Overvieuw/PP_briefgroundOverview"
+
+"mapyoffset" 		"-60"
+
+"missiontitle"		"Area9800 Powerplant"
+"description"		"Bring Power Online"
+
+"image"				"swarm/MissionPics/PP_start"
+
+"version" 			"1.4"
+"author" 			"DK9800 productions"
+"website" 			"http://www.xs4all.nl/~arjend/"
+}

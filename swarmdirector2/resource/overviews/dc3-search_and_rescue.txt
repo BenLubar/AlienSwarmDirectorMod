@@ -1,0 +1,25 @@
+GAME
+{
+	// radar map position and scale (see the Valve wiki for more information: http://developer.valvesoftware.com/wiki/Main_Page)
+	"pos_x"		"-10520"
+	"pos_y"		"5961"
+	"scale"		"17.00"
+
+	// material used for the radar map (in the bottom left corner)
+	"material" 		"vgui/overviews/Search_and_rescueoverview"  			// example: "vgui/swarm/Overviews/landingbay02Overview"
+
+	// material used for the briefing map (shown before the mission starts)
+	"briefingmaterial" 	"vgui/overviews/Search_and_rescueoverview"		// example: "vgui/swarm/Overviews/landingbay02briefingOverview"
+
+	// Title of the mission
+	"missiontitle"		"Search And Rescue"
+	// Description text shown for the mission
+	"description"		"The director is up here somewhere, we have to find him"
+	
+	// Mission image that shows when selecting this mission
+	"image"			"MissionPics/Searchandrescue_missionpic"  			//must be under "vgui" - dont include vgui in the path
+
+	"version"		"1.2"
+	"author"		"Daniel"
+	"website"		"http://sites.google.com/site/swarmaddons/maps/dead-city"
+}

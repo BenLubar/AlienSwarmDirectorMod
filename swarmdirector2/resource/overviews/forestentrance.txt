@@ -1,0 +1,18 @@
+GAME
+{
+	"pos_x"		"-3625"
+	"pos_y"		"5315"
+	"scale"		"6.0"
+
+	"material" 		"vgui/swarm/overviews/forestentranceoverview"
+	"briefingmaterial" 	"vgui/swarm/overviews/forestentranceoverviewbriefing"
+	
+	"missiontitle"		"Shipping Facility"
+	"description"		"The Research 7 Transport Facility hasn't been heard from in a week. Investigate the facility."
+
+	"image"			"swarm/MissionPics/RC7-M1MissionPic"
+
+	"version"		"1.3"
+	"author"		"Will Rogers"
+	"website"		"https://sites.google.com/site/swarmaddons/maps/research7"
+}

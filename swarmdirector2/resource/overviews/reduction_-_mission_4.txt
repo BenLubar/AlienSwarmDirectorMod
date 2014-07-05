@@ -1,0 +1,26 @@
+GAME
+{
+	// radar map position and scale
+	//original "pos_x"		"817"
+	"pos_x"		"1150"
+	"pos_y"		"6630"
+	"scale"		"9"
+
+	// material used for the radar map (in the bottom left corner)
+	"material" 		"vgui/swarm/Overviews/Reduction_-_Mission_4Overview"
+
+	// material used for the briefing map (shown before the mission starts)
+	"briefingmaterial" 	"vgui/swarm/Overviews/Reduction_-_Mission_4BriefingOverview"
+
+	// Title of the mission
+	"missiontitle"		"Reduction - Mission 4"
+	// Description text shown for the mission
+	"description"		"You're on a train. Going where?..."
+	
+	// Mission image that shows when selecting this mission
+	"image"			"swarm/MissionPics/Reduction_-_Mission4_MissionPic"
+
+	"version"		"3.6"
+	"author"		"Tim Carter"
+	"website"		"http://www.preparetodrop.com/"
+}

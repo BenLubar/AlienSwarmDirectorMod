@@ -1,0 +1,28 @@
+GAME
+{
+	// radar map position and scale
+	//original "pos_x"		"-8296"
+	"pos_x"		"-8350"
+	"pos_y"		"6318"
+	"scale"		"12.5"
+
+	// material used for the radar map (in the bottom left corner)
+	"material" 		"vgui/swarm/Overviews/Reduction_-_Mission_1Overview"
+
+	// material used for the briefing map (shown before the mission starts)
+	"briefingmaterial" 	"vgui/swarm/Overviews/Reduction_-_Mission_1BriefingOverview"
+
+	"mapyoffset"	"-60"
+
+	// Title of the mission
+	"missiontitle"		"Reduction - Mission 1"
+	// Description text shown for the mission
+	"description"		"Welcome to Orbital Station Omega. After checking in, you'll descend for some much-needed rest and recovery on Earth."
+	
+	// Mission image that shows when selecting this mission
+	"image"			"swarm/MissionPics/Reduction_-_Mission1_MissionPic"
+
+	"version"		"3.6"
+	"author"		"Tim Carter"
+	"website"		"http://www.preparetodrop.com/"
+}

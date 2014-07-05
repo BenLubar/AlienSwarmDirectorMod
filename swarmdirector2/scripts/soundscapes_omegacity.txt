@@ -1,0 +1,60 @@
+//////////////////////////Omega City//////////////////////////////
+
+"OmegaCity.outside"
+//Random thunder and wind with a machinery tone
+{
+	"dsp"	"0"
+
+
+	"playlooping"
+	{
+		"volume"	"0.9"
+		"pitch"		"100"
+		"wave"		"scapes/3d/crucial_big_pipes_loop.wav"
+	}
+
+	"playlooping"
+	{
+		"volume"	"0.7"
+		"pitch"		"100"
+		"wave"		"scapes/3d/computer_roomtone_small.wav"
+	}
+
+	
+	"playrandom"
+	{
+		"time"		"40,150"
+		"volume"	"0.8,0.8"
+		"pitch"		"90,100"
+		"soundlevel"	"0"
+		"rndwave"
+		{
+			
+			"wave"	"scapes/2d/random_amb/thunder_rumble_01.wav"
+			"wave"	"scapes/2d/random_amb/thunder_rumble_02.wav"
+			"wave"	"scapes/2d/random_amb/thunder_rumble_03.wav"
+                        "wave"	"scapes/2d/random_amb/thunder_rumble_04.wav"
+		
+                } 
+
+
+	"playrandom"
+	{
+		"time"		"25,65"
+		"volume"	"0.8,0.8"
+		"pitch"		"90,100"
+		"soundlevel"	"0"
+		"rndwave"
+		{
+			
+			"wave"	"scapes/2d/random_amb/gust_01.wav"
+			"wave"	"scapes/2d/random_amb/gust_02.wav"
+			
+		}
+	}
+}
+
+
+	
+
+

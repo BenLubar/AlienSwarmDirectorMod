@@ -1,0 +1,15 @@
+GAME
+{
+"pos_x" "-8502"
+"pos_y" "4826"
+"scale" "10.0"
+"material" "vgui/swarm/overviews/as_sci2_seweroverview"
+"briefingmaterial" "vgui/swarm/overviews/as_sci2_sewerbriefingoverview"
+"mapyoffset" "-60"
+"missiontitle"		"Lana's Sewer"
+"description"	"Proceed to maintenance facility"
+"image"		"swarm/Missionpics/as_sci2_sewermpic"
+"version"		"1.01"
+"author"		"Hephalistofene"
+"website"		"http://swarmarmory.com/maps?action=view&id=355-Lana%27s+Escape"
+}

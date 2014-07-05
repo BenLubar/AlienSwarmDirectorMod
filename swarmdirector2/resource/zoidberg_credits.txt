@@ -1,0 +1,14 @@
+"Credits"
+{
+// these keys must be in this order!
+"show_credits_logo" "0"
+"custom_logo"	"ExampleCustomLogo/example_custom_logo"
+"asw_credits_"	"08/10 by lundiplutzmus"
+"asw_credits_"	""
+"asw_credits_"	"Maptesting:"
+"asw_credits_"	"derbehring"
+"asw_credits_"	"ronin"
+"asw_credits_"	"[ChGrue] 75gGeriebeneMoehre"
+"asw_credits_"	"Thank you for playing"
+"asw_credits_"	"http://swarmarmory.com/maps?action=view&id=264-ZoidbergReactor"
+}
