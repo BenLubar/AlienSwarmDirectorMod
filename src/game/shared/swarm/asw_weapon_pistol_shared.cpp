@@ -285,9 +285,9 @@ void CASW_Weapon_Pistol::ItemPostFrame( void )
 	if ( m_bInReload )
 		return;
 	
-	CBasePlayer *pOwner = GetCommander();
+	CASW_Player *pOwner = GetCommander();
 
-	if ( pOwner == NULL )
+	if ( pOwner == NULL || pOwner->GetMarine() != GetOwner() )
 		return;
 
 	//Allow a refire as fast as the player can click

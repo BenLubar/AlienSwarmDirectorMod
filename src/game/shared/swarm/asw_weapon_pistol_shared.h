@@ -30,16 +30,16 @@ public:
 
 	CASW_Weapon_Pistol();
 	virtual ~CASW_Weapon_Pistol();
-	void Precache();
+	virtual void Precache();
 
-	float	GetFireRate( void );
+	virtual float	GetFireRate( void );
 	
-	void ItemPostFrame();
-	Activity	GetPrimaryAttackActivity( void );
+	virtual void ItemPostFrame();
+	virtual Activity	GetPrimaryAttackActivity( void );
 	virtual bool ShouldMarineMoveSlow();
 
-	void	PrimaryAttack();
-	int ASW_SelectWeaponActivity(int idealActivity);
+	virtual void	PrimaryAttack();
+	virtual int ASW_SelectWeaponActivity(int idealActivity);
 	virtual float GetWeaponDamage();
 	virtual int AmmoClickPoint() { return 2; }
 
@@ -56,7 +56,7 @@ public:
 	#ifndef CLIENT_DLL
 		DECLARE_DATADESC();
 
-		int		CapabilitiesGet( void ) { return bits_CAP_WEAPON_RANGE_ATTACK1; }
+		virtual int		CapabilitiesGet( void ) { return bits_CAP_WEAPON_RANGE_ATTACK1; }
 
 		virtual const char* GetPickupClass() { return "asw_pickup_pistol"; }
 
