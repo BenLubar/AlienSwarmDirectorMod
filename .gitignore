@@ -117,6 +117,8 @@ UpgradeLog*.XML
 
 #Source Engine
 *.vmx
+*.bsp
+*.prt
 
 #Windows
 Thumbs.db
