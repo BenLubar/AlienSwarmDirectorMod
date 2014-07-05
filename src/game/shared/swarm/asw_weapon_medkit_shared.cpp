@@ -90,6 +90,9 @@ void CASW_Weapon_Medkit::SelfHeal()
 		if (pMarine->GetFlags() & FL_FROZEN)	// don't allow this if the marine is frozen
 			return;
 
+		if (m_iClip1 <= 0) // we're out of ammo!
+			return;
+
 		// MUST call sound before removing a round from the clip of a CMachineGun
 		WeaponSound(SINGLE);
 
