@@ -78,11 +78,6 @@ CNB_Lobby_Row::CNB_Lobby_Row( vgui::Panel *parent, const char *name ) : BaseClas
 	m_pXPBar->SetColors( Color( 255, 255, 255, 0 ), Color( 93,148,192,255 ), Color( 255, 255, 255, 255 ), Color( 17,37,57,255 ), Color( 35, 77, 111, 255 ) );
 	//m_pXPBar->m_bShowCumulativeTotal = true;
 	m_nLastPromotion = 0;
-	m_pXPBar->AddMinMax( 0, g_iLevelExperience[ 0 ] * g_flPromotionXPScale[ m_nLastPromotion ] );
-	for ( int i = 0; i < ASW_NUM_EXPERIENCE_LEVELS - 1; i++ )
-	{
-		m_pXPBar->AddMinMax( g_iLevelExperience[ i ] * g_flPromotionXPScale[ m_nLastPromotion ], g_iLevelExperience[ i + 1 ] * g_flPromotionXPScale[ m_nLastPromotion ] );
-	}
 
 	m_pXPBar->m_flBorder = 1.5f;
 	m_nLobbySlot = 0;
@@ -216,11 +211,19 @@ void CNB_Lobby_Row::UpdateDetails()
 	if ( nPromotion <= 0 || nPromotion > ASW_PROMOTION_CAP )
 	{
 		m_pPromotionIcon->SetVisible( false );
+		m_nLastPromotion = 0;
 	}
 	else
 	{
 		m_pPromotionIcon->SetVisible( true );
 		m_pPromotionIcon->SetImage( VarArgs( "briefing/promotion_%d", nPromotion ) );
+		m_nLastPromotion = nPromotion;
+	}
+	m_pXPBar->ClearMinMax();
+	m_pXPBar->AddMinMax(0, g_iLevelExperience[0] * g_flPromotionXPScale[m_nLastPromotion]);
+	for (int i = 0; i < ASW_NUM_EXPERIENCE_LEVELS - 1; i++)
+	{
+		m_pXPBar->AddMinMax(g_iLevelExperience[i] * g_flPromotionXPScale[m_nLastPromotion], g_iLevelExperience[i + 1] * g_flPromotionXPScale[m_nLastPromotion]);
 	}
 
 	if ( nLevel == -1 || nXP == -1 )
