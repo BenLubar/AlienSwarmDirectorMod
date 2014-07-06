@@ -3005,7 +3005,7 @@ bool CASW_Marine::SetNewAimError(CBaseEntity *pTarget)
 			enemySpeed = 1;
 		float dot = DotProduct(pTarget->Forward(), Forward());
 
-		float adjustment = (2 - fabs(dot)) / enemySpeed * asw_marine_aim_error_correction.GetFloat();
+		float adjustment = 1 + (1 - fabs(dot)) / enemySpeed * asw_marine_aim_error_correction.GetFloat();
 
 		if ( asw_debug_marine_aim.GetBool() )
 			Msg( "%s: enemy facing (%f, %f, %f) facing (%f, %f, %f) enemy speed (%f) dot product (%f) adjustment (%f)\n",
