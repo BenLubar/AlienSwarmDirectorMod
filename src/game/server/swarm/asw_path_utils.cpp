@@ -62,11 +62,14 @@ CASW_Path_Utils_NPC* CASW_Path_Utils::GetPathfinderNPC()
 }
 
 
-AI_Waypoint_t *CASW_Path_Utils::BuildRoute( const Vector &vStart, const Vector &vEnd, 
+AI_Waypoint_t *CASW_Path_Utils::BuildRoute( const Vector &vStart, const Vector &vEnd, Hull_t nHull,
 										  CBaseEntity *pTarget, float goalTolerance, Navigation_t curNavType, int nBuildFlags )
 {
 	if ( !GetPathfinderNPC() )
 		return NULL;
+
+	GetPathfinderNPC()->SetHullType(nHull);
+	GetPathfinderNPC()->SetHullSizeNormal();
 
 	m_pLastRoute = GetPathfinderNPC()->GetPathfinder()->BuildRoute( vStart, vEnd, pTarget, goalTolerance, curNavType, nBuildFlags );
 
@@ -124,7 +127,7 @@ void asw_path_end_f()
 	debugoverlay->AddBoxOverlay( g_vecPathStart, Vector(-10, -10, -10 ), Vector(10, 10, 10) , vec3_angle, 255, 0, 0, 255, 30.0f );
 	debugoverlay->AddBoxOverlay( vecPathEnd, Vector(-10, -10, -10 ), Vector(10, 10, 10) , vec3_angle, 255, 255, 0, 255, 30.0f );
 
-	AI_Waypoint_t *pWaypoint = ASWPathUtils()->BuildRoute( g_vecPathStart, vecPathEnd, NULL, 100, NAV_NONE, bits_BUILD_GET_CLOSE );
+	AI_Waypoint_t *pWaypoint = ASWPathUtils()->BuildRoute( g_vecPathStart, vecPathEnd, HULL_MEDIUMBIG, NULL, 100, NAV_NONE, bits_BUILD_GET_CLOSE );
 	if ( !pWaypoint )
 	{
 		Msg( "Failed to find route\n" );

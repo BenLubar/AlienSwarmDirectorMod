@@ -36,6 +36,7 @@ ConVar asw_candidate_interval("asw_candidate_interval", "1.0", FCVAR_CHEAT, "Int
 ConVar asw_wanderer_class( "asw_wanderer_class", "asw_drone_jumper", FCVAR_CHEAT, "Alien class used when spawning wanderers" );
 ConVar asw_wanderer_varied( "asw_wanderer_varied", "0.5", FCVAR_CHEAT, "Probability that the director will spawn wanderers that are not asw_wanderer_class", true, 0.0f, true, 1.0f );
 ConVar asw_wanderer_varied_rare( "asw_wanderer_varied_rare", "0.1", FCVAR_CHEAT, "Probability that the varied wanderers will be more powerful aliens", true, 0.0f, true, 1.0f );
+ConVar asw_wanderer_max_group( "asw_wanderer_max_group", "3", FCVAR_CHEAT, "Maximum number of wandering aliens to spawn at once", true, 1.0f, false, 0.0f );
 ConVar asw_horde_class( "asw_horde_class", "asw_drone_jumper", FCVAR_CHEAT, "Alien class used when spawning hordes" );
 
 CASW_Spawn_Manager::CASW_Spawn_Manager()
@@ -306,9 +307,19 @@ bool CASW_Spawn_Manager::SpawnAlientAtRandomNode()
 	int nHull = 0;
 	Vector vecMins, vecMaxs;
 	bool ok = GetAlienHull(szAlienClass, nHull);
+	if (!ok)
+	{
+		Warning("asw_spawn_manager: failed to get alien hulls (%s)\n", szAlienClass);
+		return false;
+	}
 	Assert( ok );
 	ok = GetAlienBounds(szAlienClass, vecMins, vecMaxs);
 	Assert( ok );
+	if (!ok)
+	{
+		Warning("asw_spawn_manager: failed to get alien bounds (%s)\n", szAlienClass);
+		return false;
+	}
 
 	int iMaxTries = 4;
 	for ( int i=0 ; i<iMaxTries ; i++ )
@@ -324,7 +335,7 @@ bool CASW_Spawn_Manager::SpawnAlientAtRandomNode()
 			return false;
 
 		// check if there's a route from this node to the marine(s)
-		AI_Waypoint_t *pRoute = ASWPathUtils()->BuildRoute( pNode->GetPosition( nHull ), pMarine->GetAbsOrigin(), NULL, 100 );
+		AI_Waypoint_t *pRoute = ASWPathUtils()->BuildRoute( pNode->GetPosition( nHull ), pMarine->GetAbsOrigin(), (Hull_t) nHull, NULL, 100 );
 		if ( !pRoute )
 		{
 			if ( asw_director_debug.GetBool() )
@@ -344,7 +355,7 @@ bool CASW_Spawn_Manager::SpawnAlientAtRandomNode()
 		if ( ValidSpawnPoint( vecSpawnPos, vecMins, vecMaxs, true, MARINE_NEAR_DISTANCE ) )
 		{
 			QAngle angle(0, RandomFloat(0, 360), 0);
-			if ( SpawnAlienAt( szAlienClass, vecSpawnPos, angle ) )
+			if ( SpawnAlienBatch( szAlienClass, RandomInt( 1, asw_wanderer_max_group.GetInt() ), vecSpawnPos, angle ) )
 			{
 				if ( asw_director_debug.GetBool() )
 				{
@@ -555,7 +566,7 @@ bool CASW_Spawn_Manager::FindHordePosition()
 		}
 
 		// check if there's a route from this node to the marine(s)
-		AI_Waypoint_t *pRoute = ASWPathUtils()->BuildRoute( pNode->GetPosition( nHull ), pMarine->GetAbsOrigin(), NULL, 100 );
+		AI_Waypoint_t *pRoute = ASWPathUtils()->BuildRoute( pNode->GetPosition( nHull ), pMarine->GetAbsOrigin(), (Hull_t) nHull, NULL, 100 );
 		if ( !pRoute )
 		{
 			if ( asw_director_debug.GetInt() >= 2 )

@@ -2752,7 +2752,7 @@ void CAlienSwarm::Resurrect( CASW_Marine_Resource * RESTRICT pMR, CASW_Marine *p
 		if ( flDist < flNearestDist )
 		{
 			// check if there's a route from this node to the marine(s)
-			AI_Waypoint_t * RESTRICT const pRoute  = ASWPathUtils()->BuildRoute( vecSpawnPos, pMarine->GetAbsOrigin(), NULL, 100 );
+			AI_Waypoint_t * RESTRICT const pRoute  = ASWPathUtils()->BuildRoute( vecSpawnPos, pMarine->GetAbsOrigin(), HULL_HUMAN, NULL, 100 );
 			if ( !pRoute )
 			{
 				continue;
