@@ -149,6 +149,11 @@ C_ASW_Weapon::~C_ASW_Weapon()
 		UTIL_Remove( m_hLaserSight.Get() );
 		m_hLaserSight = NULL;
 	}
+	
+	if (m_pLaserPointerEffect.IsValid())
+	{
+		m_pLaserPointerEffect->SetRemoveFlag();
+	}
 }
 
 void C_ASW_Weapon::OnDataChanged( DataUpdateType_t type )
