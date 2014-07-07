@@ -115,7 +115,7 @@ BEGIN_DATADESC( CASW_Weapon )
 	DEFINE_FIELD( m_fFastReloadEnd, FIELD_TIME ),
 END_DATADESC()
 
-ConVar asw_weapon_safety_hull("asw_weapon_safety_hull", "0", FCVAR_CHEAT, "Size of hull used to check for AI shots going too near a friendly");
+ConVar asw_weapon_safety_hull("asw_weapon_safety_hull", "30", FCVAR_CHEAT, "Size of hull used to check for AI shots going too near a friendly");
 extern ConVar asw_debug_alien_damage;
 extern ConVar asw_energy_weapons;
 
