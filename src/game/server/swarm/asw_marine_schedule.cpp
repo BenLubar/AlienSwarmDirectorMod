@@ -578,6 +578,7 @@ int CASW_Marine::SelectSchedule()
 							vecBest.y = RandomFloat(mins.y, maxs.y);
 							vecBest.z = RandomFloat(mins.z, maxs.z);
 						}
+						GetSquadFormation()->FollowCommandUsed();
 					}
 					else if (dynamic_cast<CASW_Objective_Triggered *>(pObj))
 					{
@@ -598,6 +599,11 @@ int CASW_Marine::SelectSchedule()
 							vecBest.x = RandomFloat(mins.x, maxs.x);
 							vecBest.y = RandomFloat(mins.y, maxs.y);
 							vecBest.z = RandomFloat(mins.z, maxs.z);
+						}
+
+						if (RandomFloat() < 0.1f)
+						{
+							GetSquadFormation()->FollowCommandUsed();
 						}
 					}
 					else
@@ -714,6 +720,13 @@ void CASW_Marine::TaskFail( AI_TaskFailureCode_t code )
 
 		if (asw_marine_test_new_ai.GetBool())
 		{
+			if (GetPhysicsPropTarget())
+			{
+				Vector vecOrderPos = GetNavigator()->GetNetwork()->GetNodePosition( this, GetPathfinder()->NearestNodeToNPC() );
+				SetASWOrders( ASW_ORDER_MOVE_TO, -1, &vecOrderPos );
+				SetPhysicsPropTarget( NULL );
+				return;
+			}
 			CBaseEntity *pEnt = gEntList.FindEntityByClassnameNearest("prop_physics", GetAbsOrigin(), 128);
 			if (!pEnt || pEnt->m_takedamage == DAMAGE_NO || pEnt->GetHealth() <= 0)
 				pEnt = gEntList.FindEntityByClassnameNearest("prop_physics_override", GetAbsOrigin(), 128);
