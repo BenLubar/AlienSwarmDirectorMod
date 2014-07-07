@@ -36,7 +36,9 @@ ConVar asw_candidate_interval("asw_candidate_interval", "1.0", FCVAR_CHEAT, "Int
 ConVar asw_wanderer_class( "asw_wanderer_class", "asw_drone_jumper", FCVAR_CHEAT, "Alien class used when spawning wanderers" );
 ConVar asw_wanderer_varied( "asw_wanderer_varied", "0.5", FCVAR_CHEAT, "Probability that the director will spawn wanderers that are not asw_wanderer_class", true, 0.0f, true, 1.0f );
 ConVar asw_wanderer_varied_rare( "asw_wanderer_varied_rare", "0.1", FCVAR_CHEAT, "Probability that the varied wanderers will be more powerful aliens", true, 0.0f, true, 1.0f );
-ConVar asw_wanderer_max_group( "asw_wanderer_max_group", "3", FCVAR_CHEAT, "Maximum number of wandering aliens to spawn at once", true, 1.0f, false, 0.0f );
+ConVar asw_wanderer_group_max( "asw_wanderer_group_max", "3", FCVAR_CHEAT, "Maximum number of wandering aliens to spawn at once", true, 1.0f, false, 0.0f );
+ConVar asw_wanderer_group_probability( "asw_wanderer_group_probability", "0.7", FCVAR_CHEAT, "Probability of spawning an extra wanderer. Three wanderers is this squared, and so on.", true, 0.0f, true, 1.0f );
+ConVar asw_horde_wanderers( "asw_horde_wanderers", "0.02", FCVAR_CHEAT, "Probability of a wanderer spawning at the same time as a horde alien.", true, 0.0f, true, 1.0f );
 ConVar asw_horde_class( "asw_horde_class", "asw_drone_jumper", FCVAR_CHEAT, "Alien class used when spawning hordes" );
 
 CASW_Spawn_Manager::CASW_Spawn_Manager()
@@ -72,6 +74,22 @@ ASW_Alien_Class_Entry g_Aliens[]=
 	ASW_Alien_Class_Entry( "asw_ranger", HULL_HUMAN ),
 	ASW_Alien_Class_Entry( "asw_mortarbug", HULL_LARGE ),
 	ASW_Alien_Class_Entry( "asw_shaman", HULL_LARGE ),
+};
+
+const char * g_VariedWandererTypeCommon [] = {
+	"asw_drone_jumper",
+	"asw_ranger",
+	"asw_buzzer",
+	"asw_parasite_defanged",
+	"asw_grub"
+};
+
+const char * g_VariedWandererTypeRare [] = {
+	"asw_shieldbug",
+	"asw_mortarbug",
+	"asw_parasite",
+	"asw_harvester",
+	"asw_boomer"
 };
 
 // Array indices of drones.  Used by carnage mode.
@@ -205,7 +223,36 @@ void CASW_Spawn_Manager::Update()
 		{
 			int iToSpawn = MIN( m_iHordeToSpawn, asw_max_alien_batch.GetInt() );
 			int iSpawned = SpawnAlienBatch( asw_horde_class.GetString(), iToSpawn, m_vecHordePosition, m_angHordeAngle, 0 );
+			if (asw_director_debug.GetInt() >= 4)
+				Msg("spawned %d/%d %s (horde) at (%f, %f, %f)\n", iSpawned, m_iHordeToSpawn, asw_horde_class.GetString(), m_vecHordePosition.x, m_vecHordePosition.y, m_vecHordePosition.z);
 			m_iHordeToSpawn -= iSpawned;
+
+			for (int i = 0; i < iSpawned; i++)
+			{
+				if (RandomFloat() < asw_horde_wanderers.GetFloat())
+				{
+					const char *szAlienClass = asw_wanderer_class.GetString();
+					if (RandomFloat() < asw_wanderer_varied.GetFloat())
+					{
+						if (RandomFloat() < asw_wanderer_varied_rare.GetFloat())
+						{
+							szAlienClass = g_VariedWandererTypeRare[RandomInt(0, NELEMS(g_VariedWandererTypeRare) - 1)];
+						}
+						else
+						{
+							szAlienClass = g_VariedWandererTypeCommon[RandomInt(0, NELEMS(g_VariedWandererTypeCommon) - 1)];
+						}
+					}
+					if (SpawnAlienAt(szAlienClass, m_vecHordePosition, m_angHordeAngle))
+					{
+						if (asw_director_debug.GetInt() >= 4)
+						{
+							Msg("spawned %s (horde wanderer) at (%f, %f, %f)\n", szAlienClass, m_vecHordePosition.x, m_vecHordePosition.y, m_vecHordePosition.z);
+						}
+					}
+				}
+			}
+
 			if ( m_iHordeToSpawn <= 0 )
 			{
 				ASWDirector()->OnHordeFinishedSpawning();
@@ -219,6 +266,10 @@ void CASW_Spawn_Manager::Update()
 				}
 				if ( !FindHordePosition() )		// if we failed to find a new location, just abort this horde
 				{
+					if (asw_director_debug.GetBool())
+					{
+						Msg("Horde failed to find a new location, clearing.\n");
+					}
 					m_iHordeToSpawn = 0;
 					ASWDirector()->OnHordeFinishedSpawning();
 					m_vecHordePosition = vec3_origin;
@@ -255,22 +306,6 @@ void CASW_Spawn_Manager::AddAlien()
 	m_iAliensToSpawn++;
 }
 
-const char * g_VariedWandererTypeCommon [] = {
-	"asw_drone_jumper",
-	"asw_ranger",
-	"asw_buzzer",
-	"asw_parasite_defanged",
-	"asw_grub"
-};
-
-const char * g_VariedWandererTypeRare [] = {
-	"asw_shieldbug",
-	"asw_mortarbug",
-	"asw_parasite",
-	"asw_harvester",
-	"asw_boomer"
-};
-
 bool CASW_Spawn_Manager::SpawnAlientAtRandomNode()
 {
 	UpdateCandidateNodes();
@@ -291,11 +326,14 @@ bool CASW_Spawn_Manager::SpawnAlientAtRandomNode()
 	if ( candidateNodes.Count() <= 0 )
 		return false;
 
+	float flGroupProb = asw_wanderer_group_probability.GetFloat();
 	const char *szAlienClass = asw_wanderer_class.GetString();
 	if (RandomFloat() < asw_wanderer_varied.GetFloat())
 	{
+		flGroupProb *= asw_wanderer_varied.GetFloat();
 		if (RandomFloat() < asw_wanderer_varied_rare.GetFloat())
 		{
+			flGroupProb *= asw_wanderer_varied_rare.GetFloat();
 			szAlienClass = g_VariedWandererTypeRare[RandomInt(0, NELEMS(g_VariedWandererTypeRare)-1)];
 		}
 		else
@@ -351,23 +389,34 @@ bool CASW_Spawn_Manager::SpawnAlientAtRandomNode()
 			continue;
 		}
 		
+		int nCount = 1;
+		while (nCount < asw_wanderer_group_max.GetInt())
+		{
+			if (RandomFloat() < flGroupProb)
+				nCount++;
+			else
+				break;
+		}
+
 		Vector vecSpawnPos = pNode->GetPosition( nHull ) + Vector( 0, 0, V_stricmp( "asw_buzzer", szAlienClass ) ? 32 : 128 );
 		if ( ValidSpawnPoint( vecSpawnPos, vecMins, vecMaxs, true, MARINE_NEAR_DISTANCE ) )
 		{
 			QAngle angle(0, RandomFloat(0, 360), 0);
-			if ( SpawnAlienBatch( szAlienClass, RandomInt( 1, asw_wanderer_max_group.GetInt() ), vecSpawnPos, angle ) )
+			int nSpawned = SpawnAlienBatch(szAlienClass, nCount, vecSpawnPos, angle);
+			if ( asw_director_debug.GetBool() )
 			{
-				if ( asw_director_debug.GetBool() )
-				{
-					NDebugOverlay::Cross3D( vecSpawnPos, 25.0f, 255, 255, 255, true, 20.0f );
-					float flDist;
-					CASW_Marine *pMarine = UTIL_ASW_NearestMarine( vecSpawnPos, flDist );
-					if ( pMarine )
-					{
-						NDebugOverlay::Line( pMarine->GetAbsOrigin(), vecSpawnPos, 64, 64, 64, true, 60.0f );
-					}
-				}
-				DeleteRoute( pRoute );
+				NDebugOverlay::Cross3D( vecSpawnPos, 25.0f, 255, 255, 255, true, 20.0f );
+				float flDist;
+				CASW_Marine *pMarine = UTIL_ASW_NearestMarine( vecSpawnPos, flDist );
+				if ( pMarine )
+					NDebugOverlay::Line( pMarine->GetAbsOrigin(), vecSpawnPos, 64, 64, 64, true, 60.0f );
+				if ( asw_director_debug.GetInt() >= 4 )
+					Msg( "spawned %d/%d %s (wanderer) at (%f, %f, %f)\n", nSpawned, nCount, szAlienClass, vecSpawnPos.x, vecSpawnPos.y, vecSpawnPos.z );
+			}
+
+			if (nSpawned == nCount)
+			{
+				DeleteRoute(pRoute);
 				return true;
 			}
 		}
@@ -680,7 +729,8 @@ int CASW_Spawn_Manager::SpawnAlienBatch( const char* szAlienClass, int iNumAlien
 	bool bCheckGround = true;
 	Vector vecMins = NAI_Hull::Mins(HULL_MEDIUMBIG);
 	Vector vecMaxs = NAI_Hull::Maxs(HULL_MEDIUMBIG);
-	GetAlienBounds( szAlienClass, vecMins, vecMaxs );
+	bool ok = GetAlienBounds( szAlienClass, vecMins, vecMaxs );
+	Assert( ok );
 
 	float flAlienWidth = vecMaxs.x - vecMins.x;
 	float flAlienDepth = vecMaxs.y - vecMins.y;
@@ -819,7 +869,7 @@ bool CASW_Spawn_Manager::ValidSpawnPoint( const Vector &vecPosition, const Vecto
 	if ( bCheckGround )
 	{
 		UTIL_TraceHull( vecPosition + Vector( 0, 0, 1 ),
-			vecPosition - Vector( 0, 0, 64 ),
+			vecPosition - Vector( 0, 0, 128 ),
 			vecMins,
 			vecMaxs,
 			MASK_NPCSOLID,

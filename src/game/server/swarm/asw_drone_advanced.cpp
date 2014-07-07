@@ -74,7 +74,7 @@ ConVar asw_drone_door_distance("asw_drone_door_distance", "60", FCVAR_CHEAT, "Ho
 ConVar asw_drone_door_distance_min("asw_drone_door_distance_min", "40", FCVAR_CHEAT, "Nearest a drone can be to a door when attacking");
 ConVar asw_marine_view_cone_cost("asw_marine_view_cone_cost", "5", FCVAR_CHEAT, "Extra pathing cost if a node is visible to a marine");
 ConVar asw_drone_zig_zag_length("asw_drone_zig_zag_length", "144", FCVAR_CHEAT, "Length of drone zig zagging");
-ConVar asw_drone_zig_zagging("asw_drone_zig_zagging", "0", FCVAR_CHEAT, "If set, aliens will try to zig zag up to their enemy instead of approaching directly");
+ConVar asw_drone_zig_zagging("asw_drone_zig_zagging", "1", FCVAR_CHEAT, "If set, aliens will try to zig zag up to their enemy instead of approaching directly");
 ConVar asw_drone_melee_force("asw_drone_melee_force", "1.67", FCVAR_CHEAT, "Force of the drone's melee attack");
 ConVar asw_drone_touch_damage( "asw_drone_touch_damage", "0",FCVAR_CHEAT , "Damage caused by drones on touch" );
 ConVar asw_new_drone("asw_new_drone", "1", FCVAR_CHEAT, "Set to 1 to use the new drone model");

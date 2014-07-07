@@ -293,34 +293,35 @@ void CASW_Director::UpdateHorde()
 	}
 	else if ( m_HordeTimer.IsElapsed() )
 	{
-		if ( ASWSpawnManager()->GetAwakeDrones() < 25 )
+		if (ASWSpawnManager()->GetAwakeAliens() >= 30 || ASWSpawnManager()->GetAwakeDrones() >= 20)
 		{
-			int iNumAliens = RandomInt( asw_horde_size_min.GetInt(), asw_horde_size_max.GetInt() );
-
-			if ( ASWSpawnManager()->AddHorde( iNumAliens ) )
+			if (asw_director_debug.GetBool())
 			{
-				if ( asw_director_debug.GetBool() )
-				{
-					Msg("Created horde of size %d\n", iNumAliens);
-				}
-				m_bHordeInProgress = true;
+				Msg("Too many awake aliens. Delaying horde.\n");
+			}
+			m_HordeTimer.Start( 10.0f );
+			return;
+		}
+		int iNumAliens = RandomInt( asw_horde_size_min.GetInt(), asw_horde_size_max.GetInt() );
 
-				if ( ASWGameRules() )
-				{
-					ASWGameRules()->BroadcastSound( "Spawner.Horde" );
-				}
-				m_HordeTimer.Invalidate();
-			}
-			else
+		if ( ASWSpawnManager()->AddHorde( iNumAliens ) )
+		{
+			if ( asw_director_debug.GetBool() )
 			{
-				// if we failed to find a horde position, try again shortly.
-				m_HordeTimer.Start( RandomFloat( 10.0f, 16.0f ) );
+				Msg("Created horde of size %d\n", iNumAliens);
 			}
+			m_bHordeInProgress = true;
+			
+			if ( ASWGameRules() )
+			{
+				ASWGameRules()->BroadcastSound( "Spawner.Horde" );
+			}
+			m_HordeTimer.Invalidate();
 		}
 		else
 		{
-			// if there are currently too many awake aliens, then wait 10 seconds before trying again
-			m_HordeTimer.Start( 10.0f );
+			// if we failed to find a horde position, try again shortly.
+			m_HordeTimer.Start( RandomFloat( 10.0f, 16.0f ) );
 		}
 	}
 }
@@ -446,7 +447,14 @@ void CASW_Director::UpdateWanderers()
 
 		if ( ASWSpawnManager() )
 		{
-			if ( ASWSpawnManager()->GetAwakeDrones() < 20 )
+			if (ASWSpawnManager()->GetAwakeAliens() >= 25)
+			{
+				if (asw_director_debug.GetBool())
+				{
+					Msg("Too many awake aliens. Skipping wanderer.\n");
+				}
+			}
+			else
 			{
 				ASWSpawnManager()->AddAlien();
 			}
@@ -470,6 +478,33 @@ void CASW_Director::OnMarineStartedHack( CASW_Marine *pMarine, CBaseEntity *pCom
 		return;
 
 	//Msg( " Marine started hack!\n" );
+
+	// reset intensity so we can have a big fight without relaxing immediately
+	for ( int i=0;i<pGameResource->GetMaxMarineResources();i++ )
+	{
+		CASW_Marine_Resource *pMR = pGameResource->GetMarineResource(i);
+		if ( !pMR )
+			continue;
+
+		pMR->GetIntensity()->Reset();
+	}
+
+	float flQuickStart = RandomFloat( 2.0f, 5.0f );
+	if ( m_HordeTimer.GetRemainingTime() > flQuickStart )
+	{
+		m_HordeTimer.Start( flQuickStart );
+	}
+
+	// TODO: Instead have some kind of 'is in a big fight' state?
+}
+
+void CASW_Director::OnMarineBurnedBiomass( CASW_Marine *pMarine, CBaseEntity *pBiomass )
+{
+	CASW_Game_Resource *pGameResource = ASWGameResource();
+	if ( !pGameResource )
+		return;
+
+	//Msg( " Marine burned biomass!\n" );
 
 	// reset intensity so we can have a big fight without relaxing immediately
 	for ( int i=0;i<pGameResource->GetMaxMarineResources();i++ )

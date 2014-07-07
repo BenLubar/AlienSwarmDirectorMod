@@ -724,6 +724,8 @@ CASW_Marine* UTIL_ASW_MarineCanSee(CASW_Marine_Resource* pMarineResource, const 
 	if (pMarineResource->GetHealthPercent() <=0 || !pMarineResource->IsAlive())	// if we're dead, take the corpse position
 	{
 		vecMarinePos = pMarineResource->m_vecDeathPosition;
+		if (vecMarinePos == vec3_origin)
+			return NULL;
 	}
 	else
 #endif

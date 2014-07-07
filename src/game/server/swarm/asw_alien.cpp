@@ -433,7 +433,7 @@ CAI_Senses* CASW_Alien::CreateSenses()
 
 CASW_AI_Senses* CASW_Alien::GetASWSenses()
 {
-	return dynamic_cast<CASW_AI_Senses*>(GetSenses());
+	return assert_cast<CASW_AI_Senses*>(GetSenses());
 }
 
 bool CASW_Alien::QuerySeeEntity( CBaseEntity *pEntity, bool bOnlyHateOrFearIfNPC )
@@ -476,7 +476,7 @@ void CASW_Alien::UpdateSleepState(bool bInPVS)
 	else	// alien is awake, check for going back to ZZZ again :)
 	{		
 		bool bHasOrders = (m_AlienOrders != AOT_None);
-					
+
 		// Don't let an NPC sleep if they're running a script!
 		if( !ShouldAlwaysThink() && !bHasOrders && !IsInAScript() && m_NPCState != NPC_STATE_SCRIPT )
 		{			
@@ -1801,7 +1801,7 @@ AI_BEGIN_CUSTOM_NPC( asw_alien, CASW_Alien )
 		"		TASK_ASW_BUILD_PATH_TO_ORDER	0"
 		"		TASK_RUN_PATH			0"
 		"		TASK_ASW_WAIT_FOR_ORDER_MOVE	0"		// 0 is spread if fail to build path
-		//"		TASK_WAIT_PVS			0"
+		"		TASK_WAIT_PVS			0"
 		""
 		"	Interrupts"
 		"		COND_NEW_ENEMY"

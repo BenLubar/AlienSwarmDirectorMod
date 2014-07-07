@@ -66,6 +66,7 @@ public:
 	void Event_AlienKilled( CBaseEntity *pAlien, const CTakeDamageInfo &info );
 	void MarineTookDamage( CASW_Marine *pMarine, const CTakeDamageInfo &info, bool bFriendlyFire );
 	void OnMarineStartedHack( CASW_Marine *pMarine, CBaseEntity *pComputer );
+	void OnMarineBurnedBiomass( CASW_Marine *pMarine, CBaseEntity *pBiomass );
 	void UpdateMarineInsideEscapeRoom( CASW_Marine *pMarine );
 
 	void OnMissionStarted();

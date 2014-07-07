@@ -22,6 +22,7 @@
 	#include "asw_burning.h"
 	#include "te_effect_dispatch.h"
 	#include "cvisibilitymonitor.h"
+	#include "asw_director.h"
 #endif
 #include "asw_alien_goo_shared.h"
 
@@ -267,16 +268,21 @@ int CASW_Alien_Goo::OnTakeDamage( const CTakeDamageInfo &info )
 		{
 			Ignite( 30.0f );
 
-			CASW_Player *pPlayerAttacer = NULL;
+			if (ASWDirector())
+			{
+				ASWDirector()->OnMarineBurnedBiomass( pMarine, this );
+			}
+
+			CASW_Player *pPlayerAttacker = NULL;
 			if ( pMarine )
 			{
-				pPlayerAttacer = pMarine->GetCommander();
+				pPlayerAttacker = pMarine->GetCommander();
 			}
 
 			IGameEvent * event = gameeventmanager->CreateEvent( "alien_ignited" );
 			if ( event )
 			{
-				event->SetInt( "userid", ( pPlayerAttacer ? pPlayerAttacer->GetUserID() : 0 ) );
+				event->SetInt( "userid", ( pPlayerAttacker ? pPlayerAttacker->GetUserID() : 0 ) );
 				event->SetInt( "entindex", entindex() );
 				gameeventmanager->FireEventClientSide( event );
 			}
