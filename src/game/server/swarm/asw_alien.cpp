@@ -995,9 +995,9 @@ void CASW_Alien::StartTask( const Task_t *pTask )
 		{
 			//Set our next burrow time
 			if (m_flBurrowTime == 0)
-				m_flBurrowTime = gpGlobals->curtime;
+				m_flBurrowTime = gpGlobals->curtime + RandomFloat( 0, 1 );
 			else
-				m_flBurrowTime = gpGlobals->curtime + random->RandomFloat( 1,  6);
+				m_flBurrowTime = gpGlobals->curtime + RandomFloat( 1, 6 );
 		}
 		break;
 
@@ -1041,11 +1041,14 @@ void CASW_Alien::StartTask( const Task_t *pTask )
 			}
 		}
 		break;
-	case TASK_ASW_ORDER_RETRY_WAIT:	
+	case TASK_ASW_ORDER_RETRY_WAIT:
 		//Msg("TASK_ASW_ORDER_RETRY_WAIT %d tries. doorblocked=%d\n", m_iNumASWOrderRetries, m_bBlockedByOpeningDoor);		
 		m_iNumASWOrderRetries++;
 		if (m_iNumASWOrderRetries > 5)
 		{
+			// Clear orders so we can sleep.
+			if (!ShouldAlwaysThink())
+				SetAlienOrders(AOT_SpreadThenHibernate, vec3_origin, NULL);
 			TaskFail("Failed to find route to order target\n");			
 		}
 		else
