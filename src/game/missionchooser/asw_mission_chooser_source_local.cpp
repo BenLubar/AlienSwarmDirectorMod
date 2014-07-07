@@ -1136,7 +1136,7 @@ bool CASW_Mission_Chooser_Source_Local::ASW_Campaign_CreateNewSaveGame(char *szF
 // normal alphabetical sorting for map/campaigns
 bool CASW_Mission_Chooser_Source_Local::MapNameLess::Less( MapListName const& src1, MapListName const& src2, void *pCtx )
 {
-	return !!Q_strcmp(src1.szMapName,src2.szMapName);
+	return Q_strcmp(src1.szMapName, src2.szMapName) < 0;
 }
 
 // sort by the datetime string
@@ -1215,7 +1215,6 @@ bool CASW_Mission_Chooser_Source_Local::SavedCampaignLess::Less( ASW_Mission_Cho
 	return false;
 }
 
-#define ASW_DEFAULT_INTRO_MAP "intro_jacob"
 const char* CASW_Mission_Chooser_Source_Local::GetCampaignSaveIntroMap(const char *szSaveName)
 {
 	// check the save file exists
@@ -1224,46 +1223,36 @@ const char* CASW_Mission_Chooser_Source_Local::GetCampaignSaveIntroMap(const cha
 	char tempfile[MAX_PATH];
 	Q_snprintf( tempfile, sizeof( tempfile ), "save/%s.campaignsave", stripped );
 	if (!g_pFullFileSystem->FileExists(tempfile))
-		return ASW_DEFAULT_INTRO_MAP;
+		return NULL;
 
 	KeyValues *pSaveKeyValues = new KeyValues( szSaveName );
+	KeyValues::AutoDelete saveKeyValuesAutoDelete( pSaveKeyValues );
 	const char* pszCampaign = NULL;
 	if (pSaveKeyValues->LoadFromFile(g_pFullFileSystem, tempfile))
-	{		
 		pszCampaign = pSaveKeyValues->GetString("CampaignName");
-	}
-	if (!pszCampaign)
-	{
-		pSaveKeyValues->deleteThis();
-		return ASW_DEFAULT_INTRO_MAP;
-	}
 
-	char ctempfile[MAX_PATH];
-	Q_snprintf( ctempfile, sizeof( ctempfile ), "resource/campaigns/%s.txt", pszCampaign );
-	if (!g_pFullFileSystem->FileExists(ctempfile))	/// check it exists
-	{
-		pSaveKeyValues->deleteThis();
-		return ASW_DEFAULT_INTRO_MAP;
-	}
+	if (!pszCampaign)
+		return NULL;
 
 	// now read in the campaign txt and find the intro map name
-	KeyValues *pCampaignKeyValues = new KeyValues( pszCampaign );
-	if (pCampaignKeyValues->LoadFromFile(g_pFullFileSystem, ctempfile))
+	KeyValues *pCampaignKeyValues = GetCampaignDetails( pszCampaign );
+	if (pCampaignKeyValues)
 	{
-		static char s_introname[128];
-		Q_strncpy( s_introname, pCampaignKeyValues->GetString("IntroMap"), 128 );
-		// check we actually got a valid intro map name string
-		if ( Q_strlen(s_introname) > 5 && !Q_strnicmp( s_introname, "intro", 5 ) )
+		KeyValues *pMission = pCampaignKeyValues->FindKey("MISSION");
+		Assert(pMission);
+		if (pMission)
 		{
-			pSaveKeyValues->deleteThis();
-			pCampaignKeyValues->deleteThis();
-			return s_introname;
+			pMission = pMission->GetNextKey();
+			Assert(pMission && !Q_stricmp(pMission->GetName(), "MISSION"));
+			if (pMission && !Q_stricmp(pMission->GetName(), "MISSION"))
+			{
+				Assert(pMission->GetString("MapName", NULL));
+				return pMission->GetString("MapName", NULL);
+			}
 		}
 	}
 
-	pSaveKeyValues->deleteThis();
-	pCampaignKeyValues->deleteThis();
-	return ASW_DEFAULT_INTRO_MAP;
+	return NULL;
 }
 
 KeyValues *CASW_Mission_Chooser_Source_Local::GetMissionDetails( const char *szMissionName )
