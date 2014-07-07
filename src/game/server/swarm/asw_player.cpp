@@ -299,7 +299,7 @@ void ASW_DrawAwakeAI()
 	int iVEfficient = 0;
 	int iSEfficient = 0;
 	int iNormal = 0;
-	int nprintIndex = 18;
+	int nprintIndex = 14 + ASW_MAX_MARINE_RESOURCES;
 	engine->Con_NPrintf( nprintIndex, "AI (awake/asleep) (normal/efficient/very efficient/super efficient/dormant)");
 	nprintIndex++;
 	engine->Con_NPrintf( nprintIndex, "================================");

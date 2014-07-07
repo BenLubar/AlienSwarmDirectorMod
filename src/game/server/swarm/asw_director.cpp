@@ -266,12 +266,12 @@ void CASW_Director::UpdateHorde()
 	{
 		if ( m_bHordeInProgress )
 		{
-			engine->Con_NPrintf( 11, "Horde in progress.  Left to spawn = %d", ASWSpawnManager()->GetHordeToSpawn() );
+			engine->Con_NPrintf( 7 + ASW_MAX_MARINE_RESOURCES, "Horde in progress.  Left to spawn = %d", ASWSpawnManager()->GetHordeToSpawn() );
 		}
-		engine->Con_NPrintf( 12, "Next Horde due: %f", m_HordeTimer.GetRemainingTime() );
+		engine->Con_NPrintf( 8 + ASW_MAX_MARINE_RESOURCES, "Next Horde due: %f", m_HordeTimer.GetRemainingTime() );
 
-		engine->Con_NPrintf( 15, "Awake aliens: %d\n", ASWSpawnManager()->GetAwakeAliens() );
-		engine->Con_NPrintf( 16, "Awake drones: %d\n", ASWSpawnManager()->GetAwakeDrones() );
+		engine->Con_NPrintf( 11 + ASW_MAX_MARINE_RESOURCES, "Awake aliens: %d\n", ASWSpawnManager()->GetAwakeAliens() );
+		engine->Con_NPrintf( 12 + ASW_MAX_MARINE_RESOURCES, "Awake drones: %d\n", ASWSpawnManager()->GetAwakeDrones() );
 	}
 
 	bool bHordesEnabled = m_bHordesEnabled || asw_horde_override.GetBool();
@@ -343,7 +343,7 @@ void CASW_Director::UpdateSpawningState()
 
 		if ( asw_director_debug.GetBool() )
 		{
-			engine->Con_NPrintf( 8, "%s: %f %s", m_bSpawningAliens ? "Spawning aliens" : "Relaxing",
+			engine->Con_NPrintf( 3 + ASW_MAX_MARINE_RESOURCES, "%s: %f %s", m_bSpawningAliens ? "Spawning aliens" : "Relaxing",
 				m_SustainTimer.HasStarted() ? m_SustainTimer.GetRemainingTime() : -1,
 				"Finale" );
 		}
@@ -407,8 +407,9 @@ void CASW_Director::UpdateSpawningState()
 
 	if ( asw_director_debug.GetInt() > 0 )
 	{
-		engine->Con_NPrintf( 8, "%s: %f %s", m_bSpawningAliens ? "Spawning aliens" : "Relaxing",
+		engine->Con_NPrintf( 3 + ASW_MAX_MARINE_RESOURCES, "%s: %f %f %s", m_bSpawningAliens ? "Spawning aliens" : "Relaxing",
 			m_SustainTimer.HasStarted() ? m_SustainTimer.GetRemainingTime() : -1,
+			m_AlienSpawnTimer.HasStarted() ? m_AlienSpawnTimer.GetRemainingTime() : -1,
 			m_bReachedIntensityPeak ? "Peaked" : "Not peaked" );
 	}
 }
@@ -419,7 +420,7 @@ void CASW_Director::UpdateWanderers()
 	{
 		if ( asw_director_debug.GetInt() > 0 )
 		{
-			engine->Con_NPrintf( 9, "Not spawning regular aliens" );
+			engine->Con_NPrintf( 4 + ASW_MAX_MARINE_RESOURCES, "Not spawning regular aliens" );
 		}
 		return;
 	}
@@ -438,16 +439,25 @@ void CASW_Director::UpdateWanderers()
 			m_fTimeBetweenAliens = MAX( asw_interval_min.GetFloat(),
 										m_fTimeBetweenAliens * RandomFloat( asw_interval_change_min.GetFloat(), asw_interval_change_max.GetFloat() ) );
 		}
+
+		bool bSkipWanderers = ASWSpawnManager() && ASWSpawnManager()->GetAwakeAliens() >= 25;
 		if ( asw_director_debug.GetInt() > 0 )
 		{
-			engine->Con_NPrintf( 9, "Regular spawn interval = %f", m_fTimeBetweenAliens );
+			if ( bSkipWanderers )
+			{
+				engine->Con_NPrintf( 4 + ASW_MAX_MARINE_RESOURCES, "Too many awake aliens. Skipping wanderers." );
+			}
+			else
+			{
+				engine->Con_NPrintf( 4 + ASW_MAX_MARINE_RESOURCES, "Regular spawn interval = %f", m_fTimeBetweenAliens );
+			}
 		}
 
 		m_AlienSpawnTimer.Start( m_fTimeBetweenAliens );
 
 		if ( ASWSpawnManager() )
 		{
-			if (ASWSpawnManager()->GetAwakeAliens() >= 25)
+			if ( bSkipWanderers )
 			{
 				if (asw_director_debug.GetBool())
 				{

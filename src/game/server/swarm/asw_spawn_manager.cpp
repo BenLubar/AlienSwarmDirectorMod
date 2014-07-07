@@ -287,7 +287,9 @@ void CASW_Spawn_Manager::Update()
 
 	if ( asw_director_debug.GetBool() )
 	{
-		engine->Con_NPrintf( 14, "SM: Batch interval: %f pos = %f %f %f\n", m_batchInterval.HasStarted() ? m_batchInterval.GetRemainingTime() : -1, VectorExpand( m_vecHordePosition ) );		
+		engine->Con_NPrintf( 9 + ASW_MAX_MARINE_RESOURCES, "SM: Batch interval: %f pos = %f %f %f\n",
+			m_batchInterval.HasStarted() ? m_batchInterval.GetRemainingTime() : -1,
+			VectorExpand( m_vecHordePosition ) );
 	}
 
 	if ( m_iAliensToSpawn > 0 )
