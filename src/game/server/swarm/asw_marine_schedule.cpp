@@ -787,6 +787,11 @@ void CASW_Marine::TaskFail( AI_TaskFailureCode_t code )
 	{
 		m_hPhysicsPropTarget = NULL;
 	}
+	else if ( IsCurSchedule( SCHED_ASW_FOLLOW_MOVE, false ) )
+	{
+		// we failed a follow move, which probably means our follow hint is in the wrong place.
+		GetSquadFormation()->FollowCommandUsed();
+	}
 
 	BaseClass::TaskFail( code );
 }
@@ -1901,7 +1906,7 @@ bool CASW_Marine::NeedToFollowMove()
 	if ( !pLeader || pLeader == this )
 		return false;
 
-	if ( GetEnemy() && GetEnemy()->GetAbsOrigin().DistToSqr(GetAbsOrigin()) < Square( ASW_FORMATION_ATTACK_DISTANCE ) )
+	if (HasCondition(COND_CAN_RANGE_ATTACK1) && GetEnemy() && GetEnemy()->GetAbsOrigin().DistToSqr(GetAbsOrigin()) < Square(ASW_FORMATION_ATTACK_DISTANCE))
 		return false;
 
 	// only move if we're not near our saved follow point
@@ -1983,15 +1988,6 @@ int CASW_Marine::SelectFollowSchedule()
 		CBaseEntity* pEnemy = GetEnemy();
 		if (pEnemy)		// don't shoot unless we actually have an enemy
 			return SCHED_RANGE_ATTACK1;
-	}	
-
-	if( IsOutOfAmmo() && GetEnemy() )
-	{
-		SetCondition( COND_COMPLETELY_OUT_OF_AMMO );
-
-		int iMeleeSchedule = SelectMeleeSchedule();
-		if( iMeleeSchedule != -1 )
-			return iMeleeSchedule;
 	}
 
 	// check if we're too near another marine
@@ -2125,9 +2121,15 @@ void CASW_Marine::StartTask(const Task_t *pTask)
 	case TASK_ASW_GET_PATH_TO_PROP:
 		{
 			if ( !GetPhysicsPropTarget() )
+			{
 				TaskFail("No prop");
+			}
+			else if ( GetPhysicsPropTarget()->WorldSpaceCenter().DistToSqr( GetAbsOrigin() ) < Square( 60 ) )
+			{
+				TaskComplete();
+			}
 			else
-			{				
+			{
 				AI_NavGoal_t goal( GetPhysicsPropTarget()->WorldSpaceCenter(), ACT_RUN, 60 ); // AIN_HULL_TOLERANCE
 				GetNavigator()->SetGoal( goal );
 				TaskComplete();
