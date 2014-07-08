@@ -46,6 +46,7 @@
 #include "particle_parse.h"
 #include "asw_fail_advice.h"
 #include "asw_gamerules.h"
+#include "asw_boomer_blob.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -1381,6 +1382,17 @@ void CASW_Door::SetDoorDamage()
 		break;
 	}
 
+	// make bot marines avoid doors that are about to fall
+	if (m_DentAmount == ASWDD_COMPLETE)
+	{
+		if (!g_aExplosiveProjectiles.HasElement(this))
+			g_aExplosiveProjectiles.AddToTail(this);
+	}
+	else
+	{
+		g_aExplosiveProjectiles.FindAndRemove(this);
+	}
+
 	// apply flip
 	if ( m_bFlipped )
 	{
@@ -1438,6 +1450,8 @@ void CASW_Door::Event_Killed( const CTakeDamageInfo &info )
 	{
 		info.GetAttacker()->Event_KilledOther(this, info);
 	}
+
+	g_aExplosiveProjectiles.FindAndRemove(this);
 
 	// check if marines should shout about this door being bashed down
 	// check there's another marine nearby
