@@ -526,7 +526,7 @@ void CASW_SquadFormation::UpdateFollowPositions()
 #endif
 			else
 			{
-				
+				FollowCommandUsed( i );
 				if ( pMarine )
 				{
 					m_vFollowPositions[i] = pMarine->GetAbsOrigin();
@@ -741,6 +741,13 @@ void CASW_SquadFormation::FindFollowHintNodes()
 
 		if ( !bNeedNewNode && !pClosestShieldbug )
 			continue;
+
+		// clear out the old hint so we don't get stuck if there are no good hints
+#ifdef HL2_HINTS
+		m_hFollowHint[slotnum] = NULL;
+#else
+		m_nMarineHintIndex[slotnum] = INVALID_HINT_INDEX;
+#endif
 
 		// find a new node
 #ifdef HL2_HINTS
