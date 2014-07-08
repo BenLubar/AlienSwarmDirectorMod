@@ -15,6 +15,7 @@
 
 ConVar asw_marine_ai_followspot( "asw_marine_ai_followspot", "0", FCVAR_CHEAT );
 ConVar asw_follow_hint_max_range("asw_follow_hint_max_range", "900", FCVAR_CHEAT);
+ConVar asw_follow_hint_min_range("asw_follow_hint_min_range", "200", FCVAR_CHEAT);
 ConVar asw_follow_hint_max_z_dist("asw_follow_hint_max_z_dist", "190", FCVAR_CHEAT);
 ConVar asw_follow_use_hints( "asw_follow_use_hints", "2", FCVAR_CHEAT, "0 = follow formation, 1 = use hints when in combat, 2 = always use hints" );
 ConVar asw_follow_hint_delay( "asw_follow_hint_delay", "5", FCVAR_CHEAT, "The number of seconds marines will ignore follow hints after being told to follow" );
@@ -750,13 +751,13 @@ void CASW_SquadFormation::FindFollowHintNodes()
 		CHintCriteria hintCriteria;
 		hintCriteria.SetHintType( HINT_FOLLOW_WAIT_POINT );
 		hintCriteria.AddIncludePosition( pLeader->GetAbsOrigin(), asw_follow_hint_max_range.GetFloat() );
-		hintCriteria.AddExcludePosition( pLeader->GetAbsOrigin(), 80.0f );
+		hintCriteria.AddExcludePosition( pLeader->GetAbsOrigin(), asw_follow_hint_min_range.GetFloat() );
 
 		CUtlVector< CAI_Hint * > hints;
 		CAI_HintManager::FindAllHints( pLeader, pLeader->GetAbsOrigin(), hintCriteria, &hints );
 #else
 		CUtlVector< HintData_t* > hints;
-		MarineHintManager()->FindHints( pLeader->GetAbsOrigin(), 80.0f, asw_follow_hint_max_range.GetFloat(), &hints );
+		MarineHintManager()->FindHints(pLeader->GetAbsOrigin(), asw_follow_hint_min_range.GetFloat(), asw_follow_hint_max_range.GetFloat(), &hints);
 #endif
 		int nCount = hints.Count();
 
@@ -893,9 +894,9 @@ void CASW_SquadFormation::FindFollowHintNodes()
 			for ( int k = 0; k < MAX_SQUAD_SIZE; k++ )
 			{
 #ifdef HL2_HINTS
-				if ( k != slotnum && m_hFollowHint[k].Get() && vecNodePos.DistToSqr( m_hFollowHint[k].Get()->GetAbsOrigin() ) < Square( 30 ) )
+				if ( k != slotnum && m_hFollowHint[k].Get() && vecNodePos.DistToSqr( m_hFollowHint[k].Get()->GetAbsOrigin() ) < Square( asw_follow_hint_min_range.GetFloat() ) )
 #else
-				if ( k != slotnum && m_nMarineHintIndex[k] != INVALID_HINT_INDEX && vecNodePos.DistToSqr( MarineHintManager()->GetHintPosition( m_nMarineHintIndex[k] ) ) < Square( 30 ) )
+				if ( k != slotnum && m_nMarineHintIndex[k] != INVALID_HINT_INDEX && vecNodePos.DistToSqr( MarineHintManager()->GetHintPosition( m_nMarineHintIndex[k] ) ) < Square( asw_follow_hint_min_range.GetFloat() ) )
 #endif
 				{
 					bValidNode = false;
