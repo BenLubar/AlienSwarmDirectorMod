@@ -1759,41 +1759,6 @@ void CASW_Marine::PostThink()
 	}
 		
 	ASWThinkEffects();
-
-	// check for pushing out phys props jammed inside us
-	if ( VPhysicsGetObject() )
-	{
-#ifdef ASW_MARINE_ALWAYS_VPHYSICS
-		VPhysicsGetObject()->UpdateShadow( GetAbsOrigin(), vec3_angle, false, gpGlobals->frametime );
-#else		
-		//if ( !VectorCompare( oldOrigin, GetAbsOrigin() ) )
-		if (gpGlobals->curtime <= m_fLastStuckTime + 1.0f)	// if we were stuck in the last second, make sure our shadow is on
-		{
-			VPhysicsGetObject()->SetVelocity( &vec3_origin, NULL );
-			VPhysicsGetObject()->SetVelocityInstantaneous( &vec3_origin, &vec3_origin );
-			//IPhysicsShadowController *pController = VPhysicsGetObject()->GetShadowController();
-			//float teleport_dist = pController ? VPhysicsGetObject()->GetTeleportDistance() : 0;
-			//if (pController)
-				//VPhysicsGetObject()->SetTeleportDistance(0.1f);	// make sure the shadow teleports to its new position
-			// move the marine's vphys shadow to our current position
-			VPhysicsGetObject()->SetPosition( GetAbsOrigin(), vec3_angle, true );
-			//VPhysicsGetObject()->UpdateShadow( GetAbsOrigin(), vec3_angle, false, gpGlobals->frametime );
-			VPhysicsGetObject()->EnableCollisions(true);
-			// clear its velocity, so the marine doesn't wake up phys objects - doesn't work :/
-			VPhysicsGetObject()->SetVelocityInstantaneous( &vec3_origin, &vec3_origin );
-			//if (pController)
-				//VPhysicsGetObject()->SetTeleportDistance(teleport_dist);	
-		}
-		else	// no vphysics shadow enabled if we're not stuck
-		{
-			VPhysicsGetObject()->EnableCollisions(false);
-		}
-#endif		
-	}
-	if ( m_bCheckContacts )
-	{
-		CheckPhysicsContacts();
-	}
 }
 
 void CASW_Marine::ASWThinkEffects()
@@ -1944,7 +1909,7 @@ void CASW_Marine::ASWThinkEffects()
 	// check for FFGuard time running out
 	if (m_fFFGuardTime != 0 && gpGlobals->curtime > m_fFFGuardTime)
 	{
-		// power up weapons again (play a sound?)
+		// TODO: power up weapons again (play a sound?)
 	}
 	if (m_hUsingEntity.Get())
 	{
@@ -2165,6 +2130,41 @@ void CASW_Marine::ASWThinkEffects()
 	if (NeedToUpdateSquad())
 	{
 		GetSquadFormation()->UpdateFollowPositions();
+	}
+
+	// check for pushing out phys props jammed inside us
+	if ( VPhysicsGetObject() )
+	{
+#ifdef ASW_MARINE_ALWAYS_VPHYSICS
+		VPhysicsGetObject()->UpdateShadow( GetAbsOrigin(), vec3_angle, false, gpGlobals->frametime );
+#else		
+		//if ( !VectorCompare( oldOrigin, GetAbsOrigin() ) )
+		if (gpGlobals->curtime <= m_fLastStuckTime + 1.0f)	// if we were stuck in the last second, make sure our shadow is on
+		{
+			VPhysicsGetObject()->SetVelocity( &vec3_origin, NULL );
+			VPhysicsGetObject()->SetVelocityInstantaneous( &vec3_origin, &vec3_origin );
+			//IPhysicsShadowController *pController = VPhysicsGetObject()->GetShadowController();
+			//float teleport_dist = pController ? VPhysicsGetObject()->GetTeleportDistance() : 0;
+			//if (pController)
+				//VPhysicsGetObject()->SetTeleportDistance(0.1f);	// make sure the shadow teleports to its new position
+			// move the marine's vphys shadow to our current position
+			VPhysicsGetObject()->SetPosition( GetAbsOrigin(), vec3_angle, true );
+			//VPhysicsGetObject()->UpdateShadow( GetAbsOrigin(), vec3_angle, false, gpGlobals->frametime );
+			VPhysicsGetObject()->EnableCollisions(true);
+			// clear its velocity, so the marine doesn't wake up phys objects - doesn't work :/
+			VPhysicsGetObject()->SetVelocityInstantaneous( &vec3_origin, &vec3_origin );
+			//if (pController)
+				//VPhysicsGetObject()->SetTeleportDistance(teleport_dist);	
+		}
+		else	// no vphysics shadow enabled if we're not stuck
+		{
+			VPhysicsGetObject()->EnableCollisions(false);
+		}
+#endif		
+	}
+	if ( m_bCheckContacts )
+	{
+		CheckPhysicsContacts();
 	}
 
 	m_fLastASWThink = gpGlobals->curtime;
@@ -4251,6 +4251,12 @@ float CASW_Marine::GetReceivedDamageScale( CBaseEntity *pAttacker )
 				// allow max friendly fire damage through, as though on mission difficulty +5
 				flScale = (asw_marine_ff_dmg_base.GetFloat() + asw_marine_ff_dmg_step.GetFloat() * 5.0f);
 			}
+
+			// stop bots from shooting each other
+			if ( !pMarine->IsInhabited() )
+			{
+				pMarine->ActivateFriendlyFireGuard(this);
+			}
 		}
 	}
 	
@@ -4260,7 +4266,6 @@ float CASW_Marine::GetReceivedDamageScale( CBaseEntity *pAttacker )
 void CASW_Marine::ActivateFriendlyFireGuard(CASW_Marine *pVictim)
 {
 	// stops the marine from being able to fire
-	//	todo: make wepaons check this time isn't 0, to prevent firing
 	m_fFFGuardTime = gpGlobals->curtime + asw_marine_ff_guard_time.GetFloat();
 	// todo: play a sound warning the player of FF
 	
