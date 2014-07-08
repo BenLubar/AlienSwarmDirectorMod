@@ -15,7 +15,7 @@
 
 ConVar asw_marine_ai_followspot( "asw_marine_ai_followspot", "0", FCVAR_CHEAT );
 ConVar asw_follow_hint_max_range("asw_follow_hint_max_range", "900", FCVAR_CHEAT);
-ConVar asw_follow_hint_max_z_dist("asw_follow_hint_max_z_dist", "120", FCVAR_CHEAT);
+ConVar asw_follow_hint_max_z_dist("asw_follow_hint_max_z_dist", "190", FCVAR_CHEAT);
 ConVar asw_follow_use_hints( "asw_follow_use_hints", "2", FCVAR_CHEAT, "0 = follow formation, 1 = use hints when in combat, 2 = always use hints" );
 ConVar asw_follow_hint_delay( "asw_follow_hint_delay", "5", FCVAR_CHEAT, "The number of seconds marines will ignore follow hints after being told to follow" );
 ConVar asw_follow_hint_debug( "asw_follow_hint_debug", "0", FCVAR_CHEAT );
@@ -711,11 +711,7 @@ void CASW_SquadFormation::FindFollowHintNodes()
 			continue;
 		}
 
-		bool bNeedNewNode = ( pMarine->GetAbsOrigin().DistTo( pLeader->GetAbsOrigin() ) > asw_follow_hint_max_range.GetFloat() );
-		if ( !bNeedNewNode )
-		{
-			bNeedNewNode = !pMarine->FVisible( pLeader );
-		}
+		bool bNeedNewNode = (pMarine->GetAbsOrigin().DistTo(pLeader->GetAbsOrigin()) > asw_follow_hint_max_range.GetFloat()) || !pMarine->FVisible(pLeader) || m_nMarineHintIndex[slotnum] == INVALID_HINT_INDEX;
 
 		// find shield bug (if any) nearest each marine
 		const float k_flShieldbugScanRangeSqr = 400.0f * 400.0f;
@@ -799,12 +795,14 @@ void CASW_SquadFormation::FindFollowHintNodes()
 
 				if ( flYaw < 85.0f && flYaw > -85.0f )		
 				{
-					bRemoveNode = true;
+					bRemoveNode = false; // true;
 
 					// remove hints that are in front of the leader's overall direction of movement,
 					// unless we need to use them to get the AI to flank a shieldbug
 					if( pClosestShieldbug )
 					{
+						bRemoveNode = true;
+
 						// if any of the marines are close, don't delete nodes behind the shieldbug
 						float flShieldbugDistSqr = hints[ i ]->GetAbsOrigin().DistToSqr( pClosestShieldbug->GetAbsOrigin() );
 						if( flShieldbugDistSqr < k_flShieldbugScanRangeSqr )
@@ -884,35 +882,37 @@ void CASW_SquadFormation::FindFollowHintNodes()
 		// find the first node not used by another other squaddie
 		int nNode = 0;
 
-		for ( int i = 0; i < MAX_SQUAD_SIZE; i++ )
+		bool bValidNode = true;
+		while ( nNode < hints.Count() )
 		{
-			bool bValidNode = true;
-			while ( nNode < hints.Count() )
+#ifdef HL2_HINTS
+			const Vector &vecNodePos = hints[nNode]->GetAbsOrigin();
+#else
+			const Vector &vecNodePos = hints[nNode]->m_vecPosition;
+#endif
+			for ( int k = 0; k < MAX_SQUAD_SIZE; k++ )
 			{
-				for ( int k = 0; k < MAX_SQUAD_SIZE; k++ )
-				{
 #ifdef HL2_HINTS
-					if ( k != slotnum && hints[ nNode ] == m_hFollowHint[k].Get() )
+				if ( k != slotnum && m_hFollowHint[k].Get() && vecNodePos.DistToSqr( m_hFollowHint[k].Get()->GetAbsOrigin() ) < Square( 30 ) )
 #else
-					if ( k != slotnum && hints[ nNode ]->m_nHintIndex == m_nMarineHintIndex[ k ] )
+				if ( k != slotnum && m_nMarineHintIndex[k] != INVALID_HINT_INDEX && vecNodePos.DistToSqr( MarineHintManager()->GetHintPosition( m_nMarineHintIndex[k] ) ) < Square( 30 ) )
 #endif
-					{
-						bValidNode = false;
-						break;
-					}
-				}
-				if ( bValidNode )
 				{
-#ifdef HL2_HINTS
-					m_hFollowHint[ slotnum ] = hints[ nNode ];
-#else
-					m_nMarineHintIndex[ slotnum ] = hints[ nNode ]->m_nHintIndex;
-#endif
-					nNode++;
+					bValidNode = false;
 					break;
 				}
-				nNode++;
 			}
+			if ( bValidNode )
+			{
+#ifdef HL2_HINTS
+				m_hFollowHint[ slotnum ] = hints[ nNode ];
+#else
+				m_nMarineHintIndex[ slotnum ] = hints[ nNode ]->m_nHintIndex;
+#endif
+				nNode++;
+				break;
+			}
+			nNode++;
 		}
 	}
 }
@@ -953,6 +953,11 @@ void CASW_SquadFormation::DrawDebugGeometryOverlays()
 						m_hFollowHint[i]->GetAbsOrigin().y,
 						m_hFollowHint[i]->GetAbsOrigin().z ),
 					0.05f, 255, 255, 255, 255 );
+			}
+#else
+			if ( m_nMarineHintIndex[ i ] != INVALID_HINT_INDEX )
+			{
+				NDebugOverlay::Line( pMarine->WorldSpaceCenter(), MarineHintManager()->GetHintPosition( m_nMarineHintIndex[ i ] ), 255, 255, 63, false, 0.05f );
 			}
 #endif
 		}
