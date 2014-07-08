@@ -58,9 +58,9 @@ public:
 	// should the squaddie positions be recomputed -- assumed this function is called from a marine's Think
 	bool ShouldUpdateFollowPositions() const;
 
-	// follow in formation instead of using hints for asw_follow_hint_delay seconds
-	void FollowCommandUsed();
-	float m_flUseHintsAfter;
+	// follow in tight formation instead of using hints for asw_follow_hint_delay seconds
+	void FollowCommandUsed( int slotnum = INVALID_SQUADDIE );
+	float m_flUseHintsAfter[MAX_SQUAD_SIZE];
 
 	// Current notion of "forward", is updated/cached in calls to GetLdrAnglMatrix
 	inline const Vector &Forward() const;

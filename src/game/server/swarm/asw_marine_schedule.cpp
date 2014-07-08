@@ -790,7 +790,7 @@ void CASW_Marine::TaskFail( AI_TaskFailureCode_t code )
 	else if ( IsCurSchedule( SCHED_ASW_FOLLOW_MOVE, false ) )
 	{
 		// we failed a follow move, which probably means our follow hint is in the wrong place.
-		GetSquadFormation()->FollowCommandUsed();
+		GetSquadFormation()->FollowCommandUsed( GetSquadFormation()->Find( this ) );
 	}
 
 	BaseClass::TaskFail( code );

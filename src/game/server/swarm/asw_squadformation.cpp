@@ -177,7 +177,7 @@ float CASW_SquadFormation::GetYaw( unsigned slotnum )
 		}
 		return 0.0f;
 	}
-	else if ( g_bLevelHasFollowHints && m_flUseHintsAfter < gpGlobals->curtime && asw_follow_use_hints.GetBool() && Leader() && ( Leader()->IsInCombat() || asw_follow_use_hints.GetInt() == 2 ) )
+	else if ( g_bLevelHasFollowHints && m_flUseHintsAfter[slotnum] < gpGlobals->curtime && asw_follow_use_hints.GetBool() && Leader() && ( Leader()->IsInCombat() || asw_follow_use_hints.GetInt() == 2 ) )
 	{
 #ifdef HL2_HINTS
 		if ( m_hFollowHint[ slotnum ].Get() )
@@ -406,7 +406,7 @@ void CASW_SquadFormation::UpdateFollowPositions()
 	}
 	m_flLastSquadUpdateTime = gpGlobals->curtime;
 
-	if ( g_bLevelHasFollowHints && m_flUseHintsAfter < gpGlobals->curtime && asw_follow_use_hints.GetBool() && ( pLeader->IsInCombat() || asw_follow_use_hints.GetInt() ) )
+	if ( g_bLevelHasFollowHints )
 	{
 		FindFollowHintNodes();
 	}
@@ -511,7 +511,7 @@ void CASW_SquadFormation::UpdateFollowPositions()
 				m_bFleeingBoomerBombs[ i ] = true;
 			}
 		}
-		else if ( g_bLevelHasFollowHints && m_flUseHintsAfter < gpGlobals->curtime && asw_follow_use_hints.GetBool() && ( pLeader->IsInCombat() || asw_follow_use_hints.GetInt() == 2 ) )
+		else if ( g_bLevelHasFollowHints && m_flUseHintsAfter[i] < gpGlobals->curtime && asw_follow_use_hints.GetBool() && ( pLeader->IsInCombat() || asw_follow_use_hints.GetInt() == 2 ) )
 		{
 #ifdef HL2_HINTS
 			if ( m_hFollowHint[i].Get() )
@@ -654,10 +654,10 @@ void CASW_SquadFormation::ChangeLeader( CASW_Marine *pNewLeader, bool bUpdateLea
 
 void CASW_SquadFormation::Reset()
 {
-	m_flUseHintsAfter = -1;
 	m_hLeader = NULL;
 	for ( int i = 0 ; i < MAX_SQUAD_SIZE ; ++i )
 	{
+		m_flUseHintsAfter[i] = -1;
 		m_hSquad[i] = NULL;
 		m_bRearGuard[i] = false;
 		m_bStandingInBeacon[i] = false;
@@ -968,11 +968,22 @@ void CASW_SquadFormation::DrawDebugGeometryOverlays()
 	*/
 }
 
-void CASW_SquadFormation::FollowCommandUsed()
+void CASW_SquadFormation::FollowCommandUsed( int slotnum )
 {
+	if ( slotnum == INVALID_SQUADDIE )
+	{
+		for (int i = 0; i < MAX_SQUAD_SIZE; i++)
+		{
+			FollowCommandUsed(i);
+		}
+		return;
+	}
+
+	Assert(0 <= slotnum && slotnum < MAX_SQUAD_SIZE);
+
 	// skip the follow hint delay when the first (automated) follow command comes through at mission start.
-	if (m_flUseHintsAfter == -1)
-		m_flUseHintsAfter = 0;
+	if (m_flUseHintsAfter[slotnum] == -1)
+		m_flUseHintsAfter[slotnum] = 0;
 	else
-		m_flUseHintsAfter = gpGlobals->curtime + asw_follow_hint_delay.GetFloat();
+		m_flUseHintsAfter[slotnum] = gpGlobals->curtime + asw_follow_hint_delay.GetFloat();
 }
