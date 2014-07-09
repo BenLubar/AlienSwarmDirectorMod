@@ -122,6 +122,7 @@ void CASW_Egg::Spawn( void )
 	SetPlaybackRate( RandomFloat( 0.95, 1.05 ) ); // Slightly randomize the playback rate so they don't all match
 	m_bStoredEggSize = false;
 
+	ChangeFaction( FACTION_ALIENS );
 	ChangeTeam( TEAM_ALIENS );
 
 	trace_t tr;

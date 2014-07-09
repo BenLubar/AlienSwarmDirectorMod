@@ -6,10 +6,10 @@
 
 class CASW_Parasite;
 
-class CASW_Egg : public CBaseFlex
+class CASW_Egg : public CBaseCombatCharacter
 {
 public:
-	DECLARE_CLASS( CASW_Egg, CBaseFlex );
+	DECLARE_CLASS( CASW_Egg, CBaseCombatCharacter );
 	DECLARE_SERVERCLASS();
 	DECLARE_DATADESC();
 
