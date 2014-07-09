@@ -96,8 +96,10 @@ CASW_Egg::CASW_Egg()
 	m_hBurner = NULL;
 	m_fEggAwake = 0;
 	m_fEggResetTime = 0;
-}
 
+	// randomize our yaw so eggs without angles aren't all pointing the same way.
+	SetAbsAngles(QAngle(0, RandomFloat(0, 360), 0));
+}
 
 CASW_Egg::~CASW_Egg()
 {
