@@ -15,13 +15,12 @@
 
 ConVar asw_marine_ai_followspot( "asw_marine_ai_followspot", "0", FCVAR_CHEAT );
 ConVar asw_follow_hint_max_range("asw_follow_hint_max_range", "900", FCVAR_CHEAT);
-ConVar asw_follow_hint_min_range("asw_follow_hint_min_range", "200", FCVAR_CHEAT);
+ConVar asw_follow_hint_min_range("asw_follow_hint_min_range", "100", FCVAR_CHEAT);
 ConVar asw_follow_hint_max_z_dist("asw_follow_hint_max_z_dist", "190", FCVAR_CHEAT);
 ConVar asw_follow_use_hints( "asw_follow_use_hints", "2", FCVAR_CHEAT, "0 = follow formation, 1 = use hints when in combat, 2 = always use hints" );
 ConVar asw_follow_hint_delay( "asw_follow_hint_delay", "5", FCVAR_CHEAT, "The number of seconds marines will ignore follow hints after being told to follow" );
 ConVar asw_follow_hint_debug( "asw_follow_hint_debug", "0", FCVAR_CHEAT );
 ConVar asw_follow_velocity_predict( "asw_follow_velocity_predict", "0.3", FCVAR_CHEAT, "Marines travelling in diamond follow formation will predict their leader's movement ahead by this many seconds" );
-ConVar asw_follow_threshold( "asw_follow_threshold", "40", FCVAR_CHEAT, "Marines in diamond formation will move after leader has moved this much" );
 ConVar asw_squad_debug( "asw_squad_debug", "1", FCVAR_CHEAT, "Draw debug overlays for squad movement" );
 
 bool g_bLevelHasFollowHints;
@@ -199,141 +198,9 @@ float CASW_SquadFormation::GetYaw( unsigned slotnum )
 			return MarineHintManager()->GetHintYaw( m_nMarineHintIndex[ slotnum ] );
 		}
 #endif
-		else
-		{
-			return anglemod( m_flCurrentForwardAbsoluteEulerYaw + s_MarineFollowDirection[ slotnum ] );
-
-// 			CASW_Marine *pMarine = Squaddie( slotnum );
-// 			if ( pMarine )
-// 			{
-// 				return pMarine->ASWEyeAngles()[ YAW ];
-// 			}
-// 			return 0.0f;
-		}
 	}
 	// face our formation direction
 	return anglemod( m_flCurrentForwardAbsoluteEulerYaw + s_MarineFollowDirection[ slotnum ] );
-}
-
-void CASW_SquadFormation::RecomputeFollowerOrder(  const Vector &vProjectedLeaderPos, QAngle qLeaderAim )  ///< reorganize the follower slots so that each follower has the least distance to move
-{
-	VPROF("CASW_Marine::RecomputeFollowerOrder");
-
-	// because 7! is 5040, it's probably best that we don't re-order the squad, since that would require more iterations than just letting them cross paths.
-
-#if 0
-//#pragma message("TODO: this algorithm should be SIMD optimized.")
-	// all the possible orderings of three followers ( 3! == 6 )
-	const static uint8 sFollowerOrderings[6][MAX_SQUAD_SIZE] =
-	{
-		{ 0, 1, 2 },
-		{ 0, 2, 1 },
-		{ 1, 0, 2 },
-		{ 1, 2, 0 },
-		{ 2, 0, 1 },
-		{ 2, 1, 0 }
-	};
-	// keep track of how well each order scored
-	float fOrderingScores[6] = { FLT_MAX, FLT_MAX, FLT_MAX, FLT_MAX, FLT_MAX, FLT_MAX }; 
-
-	// score each permutation in turn. (This is an experimental dirty algo,
-	// and will be SIMDied if we actually go this route)
-	qLeaderAim[ PITCH ] = 0;
-	matrix3x4_t matLeader;
-
-	Vector vecLeaderAim = GetLdrAnglMatrix( vProjectedLeaderPos, qLeaderAim, &matLeader );
-	Vector vProjectedFollowPos[ MAX_SQUAD_SIZE ];
-	for ( int i = 0 ; i < MAX_SQUAD_SIZE ; ++i )
-	{
-		if ( m_bLevelHasFollowHints && m_flUseHintsAfter < gpGlobals->curtime && asw_follow_use_hints.GetBool() && m_hLeader.Get() && ( m_hLeader->IsInCombat() || asw_follow_use_hints.GetInt() == 2 ) )
-		{
-#ifdef HL2_HINTS
-			if ( m_hFollowHint[i].Get() )
-			{
-				// in combat, follow positions come from nearby hint nodes
-				vProjectedFollowPos[i] = m_hFollowHint[i]->GetAbsOrigin();
-			}
-#else
-			if ( m_nMarineHintIndex[i] != INVALID_HINT_INDEX )
-			{
-				// in combat, follow positions come from nearby hint nodes
-				vProjectedFollowPos[i] = MarineHintManager()->GetHintPosition( m_nMarineHintIndex[i] );
-			}
-#endif
-			else
-			{
-				CASW_Marine *pMarine = Squaddie( i );
-				if ( pMarine )
-				{
-					vProjectedFollowPos[i] = pMarine->GetAbsOrigin();
-				}
-			}
-		}
-		else
-		{
-			// when not in combat, use our fixed follow offsets
-			VectorTransform( s_MarineFollowOffset[i], matLeader, vProjectedFollowPos[i] );
-		}
-	}
-
-	for ( int permute = 0 ; permute < 6 ; ++permute )
-	{
-		// each marine is scored by how far he'd have to move to get to his follow position.
-		// movement perpendicular to the leader's aim vector is weighed more heavily than 
-		// movement along it. lowest score wins.
-		float score = 0;
-		for ( int follower = 0 ; follower < MAX_SQUAD_SIZE ; ++follower )
-		{
-			const int iFollowSlot = sFollowerOrderings[permute][follower];
-			const CASW_Marine * RESTRICT pFollower = Squaddie(follower);
-			if ( pFollower )
-			{
-				/*
-				Vector vecTransformedOffset;
-				
-				VectorTransform( s_MarineFollowOffset[iFollowSlot], matLeader, vecTransformedOffset );
-				Vector traverse = vecTransformedOffset - pFollower->GetAbsOrigin();
-				*/
-				Vector traverse = vProjectedFollowPos[iFollowSlot] - pFollower->GetAbsOrigin();
-				// score += traverse.Length2D();
-				traverse.z = 0;
-				score += ( traverse + traverse - traverse.ProjectOnto(vecLeaderAim) ).Length();
-			}
-		}
-		fOrderingScores[ permute ] = score;
-	}
-
-	// once done, figure out the best scoring alternative,
-	int iBestPermute = 0; 
-	for ( int ii = 1 ; ii < 6 ; ++ii )
-	{
-		iBestPermute = ( fOrderingScores[ ii ] >= fOrderingScores[ iBestPermute ] ) ? iBestPermute : ii;
-	}
-	// and use it
-	if ( iBestPermute != 0 )
-	{	// (some change is needed)
-		CASW_Marine * RESTRICT pOldFollowers[ MAX_SQUAD_SIZE ] = {0};
-		for ( int ii = 0 ; ii < MAX_SQUAD_SIZE ; ++ii ) // copy off the current array as we're about to permute it
-		{
-			pOldFollowers[ii] = m_hSquad[ii];
-		}
-		for ( int ii = 0 ; ii < MAX_SQUAD_SIZE ; ++ii )
-		{
-			m_hSquad[ii] = pOldFollowers[ sFollowerOrderings[iBestPermute][ii] ];
-		}
-		// Msg( "\n" );
-
-		if ( asw_marine_ai_followspot.GetBool() )
-		{
-			static float colors[3][3] =	{ { 255, 127, 127 }, { 127, 255, 127 }, { 127, 127, 255 }	};
-			for ( int ii = 0 ; ii < MAX_SQUAD_SIZE ; ++ii )
-			{
-				NDebugOverlay::HorzArrow( m_hSquad[ii]->GetAbsOrigin(), m_vFollowPositions[ii], 3, 
-					colors[ii][0], colors[ii][1], colors[ii][2], 196, false, 0.35f );
-			}
-		}
-	}
-#endif
 }
 
 Vector CASW_SquadFormation::GetLdrAnglMatrix( const Vector &origin, const QAngle &ang, matrix3x4_t * RESTRICT pout ) RESTRICT
@@ -470,7 +337,7 @@ void CASW_SquadFormation::UpdateFollowPositions()
 				{
 					if ( iSlot != i && vecNodeLocation.DistToSqr( m_vFollowPositions[ iSlot ] ) < Square( 30.0f ) )	// don't let marines get too close, even if nodes are close
 					{
-						bNodeTaken= true;
+						bNodeTaken = true;
 						break;
 					}
 				}
@@ -527,10 +394,9 @@ void CASW_SquadFormation::UpdateFollowPositions()
 #endif
 			else
 			{
-				FollowCommandUsed( i );
 				if ( pMarine )
 				{
-					m_vFollowPositions[i] = pMarine->GetAbsOrigin();
+					VectorTransform(s_MarineFollowOffset[i], matLeaderFacing, m_vFollowPositions[i]);
 				}
 			}
 		}
@@ -712,10 +578,10 @@ void CASW_SquadFormation::FindFollowHintNodes()
 			continue;
 		}
 
-		bool bNeedNewNode = (pMarine->GetAbsOrigin().DistTo(pLeader->GetAbsOrigin()) > asw_follow_hint_max_range.GetFloat()) || !pMarine->FVisible(pLeader) || m_nMarineHintIndex[slotnum] == INVALID_HINT_INDEX;
+		bool bNeedNewNode = (pMarine->GetAbsOrigin().DistToSqr(pLeader->GetAbsOrigin()) < Square(asw_follow_hint_min_range.GetFloat())) || (pMarine->GetAbsOrigin().DistToSqr(pLeader->GetAbsOrigin()) > Square(asw_follow_hint_max_range.GetFloat())) || !pMarine->FVisible(pLeader) || m_nMarineHintIndex[slotnum] == INVALID_HINT_INDEX;
 
 		// find shield bug (if any) nearest each marine
-		const float k_flShieldbugScanRangeSqr = 400.0f * 400.0f;
+		const float k_flShieldbugScanRangeSqr = Square(400.0f);
 		CASW_Shieldbug *pClosestShieldbug = NULL;
 		float flClosestShieldBugDistSqr = k_flShieldbugScanRangeSqr;
 
@@ -794,61 +660,60 @@ void CASW_SquadFormation::FindFollowHintNodes()
 				flYaw = AngleDiff( flYaw, flMovementYaw );
 				bool bRemoveNode = false;
 
-				if ( flYaw < 85.0f && flYaw > -85.0f )		
+				// remove hints that are in front of the leader's overall direction of movement,
+				if (flYaw < 85.0f && flYaw > -85.0f)
 				{
-					bRemoveNode = false; // true;
+					bRemoveNode = true;
+				}
 
-					// remove hints that are in front of the leader's overall direction of movement,
-					// unless we need to use them to get the AI to flank a shieldbug
-					if( pClosestShieldbug )
+				// unless we need to use them to get the AI to flank a shieldbug
+				if( pClosestShieldbug )
+				{
+					bRemoveNode = true;
+					// if any of the marines are close, don't delete nodes behind the shieldbug
+					float flShieldbugDistSqr = hints[ i ]->GetAbsOrigin().DistToSqr( pClosestShieldbug->GetAbsOrigin() );
+					if( flShieldbugDistSqr < k_flShieldbugScanRangeSqr )
 					{
-						bRemoveNode = true;
+						// preserve the node if it's behind the shieldbug
+						Vector vecShieldBugToNode, vecShieldbugFacing;
 
-						// if any of the marines are close, don't delete nodes behind the shieldbug
-						float flShieldbugDistSqr = hints[ i ]->GetAbsOrigin().DistToSqr( pClosestShieldbug->GetAbsOrigin() );
-						if( flShieldbugDistSqr < k_flShieldbugScanRangeSqr )
+						vecShieldBugToNode = hints[ i ]->GetAbsOrigin() - pClosestShieldbug->GetAbsOrigin();
+						QAngle angFacing = pClosestShieldbug->GetAbsAngles();
+						AngleVectors( angFacing, &vecShieldbugFacing );
+						vecShieldbugFacing.z = 0;
+						vecShieldBugToNode.z = 0;
+
+						VectorNormalize( vecShieldbugFacing );
+						VectorNormalize( vecShieldBugToNode );
+
+						float flForwardDot = vecShieldbugFacing.Dot( vecShieldBugToNode );
+						if( flForwardDot < 0.5f )	// if node is 60 degrees or more away from shieldbug's facing...
 						{
-							// preserve the node if it's behind the shieldbug
-							Vector vecShieldBugToNode, vecShieldbugFacing;
+							float flDistSqr = hints[ i ]->GetAbsOrigin().DistToSqr( pMarine->GetAbsOrigin() );
+							bool bHasLOS = pMarine->TestShootPosition( pMarine->GetAbsOrigin(), hints[ i ]->GetAbsOrigin() );
 
-							vecShieldBugToNode = hints[ i ]->GetAbsOrigin() - pClosestShieldbug->GetAbsOrigin();
-							QAngle angFacing = pClosestShieldbug->GetAbsAngles();
-							AngleVectors( angFacing, &vecShieldbugFacing );
-							vecShieldbugFacing.z = 0;
-							vecShieldBugToNode.z = 0;
-
-							VectorNormalize( vecShieldbugFacing );
-							VectorNormalize( vecShieldBugToNode );
-
-							float flForwardDot = vecShieldbugFacing.Dot( vecShieldBugToNode );
-							if( flForwardDot < 0.5f )	// if node is 60 degrees or more away from shieldbug's facing...
+							// if closer than the previous closest node, and the current node isn't taken, reserve it
+							if( flDistSqr < flClosestFlankingNodeDistSqr && bHasLOS )
 							{
-								float flDistSqr = hints[ i ]->GetAbsOrigin().DistToSqr( pMarine->GetAbsOrigin() );
-								bool bHasLOS = pMarine->TestShootPosition( pMarine->GetAbsOrigin(), hints[ i ]->GetAbsOrigin() );
-
-								// if closer than the previous closest node, and the current node isn't taken, reserve it
-								if( flDistSqr < flClosestFlankingNodeDistSqr && bHasLOS )
+								bool flNodeTaken = false;
+								for( int iSlot = 0; iSlot < MAX_SQUAD_SIZE; iSlot++ )
 								{
-									bool flNodeTaken = false;
-									for( int iSlot = 0; iSlot < MAX_SQUAD_SIZE; iSlot++ )
+#ifdef HL2_HINTS
+									if ( iSlot != slotnum && hints[ i ] == m_hFollowHint[ iSlot ].Get() )
+#else
+									if ( iSlot != slotnum && hints[ i ]->m_nHintIndex == m_nMarineHintIndex[ iSlot ] )
+#endif
 									{
-	#ifdef HL2_HINTS
-										if ( iSlot != slotnum && hints[ i ] == m_hFollowHint[ iSlot ].Get() )
-	#else
-										if ( iSlot != slotnum && hints[ i ]->m_nHintIndex == m_nMarineHintIndex[ iSlot ] )
-	#endif
-										{
-											flNodeTaken = true;
-											break;
-										}
+										flNodeTaken = true;
+										break;
 									}
+								}
 
-									if( !flNodeTaken )
-									{
-										iClosestFlankingNode = hints[ i ]->m_nHintIndex;
-										flClosestFlankingNodeDistSqr = flDistSqr;
-										bRemoveNode = false;
-									}
+								if( !flNodeTaken )
+								{
+									iClosestFlankingNode = hints[ i ]->m_nHintIndex;
+									flClosestFlankingNodeDistSqr = flDistSqr;
+									bRemoveNode = false;
 								}
 							}
 						}
@@ -883,9 +748,9 @@ void CASW_SquadFormation::FindFollowHintNodes()
 		// find the first node not used by another other squaddie
 		int nNode = 0;
 
-		bool bValidNode = true;
 		while ( nNode < hints.Count() )
 		{
+			bool bValidNode = true;
 #ifdef HL2_HINTS
 			const Vector &vecNodePos = hints[nNode]->GetAbsOrigin();
 #else

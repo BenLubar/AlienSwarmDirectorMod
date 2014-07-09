@@ -728,13 +728,13 @@ void CASW_Marine::TaskFail( AI_TaskFailureCode_t code )
 				return;
 			}
 			CBaseEntity *pEnt = gEntList.FindEntityByClassnameNearest("prop_physics", GetAbsOrigin(), 128);
-			if (!pEnt || pEnt->m_takedamage == DAMAGE_NO || pEnt->GetHealth() <= 0)
+			if (!pEnt || pEnt->m_takedamage != DAMAGE_YES || pEnt->GetHealth() <= 0)
 				pEnt = gEntList.FindEntityByClassnameNearest("prop_physics_override", GetAbsOrigin(), 128);
-			if (!pEnt || pEnt->m_takedamage == DAMAGE_NO || pEnt->GetHealth() <= 0)
+			if (!pEnt || pEnt->m_takedamage != DAMAGE_YES || pEnt->GetHealth() <= 0)
 				pEnt = gEntList.FindEntityByClassnameNearest("physics_prop", GetAbsOrigin(), 128);
-			if (!pEnt || pEnt->m_takedamage == DAMAGE_NO || pEnt->GetHealth() <= 0)
+			if (!pEnt || pEnt->m_takedamage != DAMAGE_YES || pEnt->GetHealth() <= 0)
 				pEnt = gEntList.FindEntityByClassnameNearest("asw_prop_physics", GetAbsOrigin(), 128);
-			if (pEnt && pEnt->m_takedamage != DAMAGE_NO && pEnt->GetHealth() > 0)
+			if (pEnt && pEnt->m_takedamage == DAMAGE_YES && pEnt->GetHealth() > 0)
 				SetPhysicsPropTarget(pEnt);
 		}
 
@@ -786,11 +786,6 @@ void CASW_Marine::TaskFail( AI_TaskFailureCode_t code )
 	else if ( IsCurSchedule( SCHED_MELEE_ATTACK_PROP1, false ) )
 	{
 		m_hPhysicsPropTarget = NULL;
-	}
-	else if ( IsCurSchedule( SCHED_ASW_FOLLOW_MOVE, false ) )
-	{
-		// we failed a follow move, which probably means our follow hint is in the wrong place.
-		GetSquadFormation()->FollowCommandUsed( GetSquadFormation()->Find( this ) );
 	}
 
 	BaseClass::TaskFail( code );

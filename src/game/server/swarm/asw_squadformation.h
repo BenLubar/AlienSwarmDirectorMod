@@ -48,9 +48,6 @@ public:
 	bool Remove( unsigned int slotnum ); // ret true if this marine was actually found and removed
 
 	void ChangeLeader( CASW_Marine *pNewLeader, bool bUpdateLeaderPos = false );
-
-	// reorganize the follower slots so that each follower has the least distance to move
-	void RecomputeFollowerOrder( const Vector &vProjectedLeaderPos, QAngle qLeaderAim ); 
 	
 	// recompute the array of positions that squaddies should head towards.
 	void UpdateFollowPositions();
