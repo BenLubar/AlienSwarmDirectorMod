@@ -4,7 +4,7 @@
 	{
 		"fieldName"		"ASWHudMinimap"
 		"xpos"	"r171"
-		"ypos"	"298"
+		"ypos"	"-60"
 		"wide"	"160"
 		"tall"  "160"
 		"visible" "1"
