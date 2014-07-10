@@ -1901,7 +1901,7 @@ bool CASW_Marine::NeedToFollowMove()
 	if ( !pLeader || pLeader == this )
 		return false;
 
-	if (HasCondition(COND_CAN_RANGE_ATTACK1) && GetEnemy() && GetEnemy()->GetAbsOrigin().DistToSqr(GetAbsOrigin()) < Square(ASW_FORMATION_ATTACK_DISTANCE))
+	if (HasCondition(COND_CAN_RANGE_ATTACK1) && GetEnemy() && GetEnemy()->Classify() != CLASS_ASW_SHIELDBUG && GetEnemy()->GetAbsOrigin().DistToSqr(GetAbsOrigin()) < Square(ASW_FORMATION_ATTACK_DISTANCE))
 		return false;
 
 	// only move if we're not near our saved follow point
@@ -2897,6 +2897,10 @@ void CASW_Marine::CheckForAIWeaponSwitch()
 			return;
 		}
 	}
+
+	// don't get stuck swapping weapons if we have no primary ammo at all but our guns have secondary ammo
+	if ( pWeapon->HasAmmo() )
+		return;
 
 	// if we have no guns with primary ammo, search for one with secondary ammo
 	for ( int i = 0; i < ASW_NUM_INVENTORY_SLOTS; i++ )
