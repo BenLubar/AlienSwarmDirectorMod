@@ -104,10 +104,12 @@ private:
 
 	// marines are about to escape, throw everything at them
 	bool m_bFinale;
+	bool m_bFiredEscapeRoom;
+
 	bool m_bWanderersEnabled;
 	bool m_bHordesEnabled;
-	bool m_bFiredEscapeRoom;
 	bool m_bDirectorControlsSpawners;
+	bool m_bPreSpawnAliens;
 };
 
 CASW_Director* ASWDirector();

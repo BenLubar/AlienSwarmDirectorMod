@@ -27,6 +27,7 @@ public:
 	bool m_bWanderersStartEnabled;
 	bool m_bHordesStartEnabled;
 	bool m_bDirectorControlsSpawners;
+	bool m_bPreSpawnAliens;
 
 private:
 	void InputEnableHordes( inputdata_t &inputdata );

@@ -76,12 +76,14 @@ bool CASW_Director::Init()
 		m_bWanderersEnabled = pControl->m_bWanderersStartEnabled;
 		m_bHordesEnabled = pControl->m_bHordesStartEnabled;
 		m_bDirectorControlsSpawners = pControl->m_bDirectorControlsSpawners;
+		m_bPreSpawnAliens = pControl->m_bPreSpawnAliens;
 	}
 	else
 	{
 		m_bWanderersEnabled = false;
 		m_bHordesEnabled = false;
 		m_bDirectorControlsSpawners = false;
+		m_bPreSpawnAliens = false;
 	}
 
 	return true;
@@ -579,32 +581,8 @@ void CASW_Director::OnMissionStarted()
 	//PJ - Hook in mod_player_performance
 	CMOD_Player_Performance::PlayerPerformance()->OnMissionStarted();
 
-	// if we have wanders turned on, spawn a couple of encounters
-	if ( asw_wanderer_override.GetBool() && ASWGameRules() )
+	if (ASWSpawnManager() && m_bPreSpawnAliens && asw_spawning_enabled.GetBool())
 	{
-		ASWSpawnManager()->SpawnRandomShieldbug();
-
-		int nParasites = 1;
-		switch( ASWGameRules()->GetSkillLevel() )
-		{
-			case 1: nParasites = RandomInt( 4, 6 ); break;
-			default:
-			case 2: nParasites = RandomInt( 4, 6 ); break;
-			case 3: nParasites = RandomInt( 5, 7 ); break;
-			case 4: nParasites = RandomInt( 5, 9 ); break;
-			case 5: nParasites = RandomInt( 5, 10 ); break;
-		}
-		while ( nParasites > 0 )
-		{
-			int nParasitesInThisPack = RandomInt( 3, 6 );
-			if ( ASWSpawnManager()->SpawnRandomParasitePack( nParasitesInThisPack ) )
-			{
-				nParasites -= nParasitesInThisPack;
-			}
-			else
-			{
-				break;
-			}
-		}
+		ASWSpawnManager()->PreSpawnAliens();
 	}
 }

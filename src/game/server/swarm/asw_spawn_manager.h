@@ -72,9 +72,7 @@ public:
 	int GetNumAlienClasses();
 	ASW_Alien_Class_Entry* GetAlienClass( int i );
 
-	// spawns a shieldbug somewhere randomly in the map
-	bool SpawnRandomShieldbug();
-	bool SpawnRandomParasitePack( int nParasites );
+	bool PreSpawnAliens();
 
 	typedef CHandle<CTriggerMultiple> TriggerMultiple_t;
 	CUtlVector<TriggerMultiple_t> m_EscapeTriggers;

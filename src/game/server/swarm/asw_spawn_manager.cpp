@@ -27,6 +27,7 @@ CASW_Spawn_Manager* ASWSpawnManager() { return &g_Spawn_Manager; }
 #define CANDIDATE_ALIEN_HULL 11		// TODO: have this use the hull of the alien type we're spawning a horde of?
 #define MARINE_NEAR_DISTANCE 740.0f
 
+extern ConVar asw_skill;
 extern ConVar asw_director_debug;
 ConVar asw_horde_min_distance("asw_horde_min_distance", "800", FCVAR_CHEAT, "Minimum distance away from the marines the horde can spawn" );
 ConVar asw_horde_max_distance("asw_horde_max_distance", "1500", FCVAR_CHEAT, "Maximum distance away from the marines the horde can spawn" );
@@ -596,6 +597,7 @@ bool CASW_Spawn_Manager::FindHordePosition()
 	int nHull = 0;
 	bool ok = GetAlienHull(asw_horde_class.GetString(), nHull);
 	Assert( ok );
+	ok;
 
 	int iMaxTries = 3;
 	for ( int i=0 ; i<iMaxTries ; i++ )
@@ -733,6 +735,7 @@ int CASW_Spawn_Manager::SpawnAlienBatch( const char* szAlienClass, int iNumAlien
 	Vector vecMaxs = NAI_Hull::Maxs(HULL_MEDIUMBIG);
 	bool ok = GetAlienBounds( szAlienClass, vecMins, vecMaxs );
 	Assert( ok );
+	ok;
 
 	float flAlienWidth = vecMaxs.x - vecMins.x;
 	float flAlienDepth = vecMaxs.y - vecMins.y;
@@ -914,151 +917,68 @@ void CASW_Spawn_Manager::DeleteRoute( AI_Waypoint_t *pWaypointList )
 	}
 }
 
-bool CASW_Spawn_Manager::SpawnRandomShieldbug()
+bool CASW_Spawn_Manager::PreSpawnAliens()
 {
-	int iNumNodes = g_pBigAINet->NumNodes();
-	if ( iNumNodes < 6 )
-		return false;
-
-	int nHull = HULL_WIDE_SHORT;
+	int iNumNodes = GetNetwork()->NumNodes();
 	CUtlVector<CASW_Open_Area*> aAreas;
-	for ( int i = 0; i < 6; i++ )
+	for (int i = 0; i < iNumNodes; i++)
 	{
-		CAI_Node *pNode = NULL;
-		int nTries = 0;
-		while ( nTries < 5 && ( !pNode || pNode->GetType() != NODE_GROUND ) )
-		{
-			pNode = g_pBigAINet->GetNode( RandomInt( 0, iNumNodes ) );
-			nTries++;
-		}
+		CAI_Node *pNode = GetNetwork()->GetNode(i);
+		if (!pNode || pNode->GetType() != NODE_GROUND)
+			continue;
 		
-		if ( pNode )
+		CASW_Open_Area *pArea = FindNearbyOpenArea(pNode->GetOrigin(), HULL_WIDE_SHORT);
+		if ( pArea && pArea->m_nTotalLinks > 30 )
 		{
-			CASW_Open_Area *pArea = FindNearbyOpenArea( pNode->GetOrigin(), HULL_MEDIUMBIG );
-			if ( pArea && pArea->m_nTotalLinks > 30 )
+			// test if there's room to spawn a shieldbug at that spot
+			if (ValidSpawnPoint(pArea->m_pNode->GetPosition(HULL_WIDE_SHORT), NAI_Hull::Mins(HULL_WIDE_SHORT), NAI_Hull::Maxs(HULL_WIDE_SHORT), true))
 			{
-				// test if there's room to spawn a shieldbug at that spot
-				if ( ValidSpawnPoint( pArea->m_pNode->GetPosition( nHull ), NAI_Hull::Mins( nHull ), NAI_Hull::Maxs( nHull ), true, false ) )
-				{
-					aAreas.AddToTail( pArea );
-				}
-				else
-				{
-					delete pArea;
-				}
+				aAreas.AddToTail( pArea );
+			}
+			else
+			{
+				delete pArea;
 			}
 		}
-		// stop searching once we have 3 acceptable candidates
-		if ( aAreas.Count() >= 3 )
-			break;
 	}
 
-	// find area with the highest connectivity
-	CASW_Open_Area *pBestArea = NULL;
-	for ( int i = 0; i < aAreas.Count(); i++ )
+	if (aAreas.Count() < 6)
 	{
-		CASW_Open_Area *pArea = aAreas[i];
-		if ( !pBestArea || pArea->m_nTotalLinks > pBestArea->m_nTotalLinks )
+		Warning("Director: Could not find enough places to spawn aliens.\n");
+		aAreas.PurgeAndDeleteElements();
+		return false;
+	}
+
+
+	for (int i = RandomInt(aAreas.Count() / 3, aAreas.Count() / 2) * asw_skill.GetInt(); i > 0; i--)
+	{
+		const char *szAlienClass = asw_wanderer_class.GetString();
+		if (RandomFloat() < asw_wanderer_varied.GetFloat())
 		{
-			pBestArea = pArea;
+			if (RandomFloat() < asw_wanderer_varied_rare.GetFloat())
+			{
+				szAlienClass = g_VariedWandererTypeRare[RandomInt(0, NELEMS(g_VariedWandererTypeRare) - 1)];
+			}
+			else
+			{
+				szAlienClass = g_VariedWandererTypeCommon[RandomInt(0, NELEMS(g_VariedWandererTypeCommon) - 1)];
+			}
 		}
-	}
 
-	if ( pBestArea )
-	{
-		CBaseEntity *pAlien = SpawnAlienAt( "asw_shieldbug", pBestArea->m_pNode->GetPosition( nHull ), RandomAngle( 0, 360 ) );
-		IASW_Spawnable_NPC *pSpawnable = dynamic_cast<IASW_Spawnable_NPC*>( pAlien );
-		if ( pSpawnable )
+		int nHull = 0;
+		bool ok = GetAlienHull(szAlienClass, nHull);
+		Assert(ok);
+		ok;
+
+		CBaseEntity *pAlien = SpawnAlienAt(szAlienClass, aAreas[RandomInt(0, aAreas.Count() - 1)]->m_pNode->GetPosition(nHull), QAngle(0, RandomFloat(0, 360), 0));
+		IASW_Spawnable_NPC *pSpawnable = dynamic_cast<IASW_Spawnable_NPC*>(pAlien);
+		if (pSpawnable)
 		{
 			pSpawnable->SetAlienOrders(AOT_SpreadThenHibernate, vec3_origin, NULL);
 		}
-		aAreas.PurgeAndDeleteElements();
-		return true;
 	}
-
 	aAreas.PurgeAndDeleteElements();
-	return false;
-}
-
-Vector TraceToGround( const Vector &vecPos )
-{
-	trace_t tr;
-	UTIL_TraceLine( vecPos + Vector( 0, 0, 100 ), vecPos, MASK_NPCSOLID, NULL, ASW_COLLISION_GROUP_PARASITE, &tr );
-	return tr.endpos;
-}
-
-bool CASW_Spawn_Manager::SpawnRandomParasitePack( int nParasites )
-{
-	int iNumNodes = g_pBigAINet->NumNodes();
-	if ( iNumNodes < 6 )
-		return false;
-
-	int nHull = HULL_TINY;
-	CUtlVector<CASW_Open_Area*> aAreas;
-	for ( int i = 0; i < 6; i++ )
-	{
-		CAI_Node *pNode = NULL;
-		int nTries = 0;
-		while ( nTries < 5 && ( !pNode || pNode->GetType() != NODE_GROUND ) )
-		{
-			pNode = g_pBigAINet->GetNode( RandomInt( 0, iNumNodes ) );
-			nTries++;
-		}
-
-		if ( pNode )
-		{
-			CASW_Open_Area *pArea = FindNearbyOpenArea( pNode->GetOrigin(), HULL_MEDIUMBIG );
-			if ( pArea && pArea->m_nTotalLinks > 30 )
-			{
-				// test if there's room to spawn a shieldbug at that spot
-				if ( ValidSpawnPoint( pArea->m_pNode->GetPosition( nHull ), NAI_Hull::Mins( nHull ), NAI_Hull::Maxs( nHull ), true, false ) )
-				{
-					aAreas.AddToTail( pArea );
-				}
-				else
-				{
-					delete pArea;
-				}
-			}
-		}
-		// stop searching once we have 3 acceptable candidates
-		if ( aAreas.Count() >= 3 )
-			break;
-	}
-
-	// find area with the highest connectivity
-	CASW_Open_Area *pBestArea = NULL;
-	for ( int i = 0; i < aAreas.Count(); i++ )
-	{
-		CASW_Open_Area *pArea = aAreas[i];
-		if ( !pBestArea || pArea->m_nTotalLinks > pBestArea->m_nTotalLinks )
-		{
-			pBestArea = pArea;
-		}
-	}
-
-	if ( pBestArea )
-	{
-		for ( int i = 0; i < nParasites; i++ )
-		{
-			CBaseEntity *pAlien = SpawnAlienAt( "asw_parasite", TraceToGround( pBestArea->m_pNode->GetPosition( nHull ) ), RandomAngle( 0, 360 ) );
-			IASW_Spawnable_NPC *pSpawnable = dynamic_cast<IASW_Spawnable_NPC*>( pAlien );
-			if ( pSpawnable )
-			{
-				pSpawnable->SetAlienOrders(AOT_SpreadThenHibernate, vec3_origin, NULL);
-			}
-			if ( asw_director_debug.GetBool() && pAlien )
-			{
-				Msg( "Spawned parasite at %f %f %f\n", pAlien->GetAbsOrigin() );
-				NDebugOverlay::Cross3D( pAlien->GetAbsOrigin(), 8.0f, 255, 0, 0, true, 20.0f );
-			}
-		}
-		aAreas.PurgeAndDeleteElements();
-		return true;
-	}
-
-	aAreas.PurgeAndDeleteElements();
-	return false;
+	return true;
 }
 
 // heuristic to find reasonably open space - searches for areas with high node connectivity
@@ -1075,12 +995,12 @@ CASW_Open_Area* CASW_Spawn_Manager::FindNearbyOpenArea( const Vector &vecSearchO
 			continue;
 
 		Vector vecPos = pNode->GetOrigin();
-		float flDist = vecPos.DistTo( vecSearchOrigin );
-		if ( flDist > 400.0f )
+		float flDist = vecPos.DistToSqr( vecSearchOrigin );
+		if ( flDist > Square(400.0f) )
 			continue;
 
 		// discard if node is too near start location
-		if ( pStartEntity && vecPos.DistTo( pStartEntity->GetAbsOrigin() ) < 1400.0f )  // NOTE: assumes all start points are clustered near one another
+		if ( pStartEntity && vecPos.DistToSqr( pStartEntity->GetAbsOrigin() ) < Square(1400.0f) )  // NOTE: assumes all start points are clustered near one another
 			continue;
 
 		// discard if node is inside an escape area
@@ -1269,14 +1189,3 @@ void asw_alien_horde_f( const CCommand& args )
 	}
 }
 static ConCommand asw_alien_horde("asw_alien_horde", asw_alien_horde_f, "Creates a horde of aliens somewhere nearby", FCVAR_GAMEDLL | FCVAR_CHEAT);
-
-
-CON_COMMAND_F( asw_spawn_shieldbug, "Spawns a shieldbug somewhere randomly in the map", FCVAR_CHEAT )
-{
-	ASWSpawnManager()->SpawnRandomShieldbug();
-}
-
-CON_COMMAND_F( asw_spawn_parasite_pack, "Spawns a group of parasites somewhere randomly in the map", FCVAR_CHEAT )
-{
-	ASWSpawnManager()->SpawnRandomParasitePack( RandomInt( 3, 5 ) );
-}

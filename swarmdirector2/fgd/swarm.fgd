@@ -6451,6 +6451,11 @@
 		0 : "No"
 		1 : "Yes"
 	]
+	prespawn(choices) : "Pre-spawn Aliens" : 0 : "Whether to spawn aliens on the map before the mission starts." =
+	[
+		0 : "No"
+		1 : "Yes"
+	]
 	input EnableHordes(void) : "Enable random horde spawning."
 	input DisableHordes(void) : "Disable random horde spawning."
 	input EnableWanderers(void) : "Enable random wandering aliens."
