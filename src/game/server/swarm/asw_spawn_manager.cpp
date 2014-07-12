@@ -24,7 +24,7 @@
 CASW_Spawn_Manager g_Spawn_Manager;
 CASW_Spawn_Manager* ASWSpawnManager() { return &g_Spawn_Manager; }
 
-#define CANDIDATE_ALIEN_HULL 11		// TODO: have this use the hull of the alien type we're spawning a horde of?
+#define CANDIDATE_ALIEN_HULL HULL_MEDIUMBIG		// TODO: have this use the hull of the alien type we're spawning a horde of?
 #define MARINE_NEAR_DISTANCE 740.0f
 
 extern ConVar asw_skill;
@@ -917,23 +917,37 @@ void CASW_Spawn_Manager::DeleteRoute( AI_Waypoint_t *pWaypointList )
 	}
 }
 
-bool CASW_Spawn_Manager::PreSpawnAliens()
+bool CASW_Spawn_Manager::PreSpawnAliens(float flSpawnScale)
 {
 	int iNumNodes = GetNetwork()->NumNodes();
-	CUtlVector<CASW_Open_Area*> aAreas;
+	CUtlVector<CASW_Open_Area *> aAreas;
 	for (int i = 0; i < iNumNodes; i++)
 	{
 		CAI_Node *pNode = GetNetwork()->GetNode(i);
 		if (!pNode || pNode->GetType() != NODE_GROUND)
 			continue;
-		
+
 		CASW_Open_Area *pArea = FindNearbyOpenArea(pNode->GetOrigin(), HULL_WIDE_SHORT);
-		if ( pArea && pArea->m_nTotalLinks > 30 )
+		if (pArea && pArea->m_nTotalLinks > 30)
 		{
 			// test if there's room to spawn a shieldbug at that spot
 			if (ValidSpawnPoint(pArea->m_pNode->GetPosition(HULL_WIDE_SHORT), NAI_Hull::Mins(HULL_WIDE_SHORT), NAI_Hull::Maxs(HULL_WIDE_SHORT), true))
 			{
-				aAreas.AddToTail( pArea );
+				FOR_EACH_VEC(aAreas, i)
+				{
+					CASW_Open_Area *pOtherArea = aAreas[i];
+					if (pOtherArea->m_pNode == pArea->m_pNode)
+					{
+						delete pArea;
+						pArea = NULL;
+						break;
+					}
+				}
+
+				if (pArea)
+				{
+					aAreas.AddToTail(pArea);
+				}
 			}
 			else
 			{
@@ -949,8 +963,7 @@ bool CASW_Spawn_Manager::PreSpawnAliens()
 		return false;
 	}
 
-
-	for (int i = RandomInt(aAreas.Count() / 3, aAreas.Count() / 2) * asw_skill.GetInt(); i > 0; i--)
+	for (int i = ceil(aAreas.Count() * RandomFloat(0.75f, 1.25f) * asw_skill.GetInt() * flSpawnScale); i > 0; i--)
 	{
 		const char *szAlienClass = asw_wanderer_class.GetString();
 		if (RandomFloat() < asw_wanderer_varied.GetFloat())
@@ -970,11 +983,19 @@ bool CASW_Spawn_Manager::PreSpawnAliens()
 		Assert(ok);
 		ok;
 
-		CBaseEntity *pAlien = SpawnAlienAt(szAlienClass, aAreas[RandomInt(0, aAreas.Count() - 1)]->m_pNode->GetPosition(nHull), QAngle(0, RandomFloat(0, 360), 0));
+		CASW_Open_Area *pArea = aAreas[RandomInt(0, aAreas.Count() - 1)];
+		Vector vecPos =  pArea->m_aAreaNodes[RandomInt(0, pArea->m_aAreaNodes.Count() - 1)]->GetPosition(nHull);
+
+		CBaseEntity *pAlien = SpawnAlienAt(szAlienClass, vecPos, QAngle(0, RandomFloat(0, 360), 0));
 		IASW_Spawnable_NPC *pSpawnable = dynamic_cast<IASW_Spawnable_NPC*>(pAlien);
 		if (pSpawnable)
 		{
 			pSpawnable->SetAlienOrders(AOT_SpreadThenHibernate, vec3_origin, NULL);
+		}
+		if (pAlien->MyNPCPointer())
+		{
+			pAlien->MyNPCPointer()->SetEnemy(NULL);
+			pAlien->MyNPCPointer()->UpdateSleepState(false);
 		}
 	}
 	aAreas.PurgeAndDeleteElements();

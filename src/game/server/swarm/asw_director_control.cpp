@@ -17,7 +17,7 @@ BEGIN_DATADESC( CASW_Director_Control )
 	DEFINE_KEYFIELD( m_bWanderersStartEnabled, FIELD_BOOLEAN,	"wanderers" ),
 	DEFINE_KEYFIELD( m_bHordesStartEnabled, FIELD_BOOLEAN,	"hordes" ),
 	DEFINE_KEYFIELD( m_bDirectorControlsSpawners, FIELD_BOOLEAN,	"controlspawners" ),
-	DEFINE_KEYFIELD( m_bPreSpawnAliens, FIELD_BOOLEAN,	"prespawn" ),
+	DEFINE_KEYFIELD( m_flPreSpawnAliens, FIELD_FLOAT,	"prespawn" ),
 	DEFINE_INPUTFUNC( FIELD_VOID,	"EnableHordes",	InputEnableHordes ),
 	DEFINE_INPUTFUNC( FIELD_VOID,	"DisableHordes",	InputDisableHordes ),
 	DEFINE_INPUTFUNC( FIELD_VOID,	"EnableWanderers",	InputEnableWanderers ),

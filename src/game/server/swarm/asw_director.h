@@ -109,7 +109,7 @@ private:
 	bool m_bWanderersEnabled;
 	bool m_bHordesEnabled;
 	bool m_bDirectorControlsSpawners;
-	bool m_bPreSpawnAliens;
+	float m_flPreSpawnAliens;
 };
 
 CASW_Director* ASWDirector();

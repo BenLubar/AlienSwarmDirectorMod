@@ -20,6 +20,14 @@ public:
 	DECLARE_CLASS( CASW_Director_Control, CLogicalEntity );
 	DECLARE_DATADESC();
 
+	CASW_Director_Control()
+	{
+		m_bWanderersStartEnabled = false;
+		m_bHordesStartEnabled = false;
+		m_bDirectorControlsSpawners = false;
+		m_flPreSpawnAliens = 0.0f;
+	}
+
 	virtual void Precache();
 
 	virtual void OnEscapeRoomStart( CASW_Marine *pMarine );			// marine has entered the escape room with all objectives complete
@@ -27,7 +35,7 @@ public:
 	bool m_bWanderersStartEnabled;
 	bool m_bHordesStartEnabled;
 	bool m_bDirectorControlsSpawners;
-	bool m_bPreSpawnAliens;
+	float m_flPreSpawnAliens;
 
 private:
 	void InputEnableHordes( inputdata_t &inputdata );

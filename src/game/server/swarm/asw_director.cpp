@@ -76,14 +76,14 @@ bool CASW_Director::Init()
 		m_bWanderersEnabled = pControl->m_bWanderersStartEnabled;
 		m_bHordesEnabled = pControl->m_bHordesStartEnabled;
 		m_bDirectorControlsSpawners = pControl->m_bDirectorControlsSpawners;
-		m_bPreSpawnAliens = pControl->m_bPreSpawnAliens;
+		m_flPreSpawnAliens = pControl->m_flPreSpawnAliens;
 	}
 	else
 	{
 		m_bWanderersEnabled = false;
 		m_bHordesEnabled = false;
 		m_bDirectorControlsSpawners = false;
-		m_bPreSpawnAliens = false;
+		m_flPreSpawnAliens = 0;
 	}
 
 	return true;
@@ -581,8 +581,8 @@ void CASW_Director::OnMissionStarted()
 	//PJ - Hook in mod_player_performance
 	CMOD_Player_Performance::PlayerPerformance()->OnMissionStarted();
 
-	if (ASWSpawnManager() && m_bPreSpawnAliens && asw_spawning_enabled.GetBool())
+	if (ASWSpawnManager() && m_flPreSpawnAliens > 0 && asw_spawning_enabled.GetBool())
 	{
-		ASWSpawnManager()->PreSpawnAliens();
+		ASWSpawnManager()->PreSpawnAliens(m_flPreSpawnAliens);
 	}
 }
