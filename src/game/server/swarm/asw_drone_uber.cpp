@@ -64,6 +64,7 @@ void CASW_Drone_Uber::SetHealthByDifficultyLevel()
 		SetHitboxSet(0);
 	//else
 		//SetHitboxSet(2);
+	BaseClass::SetHealthByDifficultyLevel();
 }
 
 float CASW_Drone_Uber::GetIdealSpeed() const

@@ -166,7 +166,7 @@ public:
 	virtual void BreakAlien( const CTakeDamageInfo &info );
 	int OnTakeDamage_Alive( const CTakeDamageInfo &info );
 	virtual Vector CalcDeathForceVector( const CTakeDamageInfo &info );
-	virtual	bool		AllowedToIgnite( void ) { return true; }
+	virtual	bool		AllowedToIgnite( void ) { return m_bFlammable; }
 	float	m_fNextPainSound;
 	float	m_fNextStunSound;
 	void Event_Killed( const CTakeDamageInfo &info );
@@ -222,6 +222,24 @@ public:
 	CNetworkVar(bool, m_bOnFire);
 	virtual void SetHoldoutAlien() { m_bHoldoutAlien = true; }
 	virtual bool IsHoldoutAlien() { return m_bHoldoutAlien; }
+	virtual void CustomSettings(float flHealthScale, float flSpeedScale, float flSizeScale, bool bFlammable, bool bFreezable, bool bTeslable)
+	{
+		m_flHealthScale = flHealthScale;
+		m_flSpeedScale = flSpeedScale;
+		m_flSizeScale = flSizeScale;
+		m_bFlammable = bFlammable;
+		m_bFreezable = bFreezable;
+		m_bTeslable = bTeslable;
+
+		SetModelScale(flSizeScale);
+		SetHealthByDifficultyLevel();
+	}
+	float m_flHealthScale;
+	float m_flSpeedScale;
+	float m_flSizeScale;
+	bool m_bFlammable;
+	bool m_bFreezable;
+	bool m_bTeslable;
 
 	AlienOrder_t m_AlienOrders;
 	Vector m_vecAlienOrderSpot;

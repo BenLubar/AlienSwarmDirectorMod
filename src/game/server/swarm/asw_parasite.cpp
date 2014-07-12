@@ -1228,6 +1228,7 @@ void CASW_Parasite::SetHealthByDifficultyLevel()
 	{
 		SetHealth(ASWGameRules()->ModifyAlienHealthBySkillLevel(30));
 	}
+	BaseClass::SetHealthByDifficultyLevel();
 }
 
 void CASW_Parasite::NPCThink()

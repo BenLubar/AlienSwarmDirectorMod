@@ -67,6 +67,16 @@ protected:
 	string_t m_AlienName;	// name given to spawned aliens
 	EHANDLE m_hAlienOrderTarget;
 
+	// Alien Swarm: SP spawner flags
+	float m_flLegacyHealthScale;
+	float m_flLegacySpeedScale;
+	float m_flHealthScale;
+	float m_flSpeedScale;
+	float m_flSizeScale;
+	bool m_bFlammable;
+	bool m_bFreezable;
+	bool m_bTeslable;
+
 	// outputs
 	COutputEvent m_OnSpawned;
 	

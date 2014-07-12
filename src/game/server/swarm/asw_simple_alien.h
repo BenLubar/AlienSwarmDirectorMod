@@ -127,6 +127,25 @@ public:
 	virtual void ClearAlienOrders();
 	virtual void IgnoreMarines(bool bIgnoreMarines) { }
 
+	virtual void CustomSettings(float flHealthScale, float flSpeedScale, float flSizeScale, bool bFlammable, bool bFreezable, bool bTeslable)
+	{
+		m_flHealthScale = flHealthScale;
+		m_flSpeedScale = flSpeedScale;
+		m_flSizeScale = flSizeScale;
+		m_bFlammable = bFlammable;
+		m_bFreezable = bFreezable;
+		m_bTeslable = bTeslable;
+
+		SetModelScale(flSizeScale);
+		SetHealthByDifficultyLevel();
+	}
+	float m_flHealthScale;
+	float m_flSpeedScale;
+	float m_flSizeScale;
+	bool m_bFlammable;
+	bool m_bFreezable;
+	bool m_bTeslable;
+
 	AlienOrder_t m_AlienOrders;
 	Vector m_vecAlienOrderSpot;
 	EHANDLE m_AlienOrderObject;
@@ -146,7 +165,7 @@ public:
 	virtual void ElectroStun( float flStunTime ) { }
 	virtual void OnSwarmSensed(int iDistance) { }
 	virtual void OnSwarmSenseEntity(CBaseEntity* pEnt) { }
-	virtual bool AllowedToIgnite() { return true; }
+	virtual bool AllowedToIgnite() { return m_bFlammable; }
 	virtual void SetHoldoutAlien() { m_bHoldoutAlien = true; }
 	virtual bool IsHoldoutAlien() { return m_bHoldoutAlien; }
 

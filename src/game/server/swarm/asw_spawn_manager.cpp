@@ -928,7 +928,7 @@ bool CASW_Spawn_Manager::PreSpawnAliens(float flSpawnScale)
 			continue;
 
 		CASW_Open_Area *pArea = FindNearbyOpenArea(pNode->GetOrigin(), HULL_WIDE_SHORT);
-		if (pArea && pArea->m_nTotalLinks > 30)
+		if (pArea && pArea->m_nTotalLinks > 20)
 		{
 			// test if there's room to spawn a shieldbug at that spot
 			if (ValidSpawnPoint(pArea->m_pNode->GetPosition(HULL_WIDE_SHORT), NAI_Hull::Mins(HULL_WIDE_SHORT), NAI_Hull::Maxs(HULL_WIDE_SHORT), true))
@@ -986,16 +986,19 @@ bool CASW_Spawn_Manager::PreSpawnAliens(float flSpawnScale)
 		CASW_Open_Area *pArea = aAreas[RandomInt(0, aAreas.Count() - 1)];
 		Vector vecPos =  pArea->m_aAreaNodes[RandomInt(0, pArea->m_aAreaNodes.Count() - 1)]->GetPosition(nHull);
 
+		if (!Q_stricmp(szAlienClass, "asw_buzzer"))
+			vecPos.z += 128;
+		else
+			vecPos.z += 32;
+
 		CBaseEntity *pAlien = SpawnAlienAt(szAlienClass, vecPos, QAngle(0, RandomFloat(0, 360), 0));
-		IASW_Spawnable_NPC *pSpawnable = dynamic_cast<IASW_Spawnable_NPC*>(pAlien);
+		IASW_Spawnable_NPC *pSpawnable = dynamic_cast<IASW_Spawnable_NPC *>(pAlien);
 		if (pSpawnable)
 		{
 			pSpawnable->SetAlienOrders(AOT_SpreadThenHibernate, vec3_origin, NULL);
-		}
-		if (pAlien->MyNPCPointer())
-		{
-			pAlien->MyNPCPointer()->SetEnemy(NULL);
-			pAlien->MyNPCPointer()->UpdateSleepState(false);
+			if (pSpawnable->GetNPC())
+				pSpawnable->GetNPC()->SetEnemy(NULL);
+			pSpawnable->MoveAside();
 		}
 	}
 	aAreas.PurgeAndDeleteElements();

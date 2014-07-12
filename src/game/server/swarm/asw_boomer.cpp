@@ -84,6 +84,7 @@ void CASW_Boomer::SetHealthByDifficultyLevel()
 		Msg( "Setting boomer's initial health to %d\n", iHealth );
 	SetHealth( iHealth );
 	SetMaxHealth( iHealth );
+	BaseClass::SetHealthByDifficultyLevel();
 }
 
 //-----------------------------------------------------------------------------

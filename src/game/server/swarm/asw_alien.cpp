@@ -197,6 +197,13 @@ CASW_Alien::CASW_Alien( void ) :
 
 	m_nAlienCollisionGroup = COLLISION_GROUP_NPC;
 
+	m_flHealthScale = 1.0f;
+	m_flSpeedScale = 1.0f;
+	m_flSizeScale = 1.0f;
+	m_bFlammable = true;
+	m_bFreezable = true;
+	m_bTeslable = true;
+
 	meleeAttack1.Init( 0.0f, 64.0f, 0.7f, false );
 	meleeAttack2.Init( 0.0f, 64.0f, 0.7f, false );
 	rangeAttack1.Init( 64.0f, 786.0f, 0.5f, false );
@@ -678,6 +685,9 @@ void CASW_Alien::MeleeBleed(CTakeDamageInfo* info)
 //-----------------------------------------------------------------------------
 void CASW_Alien::Freeze( float flFreezeAmount, CBaseEntity *pFreezer, Ray_t *pFreezeRay ) 
 {
+	if (!m_bFreezable)
+		return;
+
 	if ( flFreezeAmount <= 0.0f )
 	{
 		SetCondition(COND_NPC_FREEZE);
@@ -2512,6 +2522,8 @@ bool CASW_Alien::MarineCanSee(int padding, float interval)
 void CASW_Alien::SetHealthByDifficultyLevel()
 {
 	// filled in by subclasses
+	SetMaxHealth(GetMaxHealth() * m_flHealthScale);
+	SetHealth(GetHealth() * m_flHealthScale);
 }
 
 void CASW_Alien::Ignite( float flFlameLifetime, bool bNPCOnly, float flSize, bool bCalledByLevelDesigner )
@@ -2553,15 +2565,15 @@ float CASW_Alien::GetIdealSpeed() const
 	{
 		if ( m_bElectroStunned.Get() )
 		{
-			return BaseClass::GetIdealSpeed() * asw_alien_stunned_speed.GetFloat();
+			return BaseClass::GetIdealSpeed() * asw_alien_stunned_speed.GetFloat() * m_flSpeedScale;
 		}
 		else
 		{
-			return BaseClass::GetIdealSpeed() * asw_alien_hurt_speed.GetFloat();
+			return BaseClass::GetIdealSpeed() * asw_alien_hurt_speed.GetFloat() * m_flSpeedScale;
 		}
 	}
 
-	return BaseClass::GetIdealSpeed();
+	return BaseClass::GetIdealSpeed() * m_flSpeedScale;
 }
 
 void CASW_Alien::DropMoney( const CTakeDamageInfo &info )
@@ -2599,6 +2611,9 @@ int CASW_Alien::GetMoneyCount( const CTakeDamageInfo &info )
 
 void CASW_Alien::ElectroStun( float flStunTime )
 {
+	if (!m_bTeslable)
+		return;
+
 	if (m_fHurtSlowMoveTime < gpGlobals->curtime + flStunTime)
 		m_fHurtSlowMoveTime = gpGlobals->curtime + flStunTime;
 

@@ -2327,6 +2327,7 @@ void CASW_Drone_Advanced::SetHealthByDifficultyLevel()
 	SetHealth(iHealth);
 	SetMaxHealth(iHealth);
 	SetHitboxSet(0);
+	BaseClass::SetHealthByDifficultyLevel();
 }
 
 // if we arrive at our destination, clear our orders

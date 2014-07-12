@@ -96,6 +96,7 @@ void CASW_Shaman::SetHealthByDifficultyLevel()
 		Msg( "Setting shaman's initial health to %d\n", iHealth );
 	SetHealth( iHealth );
 	SetMaxHealth( iHealth );
+	BaseClass::SetHealthByDifficultyLevel();
 }
 
 

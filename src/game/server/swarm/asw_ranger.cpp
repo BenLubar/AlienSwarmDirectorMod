@@ -149,6 +149,7 @@ void CASW_Ranger::SetHealthByDifficultyLevel()
 		Msg( "Setting ranger's initial health to %d\n", iHealth );
 	SetHealth( iHealth );
 	SetMaxHealth( iHealth );
+	BaseClass::SetHealthByDifficultyLevel();
 }
 
 

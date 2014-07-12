@@ -2708,6 +2708,9 @@ float CASW_Buzzer::GetDefaultNavGoalTolerance()
 //-----------------------------------------------------------------------------
 void CASW_Buzzer::Freeze( float flFreezeAmount, CBaseEntity *pFreezer, Ray_t *pFreezeRay ) 
 {
+	if (!m_bFreezable)
+		return;
+
 	BaseClass::Freeze( flFreezeAmount, pFreezer, pFreezeRay );
 	
 	if ( GetMoveType() != MOVETYPE_NONE && GetFrozenAmount() > 0.0f )
@@ -3203,11 +3206,16 @@ void CASW_Buzzer::MoanSound( envelopePoint_t *pEnvelope, int iEnvelopeSize )
 
 void CASW_Buzzer::SetHealthByDifficultyLevel()
 {	
-	SetHealth(ASWGameRules()->ModifyAlienHealthBySkillLevel(sk_asw_buzzer_health.GetFloat()));		
+	int iHealth = ASWGameRules()->ModifyAlienHealthBySkillLevel(sk_asw_buzzer_health.GetFloat()) * m_flHealthScale;
+	SetMaxHealth(iHealth);
+	SetHealth(iHealth);
 }
 
 void CASW_Buzzer::ElectroStun( float flStunTime )
 {
+	if (!m_bTeslable)
+		return;
+
 	if (m_flElectroStunSlowMoveTime < gpGlobals->curtime + flStunTime)
 		m_flElectroStunSlowMoveTime = gpGlobals->curtime + flStunTime;
 

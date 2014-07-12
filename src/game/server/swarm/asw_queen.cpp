@@ -1424,6 +1424,7 @@ void CASW_Queen::SetHealthByDifficultyLevel()
 	}
 	SetHealth(health);
 	SetMaxHealth(health);
+	BaseClass::SetHealthByDifficultyLevel();
 }
 
 int	CASW_Queen::DrawDebugTextOverlays()

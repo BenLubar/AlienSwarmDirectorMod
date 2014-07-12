@@ -4793,8 +4793,15 @@
 		0 : "No"
 		1 : "Yes"
 	]
-	MinSkillLevel(integer) : "Min Skill Level" : 0 : "The minimum skill level for this spawner to function.  Skill levels are: 1=easy 2=normal 3=hard 4=insane 5=imba"	
-	MaxSkillLevel(integer) : "Max Skill Level" : 0 : "The maximum skill level for this spawner to function.  Skill levels are: 1=easy 2=normal 3=hard 4=insane 5=imba"	
+	MinSkillLevel(integer) : "Min Skill Level" : 0 : "The minimum skill level for this spawner to function.  Skill levels are: 1=easy 2=normal 3=hard 4=insane 5=brutal"
+	MaxSkillLevel(integer) : "Max Skill Level" : 0 : "The maximum skill level for this spawner to function.  Skill levels are: 1=easy 2=normal 3=hard 4=insane 5=brutal"
+
+	healthscalesp(float) : "Alien health scale" : 1.0 : "Multiplies the alien's default health by this amount."
+	speedscalesp(float) : "Alien speed scale" : 1.0 : "Multiplies the alien's default speed by this amount."
+	sizescalesp(float) : "Alien size scale" : 1.0 : "Multiplies the alien's default size by this amount."
+	flammablesp(boolean) : "Alien can be set on fire" : 1
+	freezablesp(boolean) : "Alien can be frozen" : 1
+	teslablesp(boolean) : "Alien can be electrocuted" : 1
 	
 	output OnSpawned(string) : "Fires when an alien is spawned. The activator is the alien, and the string is the name of the alien." 
 	
@@ -4836,8 +4843,6 @@
 		11 : "asw_mortarbug"
 		12 : "asw_shaman"
 	]
-	HealthScale(float) : "Alien health scale" : 1 : "Multiplies the alien's default health by this amount."
-	SpeedScale(float) : "Alien speed scale" : 1 : "Multiplies the alien's default speed by this amount."
 	
 	SpawnerState(choices) : "Spawner State" : 0 : "Spawner's initial state" =
 	[

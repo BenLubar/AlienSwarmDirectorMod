@@ -124,7 +124,7 @@ public:
 	
 	void			InputDisableSwarm( inputdata_t &inputdata );	
 
-	virtual	bool		AllowedToIgnite( void ) { return true; }	
+	virtual	bool		AllowedToIgnite( void ) { return m_bFlammable; }	
 
 	float GetMaxEnginePower();
 
@@ -152,6 +152,25 @@ public:
 	virtual void OnMovementComplete();
 	virtual int SelectSchedule();
 	virtual void IgnoreMarines(bool bIgnoreMarines);
+
+	virtual void CustomSettings(float flHealthScale, float flSpeedScale, float flSizeScale, bool bFlammable, bool bFreezable, bool bTeslable)
+	{
+		m_flHealthScale = flHealthScale;
+		m_flSpeedScale = flSpeedScale;
+		m_flSizeScale = flSizeScale;
+		m_bFlammable = bFlammable;
+		m_bFreezable = bFreezable;
+		m_bTeslable = bTeslable;
+
+		SetModelScale(flSizeScale);
+		SetHealthByDifficultyLevel();
+	}
+	float m_flHealthScale;
+	float m_flSpeedScale;
+	float m_flSizeScale;
+	bool m_bFlammable;
+	bool m_bFreezable;
+	bool m_bTeslable;
 
 	AlienOrder_t m_AlienOrders;
 	Vector m_vecAlienOrderSpot;
