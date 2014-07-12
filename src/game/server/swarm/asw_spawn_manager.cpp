@@ -87,7 +87,7 @@ const char * g_VariedWandererTypeCommon [] = {
 
 const char * g_VariedWandererTypeRare [] = {
 	"asw_shieldbug",
-	"asw_mortarbug",
+	//"asw_mortarbug",
 	"asw_parasite",
 	"asw_harvester",
 	"asw_boomer"
