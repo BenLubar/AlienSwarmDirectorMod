@@ -377,7 +377,7 @@ bool CASW_Spawn_Manager::SpawnAlientAtRandomNode()
 				break;
 		}
 
-		Vector vecSpawnPos = pNode->GetPosition( nHull ) + Vector( 0, 0, nHull == HULL_TINY_CENTERED ? 32 : 128 );
+		Vector vecSpawnPos = pNode->GetPosition( nHull ) + Vector( 0, 0, nHull == HULL_TINY_CENTERED ? 128 : 32 );
 		if ( ValidSpawnPoint( vecSpawnPos, vecMins, vecMaxs, true, MARINE_NEAR_DISTANCE ) )
 		{
 			QAngle angle(0, RandomFloat(0, 360), 0);
