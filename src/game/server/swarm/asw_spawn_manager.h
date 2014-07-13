@@ -15,11 +15,11 @@ class CASW_Alien;
 class ASW_Alien_Class_Entry
 {
 public:
-	ASW_Alien_Class_Entry( const char *szClass, int nHullType ) { m_pszAlienClass = szClass; m_nHullType = nHullType; }
+	ASW_Alien_Class_Entry( const char *szClass, Hull_t nHullType ) { m_pszAlienClass = szClass; m_nHullType = nHullType; }
 
 	const char *m_pszAlienClass;
 	string_t m_iszAlienClass;
-	int m_nHullType;
+	Hull_t m_nHullType;
 };
 
 class CASW_Open_Area
@@ -57,8 +57,8 @@ public:
 	bool ValidSpawnPoint( const Vector &vecPosition, const Vector &vecMins, const Vector &vecMaxs, bool bCheckGround = true, float flMarineNearDistance = 0 );
 	bool LineBlockedByGeometry( const Vector &vecSrc, const Vector &vecEnd );
 	
-	bool GetAlienHull( const char *szAlienClass, int &nHull );
-	bool GetAlienHull( string_t iszAlienClass, int &nHull );
+	bool GetAlienHull( const char *szAlienClass, Hull_t &nHull );
+	bool GetAlienHull( string_t iszAlienClass, Hull_t &nHull );
 	bool GetAlienBounds( const char *szAlienClass, Vector &vecMins, Vector &vecMaxs );
 	bool GetAlienBounds( string_t iszAlienClass, Vector &vecMins, Vector &vecMaxs );
 
@@ -73,6 +73,8 @@ public:
 	ASW_Alien_Class_Entry* GetAlienClass( int i );
 
 	bool PreSpawnAliens(float flSpawnScale);
+
+	const char *RandomWandererClass( float *pflGroupChance = NULL ) const;
 
 	typedef CHandle<CTriggerMultiple> TriggerMultiple_t;
 	CUtlVector<TriggerMultiple_t> m_EscapeTriggers;

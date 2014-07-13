@@ -41,6 +41,7 @@ ConVar asw_wanderer_group_max( "asw_wanderer_group_max", "3", FCVAR_CHEAT, "Maxi
 ConVar asw_wanderer_group_probability( "asw_wanderer_group_probability", "0.7", FCVAR_CHEAT, "Probability of spawning an extra wanderer. Three wanderers is this squared, and so on.", true, 0.0f, true, 1.0f );
 ConVar asw_horde_wanderers( "asw_horde_wanderers", "0.02", FCVAR_CHEAT, "Probability of a wanderer spawning at the same time as a horde alien.", true, 0.0f, true, 1.0f );
 ConVar asw_horde_class( "asw_horde_class", "asw_drone_jumper", FCVAR_CHEAT, "Alien class used when spawning hordes" );
+ConVar asw_prespawn_min_links( "asw_prespawn_min_links", "0", FCVAR_CHEAT );
 
 CASW_Spawn_Manager::CASW_Spawn_Manager()
 {
@@ -65,16 +66,16 @@ ASW_Alien_Class_Entry g_Aliens[]=
 	ASW_Alien_Class_Entry( "asw_drone", HULL_MEDIUMBIG ),
 	ASW_Alien_Class_Entry( "asw_buzzer", HULL_TINY_CENTERED ),
 	ASW_Alien_Class_Entry( "asw_parasite", HULL_TINY ),
-	ASW_Alien_Class_Entry( "asw_shieldbug", HULL_LARGE ),
+	ASW_Alien_Class_Entry( "asw_shieldbug", HULL_WIDE_SHORT ),
 	ASW_Alien_Class_Entry( "asw_grub", HULL_TINY ),
 	ASW_Alien_Class_Entry( "asw_drone_jumper", HULL_MEDIUMBIG ),
-	ASW_Alien_Class_Entry( "asw_harvester", HULL_HUMAN ),
+	ASW_Alien_Class_Entry( "asw_harvester", HULL_WIDE_SHORT ),
 	ASW_Alien_Class_Entry( "asw_parasite_defanged", HULL_TINY ),
-	ASW_Alien_Class_Entry( "asw_queen", HULL_TINY ),
-	ASW_Alien_Class_Entry( "asw_boomer", HULL_HUMAN ),
-	ASW_Alien_Class_Entry( "asw_ranger", HULL_HUMAN ),
-	ASW_Alien_Class_Entry( "asw_mortarbug", HULL_LARGE ),
-	ASW_Alien_Class_Entry( "asw_shaman", HULL_LARGE ),
+	ASW_Alien_Class_Entry( "asw_queen", HULL_LARGE_CENTERED ),
+	ASW_Alien_Class_Entry( "asw_boomer", HULL_LARGE ),
+	ASW_Alien_Class_Entry( "asw_ranger", HULL_MEDIUMBIG ),
+	ASW_Alien_Class_Entry( "asw_mortarbug", HULL_WIDE_SHORT ),
+	ASW_Alien_Class_Entry( "asw_shaman", HULL_MEDIUM ),
 };
 
 const char * g_VariedWandererTypeCommon [] = {
@@ -232,18 +233,7 @@ void CASW_Spawn_Manager::Update()
 			{
 				if (RandomFloat() < asw_horde_wanderers.GetFloat())
 				{
-					const char *szAlienClass = asw_wanderer_class.GetString();
-					if (RandomFloat() < asw_wanderer_varied.GetFloat())
-					{
-						if (RandomFloat() < asw_wanderer_varied_rare.GetFloat())
-						{
-							szAlienClass = g_VariedWandererTypeRare[RandomInt(0, NELEMS(g_VariedWandererTypeRare) - 1)];
-						}
-						else
-						{
-							szAlienClass = g_VariedWandererTypeCommon[RandomInt(0, NELEMS(g_VariedWandererTypeCommon) - 1)];
-						}
-					}
+					const char *szAlienClass = RandomWandererClass();
 					if (SpawnAlienAt(szAlienClass, m_vecHordePosition, m_angHordeAngle))
 					{
 						if (asw_director_debug.GetInt() >= 4)
@@ -329,34 +319,21 @@ bool CASW_Spawn_Manager::SpawnAlientAtRandomNode()
 	if ( candidateNodes.Count() <= 0 )
 		return false;
 
-	float flGroupProb = asw_wanderer_group_probability.GetFloat();
-	const char *szAlienClass = asw_wanderer_class.GetString();
-	if (RandomFloat() < asw_wanderer_varied.GetFloat())
-	{
-		flGroupProb *= asw_wanderer_varied.GetFloat();
-		if (RandomFloat() < asw_wanderer_varied_rare.GetFloat())
-		{
-			flGroupProb *= asw_wanderer_varied_rare.GetFloat();
-			szAlienClass = g_VariedWandererTypeRare[RandomInt(0, NELEMS(g_VariedWandererTypeRare)-1)];
-		}
-		else
-		{
-			szAlienClass = g_VariedWandererTypeCommon[RandomInt(0, NELEMS(g_VariedWandererTypeCommon) - 1)];
-		}
-	}
+	float flGroupProb;
+	const char *szAlienClass = RandomWandererClass( &flGroupProb );
 
-	int nHull = 0;
+	Hull_t nHull = HULL_MEDIUMBIG;
 	Vector vecMins, vecMaxs;
-	bool ok = GetAlienHull(szAlienClass, nHull);
+	bool ok = GetAlienHull( szAlienClass, nHull );
+	Assert( ok );
 	if (!ok)
 	{
 		Warning("asw_spawn_manager: failed to get alien hulls (%s)\n", szAlienClass);
 		return false;
 	}
+	ok = GetAlienBounds( szAlienClass, vecMins, vecMaxs );
 	Assert( ok );
-	ok = GetAlienBounds(szAlienClass, vecMins, vecMaxs);
-	Assert( ok );
-	if (!ok)
+	if ( !ok )
 	{
 		Warning("asw_spawn_manager: failed to get alien bounds (%s)\n", szAlienClass);
 		return false;
@@ -594,7 +571,7 @@ bool CASW_Spawn_Manager::FindHordePosition()
 		return false;
 	}
 
-	int nHull = 0;
+	Hull_t nHull = HULL_MEDIUMBIG;
 	bool ok = GetAlienHull(asw_horde_class.GetString(), nHull);
 	Assert( ok );
 	ok;
@@ -673,7 +650,7 @@ bool CASW_Spawn_Manager::LineBlockedByGeometry( const Vector &vecSrc, const Vect
 	return ( tr.fraction != 1.0f );
 }
 
-bool CASW_Spawn_Manager::GetAlienHull( const char *szAlienClass, int &nHull )
+bool CASW_Spawn_Manager::GetAlienHull( const char *szAlienClass, Hull_t &nHull )
 {
 	int nCount = GetNumAlienClasses();
 	for ( int i = 0 ; i < nCount; i++ )
@@ -687,7 +664,7 @@ bool CASW_Spawn_Manager::GetAlienHull( const char *szAlienClass, int &nHull )
 	return false;
 }
 
-bool CASW_Spawn_Manager::GetAlienHull( string_t iszAlienClass, int &nHull )
+bool CASW_Spawn_Manager::GetAlienHull( string_t iszAlienClass, Hull_t &nHull )
 {
 	int nCount = GetNumAlienClasses();
 	for ( int i = 0 ; i < nCount; i++ )
@@ -703,7 +680,7 @@ bool CASW_Spawn_Manager::GetAlienHull( string_t iszAlienClass, int &nHull )
 
 bool CASW_Spawn_Manager::GetAlienBounds( const char *szAlienClass, Vector &vecMins, Vector &vecMaxs )
 {
-	int nHull;
+	Hull_t nHull;
 	if ( GetAlienHull( szAlienClass, nHull ) )
 	{
 		vecMins = NAI_Hull::Mins( nHull );
@@ -715,7 +692,7 @@ bool CASW_Spawn_Manager::GetAlienBounds( const char *szAlienClass, Vector &vecMi
 
 bool CASW_Spawn_Manager::GetAlienBounds( string_t iszAlienClass, Vector &vecMins, Vector &vecMaxs )
 {
-	int nHull;
+	Hull_t nHull;
 	if ( GetAlienHull( iszAlienClass, nHull ) )
 	{
 		vecMins = NAI_Hull::Mins( nHull );
@@ -928,7 +905,7 @@ bool CASW_Spawn_Manager::PreSpawnAliens(float flSpawnScale)
 			continue;
 
 		CASW_Open_Area *pArea = FindNearbyOpenArea(pNode->GetOrigin(), HULL_WIDE_SHORT);
-		if (pArea && pArea->m_nTotalLinks > 20)
+		if (pArea && pArea->m_nTotalLinks >= asw_prespawn_min_links.GetInt())
 		{
 			// test if there's room to spawn a shieldbug at that spot
 			if (ValidSpawnPoint(pArea->m_pNode->GetPosition(HULL_WIDE_SHORT), NAI_Hull::Mins(HULL_WIDE_SHORT), NAI_Hull::Maxs(HULL_WIDE_SHORT), true))
@@ -965,20 +942,9 @@ bool CASW_Spawn_Manager::PreSpawnAliens(float flSpawnScale)
 
 	for (int i = ceil(aAreas.Count() * RandomFloat(0.75f, 1.25f) * asw_skill.GetInt() * flSpawnScale); i > 0; i--)
 	{
-		const char *szAlienClass = asw_wanderer_class.GetString();
-		if (RandomFloat() < asw_wanderer_varied.GetFloat())
-		{
-			if (RandomFloat() < asw_wanderer_varied_rare.GetFloat())
-			{
-				szAlienClass = g_VariedWandererTypeRare[RandomInt(0, NELEMS(g_VariedWandererTypeRare) - 1)];
-			}
-			else
-			{
-				szAlienClass = g_VariedWandererTypeCommon[RandomInt(0, NELEMS(g_VariedWandererTypeCommon) - 1)];
-			}
-		}
+		const char *szAlienClass = RandomWandererClass();
 
-		int nHull = 0;
+		Hull_t nHull = HULL_MEDIUMBIG;
 		bool ok = GetAlienHull(szAlienClass, nHull);
 		Assert(ok);
 		ok;
@@ -986,13 +952,11 @@ bool CASW_Spawn_Manager::PreSpawnAliens(float flSpawnScale)
 		CASW_Open_Area *pArea = aAreas[RandomInt(0, aAreas.Count() - 1)];
 		Vector vecPos =  pArea->m_aAreaNodes[RandomInt(0, pArea->m_aAreaNodes.Count() - 1)]->GetPosition(nHull);
 
-		if (!Q_stricmp(szAlienClass, "asw_buzzer"))
-			vecPos.z += 128;
-		else
-			vecPos.z += 32;
+		vecPos.z += nHull == HULL_TINY_CENTERED ? 128 : 32;
 
 		CBaseEntity *pAlien = SpawnAlienAt(szAlienClass, vecPos, QAngle(0, RandomFloat(0, 360), 0));
 		IASW_Spawnable_NPC *pSpawnable = dynamic_cast<IASW_Spawnable_NPC *>(pAlien);
+		Assert(pSpawnable);
 		if (pSpawnable)
 		{
 			pSpawnable->SetAlienOrders(AOT_SpreadThenHibernate, vec3_origin, NULL);
@@ -1019,8 +983,7 @@ CASW_Open_Area* CASW_Spawn_Manager::FindNearbyOpenArea( const Vector &vecSearchO
 			continue;
 
 		Vector vecPos = pNode->GetOrigin();
-		float flDist = vecPos.DistToSqr( vecSearchOrigin );
-		if ( flDist > Square(400.0f) )
+		if ( vecPos.DistToSqr( vecSearchOrigin ) > Square(400.0f) )
 			continue;
 
 		// discard if node is too near start location
@@ -1088,8 +1051,8 @@ CASW_Open_Area* CASW_Spawn_Manager::FindNearbyOpenArea( const Vector &vecSearchO
 			continue;
 
 		Vector vecPos = pNode->GetOrigin();
-		float flDist = vecPos.DistTo( pArea->m_vecOrigin );
-		if ( flDist > 400.0f )
+		float flDist = vecPos.DistToSqr( pArea->m_vecOrigin );
+		if ( flDist > Square(400.0f) )
 			continue;
 
 		// discard if node is inside an escape area
@@ -1148,17 +1111,39 @@ CASW_Open_Area* CASW_Spawn_Manager::FindNearbyOpenArea( const Vector &vecSearchO
 	}
 
 	Vector vecArea = ( vecAreaMaxs - vecAreaMins );
-	float flArea = vecArea.x * vecArea.y;
+	pArea->m_flArea = vecArea.x * vecArea.y;
 
 	if ( asw_director_debug.GetBool() )
 	{
 		Msg( "area mins = %f %f %f\n", VectorExpand( vecAreaMins ) );
 		Msg( "area maxs = %f %f %f\n", VectorExpand( vecAreaMaxs ) );
 		NDebugOverlay::Box( vec3_origin, vecAreaMins, vecAreaMaxs, 255, 128, 128, 10, 10.0f );	
-		Msg( "Total links = %d Area = %f\n", pArea->m_nTotalLinks, flArea );
+		Msg( "Total links = %d Area = %f\n", pArea->m_nTotalLinks, pArea->m_flArea );
 	}
 
 	return pArea;
+}
+
+const char *CASW_Spawn_Manager::RandomWandererClass( float *pflGroupChance ) const
+{
+	if ( pflGroupChance )
+		*pflGroupChance = asw_wanderer_group_probability.GetFloat();
+
+	if (RandomFloat() < asw_wanderer_varied.GetFloat())
+	{
+		if ( pflGroupChance )
+			*pflGroupChance *= asw_wanderer_varied.GetFloat();
+
+		if (RandomFloat() < asw_wanderer_varied_rare.GetFloat())
+		{
+			if ( pflGroupChance )
+				*pflGroupChance *= asw_wanderer_varied_rare.GetFloat();
+
+			return g_VariedWandererTypeRare[RandomInt(0, NELEMS(g_VariedWandererTypeRare) - 1)];
+		}
+		return g_VariedWandererTypeCommon[RandomInt(0, NELEMS(g_VariedWandererTypeCommon) - 1)];
+	}
+	return asw_wanderer_class.GetString();
 }
 
 // creates a batch of aliens at the mouse cursor
