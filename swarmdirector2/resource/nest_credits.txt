@@ -1,0 +1,9 @@
+"Credits"
+{
+// these keys must be in this order!
+"show_credits_logo" "0"
+//"custom_logo"	"credits_logo/extermination_credits_logo"
+"asw_credits_"	""
+"asw_credits_"	"Created by DIMEDROLL"
+"asw_credits_"	""
+}

@@ -1,0 +1,16 @@
+GAME
+{
+"pos_x"             -1944 //"-1044"
+"pos_y"             "5926"
+"scale"             "7.0"
+"material"          "vgui/swarm/nest/nest01cave_minimap"
+"briefingmaterial"  "vgui/swarm/nest/nest01cave_minimap"
+//"mapyoffset" "-60"
+"missiontitle"		  "Cave"
+"description"	      "Move into the cave and get a sample of alien biomass."
+"image"		          "swarm/nest/nest01cave_pic"
+"version"		        "1.0"
+"website"		        "http://www.moddb.com/mods/reactivedrop"
+}
+
+// Overview: scale 7.00, pos_x -1044, pos_y 5926
