@@ -167,7 +167,7 @@ void CASW_Spawn_Manager::FindEscapeTriggers()
 		if ( !pObjective )
 			continue;
 
-		const char *pszEscapeTargetName = STRING( pObjective->GetEntityName() );
+		string_t iszEscapeTargetName = pObjective->GetEntityName();
 
 		CBaseEntity* pOtherEntity = NULL;
 		while ( (pOtherEntity = gEntList.FindEntityByClassname( pOtherEntity, "trigger_multiple" )) != NULL )
@@ -183,7 +183,7 @@ void CASW_Spawn_Manager::FindEscapeTriggers()
 				CEventAction *pAction = pOutput->GetFirstAction();
 				while ( pAction )
 				{
-					if ( !Q_stricmp( STRING( pAction->m_iTarget ), pszEscapeTargetName ) )
+					if ( pAction->m_iTarget == iszEscapeTargetName )
 					{
 						bAdded = true;
 						m_EscapeTriggers.AddToTail( pTrigger );
@@ -201,7 +201,7 @@ void CASW_Spawn_Manager::FindEscapeTriggers()
 					CEventAction *pAction = pOutput->GetFirstAction();
 					while ( pAction )
 					{
-						if ( !Q_stricmp( STRING( pAction->m_iTarget ), pszEscapeTargetName ) )
+						if ( pAction->m_iTarget == iszEscapeTargetName )
 						{
 							bAdded = true;
 							m_EscapeTriggers.AddToTail( pTrigger );
@@ -944,7 +944,7 @@ bool CASW_Spawn_Manager::PreSpawnAliens(float flSpawnScale)
 		return false;
 	}
 
-	for (int i = ceil(aAreas.Count() * RandomFloat(0.75f, 1.25f) * asw_skill.GetInt() * flSpawnScale); i > 0; i--)
+	for (int i = ceil(aAreas.Count() * RandomFloat(0.75f, 1.25f) * (4 + asw_skill.GetInt()) / 5.0f * flSpawnScale); i > 0; i--)
 	{
 		const char *szAlienClass = RandomWandererClass();
 
