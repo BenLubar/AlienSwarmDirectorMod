@@ -10,9 +10,11 @@
 #endif
 
 class CASW_Marine;
+class CASW_Director_Control;
+
+static CASW_Director_Control *g_pDirectorControl = NULL;
 
 // Allows the level designer to send and recieve hints with the director
-
 class CASW_Director_Control : public CLogicalEntity
 {
 public:
@@ -26,9 +28,15 @@ public:
 		m_bHordesStartEnabled = false;
 		m_bDirectorControlsSpawners = false;
 		m_flPreSpawnAliens = 0.0f;
-	}
 
-	virtual void Precache();
+		Assert( !g_pDirectorControl );
+		g_pDirectorControl = this;
+	}
+	~CASW_Director_Control()
+	{
+		Assert( g_pDirectorControl == this );
+		g_pDirectorControl = NULL;
+	}
 
 	virtual void OnEscapeRoomStart( CASW_Marine *pMarine );			// marine has entered the escape room with all objectives complete
 
@@ -42,9 +50,15 @@ private:
 	void InputDisableHordes( inputdata_t &inputdata );
 	void InputEnableWanderers( inputdata_t &inputdata );
 	void InputDisableWanderers( inputdata_t &inputdata );
+	void InputForceHorde( inputdata_t &inputdata );
+	void InputForceWanderer( inputdata_t &inputdata );
+	void InputClearIntensity( inputdata_t &inputdata );
 	void InputStartFinale( inputdata_t &inputdata );
 
+	COutputEvent m_OnDirectorSpawnedAlien;
 	COutputEvent m_OnEscapeRoomStart;
+
+	friend class CASW_Spawn_Manager;
 };
 
 #endif // ASW_DIRECTOR_CONTROL_H

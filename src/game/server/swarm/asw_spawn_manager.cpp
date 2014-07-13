@@ -17,6 +17,7 @@
 #include "datacache/imdlcache.h"
 #include "ai_link.h"
 #include "asw_alien.h"
+#include "asw_director_control.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -41,7 +42,7 @@ ConVar asw_wanderer_group_max( "asw_wanderer_group_max", "3", FCVAR_CHEAT, "Maxi
 ConVar asw_wanderer_group_probability( "asw_wanderer_group_probability", "0.7", FCVAR_CHEAT, "Probability of spawning an extra wanderer. Three wanderers is this squared, and so on.", true, 0.0f, true, 1.0f );
 ConVar asw_horde_wanderers( "asw_horde_wanderers", "0.02", FCVAR_CHEAT, "Probability of a wanderer spawning at the same time as a horde alien.", true, 0.0f, true, 1.0f );
 ConVar asw_horde_class( "asw_horde_class", "asw_drone_jumper", FCVAR_CHEAT, "Alien class used when spawning hordes" );
-ConVar asw_prespawn_min_links( "asw_prespawn_min_links", "0", FCVAR_CHEAT );
+ConVar asw_prespawn_min_links( "asw_prespawn_min_links", "20", FCVAR_CHEAT );
 
 CASW_Spawn_Manager::CASW_Spawn_Manager()
 {
@@ -290,13 +291,11 @@ void CASW_Spawn_Manager::Update()
 	}
 }
 
-void CASW_Spawn_Manager::AddAlien()
+void CASW_Spawn_Manager::AddAlien( bool force )
 {
 	// don't stock up more than 10 wanderers at once
-	if ( m_iAliensToSpawn > 10 )
-		return;
-
-	m_iAliensToSpawn++;
+	if ( m_iAliensToSpawn < 10 && force )
+		m_iAliensToSpawn++;
 }
 
 bool CASW_Spawn_Manager::SpawnAlientAtRandomNode()
@@ -378,7 +377,7 @@ bool CASW_Spawn_Manager::SpawnAlientAtRandomNode()
 				break;
 		}
 
-		Vector vecSpawnPos = pNode->GetPosition( nHull ) + Vector( 0, 0, V_stricmp( "asw_buzzer", szAlienClass ) ? 32 : 128 );
+		Vector vecSpawnPos = pNode->GetPosition( nHull ) + Vector( 0, 0, nHull == HULL_TINY_CENTERED ? 32 : 128 );
 		if ( ValidSpawnPoint( vecSpawnPos, vecMins, vecMaxs, true, MARINE_NEAR_DISTANCE ) )
 		{
 			QAngle angle(0, RandomFloat(0, 360), 0);
@@ -585,7 +584,7 @@ bool CASW_Spawn_Manager::FindHordePosition()
 			continue;
 
 		float flDistance = 0;
-		CASW_Marine *pMarine = dynamic_cast<CASW_Marine*>(UTIL_ASW_NearestMarine( pNode->GetPosition( nHull ), flDistance ));
+		CASW_Marine *pMarine = UTIL_ASW_NearestMarine( pNode->GetPosition( nHull ), flDistance );
 		if ( !pMarine )
 		{
 			if ( asw_director_debug.GetBool() )
@@ -596,7 +595,7 @@ bool CASW_Spawn_Manager::FindHordePosition()
 		}
 
 		// check if there's a route from this node to the marine(s)
-		AI_Waypoint_t *pRoute = ASWPathUtils()->BuildRoute( pNode->GetPosition( nHull ), pMarine->GetAbsOrigin(), (Hull_t) nHull, NULL, 100 );
+		AI_Waypoint_t *pRoute = ASWPathUtils()->BuildRoute( pNode->GetPosition( nHull ), pMarine->GetAbsOrigin(), nHull, NULL, 100 );
 		if ( !pRoute )
 		{
 			if ( asw_director_debug.GetInt() >= 2 )
@@ -806,7 +805,7 @@ CBaseEntity* CASW_Spawn_Manager::SpawnAlienAt(const char* szAlienClass, const Ve
 	UTIL_DropToFloor( pEntity, MASK_SOLID );
 
 	IASW_Spawnable_NPC* pSpawnable = dynamic_cast<IASW_Spawnable_NPC*>( pEntity );
-	ASSERT( pSpawnable );
+	Assert( pSpawnable );
 	if ( !pSpawnable )
 	{
 		Warning("NULL Spawnable Ent in CASW_Spawn_Manager::SpawnAlienAt! AlienClass = %s\n", szAlienClass);
@@ -814,8 +813,8 @@ CBaseEntity* CASW_Spawn_Manager::SpawnAlienAt(const char* szAlienClass, const Ve
 		return NULL;
 	}
 
-	// have drones unburrow by default, so we don't worry so much about them spawning onscreen
-	//if ( !Q_strcmp( szAlienClass, "asw_drone" ) )
+	// have drones and rangers unburrow by default, so we don't worry so much about them spawning onscreen
+	if ( pSpawnable->GetNPC() && pSpawnable->GetNPC()->GetHullType() == HULL_MEDIUMBIG )
 	{			
 		pSpawnable->StartBurrowed();
 		pSpawnable->SetUnburrowIdleActivity( NULL_STRING );
@@ -827,6 +826,11 @@ CBaseEntity* CASW_Spawn_Manager::SpawnAlienAt(const char* szAlienClass, const Ve
 
 	// give our aliens the orders
 	pSpawnable->SetAlienOrders(AOT_MoveToNearestMarine, vec3_origin, NULL);
+
+	if ( g_pDirectorControl )
+	{
+		g_pDirectorControl->m_OnDirectorSpawnedAlien.FireOutput( pEntity, g_pDirectorControl );
+	}
 
 	return pEntity;
 }

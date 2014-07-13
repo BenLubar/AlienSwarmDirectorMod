@@ -49,7 +49,7 @@ public:
 	void LevelInitPostEntity();
 	void Update();
 	bool AddHorde( int iHordeSize );			// creates a large pack of aliens somewhere near the marines
-	void AddAlien();							// creates a single alien somewhere near the marines
+	void AddAlien( bool force = false );		// creates a single alien somewhere near the marines
 
 	int SpawnAlienBatch( const char *szAlienClass, int iNumAliens, const Vector &vecPosition, const QAngle &angle, float flMarinesBeyondDist = 0 );	
 	CBaseEntity* SpawnAlienAt(const char* szAlienClass, const Vector& vecPos, const QAngle &angle);

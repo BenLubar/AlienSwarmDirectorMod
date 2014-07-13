@@ -10,6 +10,8 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
+extern ConVar asw_director_debug;
+
 class CASW_Path_Utils_NPC : public CAI_BaseNPC
 {
 public:
@@ -72,6 +74,11 @@ AI_Waypoint_t *CASW_Path_Utils::BuildRoute( const Vector &vStart, const Vector &
 	GetPathfinderNPC()->SetHullSizeNormal();
 
 	m_pLastRoute = GetPathfinderNPC()->GetPathfinder()->BuildRoute( vStart, vEnd, pTarget, goalTolerance, curNavType, nBuildFlags );
+
+	if ( m_pLastRoute && asw_director_debug.GetInt() >= 4 )
+	{
+		DebugDrawRoute( vStart, m_pLastRoute );
+	}
 
 	return m_pLastRoute;
 }

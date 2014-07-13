@@ -6461,9 +6461,13 @@
 	input DisableHordes(void) : "Disable random horde spawning."
 	input EnableWanderers(void) : "Enable random wandering aliens."
 	input DisableWanderers(void) : "Disable random wandering aliens."
+	input ForceWanderer(void) : "Forces the director to spawn a wanderer."
+	input ForceHorde(integer) : "Forces the director to spawn a horde of the given size. Cancels the current horde if there is one queued."
+	input ClearIntensity(void) : "Reset the intensity of all marines to allow spawning to resume immediately."
 	input StartFinale(void) : "Enables wanderers, hordes and sends director into crazy spawning mode."
 	
 	output OnEscapeRoomStart(void) : "Fired when marine enters the escape room with all objectives (except for escape) complete.  NOTE: If you rely on this output, you must ship the .layout file along with your map."
+	output OnDirectorSpawnedAlien(void) : "Fired when the director spawns an alien. !activator is the alien that was spawned."
 ]
 
 @NPCClass base(BaseNPC) studio("models/swarm/marine/marine.mdl") sphere() = asw_marine :

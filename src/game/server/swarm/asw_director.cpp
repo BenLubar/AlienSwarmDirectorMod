@@ -566,11 +566,9 @@ void CASW_Director::UpdateMarineInsideEscapeRoom( CASW_Marine *pMarine )
 		return;
 
 	// Tell all director controls to send an output
-	CBaseEntity* pEntity = NULL;
-	while ( ( pEntity = gEntList.FindEntityByClassname( pEntity, "asw_director_control" ) ) != NULL )
+	if ( g_pDirectorControl )
 	{
-		CASW_Director_Control* pControl = static_cast<CASW_Director_Control*>( pEntity );
-		pControl->OnEscapeRoomStart( pMarine );
+		g_pDirectorControl->OnEscapeRoomStart( pMarine );
 	}
 
 	m_bFiredEscapeRoom = true;
