@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "24"
+	"mapversion" "25"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "24"
+	"mapversion" "25"
 	"classname" "worldspawn"
 	"comment" "Decompiled by BSPSource v1.3.11 from ocs_2"
 	"detailmaterial" "detail/detailsprites"
@@ -55243,34 +55243,6 @@ entity
 }
 entity
 {
-	"id" "644"
-	"classname" "light"
-	"_constant_attn" "0"
-	"_distance" "0"
-	"_fifty_percent_distance" "185"
-	"_hardfalloff" "0"
-	"_light" "108 96 68 50"
-	"_lightHDR" "-1 -1 -1 1"
-	"_lightscaleHDR" "0.7"
-	"_linear_attn" "0"
-	"_quadratic_attn" "1"
-	"_zero_percent_distance" "339"
-	"angles" "0 0 0"
-	"pitch" "0"
-	"spawnflags" "0"
-	"style" "0"
-	"SunSpreadAngle" "0"
-	"origin" "-4701 -3520 368"
-	editor
-	{
-		"color" "220 30 220"
-		"visgroupshown" "1"
-		"visgroupautoshown" "1"
-		"logicalpos" "[4000 13000]"
-	}
-}
-entity
-{
 	"id" "645"
 	"classname" "infodecal"
 	"angles" "0 0 0"
@@ -60681,10 +60653,10 @@ entity
 {
 	"id" "4900"
 	"classname" "info_overlay"
-	"BasisNormal" "1.0 0.0 0.0"
-	"BasisOrigin" "-1504.0 -188.0 332.154"
-	"BasisU" "0.0 1.0 0.0"
-	"BasisV" "0.0 0.0 1.0"
+	"BasisNormal" "1 0 0"
+	"BasisOrigin" "-1504 -188 332.154"
+	"BasisU" "0 1 0"
+	"BasisV" "0 0 1"
 	"EndU" "1.0"
 	"EndV" "0.0"
 	"fademaxdist" "0.0"
@@ -60783,10 +60755,10 @@ entity
 {
 	"id" "4903"
 	"classname" "info_overlay"
-	"BasisNormal" "0.0 0.0 1.0"
-	"BasisOrigin" "3706.0 -516.0 -40.0001"
-	"BasisU" "0.891006 -0.45399 0.0"
-	"BasisV" "0.45399034 0.89100665 -0.0"
+	"BasisNormal" "0 0 1"
+	"BasisOrigin" "3706 -516 -40.0001"
+	"BasisU" "0.891006 -0.45399 0"
+	"BasisV" "0.45399 0.891007 -0"
 	"EndU" "1.0"
 	"EndV" "0.0"
 	"fademaxdist" "0.0"
@@ -60817,10 +60789,10 @@ entity
 {
 	"id" "4904"
 	"classname" "info_overlay"
-	"BasisNormal" "-1.0 0.0 0.0"
-	"BasisOrigin" "4224.0 -160.0 13.0"
-	"BasisU" "0.0 1.0 0.0"
-	"BasisV" "0.0 0.0 -1.0"
+	"BasisNormal" "-1 0 0"
+	"BasisOrigin" "4224 -160 13"
+	"BasisU" "0 1 0"
+	"BasisV" "0 0 -1"
 	"EndU" "0.0"
 	"EndV" "1.0"
 	"fademaxdist" "0.0"
@@ -60851,10 +60823,10 @@ entity
 {
 	"id" "4905"
 	"classname" "info_overlay"
-	"BasisNormal" "0.0 0.0 1.0"
-	"BasisOrigin" "4180.0 -162.0 -24.0"
-	"BasisU" "-0.999962 -0.00872664 0.0"
-	"BasisV" "0.00872664 -0.999962 0.0"
+	"BasisNormal" "0 0 1"
+	"BasisOrigin" "4180 -162 -24"
+	"BasisU" "-0.999962 -0.00872664 0"
+	"BasisV" "0.00872664 -0.999962 0"
 	"EndU" "1.0"
 	"EndV" "0.0"
 	"fademaxdist" "0.0"
@@ -60885,10 +60857,10 @@ entity
 {
 	"id" "4906"
 	"classname" "info_overlay"
-	"BasisNormal" "-0.0 0.0 1.0"
-	"BasisOrigin" "1980.0 1036.0 256.0"
-	"BasisU" "1.0 0.0 0.0"
-	"BasisV" "0.0 1.0 -0.0"
+	"BasisNormal" "-0 0 1"
+	"BasisOrigin" "1980 1036 256"
+	"BasisU" "1 0 0"
+	"BasisV" "0 1 -0"
 	"EndU" "1.0"
 	"EndV" "0.0"
 	"fademaxdist" "0.0"
@@ -60919,10 +60891,10 @@ entity
 {
 	"id" "4907"
 	"classname" "info_overlay"
-	"BasisNormal" "-1.0 0.0 0.0"
-	"BasisOrigin" "1728.0 990.13 335.497"
-	"BasisU" "0.0 1.0 0.0"
-	"BasisV" "0.0 0.0 -1.0"
+	"BasisNormal" "-1 0 0"
+	"BasisOrigin" "1728 990.13 335.497"
+	"BasisU" "0 1 0"
+	"BasisV" "0 0 -1"
 	"EndU" "0.0"
 	"EndV" "1.0"
 	"fademaxdist" "0.0"
@@ -60953,10 +60925,10 @@ entity
 {
 	"id" "4908"
 	"classname" "info_overlay"
-	"BasisNormal" "0.0 0.0 1.0"
-	"BasisOrigin" "-3594.0 -2938.0 184.0"
-	"BasisU" "-0.156434 -0.987688 0.0"
-	"BasisV" "0.9876884 -0.15643406 0.0"
+	"BasisNormal" "0 0 1"
+	"BasisOrigin" "-3594 -2938 184"
+	"BasisU" "-0.156434 -0.987688 0"
+	"BasisV" "0.987688 -0.156434 0"
 	"EndU" "1.0"
 	"EndV" "0.0"
 	"fademaxdist" "0.0"
@@ -60987,10 +60959,10 @@ entity
 {
 	"id" "4909"
 	"classname" "info_overlay"
-	"BasisNormal" "0.0 -1.0 0.0"
-	"BasisOrigin" "-2664.47 -1280.0 307.372"
-	"BasisU" "1.0 0.0 0.0"
-	"BasisV" "-0.0 0.0 1.0"
+	"BasisNormal" "0 -1 0"
+	"BasisOrigin" "-2664.47 -1280 307.372"
+	"BasisU" "1 0 0"
+	"BasisV" "-0 0 1"
 	"EndU" "1.0"
 	"EndV" "0.0"
 	"fademaxdist" "0.0"
@@ -61021,10 +60993,10 @@ entity
 {
 	"id" "4910"
 	"classname" "info_overlay"
-	"BasisNormal" "0.0 -1.0 0.0"
-	"BasisOrigin" "-2155.13 -1280.0 306.621"
-	"BasisU" "1.0 0.0 0.0"
-	"BasisV" "-0.0 0.0 1.0"
+	"BasisNormal" "0 -1 0"
+	"BasisOrigin" "-2155.13 -1280 306.621"
+	"BasisU" "1 0 0"
+	"BasisV" "-0 0 1"
 	"EndU" "1.0"
 	"EndV" "0.0"
 	"fademaxdist" "0.0"
@@ -61055,10 +61027,10 @@ entity
 {
 	"id" "4911"
 	"classname" "info_overlay"
-	"BasisNormal" "0.0 0.0 1.0"
-	"BasisOrigin" "-2424.0 -1328.0 184.0"
-	"BasisU" "1.0 0.0 0.0"
-	"BasisV" "0.0 1.0 0.0"
+	"BasisNormal" "0 0 1"
+	"BasisOrigin" "-2424 -1328 184"
+	"BasisU" "1 0 0"
+	"BasisV" "0 1 0"
 	"EndU" "1.0"
 	"EndV" "0.0"
 	"fademaxdist" "0.0"
@@ -61089,10 +61061,10 @@ entity
 {
 	"id" "4913"
 	"classname" "info_overlay"
-	"BasisNormal" "-0.0 0.0 1.0"
-	"BasisOrigin" "-3460.0 -2432.0 184.0"
-	"BasisU" "1.0 0.0 0.0"
-	"BasisV" "0.0 1.0 -0.0"
+	"BasisNormal" "-0 0 1"
+	"BasisOrigin" "-3460 -2432 184"
+	"BasisU" "1 0 0"
+	"BasisV" "0 1 -0"
 	"EndU" "1.0"
 	"EndV" "0.0"
 	"fademaxdist" "0.0"
@@ -61123,10 +61095,10 @@ entity
 {
 	"id" "4914"
 	"classname" "info_overlay"
-	"BasisNormal" "0.0 -1.0 0.0"
-	"BasisOrigin" "-2556.0 -2096.0 244.0"
-	"BasisU" "1.0 0.0 0.0"
-	"BasisV" "-0.0 0.0 1.0"
+	"BasisNormal" "0 -1 0"
+	"BasisOrigin" "-2556 -2096 244"
+	"BasisU" "1 0 0"
+	"BasisV" "-0 0 1"
 	"EndU" "1.0"
 	"EndV" "0.0"
 	"fademaxdist" "0.0"
@@ -61157,10 +61129,10 @@ entity
 {
 	"id" "4915"
 	"classname" "info_overlay"
-	"BasisNormal" "0.0 0.0 1.0"
-	"BasisOrigin" "-2544.0 -2112.0 184.0"
-	"BasisU" "1.0 0.0 0.0"
-	"BasisV" "0.0 1.0 0.0"
+	"BasisNormal" "0 0 1"
+	"BasisOrigin" "-2544 -2112 184"
+	"BasisU" "1 0 0"
+	"BasisV" "0 1 0"
 	"EndU" "1.0"
 	"EndV" "0.0"
 	"fademaxdist" "0.0"
@@ -81465,13 +81437,41 @@ entity
 		"logicalpos" "[0 -11768]"
 	}
 }
+entity
+{
+	"id" "17679"
+	"classname" "light"
+	"_constant_attn" "0"
+	"_distance" "0"
+	"_fifty_percent_distance" "300"
+	"_hardfalloff" "0"
+	"_light" "211 182 114 50"
+	"_lightHDR" "-1 -1 -1 1"
+	"_lightscaleHDR" "0.7"
+	"_linear_attn" "0"
+	"_quadratic_attn" "1"
+	"_zero_percent_distance" "720"
+	"angles" "0 0 0"
+	"pitch" "0"
+	"spawnflags" "0"
+	"style" "0"
+	"SunSpreadAngle" "0"
+	"origin" "-4704 -3520 352"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[3000 -2268]"
+	}
+}
 cameras
 {
 	"activecamera" "0"
 	camera
 	{
-		"position" "[-3411.88 -2305.6 381.363]"
-		"look" "[-3511.46 -2060.84 347.559]"
+		"position" "[-4541.12 -3519.91 371.947]"
+		"look" "[-4806.17 -3509.47 347.295]"
 	}
 	camera
 	{

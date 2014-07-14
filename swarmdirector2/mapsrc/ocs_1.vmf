@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "84"
+	"mapversion" "85"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "84"
+	"mapversion" "85"
 	"classname" "worldspawn"
 	"comment" "Decompiled by BSPSource v1.3.11 from ocs_1"
 	"detailmaterial" "detail/detailsprites"
@@ -54049,7 +54049,7 @@ entity
 	"mingpulevel" "0"
 	"model" "models/props/pipes/pipeset_32/pipe_straight_128.mdl"
 	"renderamt" "255"
-	"rendercolor" "255 255 255"
+	"rendercolor" "128 79 49"
 	"skin" "0"
 	"solid" "6"
 	"origin" "2976 3904 -416"
@@ -58722,8 +58722,8 @@ cameras
 	"activecamera" "0"
 	camera
 	{
-		"position" "[45.3226 -3503.5 -266.466]"
-		"look" "[-61.3558 -3735.24 -343.197]"
+		"position" "[2392.51 3713.92 -274.177]"
+		"look" "[2315.81 3968.38 -255.777]"
 	}
 	camera
 	{
