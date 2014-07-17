@@ -69,11 +69,6 @@ void CASW_Marine_Hint_Manager::LevelInitPreEntity()
 	Reset();
 }
 
-void CASW_Marine_Hint_Manager::LevelInitPostEntity()
-{
-
-}
-
 void CASW_Marine_Hint_Manager::LevelShutdownPostEntity()
 {
 	Reset();
@@ -82,6 +77,7 @@ void CASW_Marine_Hint_Manager::LevelShutdownPostEntity()
 void CASW_Marine_Hint_Manager::Reset()
 {
 	m_Hints.PurgeAndDeleteElements();
+	m_LastResortHints.PurgeAndDeleteElements();
 }
 
 int CASW_Marine_Hint_Manager::FindHints( const Vector &position, const float flMinDistance, const float flMaxDistance, CUtlVector<HintData_t *> *pResult )
@@ -100,12 +96,12 @@ int CASW_Marine_Hint_Manager::FindHints( const Vector &position, const float flM
 	return pResult->Count();
 }
 
-void CASW_Marine_Hint_Manager::AddHint( CBaseEntity *pEnt )
+void CASW_Marine_Hint_Manager::AddHint( CBaseEntity *pEnt, bool bLastResort )
 {
 	HintData_t *pHintData = new HintData_t;
 	pHintData->m_vecPosition = pEnt->GetAbsOrigin();
 	pHintData->m_flYaw = pEnt->GetAbsAngles()[ YAW ];
-	pHintData->m_nHintIndex = m_Hints.AddToTail( pHintData );
+	pHintData->m_nHintIndex = (bLastResort ? m_LastResortHints : m_Hints).AddToTail(pHintData);
 }
 
 CON_COMMAND( asw_show_marine_hints, "Show hint manager spots" )

@@ -17,6 +17,7 @@
 #include "ai_hint.h"
 #include "ai_initutils.h"
 #include "ai_networkmanager.h"
+#include "asw_marine_hint.h"
 
 // to help eliminate node clutter by level designers, this is used to cap how many other nodes
 // any given node is allowed to 'see' in the first stage of graph creation "LinkVisibleNodes()".
@@ -234,6 +235,18 @@ int CNodeEnt::Spawn( const char *pMapData )
 			m_NodeData.nNodeID = m_nNodeCount;
 			pHint = CAI_HintManager::CreateHint( &m_NodeData, pMapData );
 			pHint->AddSpawnFlags( GetSpawnFlags() );
+		}
+	}
+
+	// ---------------------------------------------------------------------------------
+	// Add info_node as marine hints for maps that forgot to add marine hinting.
+	// ---------------------------------------------------------------------------------
+	if ( ClassMatches( "info_node" ) )
+	{
+		Assert( MarineHintManager() );
+		if ( MarineHintManager() )
+		{
+			MarineHintManager()->AddHint( this, true );
 		}
 	}
 
