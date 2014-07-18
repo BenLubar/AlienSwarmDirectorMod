@@ -173,8 +173,10 @@ BEGIN_NETWORK_TABLE( CASW_Marine, DT_ASW_Marine )
 	RecvPropBool	( RECVINFO( m_bFaceMeleeYaw ) ),
 	RecvPropFloat	( RECVINFO( m_flPreventLaserSightTime ) ),
 	RecvPropBool	( RECVINFO( m_bAICrouch ) ),
-	
 	RecvPropInt		( RECVINFO( m_iJumpJetting ) ),	
+
+	RecvPropBool(RECVINFO(m_bForceWalking)),
+
 END_RECV_TABLE()
 
 BEGIN_PREDICTION_DATA( C_ASW_Marine )

@@ -39,6 +39,10 @@
 #include "hl2_player.h"
 #endif
 
+#ifdef INFESTED_DLL
+#include "asw_marine.h"
+#endif
+
 
 
 // memdbgon must be the last include file in a .cpp file!!!
@@ -4403,10 +4407,24 @@ void CTriggerPlayerMovement::Spawn( void )
 }
 
 
+
 // UNDONE: This will not support a player touching more than one of these
 // UNDONE: Do we care?  If so, ref count automovement in the player?
 void CTriggerPlayerMovement::StartTouch( CBaseEntity *pOther )
-{	
+{
+#ifdef INFESTED_DLL
+	CASW_Marine *pMarine = CASW_Marine::AsMarine( pOther );
+	if ( pMarine )
+	{
+		if ( HasSpawnFlags( SF_TRIGGER_AUTO_DUCK ) )
+		{
+			pMarine->m_bForceWalking = true;
+		}
+
+		return;
+	}
+#endif
+
 	if (!PassesTriggerFilters(pOther))
 		return;
 
@@ -4429,6 +4447,19 @@ void CTriggerPlayerMovement::StartTouch( CBaseEntity *pOther )
 
 void CTriggerPlayerMovement::EndTouch( CBaseEntity *pOther )
 {
+#ifdef INFESTED_DLL
+	CASW_Marine *pMarine = CASW_Marine::AsMarine( pOther );
+	if ( pMarine )
+	{
+		if ( HasSpawnFlags( SF_TRIGGER_AUTO_DUCK ) )
+		{
+			pMarine->m_bForceWalking = false;
+		}
+
+		return;
+	}
+#endif
+
 	if (!PassesTriggerFilters(pOther))
 		return;
 

@@ -1043,9 +1043,7 @@ Activity CASWPlayerAnimState::CalcMainActivity()
 		{
 			if ( flOuterSpeed > 0.1f )
 			{
-				if ( flOuterSpeed <= ASW_WALK_POINT 
-					//&& ( pMarine->m_bWalking.Get() ) //|| IsAnimatingReload() || pMarine->IsFiring() )
-					)
+				if ( flOuterSpeed <= ASW_WALK_POINT )
 				{
 					idealActivity = ACT_WALK;	
 				}
@@ -1091,7 +1089,7 @@ Activity CASWPlayerAnimState::CalcMainActivity()
 					idealActivity = ACT_CROUCHIDLE;
 #endif
 				}
-				else if ( pMarine->m_bWalking.Get() || ( !pMarine->IsInhabited() && pMarine->m_bAICrouch.Get() ) )
+				else if ( pMarine->m_bWalking.Get() || pMarine->m_bForceWalking.Get() || ( !pMarine->IsInhabited() && pMarine->m_bAICrouch.Get() ) )
 				{
 					idealActivity = ACT_CROUCHIDLE;
 				}

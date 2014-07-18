@@ -307,12 +307,18 @@ float CASW_Marine::MaxSpeed()
 	// it's a quadratic interpolation from 110% speed to 175% speed mapped
 	// to a distance of 20 units to 1800 units
 	CBaseEntity *pSquadLeader = GetSquadLeader();
-	if (!IsInhabited() && pSquadLeader )
+	if (!IsInhabited() && pSquadLeader)
 	{
 		float distSq = GetAbsOrigin().DistToSqr(pSquadLeader->GetAbsOrigin());
 		float t = (distSq - (20*20)) / (1800*1800);
 		float q = ( 1.750f - 1.100f ) * t + 1.100f;
 		speedscale *= clamp<float>( q, 1.000f, 1.750f );
+	}
+
+	// bots don't use the input code, so we scale their movement speed here.
+	if ( !IsInhabited() && ( m_bWalking || m_bForceWalking ) )
+	{
+		return 180.0f;
 	}
 
 	// here's where we account for increased speed via powerup
@@ -321,7 +327,7 @@ float CASW_Marine::MaxSpeed()
 
 	// speed up as time slows down
 	float flTimeDifference = 0.0f;
-	
+
 	if ( gpGlobals->curtime > ASWGameRules()->GetStimEndTime() )
 	{
 		flTimeDifference = 1.0f - MAX( asw_stim_time_scale.GetFloat(), GameTimescale()->GetCurrentTimescale() );
@@ -331,7 +337,7 @@ float CASW_Marine::MaxSpeed()
 	{
 		speedscale *= 1.0f + flTimeDifference * 0.75f;
 	}
-	
+
 	return speed * speedscale;
 }
 

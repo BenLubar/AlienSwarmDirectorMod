@@ -233,7 +233,9 @@ IMPLEMENT_SERVERCLASS_ST(CASW_Marine, DT_ASW_Marine)
 	SendPropFloat	( SENDINFO( m_flPreventLaserSightTime ) ),
 	SendPropBool	( SENDINFO( m_bAICrouch ) ),
 	SendPropInt		( SENDINFO( m_iJumpJetting )),
-	
+
+	SendPropBool(SENDINFO(m_bForceWalking)),
+
 END_SEND_TABLE()
 
 //---------------------------------------------------------

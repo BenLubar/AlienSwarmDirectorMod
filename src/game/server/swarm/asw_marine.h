@@ -176,6 +176,7 @@ public:
 	bool TeleportStuckMarine();
 	bool TeleportToFreeNode();
 	CNetworkVar( bool, m_bWalking );
+	CNetworkVar( bool, m_bForceWalking );
 
 	CASW_Lag_Compensation m_LagCompensation;
 
