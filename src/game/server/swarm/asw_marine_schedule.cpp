@@ -728,13 +728,11 @@ void CASW_Marine::TaskFail( AI_TaskFailureCode_t code )
 				return;
 			}
 			CBaseEntity *pEnt = gEntList.FindEntityByClassnameNearest("prop_physics", GetAbsOrigin(), 128);
-			if (!pEnt || pEnt->m_takedamage != DAMAGE_YES || pEnt->GetHealth() <= 0)
+			if (!pEnt || pEnt->m_takedamage != DAMAGE_YES || pEnt->GetHealth() <= 0 || pEnt->GetCollisionGroup() == COLLISION_GROUP_DEBRIS)
 				pEnt = gEntList.FindEntityByClassnameNearest("prop_physics_override", GetAbsOrigin(), 128);
-			if (!pEnt || pEnt->m_takedamage != DAMAGE_YES || pEnt->GetHealth() <= 0)
-				pEnt = gEntList.FindEntityByClassnameNearest("physics_prop", GetAbsOrigin(), 128);
-			if (!pEnt || pEnt->m_takedamage != DAMAGE_YES || pEnt->GetHealth() <= 0)
-				pEnt = gEntList.FindEntityByClassnameNearest("asw_prop_physics", GetAbsOrigin(), 128);
-			if (pEnt && pEnt->m_takedamage == DAMAGE_YES && pEnt->GetHealth() > 0)
+			if (!pEnt || pEnt->m_takedamage != DAMAGE_YES || pEnt->GetHealth() <= 0 || pEnt->GetCollisionGroup() == COLLISION_GROUP_DEBRIS)
+				pEnt = gEntList.FindEntityByClassnameNearest("func_physbox", GetAbsOrigin(), 128);
+			if (pEnt && pEnt->m_takedamage == DAMAGE_YES && pEnt->GetHealth() > 0 && pEnt->GetCollisionGroup() != COLLISION_GROUP_DEBRIS)
 				SetPhysicsPropTarget(pEnt);
 		}
 

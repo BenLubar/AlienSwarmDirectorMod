@@ -156,7 +156,7 @@ void CASW_Alien_Shover::Activate( void )
 			continue;
 
 		// We can only throw a few types of things
-		if ( !FClassnameIs( pObject, "prop_physics" ) && !FClassnameIs( pObject, "func_physbox" ) )
+		if ( !FClassnameIs( pObject, "prop_physics" ) && !FClassnameIs( pObject, "prop_physics_override" ) && !FClassnameIs( pObject, "func_physbox" ) )
 			continue;
 
 		// Ensure it's mass is within range
@@ -238,7 +238,7 @@ int CASW_Alien_Shover::SelectSchedule( void )
 	{
 		CBaseEntity *pBlocker = GetEnemyOccluder();
 
-		if ( ( pBlocker != NULL ) && FClassnameIs( pBlocker, "prop_physics" ) )
+		if ( ( pBlocker != NULL ) && ( FClassnameIs( pBlocker, "prop_physics" ) || FClassnameIs( pBlocker, "func_physbox" ) ) )
 		{
 			m_hPhysicsTarget = pBlocker;
 			//Msg("Alien shoving physics object from selectschedule as enemy is occluded\n");
