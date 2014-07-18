@@ -5462,6 +5462,8 @@
 		1 : "Yes"
 	]
 
+	LightingOrigin(target_destination) : "Lighting origin" : : "Use the position of this entity as the origin for lighting."
+
 	spawnflags(flags) =
 	[
 		1 : "Starts Open" : 0
@@ -5642,7 +5644,7 @@
 	StocksSeed(string) : "Stocks Seed" : "" : "Number used to seed the stocks data shown at this computer.  Computers with the same Stock Seed will show the same stock values."
 	WeatherSeed(string) : "Weather Seed" : "" : "Number used to seed the weather data shown at this computer.  Computers with the same Weather Seed will show the same weather values."
 	PlantFile(string) : "Plant Status" : "" : "Put in any text here to make the computer show the reactor status (special option for use only in Rydberg).  Leave blank to not have this option in the computer."
-	DownloadObjectiveName(string) : "Download Objective Name" : "" : "Name of the objective to trigger as complete when a marine downloads the documents from this computer."		
+	DownloadObjectiveName(target_destination) : "Download Objective Name" : "" : "Name of the objective to trigger as complete when a marine downloads the documents from this computer."		
 	HackDifficulty(integer) : "Num Tumblers" : 5 : "How many columns are in the hack puzzle for this computer (from 3 to 8)."	
 	EntriesPerTumbler(integer) : "Entries per tumbler" : 5 : "How many numbers are in each column of the hack puzzle (from 5 to 9)."	
 	TumblerMoveInterval(float) : "Move interval" : "0.5" : "How long each column pauses for before shifting to a new number (from 0.3 to 2.0 seconds)."
