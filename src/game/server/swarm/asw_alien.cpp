@@ -2182,7 +2182,7 @@ void CASW_Alien::Event_Killed( const CTakeDamageInfo &info )
 		}
 	}
 
-	if (!ShouldGib(info))
+	if ( !ShouldGib( info ) && !m_bNeverRagdoll )
 	{
 		const unsigned int nDamageTypesThatCauseHurling = DMG_BLAST | DMG_BLAST_SURFACE;
 		SetCollisionGroup(ASW_COLLISION_GROUP_PASSABLE);	// don't block marines by dead bodies
