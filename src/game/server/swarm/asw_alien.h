@@ -231,9 +231,11 @@ public:
 		m_bFreezable = bFreezable;
 		m_bTeslable = bTeslable;
 
-		SetModelScale(flSizeScale);
+		RescaleCustomSettings();
+		SetModelScale(m_flSizeScale);
 		SetHealthByDifficultyLevel();
 	}
+	virtual void RescaleCustomSettings() {}
 	float m_flHealthScale;
 	float m_flSpeedScale;
 	float m_flSizeScale;

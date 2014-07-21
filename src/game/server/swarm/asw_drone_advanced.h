@@ -120,6 +120,7 @@ public:
 	virtual int DrawDebugTextOverlays();
 
 	virtual void SetHealthByDifficultyLevel();
+	virtual void RescaleCustomSettings();
 
 	static float s_fNextTooCloseChatterTime;
 
@@ -139,6 +140,8 @@ private:
 	CHandle< CASW_Door > m_hBlockingDoor;
 	float				 m_flDoorBashYaw;
 	bool				m_bJumper;	// can this drone jump?
+	EHANDLE m_hMutationHelper;
+	bool m_bAllowSummonRoar;
 	
 	CSimTimer 		 m_DurationDoorBash;
 	bool m_bDoneAlienCloseChatter;	// has this alien made a marine shout out in fear yet?

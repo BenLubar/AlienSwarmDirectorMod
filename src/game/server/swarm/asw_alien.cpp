@@ -242,6 +242,7 @@ void CASW_Alien::Spawn()
 	Precache();
 	SetModel( m_pszAlienModelName );
 
+	CustomSettings(1.0f, 1.0f, 1.0f, true, true, true);
 	SetHullSizeNormal();
 
 	// Base spawn.

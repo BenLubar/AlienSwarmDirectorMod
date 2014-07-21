@@ -32,6 +32,10 @@
 #include "asw_weapon.h"
 #include "asw_marine_speech.h"
 #include "ammodef.h"
+#include "asw_dynamic_light.h"
+#include "asw_prop_dynamic.h"
+#include "asw_parasite.h"
+#include "asw_spawn_manager.h"
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
@@ -133,14 +137,24 @@ CASW_Drone_Advanced::CASW_Drone_Advanced( void )
 	m_nAlienCollisionGroup = ASW_COLLISION_GROUP_ALIEN;
 	m_iDeadBodyGroup = 2;
 	//m_debugOverlays |= (OVERLAY_TEXT_BIT | OVERLAY_BBOX_BIT); 
+
+	m_bAllowSummonRoar = false;
+	m_hMutationHelper = NULL;
 }
 
 CASW_Drone_Advanced::~CASW_Drone_Advanced()
 {
+	CBaseEntity *pMutationHelper = m_hMutationHelper;
+	if (pMutationHelper)
+		UTIL_Remove(pMutationHelper);
 }
 
 LINK_ENTITY_TO_CLASS( asw_drone, CASW_Drone_Advanced );
 LINK_ENTITY_TO_CLASS( asw_drone_jumper, CASW_Drone_Advanced );
+LINK_ENTITY_TO_CLASS( asw_drone_redgiant, CASW_Drone_Advanced );
+LINK_ENTITY_TO_CLASS( asw_drone_ghost, CASW_Drone_Advanced );
+LINK_ENTITY_TO_CLASS( asw_drone_carrier, CASW_Drone_Advanced );
+LINK_ENTITY_TO_CLASS( asw_drone_summoner, CASW_Drone_Advanced );
 
 BEGIN_DATADESC( CASW_Drone_Advanced )
 	DEFINE_FIELD( m_hBlockingDoor, FIELD_EHANDLE ),
@@ -161,6 +175,8 @@ BEGIN_DATADESC( CASW_Drone_Advanced )
 	DEFINE_FIELD( m_bDoneAlienCloseChatter, FIELD_BOOLEAN ),
 	DEFINE_FIELD( m_vecEnemyStandoffPosition, FIELD_VECTOR ),
 	DEFINE_FIELD( m_bHasAttacked, FIELD_BOOLEAN ),
+	DEFINE_FIELD( m_hMutationHelper, FIELD_EHANDLE ),
+	DEFINE_FIELD( m_bAllowSummonRoar, FIELD_BOOLEAN ),
 END_DATADESC()
 
 IMPLEMENT_SERVERCLASS_ST( CASW_Drone_Advanced, DT_ASW_Drone_Advanced )
@@ -204,7 +220,8 @@ void CASW_Drone_Advanced::Spawn( void )
 			SetBodygroup ( 5, RandomInt (0, 1 ) );
 		}
 	}
-	if (FClassnameIs(this, "asw_drone_jumper"))
+
+	if (ClassMatches("asw_drone_jumper"))
 	{
 		m_bJumper = true;
 	}
@@ -213,6 +230,49 @@ void CASW_Drone_Advanced::Spawn( void )
 		m_bJumper = false;
 		m_bDisableJump = true;
 		CapabilitiesRemove( bits_CAP_MOVE_JUMP );
+
+		if (ClassMatches("asw_drone_redgiant"))
+		{
+			SetRenderColor(255, 0, 0);
+		}
+		else if (ClassMatches("asw_drone_ghost"))
+		{
+			SetRenderMode(kRenderGlow);
+			SetRenderAlpha(25);
+		}
+		else if (ClassMatches("asw_drone_carrier"))
+		{
+			CASW_Prop_Dynamic* pParasite = assert_cast<CASW_Prop_Dynamic *>(CreateEntityByName("prop_dynamic"));
+			if (pParasite)
+			{
+				pParasite->KeyValue("DefaultAnim", "idle");
+				pParasite->SetModel("models/aliens/parasite/parasite.mdl");
+				pParasite->Spawn();
+				pParasite->SetSolid(SOLID_NONE);
+				pParasite->SetCollisionGroup(COLLISION_GROUP_DEBRIS);
+				pParasite->SetParent(this, LookupAttachment("blood_spray"));
+				pParasite->SetLocalAngles(QAngle(0, 90, 0));
+				pParasite->SetLocalOrigin(vec3_origin);
+				m_hMutationHelper = pParasite;
+			}
+			SetRenderColor(250, 103, 5);
+		}
+		else if (ClassMatches("asw_drone_summoner"))
+		{
+			SetRenderColor(130, 238, 40);
+			CASW_Dynamic_Light* pGlow = assert_cast<CASW_Dynamic_Light *>(CreateEntityByName("asw_dynamic_light"));
+			if (pGlow)
+			{
+				pGlow->Spawn();
+				pGlow->SetParent(this, LookupAttachment("eyes"));
+				pGlow->SetLightRadius(256.0f);
+				pGlow->SetExponent(3);
+				pGlow->SetRenderColor(255, 255, 255);
+				m_hMutationHelper = pGlow;
+			}
+			
+			m_bAllowSummonRoar = true;
+		}
 	}	
 
 	SetHullType(HULL_MEDIUMBIG);
@@ -1299,6 +1359,25 @@ void CASW_Drone_Advanced::Event_Killed( const CTakeDamageInfo &info )
 	UTIL_TraceLine( GetAbsOrigin() + Vector( 0, 0, 16 ), GetAbsOrigin() - Vector( 0, 0, 64 ), MASK_SOLID, this, COLLISION_GROUP_NONE, &tr );
 	UTIL_DecalTrace( &tr, "GreenBloodBig" );
 
+	CBaseEntity *pMutationHelper = m_hMutationHelper;
+	if (pMutationHelper)
+	{
+		if (ClassMatches("asw_drone_carrier"))
+		{
+			CASW_Parasite *pParasite = assert_cast<CASW_Parasite *>(CreateEntityByName("asw_parasite"));
+			if (pParasite)
+			{
+				pParasite->Spawn();
+				pParasite->SetAbsOrigin(pMutationHelper->GetAbsOrigin());
+				pParasite->SetAbsAngles(pMutationHelper->GetAbsAngles());
+				pParasite->JumpAttack(true);
+			}
+		}
+
+		UTIL_Remove(pMutationHelper);
+		m_hMutationHelper = NULL;
+	}
+
 	BaseClass::Event_Killed( newInfo );
 }
 
@@ -1478,6 +1557,23 @@ int CASW_Drone_Advanced::SelectSchedule( void )
 		// if we have a new enemy, upgrade our sight range, so we don't lose him so easily while chasing
 		SetDistLook( 1768.0f );
 		SetDistSwarmSense(1200.0f);
+	}
+
+	if (m_bAllowSummonRoar && GetEnemy())
+	{
+		m_bAllowSummonRoar = false;
+		for (int i = RandomInt(20, 30); i > 0; i--)
+		{
+			Vector position = GetAbsOrigin() + Vector(RandomFloat(-300, 300), RandomFloat(-300, 300), 32);
+			QAngle direction(0, UTIL_VecToYaw(GetEnemyLKP() - position), 0);
+			CASW_Drone_Advanced *pDrone = assert_cast<CASW_Drone_Advanced *>(ASWSpawnManager()->SpawnAlienAt("asw_drone", position, direction));
+			Assert(pDrone);
+			if (pDrone)
+			{
+				pDrone->SetEnemy(GetEnemy());
+			}
+		}
+		return SCHED_ALIEN_SHOVER_ROAR;
 	}
 
 	// check for jumping off marine heads
@@ -2337,6 +2433,21 @@ bool CASW_Drone_Advanced::ShouldClearOrdersOnMovementComplete()
 	}
 
 	return BaseClass::ShouldClearOrdersOnMovementComplete();
+}
+
+void CASW_Drone_Advanced::RescaleCustomSettings()
+{
+	if (ClassMatches("asw_drone_redgiant"))
+	{
+		m_flSizeScale *= 1.3f;
+		m_flSpeedScale *= 1.3f;
+		m_flHealthScale *= 50.0f;
+	}
+	else if (ClassMatches("asw_drone_summoner"))
+	{
+		m_flSizeScale *= 1.5f;
+		m_flHealthScale *= 4.0f;
+	}
 }
 
 AI_BEGIN_CUSTOM_NPC( asw_drone_advanced, CASW_Drone_Advanced )

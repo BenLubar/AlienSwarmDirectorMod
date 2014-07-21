@@ -77,6 +77,10 @@ ASW_Alien_Class_Entry g_Aliens[]=
 	ASW_Alien_Class_Entry( "asw_ranger", HULL_MEDIUMBIG ),
 	ASW_Alien_Class_Entry( "asw_mortarbug", HULL_WIDE_SHORT ),
 	ASW_Alien_Class_Entry( "asw_shaman", HULL_MEDIUM ),
+	ASW_Alien_Class_Entry( "asw_drone_redgiant", HULL_MEDIUMBIG ),
+	ASW_Alien_Class_Entry( "asw_drone_ghost", HULL_MEDIUMBIG ),
+	ASW_Alien_Class_Entry( "asw_drone_carrier", HULL_MEDIUMBIG ),
+	ASW_Alien_Class_Entry( "asw_drone_summoner", HULL_MEDIUMBIG ),
 };
 
 const char * g_VariedWandererTypeCommon [] = {
@@ -92,7 +96,12 @@ const char * g_VariedWandererTypeRare [] = {
 	//"asw_mortarbug",
 	"asw_parasite",
 	"asw_harvester",
-	"asw_boomer"
+	"asw_boomer",
+
+	"asw_drone_redgiant",
+	"asw_drone_ghost",
+	"asw_drone_carrier",
+	"asw_drone_summoner"
 };
 
 // Array indices of drones.  Used by carnage mode.

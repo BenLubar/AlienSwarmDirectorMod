@@ -4842,6 +4842,10 @@
 		10 : "asw_ranger"
 		11 : "asw_mortarbug"
 		12 : "asw_shaman"
+		13 : "asw_drone_redgiant"
+		14 : "asw_drone_ghost"
+		15 : "asw_drone_carrier"
+		16 : "asw_drone_summoner"
 	]
 	
 	SpawnerState(choices) : "Spawner State" : 0 : "Spawner's initial state" =
@@ -4934,6 +4938,10 @@
 		10 : "asw_ranger"
 		11 : "asw_mortarbug"
 		12 : "asw_shaman"
+		13 : "asw_drone_redgiant"
+		14 : "asw_drone_ghost"
+		15 : "asw_drone_carrier"
+		16 : "asw_drone_summoner"
 	]
 	AlienOrders(choices) : "Alien Orders" : 2 : "Orders given to nearby aliens." =
 	[
@@ -4996,6 +5004,122 @@
 	//input FightToPosition(string) : "Fight to position"
 	//input EnableJump(void) : "Allow non-navigational jumping"
 	//input DisableJump(void) : "Disallow non-navigational jumping"
+	input BreakWaitForScript(void) : "Wakes the alien up if his Wait For Script flag was set"
+	input SetMoveClone(string) : "Alien will match position/angle of the specified entity."
+	
+	output	OnReachedFightGoal(void) : "Fires when the drone reaches his specified fight-to location"
+]
+
+@NPCClass base(BaseNPC) studio("models/aliens/drone/drone.mdl") sphere() = asw_drone_redgiant :
+	"A large red drone with lots of health."
+[
+	MoveClone(target_destination) : "Move Clone" : : "If set to an entity name, this alien will match movement with that entity."
+	
+	sleepstate(choices) : "Sleep State" : 1 : "Holds the NPC in stasis until specified condition. See also 'Wake Radius' and 'Wake Squad'." =
+	[
+		0 : "None"
+		1 : "Waiting for threat"
+		2 : "Waiting for PVS"
+		3 : "Waiting for input"
+	]
+	visiblewhenasleep(choices) : "Visible when asleep" : 0 : "If true, this alien will still get drawn even when asleep (useful for aliens you see far below you)." =
+	[
+		0 : "No"
+		1 : "Yes"
+	]
+	
+	spawnflags(Flags) =
+	[
+		131072 : "Use Ground Checks" : 0
+	]
+		
+	input BreakWaitForScript(void) : "Wakes the alien up if his Wait For Script flag was set"
+	input SetMoveClone(string) : "Alien will match position/angle of the specified entity."
+	
+	output	OnReachedFightGoal(void) : "Fires when the drone reaches his specified fight-to location"
+]
+
+@NPCClass base(BaseNPC) studio("models/aliens/drone/drone.mdl") sphere() = asw_drone_ghost :
+	"A drone that is nearly invisible."
+[
+	MoveClone(target_destination) : "Move Clone" : : "If set to an entity name, this alien will match movement with that entity."
+	
+	sleepstate(choices) : "Sleep State" : 1 : "Holds the NPC in stasis until specified condition. See also 'Wake Radius' and 'Wake Squad'." =
+	[
+		0 : "None"
+		1 : "Waiting for threat"
+		2 : "Waiting for PVS"
+		3 : "Waiting for input"
+	]
+	visiblewhenasleep(choices) : "Visible when asleep" : 0 : "If true, this alien will still get drawn even when asleep (useful for aliens you see far below you)." =
+	[
+		0 : "No"
+		1 : "Yes"
+	]
+	
+	spawnflags(Flags) =
+	[
+		131072 : "Use Ground Checks" : 0
+	]
+		
+	input BreakWaitForScript(void) : "Wakes the alien up if his Wait For Script flag was set"
+	input SetMoveClone(string) : "Alien will match position/angle of the specified entity."
+	
+	output	OnReachedFightGoal(void) : "Fires when the drone reaches his specified fight-to location"
+]
+
+@NPCClass base(BaseNPC) studio("models/aliens/drone/drone.mdl") sphere() = asw_drone_carrier :
+	"A drone that carries a parasite on its back."
+[
+	MoveClone(target_destination) : "Move Clone" : : "If set to an entity name, this alien will match movement with that entity."
+	
+	sleepstate(choices) : "Sleep State" : 1 : "Holds the NPC in stasis until specified condition. See also 'Wake Radius' and 'Wake Squad'." =
+	[
+		0 : "None"
+		1 : "Waiting for threat"
+		2 : "Waiting for PVS"
+		3 : "Waiting for input"
+	]
+	visiblewhenasleep(choices) : "Visible when asleep" : 0 : "If true, this alien will still get drawn even when asleep (useful for aliens you see far below you)." =
+	[
+		0 : "No"
+		1 : "Yes"
+	]
+	
+	spawnflags(Flags) =
+	[
+		131072 : "Use Ground Checks" : 0
+	]
+		
+	input BreakWaitForScript(void) : "Wakes the alien up if his Wait For Script flag was set"
+	input SetMoveClone(string) : "Alien will match position/angle of the specified entity."
+	
+	output	OnReachedFightGoal(void) : "Fires when the drone reaches his specified fight-to location"
+]
+
+@NPCClass base(BaseNPC) studio("models/aliens/drone/drone.mdl") sphere() = asw_drone_summoner :
+	"A drone that summons a horde of drones when it enters combat for the first time."
+[
+	MoveClone(target_destination) : "Move Clone" : : "If set to an entity name, this alien will match movement with that entity."
+	
+	sleepstate(choices) : "Sleep State" : 1 : "Holds the NPC in stasis until specified condition. See also 'Wake Radius' and 'Wake Squad'." =
+	[
+		0 : "None"
+		1 : "Waiting for threat"
+		2 : "Waiting for PVS"
+		3 : "Waiting for input"
+	]
+	visiblewhenasleep(choices) : "Visible when asleep" : 0 : "If true, this alien will still get drawn even when asleep (useful for aliens you see far below you)." =
+	[
+		0 : "No"
+		1 : "Yes"
+	]
+	
+	spawnflags(Flags) =
+	[
+		131072 : "Use Ground Checks" : 0
+	]
+		
 	input BreakWaitForScript(void) : "Wakes the alien up if his Wait For Script flag was set"
 	input SetMoveClone(string) : "Alien will match position/angle of the specified entity."
 	
@@ -5762,6 +5886,10 @@
 		10 : "asw_ranger"
 		11 : "asw_mortarbug"
 		12 : "asw_shaman"
+		13 : "asw_drone_redgiant"
+		14 : "asw_drone_ghost"
+		15 : "asw_drone_carrier"
+		16 : "asw_drone_summoner"
 	]
 ]
 
