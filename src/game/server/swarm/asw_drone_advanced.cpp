@@ -114,7 +114,6 @@ enum
 	LAST_ASW_DRONE_SHARED_SCHEDULE,
 };
 
-CUtlVector<CASW_Drone_Advanced*> g_DroneList;
 static CASW_Drone_Movement g_DroneGameMovement;
 CASW_Drone_Movement *g_pDroneMovement = &g_DroneGameMovement;
 
@@ -122,7 +121,6 @@ CASW_Drone_Advanced::CASW_Drone_Advanced( void )
 	: m_DurationDoorBash( 2)
 	   // : CASW_Alien()
 {
-	g_DroneList.AddToTail(this);
 	if ( asw_new_drone.GetBool() )
 	{
 	  m_pszAlienModelName = SWARM_NEW_DRONE_MODEL;
@@ -139,7 +137,6 @@ CASW_Drone_Advanced::CASW_Drone_Advanced( void )
 
 CASW_Drone_Advanced::~CASW_Drone_Advanced()
 {
-	g_DroneList.FindAndRemove(this);	
 }
 
 LINK_ENTITY_TO_CLASS( asw_drone, CASW_Drone_Advanced );
