@@ -4,6 +4,7 @@
 #include "ai_basenpc.h"
 #include "saverestore_utlvector.h"
 #include "asw_shareddefs.h"
+#include "asw_marine.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -44,14 +45,13 @@ bool CASW_BaseAI_Senses::WaitingUntilSeen( CBaseEntity *pSightEnt )
 	if ( GetOuter()->GetSpawnFlags() & SF_NPC_WAIT_TILL_SEEN )
 	{
 		// asw, wake up if marines see us (not players)
+		// don't wake for NPC marines, only players and bots.
 		if ( pSightEnt && pSightEnt->Classify() == CLASS_ASW_MARINE )
 		{
-			CBaseCombatCharacter *pBCC = dynamic_cast<CBaseCombatCharacter*>( pSightEnt );
-			Vector zero =  Vector(0,0,0);
+			CASW_Marine *pMarine = assert_cast<CASW_Marine *>( pSightEnt );
+			Vector zero =  vec3_origin;
 			// don't link this client in the list if the npc is wait till seen and the player isn't facing the npc
-			if (// && pPlayer->FVisible( GetOuter() ) 
-				pBCC->FInViewCone( GetOuter() )
-				&& FBoxVisible( pSightEnt, static_cast<CBaseEntity*>(GetOuter()), zero ) )
+			if ( pMarine->GetMarineResource() && pMarine->FInViewCone( GetOuter() ) && FBoxVisible( pSightEnt, GetOuter(), zero ) )
 			{
 				// marine sees us, become normal now.
 				GetOuter()->RemoveSpawnFlags( SF_NPC_WAIT_TILL_SEEN );

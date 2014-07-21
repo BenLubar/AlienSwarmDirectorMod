@@ -1559,25 +1559,35 @@ int CASW_Drone_Advanced::SelectSchedule( void )
 		SetDistSwarmSense(1200.0f);
 	}
 
-	if (m_bAllowSummonRoar && GetEnemy())
+	if (m_bAllowSummonRoar && ASWGameRules() && GetEnemy())
 	{
 		m_bAllowSummonRoar = false;
-		for (int i = RandomInt(20, 30); i > 0; i--)
+		for (int i = RandomInt(0, 5) + ASWGameRules()->GetMissionDifficulty() * 2; i > 0; i--)
 		{
-			Vector position = GetAbsOrigin() + Vector(RandomFloat(-300, 300), RandomFloat(-300, 300), 32);
+			Vector position = GetAbsOrigin() + Vector(RandomFloat(-768, 768), RandomFloat(-768, 768), 32);
+
+			trace_t tr;
+			// make sure we don't spawn on the other side of a wall
+			UTIL_TraceHull(GetAbsOrigin(), position, GetHullMins(), GetHullMaxs(), MASK_NPCSOLID_BRUSHONLY, this, COLLISION_GROUP_NONE, &tr);
+			position = VectorLerp(GetAbsOrigin(), position, tr.fraction);
+
+			// face our enemy
 			QAngle direction(0, UTIL_VecToYaw(GetEnemyLKP() - position), 0);
+
 			CASW_Drone_Advanced *pDrone = assert_cast<CASW_Drone_Advanced *>(ASWSpawnManager()->SpawnAlienAt("asw_drone", position, direction));
 			Assert(pDrone);
 			if (pDrone)
 			{
 				pDrone->SetEnemy(GetEnemy());
+				pDrone->CustomSettings(0.75f, 1.0f, 0.75f, true, true, true);
+				pDrone->m_flBurrowTime = gpGlobals->curtime + RandomFloat(1, 6);
 			}
 		}
 		return SCHED_ALIEN_SHOVER_ROAR;
 	}
 
 	// check for jumping off marine heads
-	if (GetGroundEntity() && GetGroundEntity()->Classify() == CLASS_ASW_MARINE && DoJumpOffHead())
+	if (GetGroundEntity() && (GetGroundEntity()->Classify() == CLASS_ASW_MARINE || GetGroundEntity()->Classify() == CLASS_ASW_COLONIST) && DoJumpOffHead())
 		return SCHED_ASW_ALIEN_JUMP;
 
 	//Msg("Drone Selecting schedule\n");
@@ -2445,8 +2455,12 @@ void CASW_Drone_Advanced::RescaleCustomSettings()
 	}
 	else if (ClassMatches("asw_drone_summoner"))
 	{
-		m_flSizeScale *= 1.5f;
+		m_flSizeScale *= 1.1f;
 		m_flHealthScale *= 4.0f;
+	}
+	else if (ClassMatches("asw_drone_ghost"))
+	{
+		m_flSpeedScale *= 2.0f;
 	}
 }
 

@@ -823,7 +823,9 @@ CBaseEntity* CASW_Spawn_Manager::SpawnAlienAt(const char* szAlienClass, const Ve
 	}
 
 	// have drones and rangers unburrow by default, so we don't worry so much about them spawning onscreen
-	if ( pSpawnable->GetNPC() && pSpawnable->GetNPC()->GetHullType() == HULL_MEDIUMBIG )
+	Hull_t nHull = HULL_MEDIUMBIG;
+	GetAlienHull( szAlienClass, nHull );
+	if ( nHull == HULL_MEDIUMBIG )
 	{			
 		pSpawnable->StartBurrowed();
 		pSpawnable->SetUnburrowIdleActivity( NULL_STRING );
