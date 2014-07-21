@@ -640,7 +640,7 @@ void CASW_Parasite::NormalTouch( CBaseEntity* pOther )
 bool CASW_Parasite::CheckInfestTarget( CBaseEntity *pOther )
 {
 	CASW_Marine* pMarine = CASW_Marine::AsMarine( pOther );
-	if ( pOther )
+	if ( pMarine )
 	{
 		// if marine has electrified armour on, that protects him from infestation
 		if ( pMarine->IsElectrifiedArmorActive() )
@@ -704,8 +704,9 @@ void CASW_Parasite::InfestThink( void )
 
 	DispatchAnimEvents( this );
 
-	CASW_Marine *pMarine = dynamic_cast<CASW_Marine*>(GetParent());
-	if ( !pMarine || !pMarine->IsInfested() || pMarine->IsEffectActive( EF_NODRAW ) )
+	CASW_Marine *pMarine = dynamic_cast<CASW_Marine *>( GetParent() );
+	CASW_Colonist *pColonist = dynamic_cast<CASW_Colonist *>( GetParent() );
+	if ( ( !pMarine || !pMarine->IsInfested() || pMarine->IsEffectActive( EF_NODRAW ) ) && ( !pColonist || !pColonist->IsInfested() || pColonist->IsEffectActive( EF_NODRAW ) ) )
 	{
 		FinishedInfesting();
 	}

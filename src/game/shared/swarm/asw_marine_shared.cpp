@@ -158,7 +158,7 @@ CASW_Weapon* CASW_Marine::GetASWWeapon(int index) const
 bool CASW_Marine::IsInfested()
 {
 	if (!GetMarineResource())
-		return false;
+		return m_fInfestedTime > 0;
 
 	return GetMarineResource()->IsInfested();
 }

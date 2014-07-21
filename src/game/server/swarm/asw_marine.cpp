@@ -3011,11 +3011,9 @@ void CASW_Marine::PerformResurrectionEffect( void ) RESTRICT
 
 void CASW_Marine::BecomeInfested(CASW_Alien* pAlien)
 {
-	if ( !GetMarineResource() )
-		return;
-
 	m_fInfestedTime = 20.0f;
-	GetMarineSpeech()->ForceChatter( CHATTER_INFESTED, ASW_CHATTER_TIMER_TEAM );
+	if ( GetMarineResource() )
+		GetMarineSpeech()->ForceChatter( CHATTER_INFESTED, ASW_CHATTER_TIMER_TEAM );
 
 	if ( !IsInfested() )
 	{
@@ -3034,15 +3032,18 @@ void CASW_Marine::BecomeInfested(CASW_Alien* pAlien)
 		// Give them 3 free cycles (.9 seconds) to panic before we do the first real bite!
 		m_iInfestCycle = -3;
 
-		GetMarineResource()->SetInfested( true );
-
-		ASWFailAdvice()->OnMarineInfested();
-
-		IGameEvent * event = gameeventmanager->CreateEvent( "marine_infested" );
-		if ( event )
+		if ( GetMarineResource() )
 		{
-			event->SetInt( "entindex", entindex() );
-			gameeventmanager->FireEvent( event );
+			GetMarineResource()->SetInfested( true );
+
+			ASWFailAdvice()->OnMarineInfested();
+
+			IGameEvent * event = gameeventmanager->CreateEvent( "marine_infested" );
+			if ( event )
+			{
+				event->SetInt( "entindex", entindex() );
+				gameeventmanager->FireEvent( event );
+			}
 		}
 
 		if ( !IsInhabited() )

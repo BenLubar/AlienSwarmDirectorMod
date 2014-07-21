@@ -2897,7 +2897,7 @@ void CASW_Marine::CheckForAIWeaponSwitch()
 	}
 
 	// don't get stuck swapping weapons if we have no primary ammo at all but our guns have secondary ammo
-	if ( pWeapon->HasAmmo() )
+	if ( pWeapon && pWeapon->HasAmmo() )
 		return;
 
 	// if we have no guns with primary ammo, search for one with secondary ammo
