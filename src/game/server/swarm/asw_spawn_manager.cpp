@@ -36,11 +36,11 @@ ConVar asw_max_alien_batch("asw_max_alien_batch", "10", FCVAR_CHEAT, "Max number
 ConVar asw_batch_interval("asw_batch_interval", "5", FCVAR_CHEAT, "Time between successive batches spawning in the same spot");
 ConVar asw_candidate_interval("asw_candidate_interval", "1.0", FCVAR_CHEAT, "Interval between updating candidate spawning nodes");
 ConVar asw_wanderer_class( "asw_wanderer_class", "asw_drone_jumper", FCVAR_CHEAT, "Alien class used when spawning wanderers" );
-ConVar asw_wanderer_varied( "asw_wanderer_varied", "0.5", FCVAR_CHEAT, "Probability that the director will spawn wanderers that are not asw_wanderer_class", true, 0.0f, true, 1.0f );
-ConVar asw_wanderer_varied_rare( "asw_wanderer_varied_rare", "0.1", FCVAR_CHEAT, "Probability that the varied wanderers will be more powerful aliens", true, 0.0f, true, 1.0f );
-ConVar asw_wanderer_group_max( "asw_wanderer_group_max", "3", FCVAR_CHEAT, "Maximum number of wandering aliens to spawn at once", true, 1.0f, false, 0.0f );
+ConVar asw_wanderer_varied( "asw_wanderer_varied", "0.8", FCVAR_CHEAT, "Probability that the director will spawn wanderers that are not asw_wanderer_class", true, 0.0f, true, 1.0f );
+ConVar asw_wanderer_varied_rare( "asw_wanderer_varied_rare", "0.3", FCVAR_CHEAT, "Probability that the varied wanderers will be more powerful aliens", true, 0.0f, true, 1.0f );
+ConVar asw_wanderer_group_max( "asw_wanderer_group_max", "5", FCVAR_CHEAT, "Maximum number of wandering aliens to spawn at once", true, 1.0f, false, 0.0f );
 ConVar asw_wanderer_group_probability( "asw_wanderer_group_probability", "0.7", FCVAR_CHEAT, "Probability of spawning an extra wanderer. Three wanderers is this squared, and so on.", true, 0.0f, true, 1.0f );
-ConVar asw_horde_wanderers( "asw_horde_wanderers", "0.02", FCVAR_CHEAT, "Probability of a wanderer spawning at the same time as a horde alien.", true, 0.0f, true, 1.0f );
+ConVar asw_horde_wanderers( "asw_horde_wanderers", "0.15", FCVAR_CHEAT, "Probability of a wanderer spawning at the same time as a horde alien.", true, 0.0f, true, 1.0f );
 ConVar asw_horde_class( "asw_horde_class", "asw_drone_jumper", FCVAR_CHEAT, "Alien class used when spawning hordes" );
 ConVar asw_prespawn_min_links( "asw_prespawn_min_links", "20", FCVAR_CHEAT );
 
@@ -84,7 +84,7 @@ ASW_Alien_Class_Entry g_Aliens[]=
 };
 
 const char * g_VariedWandererTypeCommon [] = {
-	"asw_drone_jumper",
+	//"asw_drone_jumper", // already used for the non-varied type.
 	"asw_ranger",
 	"asw_buzzer",
 	"asw_parasite_defanged",
