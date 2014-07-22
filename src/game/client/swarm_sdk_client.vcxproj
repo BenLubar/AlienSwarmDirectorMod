@@ -717,6 +717,7 @@ exit 1
     <ClCompile Include="..\shared\teamplay_gamerules.cpp" />
     <ClCompile Include="..\shared\teamplayroundbased_gamerules.cpp" />
     <ClCompile Include="..\shared\test_ehandle.cpp" />
+    <ClCompile Include="swarm\asw_auto_record.cpp" />
     <ClCompile Include="text_message.cpp" />
     <ClCompile Include="texturescrollmaterialproxy.cpp" />
     <ClCompile Include="timematerialproxy.cpp" />

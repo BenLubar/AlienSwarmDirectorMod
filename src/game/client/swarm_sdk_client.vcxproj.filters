@@ -2855,6 +2855,9 @@
     <ClCompile Include="nb_mod_level_building.cpp">
       <Filter>Source Files\Mod</Filter>
     </ClCompile>
+    <ClCompile Include="swarm\asw_auto_record.cpp">
+      <Filter>Source Files\Swarm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="achievement_notification_panel.h">
