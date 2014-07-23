@@ -38,7 +38,7 @@ public:
 
 		g_bLevelHasFollowHints = (CAI_HintManager::FindHint(vec3_origin, hintCriteria) != NULL);
 #else
-		g_bLevelHasFollowHints = (MarineHintManager()->GetHintCount() > 0);
+		g_bLevelHasFollowHints = MarineHintManager()->HasAnyHints();
 #endif
 		Msg("Level has follow hints %d\n", g_bLevelHasFollowHints);
 	}
