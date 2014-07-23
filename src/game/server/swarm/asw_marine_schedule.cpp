@@ -78,9 +78,13 @@
 #include "asw_objective_escape.h"
 #include "asw_objective_triggered.h"
 #include "asw_weapon_medkit_shared.h"
+#include "asw_melee_system.h"
+#include "asw_movedata.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
+
+extern CMoveData *g_pMoveData;
 
 // anim events
 int AE_MARINE_KICK;
@@ -271,6 +275,11 @@ int CASW_Marine::RangeAttack1Conditions ( float flDot, float flDist )
 // ========== ASW Schedule Stuff =========
 int CASW_Marine::SelectSchedule()
 {
+	if (GetForcedActionRequest() || GetCurrentMeleeAttack())
+	{
+		return SCHED_ASW_MELEE_SYSTEM;
+	}
+
 	if (GetEnemy() && GetEnemy()->Classify() == CLASS_ASW_PARASITE)
 	{
 		CASW_Parasite *pParasite = assert_cast<CASW_Parasite *>(GetEnemy());
@@ -2329,6 +2338,13 @@ void CASW_Marine::StartTask(const Task_t *pTask)
 		}
 		break;
 
+	case TASK_ASW_MELEE_SYSTEM:
+		if ((int) pTask->flTaskData)
+		{
+			m_iMeleeAttackID = pTask->flTaskData;
+		}
+		break;
+
 	default:
 		{
 			return BaseClass::StartTask(pTask);
@@ -2435,6 +2451,12 @@ const Vector &CASW_Marine::GetEnemyLKP() const
 
 void CASW_Marine::RunTask( const Task_t *pTask )
 {
+	if (GetForcedActionRequest() && pTask->iTask != TASK_ASW_MELEE_SYSTEM)
+	{
+		ClearSchedule("forced action");
+		return;
+	}
+
 	bool bOld = m_bWantsToFire;
 	m_bWantsToFire = false;
 
@@ -2857,6 +2879,29 @@ void CASW_Marine::RunTask( const Task_t *pTask )
 				if ( bHealSucceeded )
 					pHealgun->PrimaryAttack();
 			}		
+		}
+		break;
+
+	case TASK_ASW_MELEE_SYSTEM:
+		{
+			if (!GetForcedActionRequest() && !GetCurrentMeleeAttack())
+			{
+				TaskComplete();
+				return;
+			}
+
+			CASW_MoveData *pMove = static_cast<CASW_MoveData *>(g_pMoveData);
+			pMove->m_bFirstRunOfFunctions = true;
+			pMove->SetAbsOrigin(GetAbsOrigin());
+			pMove->m_vecVelocity = GetAbsVelocity();
+			pMove->m_vecAngles = GetAbsAngles();
+			pMove->m_iForcedAction = GetForcedActionRequest();
+			pMove->m_nButtons = 0;
+			pMove->m_nOldButtons = 0;
+			ASWMeleeSystem()->ProcessMovement(this, pMove);
+			SetAbsOrigin(pMove->GetAbsOrigin());
+			SetAbsVelocity(vec3_origin);
+			Assert(!GetForcedActionRequest());
 		}
 		break;
 
@@ -3634,6 +3679,7 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 	DECLARE_TASK( TASK_ASW_MOVE_TO_HEAL )
 	DECLARE_TASK( TASK_ASW_SWAP_TO_HEAL_GUN )
 	DECLARE_TASK( TASK_ASW_HEAL_MARINE )
+	DECLARE_TASK( TASK_ASW_MELEE_SYSTEM )
 
 	DECLARE_ANIMEVENT( AE_MARINE_KICK )
 	DECLARE_ANIMEVENT( AE_MARINE_UNFREEZE )
@@ -4298,13 +4344,13 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 		"		TASK_WAIT_FOR_MOVEMENT	0"
 		"		TASK_FACE_ENEMY			0"
 		"		TASK_ANNOUNCE_ATTACK	1"	// 1 = primary attack
-		"		TASK_MELEE_ATTACK1		1"
+		"		TASK_ASW_MELEE_SYSTEM		1"
 		"		TASK_FACE_ENEMY			0"
 		"		TASK_ANNOUNCE_ATTACK	1"	// 1 = primary attack
-		"		TASK_MELEE_ATTACK1		2"
+		"		TASK_ASW_MELEE_SYSTEM		2"
 		"		TASK_FACE_ENEMY			0"
 		"		TASK_ANNOUNCE_ATTACK	1"	// 1 = primary attack
-		"		TASK_MELEE_ATTACK1		3"
+		"		TASK_ASW_MELEE_SYSTEM		3"
 		""
 		"	Interrupts"
 		//"		COND_NEW_ENEMY"
@@ -4327,13 +4373,13 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 		"		TASK_WAIT_FOR_MOVEMENT	0"
 		"		TASK_FACE_ENEMY			0"
 		"		TASK_ANNOUNCE_ATTACK	1"	// 1 = primary attack
-		"		TASK_MELEE_ATTACK1		1"
+		"		TASK_ASW_MELEE_SYSTEM		1"
 		"		TASK_FACE_ENEMY			0"
 		"		TASK_ANNOUNCE_ATTACK	1"	// 1 = primary attack
-		"		TASK_MELEE_ATTACK1		2"
+		"		TASK_ASW_MELEE_SYSTEM		2"
 		"		TASK_FACE_ENEMY			0"
 		"		TASK_ANNOUNCE_ATTACK	1"	// 1 = primary attack
-		"		TASK_MELEE_ATTACK1		3"
+		"		TASK_ASW_MELEE_SYSTEM		3"
 		""
 		"	Interrupts"
 		"		COND_NEW_ENEMY"
@@ -4341,6 +4387,16 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 		"		COND_LIGHT_DAMAGE"
 		"		COND_HEAVY_DAMAGE"
 		"		COND_ENEMY_OCCLUDED"
+		);
+
+	DEFINE_SCHEDULE
+		(
+		SCHED_ASW_MELEE_SYSTEM,
+
+		"	Tasks"
+		"		TASK_ASW_MELEE_SYSTEM		0"
+		""
+		"	Interrupts"
 		);
 
 AI_END_CUSTOM_NPC()
