@@ -65,8 +65,6 @@ public:
 	const Vector& GetHintPosition( int nHint ) { return m_Hints[ nHint ]->m_vecPosition; }
 	float GetHintYaw( int nHint ) { return m_Hints[ nHint ]->m_flYaw; }
 
-	bool HasAnyHints() { return m_Hints.Count() > 0 || m_LastResortHints.Count() > 0; }
-
 private:
 	CUtlVector<HintData_t *> m_Hints;
 	CUtlVector<HintData_t *> m_LastResortHints;

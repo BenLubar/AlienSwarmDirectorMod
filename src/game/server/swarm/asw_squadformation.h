@@ -12,8 +12,6 @@ class CASW_Marine;
 class CAI_Hint;
 class HintData_t;
 
-extern bool g_bLevelHasFollowHints;
-
 // Aggregates state about all marines assigned to a squad,
 // eg, AI marines following a leader in formation.
 class CASW_SquadFormation : public CServerOnlyPointEntity
