@@ -195,7 +195,7 @@ CASW_Alien::CASW_Alien( void ) :
 	m_vecRangeAttackTargetPosition.Init();
 	m_bHoldoutAlien = false;
 
-	m_nAlienCollisionGroup = COLLISION_GROUP_NPC;
+	m_nAlienCollisionGroup = ASW_COLLISION_GROUP_ALIEN;
 
 	m_flHealthScale = 1.0f;
 	m_flSpeedScale = 1.0f;
@@ -1410,7 +1410,6 @@ void CASW_Alien::RunTask(const Task_t *pTask)
 	}
 }
 
-
 #define ZIG_ZAG_SIZE 1500	// was 3600
 
 // don't change our chase goal while we're on a zigzag detour
@@ -1430,8 +1429,6 @@ bool CASW_Alien::ShouldUpdateEnemyPos()
 	//Msg("updating enemy pos %f\n", gpGlobals->curtime);
 	return true;
 }
-
-
 
 float CASW_Alien::GetGoalRepathTolerance( CBaseEntity *pGoalEnt, GoalType_t type, const Vector &curGoal, const Vector &curTargetPos )
 {
@@ -1593,8 +1590,7 @@ void CASW_Alien::SetupPushawayVector()
 	for ( int i = 0; i < iAliens; i++ )
 	{
 		pOtherAlien = static_cast< CASW_Alien* >( IAlienAutoList::AutoList()[ i ] );
-		if ( pOtherAlien != this && !( Classify() == CLASS_ASW_HARVESTER && pOtherAlien->Classify() != CLASS_ASW_PARASITE )
-				&& !( Classify() == CLASS_ASW_PARASITE && pOtherAlien->Classify() != CLASS_ASW_HARVESTER ) )
+		if ( pOtherAlien != this )
 		{
 			Vector diff = m_vecLastPushAwayOrigin - pOtherAlien->GetAbsOrigin();
 			float dist = diff.Length();

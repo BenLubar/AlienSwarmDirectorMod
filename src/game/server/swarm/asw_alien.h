@@ -54,7 +54,6 @@ struct CombatConditionData_t
 // Base class for all Alien Swarm alien npcs
 
 typedef CAI_BlendingHost< CAI_BehaviorHost<CAI_BaseNPC> > CAI_BaseAlienBase;
-//typedef CAI_BehaviorHost<CAI_BaseNPC> CAI_BaseAlienBase;
 
 DECLARE_AUTO_LIST( IAlienAutoList );
 
@@ -362,14 +361,6 @@ extern int ACT_ALIEN_FLINCH_GESTURE;
 extern int ACT_DEATH_FIRE;
 extern int ACT_DEATH_ELEC;
 extern int ACT_DIE_FANCY;
-
-//typedef CAI_BlendingHost< CAI_BehaviorHost<CASW_Alien> > CASW_BlendedAlien;
-typedef CASW_Alien  CASW_BlendedAlien;
-
-//class CASW_BlendedAlien : public CAI_BlendingHost<CASW_Alien>
-//{
-	//DECLARE_CLASS( CASW_BlendedAlien, CAI_BlendingHost<CASW_Alien> );
-//};
 
 enum
 {

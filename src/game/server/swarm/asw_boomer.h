@@ -12,11 +12,11 @@
 #include "asw_ai_behavior_melee.h"
 #include "asw_ai_behavior_explode.h"
 
-class CASW_Boomer : public CAI_ExpresserHostWithData<CASW_BlendedAlien, CAI_Expresser>
+class CASW_Boomer : public CAI_ExpresserHostWithData<CASW_Alien, CAI_Expresser>
 {
 public:
 
-	DECLARE_CLASS( CASW_Boomer, CAI_ExpresserHostWithData  );
+	DECLARE_CLASS( CASW_Boomer, CAI_ExpresserHostWithData );
 	DECLARE_SERVERCLASS();
 	DECLARE_DATADESC();
 

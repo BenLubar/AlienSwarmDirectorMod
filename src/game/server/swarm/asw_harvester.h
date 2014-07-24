@@ -14,11 +14,11 @@ class CASW_Door;
 class CASW_Drone_Movement;
 class CASW_Parasite;
 
-class CASW_Harvester : public CAI_ExpresserHostWithData<CASW_BlendedAlien, CAI_Expresser>
+class CASW_Harvester : public CAI_ExpresserHostWithData<CASW_Alien, CAI_Expresser>
 {
 public:
 
-	DECLARE_CLASS( CASW_Harvester, CAI_ExpresserHostWithData  );
+	DECLARE_CLASS( CASW_Harvester, CAI_ExpresserHostWithData );
 	DECLARE_DATADESC();
 	CASW_Harvester( void );
 	virtual ~CASW_Harvester( void );

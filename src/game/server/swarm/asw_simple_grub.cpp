@@ -51,6 +51,7 @@ void CASW_Simple_Grub::Spawn(void)
 
 	m_iHealth	= 1;
 	SetBlocksLOS(false);
+	SetNavIgnore();
 }
 
 void CASW_Simple_Grub::GrubTouch( CBaseEntity *pOther )

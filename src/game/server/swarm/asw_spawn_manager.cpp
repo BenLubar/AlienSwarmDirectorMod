@@ -244,7 +244,7 @@ void CASW_Spawn_Manager::Update()
 				if (RandomFloat() < asw_horde_wanderers.GetFloat())
 				{
 					const char *szAlienClass = RandomWandererClass();
-					if (SpawnAlienAt(szAlienClass, m_vecHordePosition, m_angHordeAngle))
+					if ( SpawnAlienAt( szAlienClass, m_vecHordePosition + Vector( 0, 0, FStrEq( szAlienClass, "asw_buzzer" ) ? 128 : 32 ), m_angHordeAngle ) )
 					{
 						if (asw_director_debug.GetInt() >= 4)
 						{
@@ -795,7 +795,10 @@ int CASW_Spawn_Manager::SpawnAlienBatch( const char* szAlienClass, int iNumAlien
 }
 
 CBaseEntity* CASW_Spawn_Manager::SpawnAlienAt(const char* szAlienClass, const Vector& vecPos, const QAngle &angle)
-{	
+{
+	Hull_t nHull = HULL_MEDIUMBIG;
+	GetAlienHull(szAlienClass, nHull);
+
 	CBaseEntity	*pEntity = NULL;	
 	pEntity = CreateEntityByName( szAlienClass );
 	CAI_BaseNPC	*pNPC = dynamic_cast<CAI_BaseNPC*>(pEntity);
@@ -811,7 +814,8 @@ CBaseEntity* CASW_Spawn_Manager::SpawnAlienAt(const char* szAlienClass, const Ve
 	angles.z = 0.0;	
 	pEntity->SetAbsOrigin( vecPos );	
 	pEntity->SetAbsAngles( angles );
-	UTIL_DropToFloor( pEntity, MASK_SOLID );
+	if ( nHull != HULL_TINY_CENTERED )
+		UTIL_DropToFloor( pEntity, MASK_NPCSOLID );
 
 	IASW_Spawnable_NPC* pSpawnable = dynamic_cast<IASW_Spawnable_NPC*>( pEntity );
 	Assert( pSpawnable );
@@ -823,8 +827,6 @@ CBaseEntity* CASW_Spawn_Manager::SpawnAlienAt(const char* szAlienClass, const Ve
 	}
 
 	// have drones and rangers unburrow by default, so we don't worry so much about them spawning onscreen
-	Hull_t nHull = HULL_MEDIUMBIG;
-	GetAlienHull( szAlienClass, nHull );
 	if ( nHull == HULL_MEDIUMBIG )
 	{			
 		pSpawnable->StartBurrowed();

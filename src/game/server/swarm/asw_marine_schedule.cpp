@@ -4344,13 +4344,13 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 		"		TASK_WAIT_FOR_MOVEMENT	0"
 		"		TASK_FACE_ENEMY			0"
 		"		TASK_ANNOUNCE_ATTACK	1"	// 1 = primary attack
-		"		TASK_ASW_MELEE_SYSTEM		1"
+		"		TASK_MELEE_ATTACK1		1"
 		"		TASK_FACE_ENEMY			0"
 		"		TASK_ANNOUNCE_ATTACK	1"	// 1 = primary attack
-		"		TASK_ASW_MELEE_SYSTEM		2"
+		"		TASK_MELEE_ATTACK1		2"
 		"		TASK_FACE_ENEMY			0"
 		"		TASK_ANNOUNCE_ATTACK	1"	// 1 = primary attack
-		"		TASK_ASW_MELEE_SYSTEM		3"
+		"		TASK_MELEE_ATTACK1		3"
 		""
 		"	Interrupts"
 		//"		COND_NEW_ENEMY"
@@ -4373,13 +4373,13 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 		"		TASK_WAIT_FOR_MOVEMENT	0"
 		"		TASK_FACE_ENEMY			0"
 		"		TASK_ANNOUNCE_ATTACK	1"	// 1 = primary attack
-		"		TASK_ASW_MELEE_SYSTEM		1"
+		"		TASK_MELEE_ATTACK1		1"
 		"		TASK_FACE_ENEMY			0"
 		"		TASK_ANNOUNCE_ATTACK	1"	// 1 = primary attack
-		"		TASK_ASW_MELEE_SYSTEM		2"
+		"		TASK_MELEE_ATTACK1		2"
 		"		TASK_FACE_ENEMY			0"
 		"		TASK_ANNOUNCE_ATTACK	1"	// 1 = primary attack
-		"		TASK_ASW_MELEE_SYSTEM		3"
+		"		TASK_MELEE_ATTACK1		3"
 		""
 		"	Interrupts"
 		"		COND_NEW_ENEMY"
