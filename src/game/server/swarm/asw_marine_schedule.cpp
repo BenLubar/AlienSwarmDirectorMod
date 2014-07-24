@@ -1908,7 +1908,7 @@ bool CASW_Marine::NeedToFollowMove()
 	if ( !pLeader || pLeader == this )
 		return false;
 
-	if (HasCondition(COND_CAN_RANGE_ATTACK1) && GetEnemy() && GetEnemy()->Classify() != CLASS_ASW_SHIELDBUG && GetEnemy()->GetAbsOrigin().DistToSqr(GetAbsOrigin()) < Square(ASW_FORMATION_ATTACK_DISTANCE))
+	if (HasCondition(COND_CAN_RANGE_ATTACK1) && GetHealth() > GetMaxHealth() / 2 && GetEnemy() && GetEnemy()->Classify() != CLASS_ASW_SHIELDBUG && GetEnemy()->GetAbsOrigin().DistToSqr(GetAbsOrigin()) < Square(ASW_FORMATION_ATTACK_DISTANCE))
 		return false;
 
 	// only move if we're not near our saved follow point
@@ -1954,7 +1954,7 @@ int CASW_Marine::SelectMeleeSchedule()
 			}
 		}
 
-		if( GetHealth() > GetMaxHealth() * 0.5f || bLastManStanding || GetAbsOrigin().DistToSqr( GetEnemyLKP() ) < Square( 100.0f ) )
+		if ( ( GetHealth() > GetMaxHealth() / 2 || bLastManStanding ) && GetAbsOrigin().DistToSqr( GetEnemyLKP() ) < Square( 100.0f ) )
 		{
 			if ( ValidMarineMeleeTarget( GetEnemy() ) )
 			{
