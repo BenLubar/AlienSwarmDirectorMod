@@ -214,8 +214,36 @@ Vector CASW_SquadFormation::GetLdrAnglMatrix( const Vector &origin, const QAngle
 	return vecLeaderAim;
 }
 
+float GetClosestPointToSegmentDistSqr(const Vector &v, const Vector &w, const Vector &p)
+{
+	// Adapted from http://stackoverflow.com/a/1501725
+
+	// Return minimum distance between line segment vw and point p
+	const float l2 = v.DistToSqr(w); // i.e. |w-v|^2 -  avoid a sqrt
+	// v == w case
+	if (l2 == 0.0f)
+		return v.DistToSqr(p);
+
+	// Consider the line extending the segment, parameterized as v + t (w - v).
+	// We find projection of point p onto the line. 
+	// It falls where t = [(p-v) . (w-v)] / |w-v|^2
+	const float t = DotProduct(p - v, w - v) / l2;
+
+	// Beyond the 'v' end of the segment
+	if (t < 0.0f)
+		return v.DistToSqr(p);
+
+	// Beyond the 'w' end of the segment
+	if (t > 1.0f)
+		return w.DistToSqr(p);
+
+	// Projection falls on the segment
+	const Vector projection = v + t * (w - v);
+	return projection.DistToSqr(p);
+}
+
 // returns Square(OUT_OF_BOOMER_BOMB_RANGE) if not within blast radius of any boomer bomb
-float GetClosestBoomerBlobDistSqr( const Vector &vecPosition )
+float GetClosestBoomerBlobDistSqr( const Vector &vecNode, const Vector &vecFrom )
 {
 	float flClosestBoomerBlobDistSqr = Square(OUT_OF_BOOMER_BOMB_RANGE);
 
@@ -223,19 +251,11 @@ float GetClosestBoomerBlobDistSqr( const Vector &vecPosition )
 	{
  		CBaseEntity *pExplosive = g_aExplosiveProjectiles[ iBoomerBlob ];
 
-		float flDistSqr = pExplosive->GetAbsOrigin().DistToSqr( vecPosition );
-		if( flDistSqr < flClosestBoomerBlobDistSqr )
-		{
-			flClosestBoomerBlobDistSqr = flDistSqr;
-		}
+		float flDistSqr = GetClosestPointToSegmentDistSqr(vecFrom, vecNode, pExplosive->GetAbsOrigin());
+		flClosestBoomerBlobDistSqr = MIN( flDistSqr, flClosestBoomerBlobDistSqr );
 	}
 
 	return flClosestBoomerBlobDistSqr;
-}
-
-bool WithinBoomerBombRadius( const Vector &vecPosition )
-{
-	return ( GetClosestBoomerBlobDistSqr( vecPosition ) < Square(OUT_OF_BOOMER_BOMB_RANGE) );
 }
 
 void CASW_SquadFormation::UpdateFollowPositions()
@@ -291,7 +311,7 @@ void CASW_SquadFormation::UpdateFollowPositions()
 			m_vFollowPositions[i] = pBeaconToStandIn->GetAbsOrigin() + s_MarineBeaconOffset[i];
 			m_bStandingInBeacon[i] = true;
 		}
-		else if( g_aExplosiveProjectiles.Count() )
+		else if ( g_aExplosiveProjectiles.Count() && MarineHintManager()->GetHintCount() && m_flUseHintsAfter[i] < gpGlobals->curtime && asw_follow_use_hints.GetBool() ) // assume there's combat if there are explosives
 		{
 			bool bSafeNodeFound = false;
 			bool bUnsafeNodeFound = false;
@@ -299,17 +319,16 @@ void CASW_SquadFormation::UpdateFollowPositions()
 			float flBestUnsafeNodeDistSqr = 0.0f;
 			Vector vecClosestSafeNode;
 			Vector vecBestUnsafeNode;
-			const float k_flMaxSearchDistance = 300.0f;
+			const float k_flMaxSearchDistance = 900.0f;
 
-			for( int iNode = 0; iNode < pMarine->GetNavigator()->GetNetwork()->NumNodes(); iNode++ )
+			for( int iHint = 0; iHint < MarineHintManager()->GetHintCount(); iHint++ )
 			{
-				CAI_Node *pAiNode = pMarine->GetNavigator()->GetNetwork()->GetNode( iNode );
-				Vector vecNodeLocation = pAiNode->GetOrigin();
-				if( vecNodeLocation.DistToSqr( pMarine->GetAbsOrigin() ) > Square( k_flMaxSearchDistance ) )
+				Vector vecNodeLocation = MarineHintManager()->GetHintPosition( iHint );
+				if ( vecNodeLocation.DistToSqr( m_vLastLeaderPos ) > Square( k_flMaxSearchDistance ) )
 					continue;
 
-				bool bNodeTaken = false;
-				for( int iSlot = 0; iSlot < MAX_SQUAD_SIZE; iSlot++ )
+				bool bNodeTaken = vecNodeLocation.DistToSqr( m_vLastLeaderPos ) < Square( 30.0f );
+				for ( int iSlot = 0; iSlot < MAX_SQUAD_SIZE; iSlot++ )
 				{
 					if ( iSlot != i && vecNodeLocation.DistToSqr( m_vFollowPositions[ iSlot ] ) < Square( 30.0f ) )	// don't let marines get too close, even if nodes are close
 					{
@@ -320,11 +339,11 @@ void CASW_SquadFormation::UpdateFollowPositions()
 
 				if( !bNodeTaken )
 				{
-					float flClosestBoomerBlobDistSqr = GetClosestBoomerBlobDistSqr( vecNodeLocation );
-					if( flClosestBoomerBlobDistSqr >= Square(OUT_OF_BOOMER_BOMB_RANGE) )
+					float flClosestBoomerBlobDistSqr = GetClosestBoomerBlobDistSqr( vecNodeLocation, pMarine->GetAbsOrigin() );
+					if ( flClosestBoomerBlobDistSqr >= Square(OUT_OF_BOOMER_BOMB_RANGE) )
 					{
 						// if closer than the previous closest node, and the current node isn't taken, reserve it
-						float flSafeNodeDistSqr = vecNodeLocation.DistToSqr( pMarine->GetAbsOrigin() );
+						float flSafeNodeDistSqr = vecNodeLocation.DistToSqr( pLeader->GetAbsOrigin() );
 						if ( flSafeNodeDistSqr < flClosestSafeNodeDistSqr )
 						{
 							flClosestSafeNodeDistSqr = flSafeNodeDistSqr;
@@ -334,7 +353,7 @@ void CASW_SquadFormation::UpdateFollowPositions()
 					}
 					else
 					{
-						if( flClosestBoomerBlobDistSqr > flBestUnsafeNodeDistSqr )
+						if ( flClosestBoomerBlobDistSqr > flBestUnsafeNodeDistSqr )
 						{
 							flBestUnsafeNodeDistSqr = flClosestBoomerBlobDistSqr;
 							bUnsafeNodeFound = true;
