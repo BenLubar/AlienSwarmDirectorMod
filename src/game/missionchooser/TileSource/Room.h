@@ -24,7 +24,7 @@ class CRoom : public IASW_Room_Details
 {
 public:
 	CRoom();
-	CRoom(CMapLayout *pMapLayout, std::string iszLevelTheme, std::string iszRoomTemplate, int TileX, int TileY);
+	CRoom(CMapLayout *pMapLayout, std::string iszLevelTheme, std::string iszRoomTemplate, int TileX, int TileY, int nInstanceSeed);
 	virtual ~CRoom();
 	
 	// tile position we're in
@@ -41,6 +41,9 @@ public:
 
 	// A number indicating the placement order index of this room in the map layout, or -1 if not applicable.
 	int m_nPlacementIndex;
+
+	// A random seed for this room's asw_tilegen_instace entities.
+	int m_nInstanceSeed;
 
 	// todo: lighting scale
 	// todo: spawner scaling, etc., etc.

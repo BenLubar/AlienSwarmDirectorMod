@@ -6695,3 +6695,25 @@
 		18 : "Short Range Assault Jets"
 	]
 ]
+
+@PointClass base(Angles) = asw_tilegen_instance : "Used for tilegen instancing"
+[
+	glob1(string) : "Filename Pattern 1" : "light_*.vmf" : ""
+	weight1(float) : "Weight 1" : "1" : ""
+	glob2(string) : "Filename Pattern 2" : "" : ""
+	weight2(float) : "Weight 2" : "0" : ""
+	glob3(string) : "Filename Pattern 3" : "" : ""
+	weight3(float) : "Weight 3" : "0" : ""
+	glob4(string) : "Filename Pattern 4" : "" : ""
+	weight4(float) : "Weight 4" : "0" : ""
+	glob5(string) : "Filename Pattern 5" : "" : ""
+	weight5(float) : "Weight 5" : "0" : ""
+	glob6(string) : "Filename Pattern 6" : "" : ""
+	weight6(float) : "Weight 6" : "0" : ""
+	glob7(string) : "Filename Pattern 7" : "" : ""
+	weight7(float) : "Weight 7" : "0" : ""
+	glob8(string) : "Filename Pattern 8" : "" : ""
+	weight8(float) : "Weight 8" : "0" : ""
+	glob9(string) : "Filename Pattern 9" : "" : ""
+	weight9(float) : "Weight 9" : "0" : ""
+]

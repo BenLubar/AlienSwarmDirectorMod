@@ -21,17 +21,19 @@ CRoom::CRoom() : m_iszLevelTheme(), m_iszRoomTemplate()
 	m_iNumChildren = 0;
 	m_nPlacementIndex = -1;
 	m_bHasAlienEncounter = false;
+	m_nInstanceSeed = -1;
 
 	m_pPlacedRoomPanel = NULL;
 	m_pMapLayout = NULL;
 }
 
-CRoom::CRoom(CMapLayout *pMapLayout, std::string iszLevelTheme, std::string iszRoomTemplate, int TileX, int TileY) : m_iszLevelTheme(iszLevelTheme), m_iszRoomTemplate(iszRoomTemplate)
+CRoom::CRoom(CMapLayout *pMapLayout, std::string iszLevelTheme, std::string iszRoomTemplate, int TileX, int TileY, int nInstanceSeed) : m_iszLevelTheme(iszLevelTheme), m_iszRoomTemplate(iszRoomTemplate)
 {
 	m_iPosX = TileX;
 	m_iPosY = TileY;
 	m_iNumChildren = 0;
 	m_bHasAlienEncounter = false;
+	m_nInstanceSeed = nInstanceSeed;
 	
 	// Add ourself to the list of placed rooms.
 	// This also sets m_nPlacementIndex.
@@ -64,6 +66,7 @@ KeyValues *CRoom::GetKeyValuesCopy()
 	KeyValues *pKeys = new KeyValues( "room" );
 	pKeys->SetInt( "posx", m_iPosX );
 	pKeys->SetInt( "posy", m_iPosY );
+	pKeys->SetInt( "instance_seed", m_nInstanceSeed );
 	pKeys->SetString( "theme", m_iszLevelTheme.c_str() );
 	pKeys->SetString( "template", m_iszRoomTemplate.c_str() );
 
@@ -83,6 +86,8 @@ bool CRoom::SaveRoomToFile(CChunkFile *pFile)
 	if (pFile->WriteKeyValueInt("posx", m_iPosX) != ChunkFile_Ok)
 		return false;
 	if (pFile->WriteKeyValueInt("posy", m_iPosY) != ChunkFile_Ok)
+		return false;
+	if (pFile->WriteKeyValueInt("instance_seed", m_nInstanceSeed) != ChunkFile_Ok)
 		return false;
 
 	// theme and template name
@@ -104,6 +109,7 @@ bool CRoom::LoadRoomFromKeyValues( KeyValues *pRoomKeys, CMapLayout *pMapLayout 
 	
 	pNewRoom->m_iPosX = pRoomKeys->GetInt( "posx" );
 	pNewRoom->m_iPosY = pRoomKeys->GetInt( "posy" );
+	pNewRoom->m_nInstanceSeed = pRoomKeys->GetInt( "instance_seed" );
 
 	pNewRoom->m_iszLevelTheme = pRoomKeys->GetString( "theme" );
 	pNewRoom->m_iszRoomTemplate = pRoomKeys->GetString( "template" );

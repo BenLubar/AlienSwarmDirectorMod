@@ -344,6 +344,11 @@ bool VMFExporter::AddRoomTemplateEntities( const CRoomTemplate *pRoomTemplate )
 				Q_snprintf( m_szLastExporterError, sizeof(m_szLastExporterError), "Failed to copy entity from room %s\n", pRoomTemplate->GetFullName());
 				return false;
 			}
+			if ( !Q_stricmp( pKeys->GetString( "classname" ), "func_instance" ) && !Q_stricmp( pKeys->GetString( "file" ), "" ) )
+			{
+				// skip instances with no filename (for asw_tilegen_instance)
+				continue;
+			}
 			m_pExportKeys->AddSubKey( pKeys->MakeCopy() );
 		}
 	}
@@ -559,7 +564,13 @@ bool VMFExporter::ProcessSideKey( KeyValues *pKey )
 }
 
 bool VMFExporter::ProcessEntity( KeyValues *pEntityKeys )
-{		
+{
+	if ( !Q_stricmp( pEntityKeys->GetString( "classname" ), "asw_tilegen_instance" ) )
+	{
+		if ( !ProcessInstance( pEntityKeys ) )
+			return false;
+	}
+
 	for ( KeyValues *pKeys = pEntityKeys->GetFirstSubKey(); pKeys; )
 	{
 		if ( pKeys->GetFirstSubKey() )
@@ -592,6 +603,86 @@ bool VMFExporter::ProcessEntity( KeyValues *pEntityKeys )
 	}
 
 	return true;
+}
+
+bool VMFExporter::ProcessInstance( KeyValues *pEntityKeys )
+{
+	pEntityKeys->SetString( "classname", "func_instance" );
+
+	// I probably shouldn't mix 'n match standard libraries, but whatever.
+	CUtlVector< std::pair< std::string, float > > choices;
+	float flTotalWeight = 0;
+
+	for ( int i = 1; i <= 9; i++ )
+	{
+		char szKey[16];
+		Q_snprintf( szKey, sizeof(szKey), "weight%d", i );
+		float flWeight = pEntityKeys->GetFloat( szKey );
+
+		KeyValues *pRemoveKey = pEntityKeys->FindKey( szKey );
+		if ( pRemoveKey )
+		{
+			pEntityKeys->RemoveSubKey( pRemoveKey );
+			pRemoveKey->deleteThis();
+		}
+
+		Q_snprintf( szKey, sizeof(szKey), "glob%d", i );
+		if ( flWeight > 0 )
+		{
+			char szGlob[MAX_PATH];
+			if ( !Q_stricmp( pEntityKeys->GetString( szKey ), "" ) )
+				szGlob[0] = '\0';
+			else
+				Q_snprintf( szGlob, MAX_PATH, "tilegen/instance/%s/%s", m_pRoom->m_iszLevelTheme.c_str(), pEntityKeys->GetString( szKey ) );
+			if ( Q_strstr( szGlob, "*" ) )
+			{
+				bool bFoundAny = false;
+				FileFindHandle_t ffh;
+				for ( const char *pszFilename = g_pFullFileSystem->FindFirstEx( szGlob, "GAME", &ffh ); pszFilename; pszFilename = g_pFullFileSystem->FindNext( ffh ) )
+				{
+					choices.AddToTail( std::make_pair( std::string( pszFilename ), flWeight ) );
+					flTotalWeight += flWeight;
+					bFoundAny = true;
+				}
+				g_pFullFileSystem->FindClose( ffh );
+
+				if ( !bFoundAny )
+				{
+					Warning( "[TileGen] no results for instance glob '%s'\n", szGlob );
+					return false;
+				}
+			}
+			else
+			{
+				choices.AddToTail( std::make_pair( std::string( szGlob ), flWeight ) );
+				flTotalWeight += flWeight;
+			}
+		}
+
+		pRemoveKey = pEntityKeys->FindKey(szKey);
+		if (pRemoveKey)
+		{
+			pEntityKeys->RemoveSubKey(pRemoveKey);
+			pRemoveKey->deleteThis();
+		}
+	}
+
+	float flChoice = fmodf( ( flTotalWeight * ( (float) m_pRoom->m_nInstanceSeed / (float) INT_MAX ) ) + m_iEntityCount, flTotalWeight );
+	for ( int i = 0; i < choices.Count(); i++ )
+	{
+		flChoice -= choices[i].second;
+		if (flChoice < 0)
+		{
+			char szFile[MAX_PATH];
+			Q_snprintf( szFile, MAX_PATH, "../tilegen/instance/%s/%s", m_pRoom->m_iszLevelTheme.c_str(), choices[i].first.c_str() );
+			pEntityKeys->SetString( "file", szFile );
+			choices.Purge();
+			return true;
+		}
+	}
+	Warning( "[TileGen] no choices in asw_tilegen_instance\n" );
+	Assert( 0 );
+	return false;
 }
 
 bool VMFExporter::ProcessEntityKey( KeyValues *pKey )
