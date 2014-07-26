@@ -369,7 +369,7 @@ Vector CASW_Player::EyePosition( )
 {
 	// revert to hl2 camera
 #ifdef CLIENT_DLL
-	if ( !asw_controls.GetBool() && engine->IsPlayingDemo() )
+	if ( !asw_controls.GetBool() && ( engine->IsPlayingDemo() || GetSpectatingMarine() || ( ASWGameRules() && ASWGameRules()->GetMarineDeathCamInterp() > 0.0f ) ) )
 #else
 	if ( !asw_controls.GetBool() )
 #endif

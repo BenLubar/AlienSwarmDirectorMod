@@ -517,7 +517,6 @@ void ASWDemoCamera_f()
 	if (!engine->IsPlayingDemo())
 		return;
 
-	engine->ClientCmd("firstperson");
 	engine->ClientCmd("asw_controls 0");
 }
 ConCommand asw_demo_camera("asw_demo_camera", ASWDemoCamera_f);

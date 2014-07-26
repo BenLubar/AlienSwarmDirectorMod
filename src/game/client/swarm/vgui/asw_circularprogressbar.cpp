@@ -35,6 +35,7 @@ using namespace vgui;
 DECLARE_BUILD_FACTORY( ASWCircularProgressBar );
 
 extern ConVar crosshair;
+extern ConVar asw_controls;
 ConVar asw_crosshair_progress_size( "asw_crosshair_progress_size", "20", FCVAR_ARCHIVE );
 
 //-----------------------------------------------------------------------------
@@ -154,6 +155,9 @@ void ASWCircularProgressBar::PaintBackground()
 	if ( !crosshair.GetBool() )
 		return;
 
+	if ( !asw_controls.GetBool() )
+		return;
+
 	int x = 0;
 	int y = 0;
 	int w, h;
@@ -221,6 +225,9 @@ void ASWCircularProgressBar::PaintBackground()
 void ASWCircularProgressBar::Paint()
 {
 	if ( !crosshair.GetBool() )
+		return;
+
+	if ( !asw_controls.GetBool() )
 		return;
 
 	int x = 0;

@@ -10,6 +10,7 @@
 #include "cdll_int.h"
 #include "vgui/isurface.h"
 #include "iasw_client_aim_target.h"
+#include "asw_gamerules.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -39,16 +40,11 @@ void CASWInput::ActivateMouse (void)
 //-----------------------------------------------------------------------------
 void CASWInput::ResetMouse( void )
 {
-	int x, y;
 	HACK_GETLOCALPLAYER_GUARD( "Mouse behavior is tied to a specific player's status - splitscreen player would depend on which player (if any) is using mouse control" );
-	if (MarineControllingTurret() || !asw_controls.GetBool())
+	if ( MarineControllingTurret() || ( !asw_controls.GetBool() && ( !ASWGameRules() || ASWGameRules()->GetMarineDeathCamInterp() <= 0.0f ) && ( !C_ASW_Marine::GetLocalMarine() || !C_ASW_Marine::GetLocalMarine()->IsUsingComputerOrButtonPanel() ) ) )
 	{
-		GetWindowCenter( x,  y );
-		SetMousePos( x, y );
-	}
-	else
-	{		
-		GetMousePos( x, y );	// asw instead of GetWindowCenter, so mouse doesn't move
+		int x, y;
+		GetWindowCenter( x, y );
 		SetMousePos( x, y );
 	}
 }
@@ -117,7 +113,8 @@ void CASWInput::ApplyMouse( int nSlot, QAngle& viewangles, CUserCmd *cmd, float 
 			mouse_x = mouse_x_accumulated;
 			mouse_y = mouse_y_accumulated;
 		}
-		CInput::ApplyMouse( nSlot, viewangles, cmd, mouse_x, mouse_y );
+		if ( ( !ASWGameRules() || ASWGameRules()->GetMarineDeathCamInterp() <= 0.0f ) && ( !C_ASW_Marine::GetLocalMarine() || !C_ASW_Marine::GetLocalMarine()->IsUsingComputerOrButtonPanel() ) )
+			CInput::ApplyMouse( nSlot, viewangles, cmd, mouse_x, mouse_y );
 
 		// force the mouse to the center, so there's room to move
 		ResetMouse();

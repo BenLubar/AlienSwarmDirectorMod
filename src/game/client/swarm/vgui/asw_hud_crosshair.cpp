@@ -38,7 +38,7 @@ ConVar asw_crosshair_use_perspective("asw_crosshair_use_perspective", "1", FCVAR
 extern ConVar cl_observercrosshair;
 extern ConVar asw_crosshair_progress_size;
 extern ConVar asw_fast_reload_enabled;
-
+extern ConVar asw_controls;
 
 using namespace vgui;
 
@@ -130,7 +130,7 @@ void CASWHudCrosshair::ApplySchemeSettings( IScheme *scheme )
 void CASWHudCrosshair::Paint( void )
 {
 	VPROF_BUDGET( "CASWHudCrosshair::Paint", VPROF_BUDGETGROUP_ASW_CLIENT );
-	if ( !crosshair.GetInt() )
+	if ( !crosshair.GetBool() )
 		return;
 
 	if ( engine->IsDrawingLoadingImage() || engine->IsPaused() || !engine->IsActiveApp() )
@@ -139,22 +139,7 @@ void CASWHudCrosshair::Paint( void )
 	C_ASW_Player* pPlayer = C_ASW_Player::GetLocalASWPlayer();
 	if ( !pPlayer )
 		return;
-/*
-	// draw a crosshair only if alive or spectating in eye
-	bool shouldDraw = false;
-	if ( pPlayer->IsAlive() )
-		shouldDraw = true;
 
-	if ( pPlayer->GetObserverMode() == OBS_MODE_IN_EYE )
-		shouldDraw = true;
-
-	if ( pPlayer->GetObserverMode() == OBS_MODE_ROAMING && cl_observercrosshair.GetBool() )
-		shouldDraw = true;
-
-    shouldDraw = true; // asw: always draw a crosshair
-	if ( !shouldDraw )
-		return;
-*/
 	if ( pPlayer->GetFlags() & FL_FROZEN )
 		return;
 
@@ -185,6 +170,8 @@ void CASWHudCrosshair::Paint( void )
 		}
 		else
 		{
+			if ( !asw_controls.GetBool() )
+				return;
 			DrawDirectionalCrosshair( x, y, YRES( asw_crosshair_progress_size.GetInt() ) );
 		}
 	}
@@ -765,7 +752,7 @@ void CASWHudCrosshair::GetCurrentPos( int &x, int &y )
 	m_pTurretTextTopLeftGlow->SetVisible( bControllingTurret );
 	m_pTurretTextTopRightGlow->SetVisible( bControllingTurret );
 
-	if ( ::input->CAM_IsThirdPerson() && !bControllingTurret )
+	if ( !bControllingTurret )
 	{
 		ASWInput()->GetSimulatedFullscreenMousePos( &x, &y );
 	}
