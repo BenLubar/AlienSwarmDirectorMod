@@ -431,10 +431,14 @@ Vector CASW_Player::EyePosition( )
 				ang[YAW] = ASWInput()->ASW_GetCameraYaw();
 				ang[ROLL] = 0;
 
-				AngleVectors( ang, &vCamOffset );
 				if ( bIsThirdPerson )
 				{
+					AngleVectors(ang, &vCamOffset);
 					vCamOffset *= -ASWInput()->ASW_GetCameraDist();
+				}
+				else
+				{
+					vCamOffset.Init();
 				}
 
 				org = m_vecLastMarineOrigin + vCamOffset;
@@ -442,6 +446,7 @@ Vector CASW_Player::EyePosition( )
 			else
 			{
 				// Do the death cam!
+				float fFirstPersonInterp = 0.0f;
 				Vector vCamOffset;
 				float fOffsetScale = 1.0f;
 				Vector vDeathPos = ASWGameRules()->m_vMarineDeathPos;
@@ -449,7 +454,15 @@ Vector CASW_Player::EyePosition( )
 				{
 					vDeathPos = ASWGameRules()->m_hMarineDeathRagdoll->WorldSpaceCenter();
 				}
-				vDeathPos.z += 50.0f;
+				if ( bIsThirdPerson )
+				{
+					vDeathPos.z += 50.0f;
+				}
+				else
+				{
+					fFirstPersonInterp = 1.0f - fDeathCamInterp;
+					fDeathCamInterp = 1.0f;
+				}
 
 				// Prevent final death cam pos from clipping through walls
 				const float flMaxDeathCamInterp = 1.0f;
@@ -498,17 +511,22 @@ Vector CASW_Player::EyePosition( )
 				fOffsetScale = tr.fraction;
 
 				// Blend the death cam position with the regular game view
-				ang[PITCH] = ASWInput()->ASW_GetCameraPitch( &fDeathCamInterp );
+				ang[PITCH] = ASWInput()->ASW_GetCameraPitch(&fDeathCamInterp);
+				ang[PITCH] += fFirstPersonInterp * AngleDiff( pMarine ? pMarine->EyeAngles()[PITCH] : ang[PITCH], ang[PITCH] );
 				ang[YAW] = ASWInput()->ASW_GetCameraYaw( &fDeathCamInterp );
-				ang[ROLL] = 0;
+				ang[YAW] += fFirstPersonInterp * AngleDiff( pMarine ? pMarine->EyeAngles()[YAW] : ang[YAW], ang[YAW] );
+				ang[ROLL] = 0.0f;
 
 				AngleVectors( ang, &vCamOffset );
-				vCamOffset *= -ASWInput()->ASW_GetCameraDist( &fDeathCamInterp );
+				vCamOffset *= Lerp( fFirstPersonInterp, -ASWInput()->ASW_GetCameraDist( &fDeathCamInterp ), 0.0f );
 
-				vCamOffset.z += fDeathCamInterp * asw_cam_marine_shift_z_death.GetFloat();
+				if ( bIsThirdPerson )
+					vCamOffset.z += fDeathCamInterp * asw_cam_marine_shift_z_death.GetFloat();
 
-				org = ( 1.0f - fDeathCamInterp ) * m_vecLastMarineOrigin + fDeathCamInterp * vDeathPos;
-				org += vCamOffset * fOffsetScale;
+				vCamOffset *= fOffsetScale;
+
+				org = Lerp( bIsThirdPerson ? fDeathCamInterp : ( 1.0f - fFirstPersonInterp ), m_vecLastMarineOrigin, vDeathPos );
+				org += vCamOffset;
 			}
 		}
 
@@ -851,19 +869,6 @@ int CASW_Player::Weapon_GetSlot( const char *pszWeapon, int iSubType ) const
 
 const QAngle& CASW_Player::EyeAngles( )
 {
-	if ( !asw_controls.GetBool() && GetSpectatingMarine() )
-		return GetSpectatingMarine()->EyeAngles();
-
-	// revert to hl2 camera
-#ifdef CLIENT_DLL
-	if ( !asw_controls.GetBool() && engine->IsPlayingDemo() )
-#else
-	if ( !asw_controls.GetBool() )
-#endif
-	{
-		return BaseClass::EyeAngles();
-	}
-
 	static QAngle angAdjustedEyes;
 
 #ifdef CLIENT_DLL
@@ -878,6 +883,33 @@ const QAngle& CASW_Player::EyeAngles( )
 #else
 	angAdjustedEyes = BaseClass::EyeAngles();
 #endif
+
+	// revert to hl2 camera
+#ifdef CLIENT_DLL
+	if ( !asw_controls.GetBool() && ( engine->IsPlayingDemo() || GetSpectatingMarine() || ( ASWGameRules() && ASWGameRules()->GetMarineDeathCamInterp() > 0.0f ) ) )
+#else
+	if ( !asw_controls.GetBool() )
+#endif
+	{
+		if ( GetSpectatingMarine() )
+		{
+			 angAdjustedEyes = GetSpectatingMarine()->EyeAngles();
+		}
+
+#ifdef CLIENT_DLL
+		float fOne = 1.0f;
+		float fDeathInterp = ASWGameRules() ? ASWGameRules()->GetMarineDeathCamInterp() : 0.0f;
+		if ( fDeathInterp > 0.0f )
+		{
+			angAdjustedEyes[PITCH] += fDeathInterp * AngleDiff( ASWInput()->ASW_GetCameraPitch( &fOne ), angAdjustedEyes[PITCH] );
+			angAdjustedEyes[YAW] += fDeathInterp * AngleDiff( ASWInput()->ASW_GetCameraYaw( &fOne ), angAdjustedEyes[YAW] );
+		}
+#endif
+
+		angAdjustedEyes[ROLL] = 0.0f;
+
+		return angAdjustedEyes;
+	}
 
 #ifdef CLIENT_DLL
 	if ( asw_allow_detach.GetBool() && GetMarine() )
