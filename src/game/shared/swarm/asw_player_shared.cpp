@@ -90,8 +90,21 @@ ConVar asw_allow_detach("asw_allow_detach", "0", FCVAR_REPLICATED | FCVAR_CHEAT,
 ConVar asw_DebugAutoAim("asw_DebugAutoAim", "0", FCVAR_REPLICATED | FCVAR_CHEAT);
 ConVar asw_marine_nearby_angle("asw_marine_nearby_angle", "-75", FCVAR_REPLICATED | FCVAR_CHEAT);
 ConVar asw_rts_controls("asw_rts_controls", "0", FCVAR_REPLICATED | FCVAR_CHEAT);
-ConVar asw_controls("asw_controls", "1", FCVAR_REPLICATED | FCVAR_CHEAT, "Disable to get normal FPS controls (affects all players on the server)");
-ConVar asw_hl2_camera("asw_hl2_camera", "0", FCVAR_REPLICATED | FCVAR_DONTRECORD | FCVAR_CHEAT);
+
+void ASW_Controls_Changed( IConVar *var, const char *pOldValue, float flOldValue );
+ConVar asw_controls("asw_controls", "1", FCVAR_REPLICATED, "Disable to get normal FPS controls (affects all players on the server)", ASW_Controls_Changed);
+void ASW_Controls_Changed( IConVar *var, const char *pOldValue, float flOldValue )
+{
+#ifdef CLIENT_DLL
+	if ( !ASWGameRules() )
+		return;
+
+	if ( asw_controls.GetBool() )
+		ASWInput()->CAM_ToThirdPerson();
+	else
+		ASWInput()->CAM_ToFirstPerson();
+#endif
+}
 
 #ifdef CLIENT_DLL		
 	extern ConVar asw_vehicle_cam_height;
@@ -356,9 +369,9 @@ Vector CASW_Player::EyePosition( )
 {
 	// revert to hl2 camera
 #ifdef CLIENT_DLL
-	if (asw_hl2_camera.GetBool() && engine->IsPlayingDemo())
+	if ( !asw_controls.GetBool() && engine->IsPlayingDemo() )
 #else
-	if (asw_hl2_camera.GetBool())
+	if ( !asw_controls.GetBool() )
 #endif
 	{
 		return BaseClass::EyePosition();
@@ -405,22 +418,7 @@ Vector CASW_Player::EyePosition( )
 		}
 		else if ( pMarine && pMarine->IsControllingTurret() )
 		{
-			if ( bSpectating )
-			{
-				ang[PITCH] = ASWInput()->ASW_GetCameraPitch();
-				ang[YAW] = ASWInput()->ASW_GetCameraYaw();
-				ang[ROLL] = 0;
-				AngleVectors(ang, &org);
-				if ( bIsThirdPerson )
-				{
-					org *= -::ASWInput()->ASW_GetCameraDist();
-				}
-				org += pMarine->GetRemoteTurret()->GetRenderOrigin();
-			}
-			else
-			{
-				org = pMarine->GetRemoteTurret()->GetTurretCamPosition();
-			}
+			org = pMarine->GetRemoteTurret()->GetTurretCamPosition();
 		}
 		else
 		{
@@ -473,10 +471,7 @@ Vector CASW_Player::EyePosition( )
 					ang[ YAW ] = fBaseYaw + fYawAngleOffset;
 
 					AngleVectors( ang, &vCamOffset );
-					if ( bIsThirdPerson )
-					{
-						vCamOffset *= fMaxDeathCamDist;
-					}
+					vCamOffset *= fMaxDeathCamDist;
 
 					vCamOffset.z += asw_cam_marine_shift_z_death.GetFloat();
 
@@ -508,10 +503,7 @@ Vector CASW_Player::EyePosition( )
 				ang[ROLL] = 0;
 
 				AngleVectors( ang, &vCamOffset );
-				if ( bIsThirdPerson )
-				{
-					vCamOffset *= -ASWInput()->ASW_GetCameraDist( &fDeathCamInterp );
-				}
+				vCamOffset *= -ASWInput()->ASW_GetCameraDist( &fDeathCamInterp );
 
 				vCamOffset.z += fDeathCamInterp * asw_cam_marine_shift_z_death.GetFloat();
 
@@ -859,14 +851,14 @@ int CASW_Player::Weapon_GetSlot( const char *pszWeapon, int iSubType ) const
 
 const QAngle& CASW_Player::EyeAngles( )
 {
-	if ( asw_hl2_camera.GetBool() && GetSpectatingMarine() )
+	if ( !asw_controls.GetBool() && GetSpectatingMarine() )
 		return GetSpectatingMarine()->EyeAngles();
 
 	// revert to hl2 camera
 #ifdef CLIENT_DLL
-	if (asw_hl2_camera.GetBool() && engine->IsPlayingDemo())
+	if ( !asw_controls.GetBool() && engine->IsPlayingDemo() )
 #else
-	if (asw_hl2_camera.GetBool())
+	if ( !asw_controls.GetBool() )
 #endif
 	{
 		return BaseClass::EyeAngles();
@@ -948,9 +940,9 @@ Vector CASW_Player::EarPosition( void )
 {
 	// revert to hl2 camera
 #ifdef CLIENT_DLL
-	if (asw_hl2_camera.GetBool() && engine->IsPlayingDemo())
+	if ( !asw_controls.GetBool() && engine->IsPlayingDemo() )
 #else
-	if (asw_hl2_camera.GetBool())
+	if ( !asw_controls.GetBool() )
 #endif
 	{
 		return BaseClass::EarPosition();

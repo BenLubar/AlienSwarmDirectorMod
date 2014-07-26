@@ -73,6 +73,7 @@ ConVar asw_hear_from_marine( "asw_hear_from_marine", "0", FCVAR_NONE, "Audio hea
 ConVar asw_hear_pos_debug("asw_hear_pos_debug", "0", FCVAR_NONE, "Shows audio hearing position" );
 ConVar asw_hear_height("asw_hear_height", "0", FCVAR_NONE, "If set, hearing audio position is this many units above the marine.  If number is negative, then hear position is number of units below the camera." );
 ConVar asw_hear_fixed("asw_hear_fixed", "0", FCVAR_NONE, "If set, hearing audio position is locked in place.  Use asw_set_hear_pos to set the fixed position to the current audio location." );
+extern ConVar asw_controls;
 
 Vector g_asw_vec_fixed_cam(-276.03076, -530.74951, -196.65625);
 QAngle g_asw_ang_fixed_cam(42.610226, 90.289375, 0);
@@ -762,7 +763,10 @@ void ClientModeASW::LevelInit( const char *newmap )
 	}
 	else
 	{
-		::input->CAM_ToThirdPerson();
+		if (asw_controls.GetBool())
+			::input->CAM_ToThirdPerson();
+		else
+			::input->CAM_ToFirstPerson();
 		// create a black panel to fade in
 		FadeInPanel *pFadeIn = dynamic_cast<FadeInPanel*>(GetViewport()->FindChildByName("FadeIn", true));
 		if (pFadeIn)

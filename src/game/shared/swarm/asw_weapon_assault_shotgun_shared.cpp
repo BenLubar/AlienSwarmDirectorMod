@@ -45,6 +45,7 @@ PRECACHE_WEAPON_REGISTER(asw_weapon_vindicator);
 
 #ifndef CLIENT_DLL
 extern ConVar asw_debug_marine_damage;
+extern ConVar asw_controls;
 ConVar asw_vindicator_grenade_velocity("asw_vindicator_grenade_velocity", "3.0", FCVAR_CHEAT, "Scale to the vindicator grenade initial velocity");
 
 //---------------------------------------------------------

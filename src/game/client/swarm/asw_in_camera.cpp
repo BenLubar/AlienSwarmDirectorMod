@@ -518,7 +518,6 @@ void ASWDemoCamera_f()
 		return;
 
 	engine->ClientCmd("firstperson");
-	engine->ClientCmd("asw_hl2_camera 1");
 	engine->ClientCmd("asw_controls 0");
 }
 ConCommand asw_demo_camera("asw_demo_camera", ASWDemoCamera_f);

@@ -563,7 +563,7 @@ void CASWInput::CreateMove( int sequence_number, float input_sample_frametime, b
 	}
 
 	// asw - alter view angles for this move if it's one where we're firing off a ground grenade
-	if ( asw_ground_secondary.GetBool() && cmd->buttons & IN_ATTACK2 )
+	if ( asw_ground_secondary.GetBool() && asw_controls.GetBool() && cmd->buttons & IN_ATTACK2 )
 	{
 		ASW_AdjustViewAngleForGroundShooting(viewangles);
 	}
