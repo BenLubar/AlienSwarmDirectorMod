@@ -407,9 +407,6 @@ void CASWHudCrosshair::PaintReloadProgressBar( void )
 		return;
 	}
 
-	m_pAmmoProgress->SetVisible( crosshair.GetBool() );
-	m_pFastReloadBar->SetVisible( crosshair.GetBool() );
-
 	int x, y;
 	GetCurrentPos( x, y );
 	int nCrosshair = GetCurrentCrosshair( x, y );
