@@ -203,7 +203,8 @@ void ASW_StoreClearAll()
 bool MarineControllingTurret()
 {
 	C_ASW_Player* pPlayer = C_ASW_Player::GetLocalASWPlayer();
-	return (pPlayer && pPlayer->GetMarine() && pPlayer->GetMarine()->IsControllingTurret());
+	C_ASW_Marine *pMarine = pPlayer ? ( pPlayer->GetSpectatingMarine() ? pPlayer->GetSpectatingMarine() : pPlayer->GetMarine() ) : NULL;
+	return ( pMarine && pMarine->IsControllingTurret() );
 }
 
 #define PI 3.14159265358979

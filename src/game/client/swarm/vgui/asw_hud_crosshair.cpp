@@ -164,7 +164,8 @@ void CASWHudCrosshair::Paint( void )
 	m_curViewAngles = CurrentViewAngles();
 	m_curViewOrigin = CurrentViewOrigin();
 
-	bool bControllingTurret = (pPlayer->GetMarine() && pPlayer->GetMarine()->IsControllingTurret());	
+	C_ASW_Marine *pMarine = pPlayer->GetSpectatingMarine() ? pPlayer->GetSpectatingMarine() : pPlayer->GetMarine();
+	bool bControllingTurret = (pMarine && pMarine->IsControllingTurret());
 	if ( bControllingTurret )
 	{
 		PaintTurretTextures();
@@ -337,7 +338,8 @@ void CASWHudCrosshair::PaintTurretTextures()
 	C_ASW_Player* pPlayer = C_ASW_Player::GetLocalASWPlayer();
 	if ( pPlayer )
 	{
-		bool bControllingTurret = (pPlayer->GetMarine() && pPlayer->GetMarine()->IsControllingTurret());	
+		C_ASW_Marine *pMarine = pPlayer->GetSpectatingMarine() ? pPlayer->GetSpectatingMarine() : pPlayer->GetMarine();
+		bool bControllingTurret = (pMarine && pMarine->IsControllingTurret());
 		if (bControllingTurret)
 		{
 			C_ASW_Remote_Turret *pTurret = pPlayer->GetMarine()->GetRemoteTurret();
@@ -404,6 +406,9 @@ void CASWHudCrosshair::PaintReloadProgressBar( void )
 		m_pFastReloadBar->SetVisible( false );
 		return;
 	}
+
+	m_pAmmoProgress->SetVisible( crosshair.GetBool() );
+	m_pFastReloadBar->SetVisible( crosshair.GetBool() );
 
 	int x, y;
 	GetCurrentPos( x, y );
@@ -503,7 +508,8 @@ void CASWHudCrosshair::OnThink()
 
 	PaintReloadProgressBar();
 
-	bool bControllingTurret = (pPlayer->GetMarine() && pPlayer->GetMarine()->IsControllingTurret());	
+	C_ASW_Marine *pMarine = pPlayer->GetSpectatingMarine() ? pPlayer->GetSpectatingMarine() : pPlayer->GetMarine();
+	bool bControllingTurret = (pMarine && pMarine->IsControllingTurret());
 	if (!bControllingTurret)
 		return;
 
@@ -754,34 +760,22 @@ void CASWHudCrosshair::GetCurrentPos( int &x, int &y )
 	if ( !pPlayer )
 		return;
 
-	bool bControllingTurret = (pPlayer->GetMarine() && pPlayer->GetMarine()->IsControllingTurret());	
+	C_ASW_Marine *pMarine = pPlayer->GetSpectatingMarine() ? pPlayer->GetSpectatingMarine() : pPlayer->GetMarine();
+	bool bControllingTurret = (pMarine && pMarine->IsControllingTurret());
 
 	m_pTurretTextTopLeft->SetVisible( bControllingTurret );
 	m_pTurretTextTopRight->SetVisible( bControllingTurret );
 	m_pTurretTextTopLeftGlow->SetVisible( bControllingTurret );
 	m_pTurretTextTopRightGlow->SetVisible( bControllingTurret );
 
-	if (::input->CAM_IsThirdPerson() && !bControllingTurret)
+	if ( ::input->CAM_IsThirdPerson() && !bControllingTurret )
 	{
-		int mx, my, ux, uy;
-		mx = 1;
-		my = 1;
-
-		ASWInput()->GetSimulatedFullscreenMousePos(&mx, &my, &ux, &uy);
-
-		x = mx;
-		y = my;
+		ASWInput()->GetSimulatedFullscreenMousePos( &x, &y );
 	}
 	else
 	{
-		x = ScreenWidth()/2;
-		y = ScreenHeight()/2;
-
-		if ( bControllingTurret )
-		{
-			PaintTurretTextures();
-			return;	// don't draw the normal cross hair in addition
-		}
+		x = ScreenWidth() / 2;
+		y = ScreenHeight() / 2;
 	}
 }
 

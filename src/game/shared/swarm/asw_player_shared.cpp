@@ -859,6 +859,9 @@ int CASW_Player::Weapon_GetSlot( const char *pszWeapon, int iSubType ) const
 
 const QAngle& CASW_Player::EyeAngles( )
 {
+	if ( asw_hl2_camera.GetBool() && GetSpectatingMarine() )
+		return GetSpectatingMarine()->EyeAngles();
+
 	// revert to hl2 camera
 #ifdef CLIENT_DLL
 	if (asw_hl2_camera.GetBool() && engine->IsPlayingDemo())

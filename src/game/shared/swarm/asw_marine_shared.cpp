@@ -219,6 +219,16 @@ Vector CASW_Marine::EyePosition( void )
 		if (GetASWVehicle() && GetASWVehicle()->GetEntity())
 			return GetASWVehicle()->GetEntity()->GetAbsOrigin();
 	}
+
+	Vector position;
+	QAngle angles;
+	bool ok = GetAttachment("eyes", position, angles);
+	Assert(ok);
+	if (ok)
+	{
+		return position;
+	}
+
 	//if (IsControllingTurret())
 	//{
 		//return GetRemoteTurret()->GetTurretCamPosition();

@@ -1990,6 +1990,9 @@ int C_ASW_Marine::DrawModel( int flags, const RenderableInstance_t &instance )
 	if (!IsVisible())
 		return 0;	
 
+	if (asw_hide_local_marine.GetBool() && C_ASW_Player::GetLocalASWPlayer() && C_ASW_Player::GetLocalASWPlayer()->GetSpectatingMarine() ? C_ASW_Player::GetLocalASWPlayer()->GetSpectatingMarine() == this : C_ASW_Player::GetLocalASWPlayer()->GetMarine() == this)
+		return 0;
+
 	int iResult = BaseClass::DrawModel(flags, instance);
 
 	m_vecLastRenderedPos = GetRenderOrigin();

@@ -222,8 +222,15 @@ void ASWCircularProgressBar::Paint()
 
 	if ( m_bIsOnCursor )
 	{
-		int ux, uy;
-		ASWInput()->GetSimulatedFullscreenMousePos(&x, &y, &ux, &uy);
+		if ( ::input->CAM_IsThirdPerson() )
+		{
+			ASWInput()->GetSimulatedFullscreenMousePos( &x, &y );
+		}
+		else
+		{
+			x = ScreenWidth() / 2;
+			y = ScreenHeight() / 2;
+		}
 		w = YRES( asw_crosshair_progress_size.GetInt() ) * m_flScale;
 		h = w;
 	}

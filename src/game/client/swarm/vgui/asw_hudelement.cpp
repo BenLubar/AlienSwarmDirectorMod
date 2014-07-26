@@ -34,10 +34,11 @@ bool CASW_HudElement::ShouldDraw( void )
 	}
 
 	C_ASW_Player *pASWPlayer = C_ASW_Player::GetLocalASWPlayer();
+	C_ASW_Marine *pMarine = pASWPlayer ? ( pASWPlayer->GetSpectatingMarine() ? pASWPlayer->GetSpectatingMarine() : pASWPlayer->GetMarine() ) : NULL;
 	// hide things due to turret control
-	if ( ( m_iHiddenBits & HIDEHUD_REMOTE_TURRET ) && (pASWPlayer && pASWPlayer->GetMarine() && pASWPlayer->GetMarine()->IsControllingTurret()) )
+	if ( ( m_iHiddenBits & HIDEHUD_REMOTE_TURRET ) && pMarine && pMarine->IsControllingTurret() )
 		return false;
-	if ( ( m_iHiddenBits & HIDEHUD_PLAYERDEAD ) && ( !pASWPlayer || !pASWPlayer->GetMarine() || pASWPlayer->GetMarine()->GetHealth()<= 0) )
+	if ( ( m_iHiddenBits & HIDEHUD_PLAYERDEAD ) && ( !pMarine || pMarine->GetHealth() <= 0 ) )
 		return false;
 
 	if ( !asw_draw_hud.GetBool() )
