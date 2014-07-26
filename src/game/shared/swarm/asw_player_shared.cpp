@@ -369,11 +369,14 @@ Vector CASW_Player::EyePosition( )
 {
 	// revert to hl2 camera
 #ifdef CLIENT_DLL
-	if ( !asw_controls.GetBool() && ( engine->IsPlayingDemo() || GetSpectatingMarine() || ( ASWGameRules() && ASWGameRules()->GetMarineDeathCamInterp() > 0.0f ) ) )
+	if ( !asw_controls.GetBool() && ( engine->IsPlayingDemo() || GetSpectatingMarine() ) && ( !ASWGameRules() || ASWGameRules()->GetMarineDeathCamInterp() <= 0.0f ) )
 #else
 	if ( !asw_controls.GetBool() )
 #endif
 	{
+		if ( GetSpectatingMarine() )
+			return GetSpectatingMarine()->EyePosition();
+
 		return BaseClass::EyePosition();
 	}
 	CASW_Marine *pMarine = GetSpectatingMarine();
@@ -427,12 +430,12 @@ Vector CASW_Player::EyePosition( )
 			{
 				// Not doing the death cam!
 				Vector vCamOffset;
-				ang[PITCH] = ASWInput()->ASW_GetCameraPitch();
-				ang[YAW] = ASWInput()->ASW_GetCameraYaw();
-				ang[ROLL] = 0;
 
 				if ( bIsThirdPerson )
 				{
+					ang[PITCH] = ASWInput()->ASW_GetCameraPitch();
+					ang[YAW] = ASWInput()->ASW_GetCameraYaw();
+					ang[ROLL] = 0;
 					AngleVectors(ang, &vCamOffset);
 					vCamOffset *= -ASWInput()->ASW_GetCameraDist();
 				}
@@ -454,11 +457,8 @@ Vector CASW_Player::EyePosition( )
 				{
 					vDeathPos = ASWGameRules()->m_hMarineDeathRagdoll->WorldSpaceCenter();
 				}
-				if ( bIsThirdPerson )
-				{
-					vDeathPos.z += 50.0f;
-				}
-				else
+				vDeathPos.z += 50.0f;
+				if ( !bIsThirdPerson )
 				{
 					fFirstPersonInterp = 1.0f - fDeathCamInterp;
 					fDeathCamInterp = 1.0f;
@@ -511,7 +511,7 @@ Vector CASW_Player::EyePosition( )
 				fOffsetScale = tr.fraction;
 
 				// Blend the death cam position with the regular game view
-				ang[PITCH] = ASWInput()->ASW_GetCameraPitch(&fDeathCamInterp);
+				ang[PITCH] = ASWInput()->ASW_GetCameraPitch( &fDeathCamInterp );
 				ang[PITCH] += fFirstPersonInterp * AngleDiff( pMarine ? pMarine->EyeAngles()[PITCH] : ang[PITCH], ang[PITCH] );
 				ang[YAW] = ASWInput()->ASW_GetCameraYaw( &fDeathCamInterp );
 				ang[YAW] += fFirstPersonInterp * AngleDiff( pMarine ? pMarine->EyeAngles()[YAW] : ang[YAW], ang[YAW] );
@@ -519,10 +519,7 @@ Vector CASW_Player::EyePosition( )
 
 				AngleVectors( ang, &vCamOffset );
 				vCamOffset *= Lerp( fFirstPersonInterp, -ASWInput()->ASW_GetCameraDist( &fDeathCamInterp ), 0.0f );
-
-				if ( bIsThirdPerson )
-					vCamOffset.z += fDeathCamInterp * asw_cam_marine_shift_z_death.GetFloat();
-
+				vCamOffset.z += fDeathCamInterp * ( 1.0f - fFirstPersonInterp ) * asw_cam_marine_shift_z_death.GetFloat();
 				vCamOffset *= fOffsetScale;
 
 				org = Lerp( bIsThirdPerson ? fDeathCamInterp : ( 1.0f - fFirstPersonInterp ), m_vecLastMarineOrigin, vDeathPos );
