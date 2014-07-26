@@ -20,6 +20,7 @@ ConVar asw_drone_ridiculous( "asw_drone_ridiculous", "0", FCVAR_CHEAT, "If true,
 ConVar asw_drone_gib_velocity( "asw_drone_gib_velocity", "1.75", FCVAR_CHEAT, "Drone gibs will inherit the velocity of the parent ragdoll scaled by this" );
 extern ConVar asw_breakable_aliens;
 extern ConVar asw_alien_debug_death_style;
+ConVar asw_gore( "asw_gore", "0", FCVAR_NONE );
 
 C_ASW_ClientRagdoll::C_ASW_ClientRagdoll( bool bRestoring ) : BaseClass( bRestoring )
 {
@@ -311,6 +312,7 @@ void C_ASW_ClientRagdoll::ClientThink( void )
 		}
 		*/
 
-		Release();
+		if ( !asw_gore.GetBool() )
+			Release();
 	}
 }

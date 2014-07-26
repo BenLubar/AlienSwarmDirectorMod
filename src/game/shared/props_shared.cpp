@@ -1160,6 +1160,11 @@ void PropBreakableCreateAll( int modelindex, IPhysicsObject *pPhysics, const bre
 
 				breakModel.health = 1;
 				breakModel.fadeTime = RandomFloat(5,10);
+#ifdef CLIENT_DLL
+				extern ConVar asw_gore;
+				if ( asw_gore.GetBool() )
+					breakModel.fadeTime = 0.0f;
+#endif
 				breakModel.fadeMinDist = 0.0f;
 				breakModel.fadeMaxDist = 0.0f;
 				breakModel.burstScale = params.defBurstScale;
