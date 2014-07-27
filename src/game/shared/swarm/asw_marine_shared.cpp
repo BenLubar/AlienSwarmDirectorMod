@@ -138,6 +138,9 @@ bool CASW_Marine::Weapon_CanSwitchTo( CBaseCombatWeapon *pWeapon )
 
 const QAngle& CASW_Marine::ASWEyeAngles( void )
 {
+	if ( GetCommander() && IsInhabited() )
+		return GetCommander()->EyeAngles();
+
 #ifdef CLIENT_DLL
 	m_AIEyeAngles = EyeAngles();
 	m_AIEyeAngles[PITCH] = m_fAIPitch;

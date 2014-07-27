@@ -74,7 +74,7 @@ extern int g_asw_iGUIWindowsOpen;
 ConVar asw_marine_view_cone_dist("asw_marine_view_cone_dist", "700", FCVAR_REPLICATED, "Distance for marine view cone checks");
 ConVar asw_marine_view_cone_dot("asw_marine_view_cone_dot", "0.5", FCVAR_REPLICATED, "Dot for marine view cone checks");
 extern ConVar asw_rts_controls;
-
+extern ConVar asw_controls;
 
 ConVar asw_shake_test_punch_dirx("asw_shake_test_punch_dirx","0", FCVAR_REPLICATED|FCVAR_HIDDEN );
 ConVar asw_shake_test_punch_diry("asw_shake_test_punch_diry","0", FCVAR_REPLICATED|FCVAR_HIDDEN );
@@ -736,7 +736,19 @@ CASW_Marine* UTIL_ASW_MarineCanSee(CASW_Marine_Resource* pMarineResource, const 
 
 		vecMarinePos = pMarine->GetAbsOrigin();
 	}
-	
+
+	if ( !asw_controls.GetBool() )
+	{
+		trace_t tr;
+		UTIL_TraceLine( vecMarinePos, pos, MASK_VISIBLE, pMarine, COLLISION_GROUP_NONE, &tr );
+		if ( tr.fraction == 1.0f )
+		{
+			if ( !pMarine )
+				bCorpseCanSee = true;
+			return pMarine;
+		}
+	}
+
 	// note: assumes 60 degree pitch camera and 405 dist (actual convars for these are on the client...)
 	QAngle angCameraFacing(60, 90, 0);
 	Vector vForward, vRight, vUp;
