@@ -63,6 +63,7 @@ extern ConVar asw_melee_debug;
 extern ConVar asw_debug_marine_damage;
 extern ConVar asw_stim_time_scale;
 extern ConVar asw_marine_ff;
+extern ConVar asw_controls;
 ConVar asw_leadership_radius("asw_leadership_radius", "600", FCVAR_REPLICATED, "Radius of the leadership field around NCOs with the leadership skill");
 ConVar asw_marine_speed_scale_easy("asw_marine_speed_scale_easy", "0.96", FCVAR_REPLICATED);
 ConVar asw_marine_speed_scale_normal("asw_marine_speed_scale_normal", "1.0", FCVAR_REPLICATED);
@@ -137,16 +138,13 @@ bool CASW_Marine::Weapon_CanSwitchTo( CBaseCombatWeapon *pWeapon )
 
 const QAngle& CASW_Marine::ASWEyeAngles( void )
 {
-	if ( GetCommander() && IsInhabited() )
-		return GetCommander()->EyeAngles();
-
 #ifdef CLIENT_DLL
 	m_AIEyeAngles = EyeAngles();
 	m_AIEyeAngles[PITCH] = m_fAIPitch;
 	return m_AIEyeAngles;
-#endif
-
+#else
 	return EyeAngles();
+#endif
 }
 
 CASW_Weapon* CASW_Marine::GetASWWeapon(int index) const
@@ -206,8 +204,7 @@ bool CASW_Marine::TickEmote(float d, bool bEmote, bool& bClientEmote, float& fEm
 	return bEmote;
 }
 
-// asw fixme to be + eye height (crouch/no)
-Vector CASW_Marine::EyePosition( void ) 
+Vector CASW_Marine::EyePosition() 
 {
 	// if we're driving, return the position of our vehicle
 	if (IsInVehicle())
@@ -220,13 +217,16 @@ Vector CASW_Marine::EyePosition( void )
 			return GetASWVehicle()->GetEntity()->GetAbsOrigin();
 	}
 
-	Vector position;
-	QAngle angles;
-	bool ok = GetAttachment("eyes", position, angles);
-	Assert(ok);
-	if (ok)
+	if (!asw_controls.GetBool())
 	{
-		return position;
+		Vector position;
+		QAngle angles;
+		bool ok = GetAttachment("eyes", position, angles);
+		Assert(ok);
+		if (ok)
+		{
+			return position;
+		}
 	}
 
 	//if (IsControllingTurret())
@@ -240,6 +240,11 @@ Vector CASW_Marine::EyePosition( void )
 #else
 	return GetAbsOrigin() + GetViewOffset();
 #endif
+}
+
+const QAngle &CASW_Marine::EyeAngles()
+{
+	return BaseClass::EyeAngles();
 }
 
 void CASW_Marine::AvoidPhysicsProps( CUserCmd *pCmd )

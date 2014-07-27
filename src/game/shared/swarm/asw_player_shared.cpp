@@ -367,6 +367,13 @@ void CASW_Player::ItemPostFrame()
 // the player's eyes go above the marine he's spectating/controlling
 Vector CASW_Player::EyePosition( )
 {
+	CASW_Marine *pMarine = GetSpectatingMarine();
+	bool bSpectating = true;
+	if ( !pMarine )
+	{
+		pMarine = GetMarine();
+		bSpectating = false;
+	}
 	// revert to hl2 camera
 #ifdef CLIENT_DLL
 	if ( !asw_controls.GetBool() && ( engine->IsPlayingDemo() || GetSpectatingMarine() ) && ( !ASWGameRules() || ASWGameRules()->GetMarineDeathCamInterp() <= 0.0f ) )
@@ -374,17 +381,10 @@ Vector CASW_Player::EyePosition( )
 	if ( !asw_controls.GetBool() )
 #endif
 	{
-		if ( GetSpectatingMarine() )
-			return GetSpectatingMarine()->EyePosition();
+		if ( !asw_allow_detach.GetBool() && pMarine )
+			return pMarine->EyePosition();
 
 		return BaseClass::EyePosition();
-	}
-	CASW_Marine *pMarine = GetSpectatingMarine();
-	bool bSpectating = true;
-	if ( !pMarine )
-	{
-		pMarine = GetMarine();
-		bSpectating = false;
 	}
 	if ( pMarine && pMarine->GetHealth() > 0 )
 	{
@@ -883,14 +883,21 @@ const QAngle& CASW_Player::EyeAngles( )
 
 	// revert to hl2 camera
 #ifdef CLIENT_DLL
-	if ( !asw_controls.GetBool() && ( engine->IsPlayingDemo() || GetSpectatingMarine() || ( ASWGameRules() && ASWGameRules()->GetMarineDeathCamInterp() > 0.0f ) ) )
+	if ( !asw_controls.GetBool() && ( engine->IsPlayingDemo() || ( GetMarine() && GetMarine()->GetCurrentMeleeAttack() ) || GetSpectatingMarine() || ( ASWGameRules() && ASWGameRules()->GetMarineDeathCamInterp() > 0.0f ) ) )
 #else
 	if ( !asw_controls.GetBool() )
 #endif
 	{
-		if ( GetSpectatingMarine() )
+		if ( !asw_allow_detach.GetBool() )
 		{
-			 angAdjustedEyes = GetSpectatingMarine()->EyeAngles();
+			if ( GetSpectatingMarine() )
+			{
+				angAdjustedEyes = GetSpectatingMarine()->EyeAngles();
+			}
+			else if ( GetMarine() )
+			{
+				angAdjustedEyes = GetMarine()->EyeAngles();
+			}
 		}
 
 #ifdef CLIENT_DLL

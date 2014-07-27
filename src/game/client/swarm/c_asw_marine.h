@@ -55,7 +55,8 @@ public:
 	virtual int DrawModel( int flags, const RenderableInstance_t &instance );
 	virtual const QAngle& ASWEyeAngles( void );	
 	virtual void BuildTransformations( CStudioHdr *pHdr, Vector *pos, Quaternion q[], const matrix3x4_t& cameraTransform, int boneMask, CBoneBitList &boneComputed );	// for left hand IK	
-	Vector EyePosition(void);
+	virtual Vector EyePosition( void );
+	virtual const QAngle &EyeAngles( void );
 	// custom render loc test for elevators
 	Vector m_vecCustomRenderOrigin;
 	virtual const Vector& GetRenderOrigin();
