@@ -2,7 +2,7 @@ versioninfo
 {
 	"editorversion" "400"
 	"editorbuild" "5032"
-	"mapversion" "15"
+	"mapversion" "19"
 	"formatversion" "100"
 	"prefab" "0"
 }
@@ -20,7 +20,7 @@ viewsettings
 world
 {
 	"id" "1"
-	"mapversion" "15"
+	"mapversion" "19"
 	"classname" "worldspawn"
 	"detailmaterial" "detail/detailsprites"
 	"detailvbsp" "detail.vbsp"
@@ -286,6 +286,78 @@ entity
 		"visgroupshown" "1"
 		"visgroupautoshown" "1"
 		"logicalpos" "[0 2000]"
+	}
+}
+entity
+{
+	"id" "494"
+	"classname" "asw_tilegen_instance"
+	"angles" "0 0 0"
+	"glob1" "stain_*.vmf"
+	"weight1" "1"
+	"weight2" "10"
+	"weight3" "0"
+	"weight4" "0"
+	"weight5" "0"
+	"weight6" "0"
+	"weight7" "0"
+	"weight8" "0"
+	"weight9" "0"
+	"origin" "128 128 0"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
+	}
+}
+entity
+{
+	"id" "507"
+	"classname" "asw_tilegen_instance"
+	"angles" "0 0 0"
+	"glob1" "stain_*.vmf"
+	"weight1" "1"
+	"weight2" "30"
+	"weight3" "0"
+	"weight4" "0"
+	"weight5" "0"
+	"weight6" "0"
+	"weight7" "0"
+	"weight8" "0"
+	"weight9" "0"
+	"origin" "64 160 0"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
+	}
+}
+entity
+{
+	"id" "513"
+	"classname" "asw_tilegen_instance"
+	"angles" "0 0 0"
+	"glob1" "stain_*.vmf"
+	"weight1" "1"
+	"weight2" "30"
+	"weight3" "0"
+	"weight4" "0"
+	"weight5" "0"
+	"weight6" "0"
+	"weight7" "0"
+	"weight8" "0"
+	"weight9" "0"
+	"origin" "160 64 0"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
 	}
 }
 cameras
