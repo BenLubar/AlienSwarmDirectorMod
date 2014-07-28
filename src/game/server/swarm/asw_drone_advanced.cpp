@@ -87,6 +87,7 @@ extern ConVar asw_alien_hurt_speed;
 extern ConVar asw_alien_stunned_speed;
 extern ConVar asw_springcol;
 extern ConVar asw_drone_death_force_pitch;
+extern ConVar asw_skill;
 
 float CASW_Drone_Advanced::s_fNextTooCloseChatterTime = 0;
 
@@ -2451,7 +2452,7 @@ void CASW_Drone_Advanced::RescaleCustomSettings()
 	{
 		m_flSizeScale *= 1.3f;
 		m_flSpeedScale *= 1.3f;
-		m_flHealthScale *= 50.0f;
+		m_flHealthScale *= asw_skill.GetInt() * 2.5f + 2.5f;
 	}
 	else if (ClassMatches("asw_drone_summoner"))
 	{
