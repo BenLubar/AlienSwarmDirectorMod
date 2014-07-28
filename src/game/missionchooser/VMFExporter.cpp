@@ -674,7 +674,10 @@ bool VMFExporter::ProcessInstance( KeyValues *pEntityKeys )
 		if (flChoice < 0)
 		{
 			char szFile[MAX_PATH];
-			Q_snprintf( szFile, MAX_PATH, "../tilegen/instance/%s/%s", m_pRoom->m_iszLevelTheme.c_str(), choices[i].first.c_str() );
+			if (choices[i].first.empty())
+				szFile[0] = '\0';
+			else
+				Q_snprintf( szFile, MAX_PATH, "../tilegen/instance/%s/%s", m_pRoom->m_iszLevelTheme.c_str(), choices[i].first.c_str() );
 			pEntityKeys->SetString( "file", szFile );
 			choices.Purge();
 			return true;
