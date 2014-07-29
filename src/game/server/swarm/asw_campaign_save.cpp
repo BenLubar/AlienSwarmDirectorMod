@@ -266,7 +266,7 @@ bool CASW_Campaign_Save::SaveGameToFile(const char *szFileName)
 	int year, month, dayOfWeek, day, hour, minute, second;
 	missionchooser->GetCurrentTimeAndDate(&year, &month, &dayOfWeek, &day, &hour, &minute, &second);
 	//year = month = dayOfWeek = day = hour = minute = second = 0;
-	Q_snprintf(m_DateTime.GetForModify(), 255, "%02d/%02d/%d %02d:%02d", month, day, year, hour, minute);
+	Q_snprintf(m_DateTime.GetForModify(), 255, "%04d-%02d-%02dT%02d:%02d:%02d", year, month, day, hour, minute, second);
 	pSaveKeyValues->SetString("DateTime", m_DateTime.Get());
 	
 	// write out each mission's status

@@ -1022,7 +1022,7 @@ bool CASW_Mission_Chooser_Source_Local::ASW_Campaign_CreateNewSaveGame(char *szF
 	char szDateTime[256];
 	int year, month, dayOfWeek, day, hour, minute, second;
 	ASW_System_GetCurrentTimeAndDate(&year, &month, &dayOfWeek, &day, &hour, &minute, &second);
-	Q_snprintf(szDateTime, sizeof(szDateTime), "%02d/%02d/%02d %02d:%02d", month, day, year, hour, minute);
+	Q_snprintf(szDateTime, sizeof(szDateTime), "%04d-%02d-%02dT%02d:%02d:%02d", year, month, day, hour, minute, second);
 
 	if (szFileName[0] == '\0')
 	{
@@ -1142,76 +1142,83 @@ bool CASW_Mission_Chooser_Source_Local::MapNameLess::Less( MapListName const& sr
 // sort by the datetime string
 bool CASW_Mission_Chooser_Source_Local::SavedCampaignLess::Less( ASW_Mission_Chooser_Saved_Campaign const& src1, ASW_Mission_Chooser_Saved_Campaign const& src2, void *pCtx )
 {
-	int month, day, year, hour, minute;
-	int month2, day2, year2, hour2, minute2;
+	int year1, month1, day1, hour1, minute1, second1;
+	int year2, month2, day2, hour2, minute2, second2;
 
-	if ( sscanf( src1.m_szDateTime, "%d/%d/%d %d:%d", &month, &day, &year, &hour, &minute ) != 5 )
+	if ( sscanf( src1.m_szDateTime, "%d-%d-%dT%d:%d:%d", &year1, &month1, &day1, &hour1, &minute1, &second1 ) != 6 )
 		return false;
-	if ( sscanf( src2.m_szDateTime, "%d/%d/%d %d:%d", &month2, &day2, &year2, &hour2, &minute2 ) != 5 )
+	if ( sscanf( src2.m_szDateTime, "%d-%d-%dT%d:%d:%d", &year2, &month2, &day2, &hour2, &minute2, &second2 ) != 6 )
 		return false;
 
 	//Msg("src1 month:%d day:%d year:%d hour:%d minute:%d\n", month, day, year, hour, minute);
 	//Msg("src2 month:%d day:%d year:%d hour:%d minute:%d\n", month2, day2, year2, hour2, minute2);
 
-	if (year > year2)
+	if (year1 > year2)
 	{
 		//Msg("src1 is newer because of year\n");
 		return true;
 	}
-	else if (year < year2)
+	else if (year1 < year2)
 	{
 		//Msg("src2 is newer because of year\n");
 		return false;
 	}
 
-	if (month > month2)
+	if (month1 > month2)
 	{
 		//Msg("src1 is newer because of month\n");
 		return true;
 	}
-	else if (month < month2)
+	else if (month1 < month2)
 	{
 		//Msg("src2 is newer because of month\n");
 		return false;
 	}
 
-	if (day > day2)
+	if (day1 > day2)
 	{
 		//Msg("src1 is newer because of day\n");
 		return true;
 	}
-	else if (day < day2)
+	else if (day1 < day2)
 	{
 		//Msg("src2 is newer because of day\n");
 		return false;
 	}
 
-	if (hour > hour2)
+	if (hour1 > hour2)
 	{
 		//Msg("src1 is newer because of hour\n");
 		return true;
 	}
-	else if (hour < hour2)
+	else if (hour1 < hour2)
 	{
 		//Msg("src2 is newer because of hour\n");
 		return false;
 	}
 
-	if (minute > minute2)
+	if (minute1 > minute2)
 	{
 		//Msg("src1 is newer because of minute\n");
 		return true;
 	}
-	else if (minute < minute2)
+	else if (minute1 < minute2)
 	{
 		//Msg("src2 is newer because of minute\n");
 		return false;
 	}
-	
-	//if ((year > year2) || (month > month2) || (day > day2) || (hour > hour2) || (minute > minute2))
-		//return true;
-	//Msg("neither is newer\n");
-	
+
+	if (second1 > second2)
+	{
+		//Msg("src1 is newer because of minute\n");
+		return true;
+	}
+	else if (second1 < second2)
+	{
+		//Msg("src2 is newer because of minute\n");
+		return false;
+	}
+
 	return false;
 }
 
