@@ -1,12 +1,10 @@
 #include "cbase.h"
 #include "asw_marine.h"
 #include "asw_marine_profile.h"
-#include "ai_hint.h"
 #include "asw_marine_hint.h"
 #include "asw_weapon_healgrenade_shared.h"
 #include "asw_shieldbug.h"
 #include "asw_boomer_blob.h"
-#include "ai_network.h"
 #include "triggers.h"
 #include "asw_player.h"
 
@@ -155,25 +153,10 @@ float CASW_SquadFormation::GetYaw( unsigned slotnum )
 	}
 	else if ( MarineHintManager()->GetHintCount() && m_flUseHintsAfter[slotnum] < gpGlobals->curtime && asw_follow_use_hints.GetBool() && Leader() && ( Leader()->IsInCombat() || asw_follow_use_hints.GetInt() == 2 ) )
 	{
-#ifdef HL2_HINTS
-		if ( m_hFollowHint[ slotnum ].Get() )
-		{
-// 			if ( m_bRearGuard[ slotnum ] )
-// 			{
-// 				return m_hFollowHint[ slotnum ]->Yaw() + 180.0f;
-// 			}
-			return m_hFollowHint[ slotnum ]->Yaw();
-		}
-#else
 		if ( m_nMarineHintIndex[ slotnum ] != INVALID_HINT_INDEX )
 		{
-			// 			if ( m_bRearGuard[ slotnum ] )
-			// 			{
-			// 				return m_hFollowHint[ slotnum ]->Yaw() + 180.0f;
-			// 			}
 			return MarineHintManager()->GetHintYaw( m_nMarineHintIndex[ slotnum ] );
 		}
-#endif
 	}
 	// face our formation direction
 	return anglemod( m_flCurrentForwardAbsoluteEulerYaw + s_MarineFollowDirection[ slotnum ] );
@@ -376,23 +359,13 @@ void CASW_SquadFormation::UpdateFollowPositions()
 		}
 		else if ( MarineHintManager()->GetHintCount() && m_flUseHintsAfter[i] < gpGlobals->curtime && asw_follow_use_hints.GetBool() && ( pLeader->IsInCombat() || asw_follow_use_hints.GetInt() == 2 ) )
 		{
-#ifdef HL2_HINTS
-			if ( m_hFollowHint[i].Get() )
-			{
-				m_vFollowPositions[i] = m_hFollowHint[i]->GetAbsOrigin();
-			}
-#else
 			if ( m_nMarineHintIndex[i] != INVALID_HINT_INDEX )
 			{
 				m_vFollowPositions[i] = MarineHintManager()->GetHintPosition( m_nMarineHintIndex[i] );
 			}
-#endif
-			else
+			else if ( pMarine )
 			{
-				if ( pMarine )
-				{
-					VectorTransform(s_MarineFollowOffset[i], matLeaderFacing, m_vFollowPositions[i]);
-				}
+				VectorTransform(s_MarineFollowOffset[i], matLeaderFacing, m_vFollowPositions[i]);
 			}
 		}
 		else
@@ -521,14 +494,9 @@ void CASW_SquadFormation::Reset()
 	{
 		m_flUseHintsAfter[i] = -1;
 		m_hSquad[i] = NULL;
-		m_bRearGuard[i] = false;
 		m_bStandingInBeacon[i] = false;
 		m_bFleeingBoomerBombs[ i ] = false;
-#ifdef HL2_HINTS
-		m_hFollowHint[i] = NULL;
-#else
 		m_nMarineHintIndex[i] = INVALID_HINT_INDEX;
-#endif
 	}
 	m_flLastSquadUpdateTime = 0;
 	m_vLastLeaderVelocity.Zero();
@@ -538,11 +506,7 @@ void CASW_SquadFormation::Reset()
 // Purpose: Sorts AI nodes by proximity to leader
 //-----------------------------------------------------------------------------
 CASW_Marine *g_pSortLeader = NULL;
-#ifdef HL2_HINTS
-int CASW_SquadFormation::FollowHintSortFunc( CAI_Hint* const *pHint1, CAI_Hint* const *pHint2 )
-#else
 int CASW_SquadFormation::FollowHintSortFunc( HintData_t* const *pHint1, HintData_t* const *pHint2 )
-#endif
 {
 	int nDist1 = (int) (*pHint1)->GetAbsOrigin().DistToSqr( g_pSortLeader->GetAbsOrigin() );
 	int nDist2 = (int) (*pHint2)->GetAbsOrigin().DistToSqr( g_pSortLeader->GetAbsOrigin() );
@@ -565,11 +529,7 @@ void CASW_SquadFormation::FindFollowHintNodes()
 		CASW_Marine *pMarine = Squaddie( slotnum );
 		if ( !pMarine )
 		{
-#ifdef HL2_HINTS
-			m_hFollowHint[slotnum] = NULL;
-#else
 			m_nMarineHintIndex[slotnum] = INVALID_HINT_INDEX;
-#endif
 			continue;
 		}
 
@@ -601,25 +561,11 @@ void CASW_SquadFormation::FindFollowHintNodes()
 			continue;
 
 		// clear out the old hint so we don't get stuck if there are no good hints
-#ifdef HL2_HINTS
-		m_hFollowHint[slotnum] = NULL;
-#else
 		m_nMarineHintIndex[slotnum] = INVALID_HINT_INDEX;
-#endif
 
 		// find a new node
-#ifdef HL2_HINTS
-		CHintCriteria hintCriteria;
-		hintCriteria.SetHintType( HINT_FOLLOW_WAIT_POINT );
-		hintCriteria.AddIncludePosition( pLeader->GetAbsOrigin(), asw_follow_hint_max_range.GetFloat() );
-		hintCriteria.AddExcludePosition( pLeader->GetAbsOrigin(), asw_follow_hint_min_range.GetFloat() );
-
-		CUtlVector< CAI_Hint * > hints;
-		CAI_HintManager::FindAllHints( pLeader, pLeader->GetAbsOrigin(), hintCriteria, &hints );
-#else
 		CUtlVector< HintData_t* > hints;
 		MarineHintManager()->FindHints(pLeader->GetAbsOrigin(), asw_follow_hint_min_range.GetFloat(), asw_follow_hint_max_range.GetFloat(), &hints);
-#endif
 		int nCount = hints.Count();
 
 		float flMovementYaw = pLeader->GetOverallMovementDirection();
@@ -693,11 +639,7 @@ void CASW_SquadFormation::FindFollowHintNodes()
 								bool flNodeTaken = false;
 								for( int iSlot = 0; iSlot < MAX_SQUAD_SIZE; iSlot++ )
 								{
-#ifdef HL2_HINTS
-									if ( iSlot != slotnum && hints[ i ] == m_hFollowHint[ iSlot ].Get() )
-#else
 									if ( iSlot != slotnum && hints[ i ]->m_nHintIndex == m_nMarineHintIndex[ iSlot ] )
-#endif
 									{
 										flNodeTaken = true;
 										break;
@@ -746,18 +688,10 @@ void CASW_SquadFormation::FindFollowHintNodes()
 		while ( nNode < hints.Count() )
 		{
 			bool bValidNode = true;
-#ifdef HL2_HINTS
-			const Vector &vecNodePos = hints[nNode]->GetAbsOrigin();
-#else
 			const Vector &vecNodePos = hints[nNode]->m_vecPosition;
-#endif
 			for ( int k = 0; k < MAX_SQUAD_SIZE; k++ )
 			{
-#ifdef HL2_HINTS
-				if ( k != slotnum && m_hFollowHint[k].Get() && vecNodePos.DistToSqr( m_hFollowHint[k].Get()->GetAbsOrigin() ) < Square( asw_follow_hint_min_range.GetFloat() ) )
-#else
 				if ( k != slotnum && m_nMarineHintIndex[k] != INVALID_HINT_INDEX && vecNodePos.DistToSqr( MarineHintManager()->GetHintPosition( m_nMarineHintIndex[k] ) ) < Square( asw_follow_hint_min_range.GetFloat() ) )
-#endif
 				{
 					bValidNode = false;
 					break;
@@ -765,11 +699,7 @@ void CASW_SquadFormation::FindFollowHintNodes()
 			}
 			if ( bValidNode )
 			{
-#ifdef HL2_HINTS
-				m_hFollowHint[ slotnum ] = hints[ nNode ];
-#else
 				m_nMarineHintIndex[ slotnum ] = hints[ nNode ]->m_nHintIndex;
-#endif
 				nNode++;
 				break;
 			}
@@ -801,44 +731,12 @@ void CASW_SquadFormation::DrawDebugGeometryOverlays()
 		if ( pMarine )
 		{
 			NDebugOverlay::Line( pMarine->WorldSpaceCenter(), pLeader->WorldSpaceCenter(), 63, 63, 63, false, 0.05f );
-#ifdef HL2_HINTS
-			if ( m_hFollowHint[ i ].Get() )
-			{
-				NDebugOverlay::Line( pMarine->WorldSpaceCenter(), m_hFollowHint[ i ]->GetAbsOrigin(), 255, 255, 63, false, 0.05f );
-				NDebugOverlay::EntityText( pMarine->entindex(), i * 2,
-					CFmtStr( "Node: %d wc: %d node: %d pos: %f %f %f",
-						m_hFollowHint[ i ]->GetNodeId(),
-						m_hFollowHint[i]->GetWCId(),
-						m_hFollowHint[i]->GetNode() ? m_hFollowHint[i]->GetNode()->GetId() : -1,
-						m_hFollowHint[i]->GetAbsOrigin().x,
-						m_hFollowHint[i]->GetAbsOrigin().y,
-						m_hFollowHint[i]->GetAbsOrigin().z ),
-					0.05f, 255, 255, 255, 255 );
-			}
-#else
 			if ( m_nMarineHintIndex[ i ] != INVALID_HINT_INDEX )
 			{
 				NDebugOverlay::Line( pMarine->WorldSpaceCenter(), MarineHintManager()->GetHintPosition( m_nMarineHintIndex[ i ] ), 255, 255, 63, false, 0.05f );
 			}
-#endif
 		}
 	}
-
-	/*
-	int max_marines = ASWGameResource()->GetMaxMarineResources();
-	for ( int i=0;i<max_marines;i++ )
-	{		
-		CASW_Marine_Resource* pMR = ASWGameResource()->GetMarineResource( i );
-		if ( !pMR )
-			continue;
-		
-		CASW_Marine *pMarine = pMR->GetMarineEntity();
-		if ( !pMarine )
-			continue;
-
-		NDebugOverlay::EntityText( pMarine->entindex(), 0, CFmtStr( "Squad slot: %d", p ), 0.05f, 255, 255, 255, 255 );
-	}
-	*/
 }
 
 void CASW_SquadFormation::FollowCommandUsed( int slotnum )
