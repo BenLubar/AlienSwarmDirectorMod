@@ -108,8 +108,6 @@ END_DATADESC()
 
 void CASW_Shieldbug::Spawn( void )
 {
-	SetHullType(HULL_WIDE_SHORT);
-
 	BaseClass::Spawn();
 
 	m_bHasBeenHurt = false;
@@ -124,7 +122,7 @@ void CASW_Shieldbug::Spawn( void )
 	CapabilitiesAdd( bits_CAP_MOVE_GROUND | bits_CAP_INNATE_MELEE_ATTACK1 | bits_CAP_INNATE_MELEE_ATTACK2);	// | bits_CAP_MOVE_JUMP
 	CapabilitiesRemove( bits_CAP_MOVE_JUMP );
 
-	SetCollisionGroup( ASW_COLLISION_GROUP_BIG_ALIEN );
+	SetCollisionGroup( ASW_COLLISION_GROUP_ALIEN );
 
 	m_takedamage = DAMAGE_NO;	// alien is invulnerable until she finds her first enemy
 

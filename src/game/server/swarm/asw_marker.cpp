@@ -84,7 +84,14 @@ void CASW_Marker::InputDisable( inputdata_t &inputdata )
 
 CASW_Objective *CASW_Marker::GetObjective()
 {
-	CASW_Objective *pObj = dynamic_cast<CASW_Objective *>(gEntList.FindEntityByName(NULL, m_ObjectiveName.Get()));
-	Assert(pObj);
-	return pObj;
+	// BenLubar: some mappers thought it would be a good idea to give the markers the same IDs as the objectives, so we need this kludge.
+	CBaseEntity *pEnt = NULL;
+	while ((pEnt = gEntList.FindEntityByName(pEnt, m_ObjectiveName)) != NULL)
+	{
+		CASW_Objective *pObj = dynamic_cast<CASW_Objective *>(pEnt);
+		if (pObj)
+			return pObj;
+	}
+	Assert(0);
+	return NULL;
 }

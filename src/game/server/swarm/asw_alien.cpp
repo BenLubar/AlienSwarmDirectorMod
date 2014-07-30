@@ -3146,7 +3146,7 @@ void CASW_Alien::LookupBurrowActivities()
 	else
 	{
 		m_UnburrowIdleActivity = (Activity) LookupActivity( STRING( m_iszUnburrowIdleActivityName ) );
-		if ( m_UnburrowActivity == ACT_INVALID )
+		if ( m_UnburrowIdleActivity == ACT_INVALID )
 		{
 			Warning( "Unknown unburrow idle activity %s", STRING( m_iszUnburrowIdleActivityName ) );
 			if ( m_hSpawner.Get() )
