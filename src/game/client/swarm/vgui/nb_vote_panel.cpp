@@ -135,18 +135,11 @@ void CNB_Vote_Panel::UpdateVisibility()
 	{
 		const float flTransitionTime = 0.3f;		
 		int target_x = ( ScreenWidth() * 0.5f ) + YRES( 100 );
-		int y = YRES( 46 );
+		int y = YRES( 320 );
 		if ( m_VotePanelType == VPT_INGAME )
 		{
 			target_x = ScreenWidth() - YRES( 180 );
-		}
-		else if ( m_VotePanelType == VPT_DEBRIEF )
-		{
-			y = YRES( 320 );
-		}
-		else if ( m_VotePanelType == VPT_CAMPAIGN_MAP )
-		{
-			//y = YRES( 320 );
+			y = YRES( 260 );
 		}
 		SetPos( target_x + YRES( 100 ), y );
 		vgui::GetAnimationController()->RunAnimationCommand( this, "xpos", target_x, 0, flTransitionTime, vgui::AnimationController::INTERPOLATOR_DEACCEL );
