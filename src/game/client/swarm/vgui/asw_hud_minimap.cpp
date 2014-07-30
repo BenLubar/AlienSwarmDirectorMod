@@ -591,7 +591,7 @@ void CASWHudMinimap::PaintMapSection()
 	C_ASW_Player *local = C_ASW_Player::GetLocalASWPlayer();
 	if ( local )
 	{
-		C_ASW_Marine *marine = local->GetMarine();
+		C_ASW_Marine *marine = local->GetSpectatingMarine() ? local->GetSpectatingMarine() : local->GetMarine();
 		if (marine)
 		{
 			m_MapCentre = WorldToMapTexture(marine->GetAbsOrigin());
