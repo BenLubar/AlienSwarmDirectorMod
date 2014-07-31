@@ -28,26 +28,21 @@ LINK_ENTITY_TO_CLASS(asw_squadformation, CASW_SquadFormation);
 
 unsigned int CASW_SquadFormation::Add( CASW_Marine *pMarine )
 {
-	AssertMsg( !!m_hLeader.Get(), "A CASW_SquadFormation has no leader!\n" );
-	if ( pMarine == Leader() )
-	{
-		AssertMsg1( false, "Tried to set %s to follow itself!\n", pMarine->GetMarineProfile()->GetShortName() );
-		return INVALID_SQUADDIE;
-	}
+	Assert( pMarine );
+	AssertMsg( Leader(), "A CASW_SquadFormation has no leader!\n" );
+	AssertMsg1( pMarine != Leader(), "Tried to set %s to follow itself!\n", pMarine->GetDebugName() );
 
-	unsigned slot = Find(pMarine);
+	unsigned slot = Find( pMarine );
 	if ( IsValid( slot ) )
 	{
-		AssertMsg2( false, "Tried to double-add %s to squad (already in slot %d)\n",
-			pMarine->GetMarineProfile()->GetShortName(),
-			slot );
+		AssertMsg2( false, "Tried to double-add %s to squad (already in slot %d)\n", pMarine->GetDebugName(), slot );
 		return slot;
 	}
 	else
 	{
-		for ( slot = 0 ; slot < MAX_SQUAD_SIZE; ++slot )
+		for ( slot = FIRST_SQUAD_FOLLOWER; slot < MAX_SQUAD_SIZE; slot++ )
 		{
-			if ( !Squaddie(slot) )
+			if ( !Squaddie( slot ) )
 			{
 				m_hSquad[slot] = pMarine;
 				return slot;
@@ -55,15 +50,14 @@ unsigned int CASW_SquadFormation::Add( CASW_Marine *pMarine )
 		}
 
 		// if we're down here, the squad is full!
-		AssertMsg2( false, "Tried to add %s to %s's squad, but that's full! (How?)\n",
-			pMarine->GetMarineProfile()->GetShortName(), m_hLeader->GetMarineProfile()->GetShortName()	);
+		AssertMsg2( false, "Tried to add %s to %s's squad, but that's full! (How?)\n", pMarine->GetDebugName(), Leader()->GetDebugName() );
 		return INVALID_SQUADDIE;
 	}
 }
 
 bool CASW_SquadFormation::Remove( unsigned int slotnum )
 {
-	Assert(IsValid(slotnum));
+	Assert( IsValid( slotnum ) );
 	if ( Squaddie(slotnum) )
 	{
 		m_hSquad[slotnum] = NULL;
@@ -77,22 +71,22 @@ bool CASW_SquadFormation::Remove( unsigned int slotnum )
 
 bool CASW_SquadFormation::Remove( CASW_Marine *pMarine, bool bIgnoreAssert )
 {
-	unsigned slot = Find(pMarine);
-	if ( IsValid(slot) )
+	Assert( pMarine );
+	unsigned slot = Find( pMarine );
+	if ( IsValid( slot ) )
 	{
-		m_hSquad[slot] = NULL;
-		return true;
+		return Remove( slot );
 	}
 	else
 	{
-		AssertMsg1( bIgnoreAssert, "Tried to remove marine %s from squad, but wasn't a member.\n",
-			pMarine->GetMarineProfile()->GetShortName() );
+		AssertMsg1( bIgnoreAssert, "Tried to remove marine %s from squad, but wasn't a member.\n", pMarine->GetDebugName() );
 		return false;
 	}
 }
 
 const  Vector CASW_SquadFormation::s_MarineFollowOffset[MAX_SQUAD_SIZE]=
 {
+	Vector(0, 0, 0),
 	Vector(-60, -70, 0),
 	Vector(-120, 0, 0),
 	Vector(-60, 70, 0),
@@ -104,6 +98,7 @@ const  Vector CASW_SquadFormation::s_MarineFollowOffset[MAX_SQUAD_SIZE]=
 
 const  float CASW_SquadFormation::s_MarineFollowDirection[MAX_SQUAD_SIZE]=
 {
+	0,
 	-70,
 	180,
 	70,
@@ -116,6 +111,7 @@ const  float CASW_SquadFormation::s_MarineFollowDirection[MAX_SQUAD_SIZE]=
 // position offsets when standing around a heal beacon
 const  Vector CASW_SquadFormation::s_MarineBeaconOffset[MAX_SQUAD_SIZE]=
 {
+	Vector(0, 0, 0),
 	Vector(30, -52, 0),
 	Vector(-52, 0, 0),
 	Vector(30, 52, 0),
@@ -127,6 +123,7 @@ const  Vector CASW_SquadFormation::s_MarineBeaconOffset[MAX_SQUAD_SIZE]=
 
 const  float CASW_SquadFormation::s_MarineBeaconDirection[MAX_SQUAD_SIZE]=
 {
+	0,
 	-70,
 	180,
 	70,
@@ -138,6 +135,7 @@ const  float CASW_SquadFormation::s_MarineBeaconDirection[MAX_SQUAD_SIZE]=
 
 float CASW_SquadFormation::GetYaw( unsigned slotnum )
 {
+	Assert( IsValid( slotnum ) );
 	if ( m_bStandingInBeacon[slotnum] )
 	{
 		return s_MarineBeaconDirection[slotnum];
@@ -228,13 +226,17 @@ float GetClosestPointToSegmentDistSqr(const Vector &v, const Vector &w, const Ve
 // returns Square(OUT_OF_BOOMER_BOMB_RANGE) if not within blast radius of any boomer bomb
 float GetClosestBoomerBlobDistSqr( const Vector &vecNode, const Vector &vecFrom )
 {
-	float flClosestBoomerBlobDistSqr = Square(OUT_OF_BOOMER_BOMB_RANGE);
+	float flClosestBoomerBlobDistSqr = Square( OUT_OF_BOOMER_BOMB_RANGE );
 
-	for( int iBoomerBlob = 0; iBoomerBlob < g_aExplosiveProjectiles.Count(); iBoomerBlob++ )
+	FOR_EACH_VEC( g_aExplosiveProjectiles, iBoomerBlob )
 	{
- 		CBaseEntity *pExplosive = g_aExplosiveProjectiles[ iBoomerBlob ];
+ 		CBaseEntity *pExplosive = g_aExplosiveProjectiles[iBoomerBlob];
 
-		float flDistSqr = GetClosestPointToSegmentDistSqr(vecFrom, vecNode, pExplosive->GetAbsOrigin());
+		float flDistSqr;
+		if ( vecFrom.DistToSqr( pExplosive->GetAbsOrigin() ) < Square( OUT_OF_BOOMER_BOMB_RANGE ) )
+			flDistSqr = vecNode.DistToSqr( pExplosive->GetAbsOrigin() );
+		else
+			flDistSqr = GetClosestPointToSegmentDistSqr( vecFrom, vecNode, pExplosive->GetAbsOrigin() );
 		flClosestBoomerBlobDistSqr = MIN( flDistSqr, flClosestBoomerBlobDistSqr );
 	}
 
@@ -247,8 +249,7 @@ void CASW_SquadFormation::UpdateFollowPositions()
 	CASW_Marine * RESTRICT pLeader = Leader();
 	if ( !pLeader )
 	{
-		AssertMsg1(false, "Tried to update positions for a squad with no leader and %d followers.\n",
-			Count() 	);
+		AssertMsg1( false, "Tried to update positions for a squad with no leader and %d followers.\n", Count() );
 		return;
 	}
 	m_flLastSquadUpdateTime = gpGlobals->curtime;
@@ -310,7 +311,7 @@ void CASW_SquadFormation::UpdateFollowPositions()
 				if ( vecNodeLocation.DistToSqr( m_vLastLeaderPos ) > Square( k_flMaxSearchDistance ) )
 					continue;
 
-				bool bNodeTaken = vecNodeLocation.DistToSqr( m_vLastLeaderPos ) < Square( 30.0f );
+				bool bNodeTaken = false;
 				for ( int iSlot = 0; iSlot < MAX_SQUAD_SIZE; iSlot++ )
 				{
 					if ( iSlot != i && vecNodeLocation.DistToSqr( m_vFollowPositions[ iSlot ] ) < Square( 30.0f ) )	// don't let marines get too close, even if nodes are close
@@ -374,7 +375,7 @@ void CASW_SquadFormation::UpdateFollowPositions()
 		}
 		if ( asw_marine_ai_followspot.GetBool() )
 		{
-			static float colors[MAX_SQUAD_SIZE][3] = { { 255, 64, 64 }, { 64, 255, 64 }, { 64, 64, 255 }, { 255, 255, 64 }, { 255, 64, 255 }, { 64, 255, 255 }, { 64, 64, 64 } };
+			static float colors[MAX_SQUAD_SIZE][3] = { { 255, 255, 255 }, { 255, 64, 64 }, { 64, 255, 64 }, { 64, 64, 255 }, { 255, 255, 64 }, { 255, 64, 255 }, { 64, 255, 255 }, { 64, 64, 64 } };
 			NDebugOverlay::HorzArrow( pLeader->GetAbsOrigin(), m_vFollowPositions[i], 3, 
 				colors[i][0], colors[i][1], colors[i][2], 255, false, 0.35f );
 		}
@@ -396,10 +397,6 @@ bool CASW_SquadFormation::SanityCheck() const
 	for ( int testee = 0 ; testee < MAX_SQUAD_SIZE ; ++testee )
 	{
 		CASW_Marine *pTest = m_hSquad[testee];
-		Assert( pLeader != pTest );  // am not leader
-		if ( pLeader == pTest ) 
-			return false;
-
 		if ( pTest )
 		{
 			for ( int i = (testee+1)%MAX_SQUAD_SIZE ; i != testee ; i = (i + 1)%MAX_SQUAD_SIZE )
@@ -418,7 +415,7 @@ bool CASW_SquadFormation::SanityCheck() const
 // way to go
 unsigned int CASW_SquadFormation::Find( CASW_Marine *pMarine ) const
 {
-	Assert( pMarine != Leader() );
+	//Assert( pMarine != Leader() );
 	for ( int i = 0 ; i < MAX_SQUAD_SIZE ; ++i )
 	{
 		if ( m_hSquad[i] == pMarine )
@@ -433,7 +430,7 @@ void CASW_SquadFormation::ChangeLeader( CASW_Marine *pNewLeader, bool bUpdateLea
 	CASW_Marine *pOldLeader = Leader();
 	if ( !pOldLeader )
 	{
-		Leader( pNewLeader );
+		m_hSquad[SQUAD_LEADER] = pNewLeader;
 		return;
 	}
 
@@ -449,34 +446,32 @@ void CASW_SquadFormation::ChangeLeader( CASW_Marine *pNewLeader, bool bUpdateLea
 	// if we're trying to wipe out the leader, do so if there are no followers
 	if ( !pNewLeader )
 	{
-		AssertMsg2( Count() == 0, "Tried to unset squad leader %s, but squad has %d followers\n",
-			pNewLeader->GetMarineProfile()->GetShortName(), Count() );
-		Leader(NULL);
+		AssertMsg2( Count() == 1, "Tried to unset squad leader %s, but squad has %d followers\n", pNewLeader->GetDebugName(), Count() - 1 );
+		m_hSquad[SQUAD_LEADER] = NULL;
 		return;
 	}
 
 	if ( pOldLeader == pNewLeader )
 	{
-		AssertMsg1( false, "Tried to reset squad leader to its current value (%s)\n", pNewLeader->GetMarineProfile()->GetShortName() );
 		return;
 	}
 
 	// if the new leader was previously a follower, swap with the old leader
-	int slot = Find( pNewLeader );
+	unsigned slot = Find( pNewLeader );
 	if ( IsValid(slot) )
 	{
 		m_hSquad[slot] = pOldLeader;
-		Leader( pNewLeader );
+		m_hSquad[SQUAD_LEADER] = pNewLeader;
 	}
 	else
 	{
 		// make the old leader a follower 
-		Leader( pNewLeader );
+		m_hSquad[SQUAD_LEADER] = pNewLeader;
 		Add( pOldLeader );
 	}
 	if ( bUpdateLeaderPos )
 	{
-		m_flLastLeaderYaw = pNewLeader->EyeAngles()[ YAW ];
+		m_flLastLeaderYaw = pNewLeader->EyeAngles()[YAW];
 		m_vLastLeaderPos = pNewLeader->GetAbsOrigin();
 		m_vLastLeaderVelocity = pNewLeader->GetAbsVelocity();
 		m_flLastSquadUpdateTime = gpGlobals->curtime;
@@ -489,27 +484,28 @@ void CASW_SquadFormation::ChangeLeader( CASW_Marine *pNewLeader, bool bUpdateLea
 
 void CASW_SquadFormation::Reset()
 {
-	m_hLeader = NULL;
 	for ( int i = 0 ; i < MAX_SQUAD_SIZE ; ++i )
 	{
 		m_flUseHintsAfter[i] = -1;
 		m_hSquad[i] = NULL;
 		m_bStandingInBeacon[i] = false;
-		m_bFleeingBoomerBombs[ i ] = false;
+		m_bFleeingBoomerBombs[i] = false;
 		m_nMarineHintIndex[i] = INVALID_HINT_INDEX;
 	}
 	m_flLastSquadUpdateTime = 0;
+	m_flLastLeaderYaw = 0;
+	m_vLastLeaderPos.Zero();
 	m_vLastLeaderVelocity.Zero();
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: Sorts AI nodes by proximity to leader
 //-----------------------------------------------------------------------------
-CASW_Marine *g_pSortLeader = NULL;
+Vector g_vecSortLeader;
 int CASW_SquadFormation::FollowHintSortFunc( HintData_t* const *pHint1, HintData_t* const *pHint2 )
 {
-	int nDist1 = (int) (*pHint1)->GetAbsOrigin().DistToSqr( g_pSortLeader->GetAbsOrigin() );
-	int nDist2 = (int) (*pHint2)->GetAbsOrigin().DistToSqr( g_pSortLeader->GetAbsOrigin() );
+	int nDist1 = (int) (*pHint1)->GetAbsOrigin().DistToSqr( g_vecSortLeader );
+	int nDist2 = (int) (*pHint2)->GetAbsOrigin().DistToSqr( g_vecSortLeader );
 
 	return ( nDist1 - nDist2 );
 }
@@ -524,7 +520,7 @@ void CASW_SquadFormation::FindFollowHintNodes()
 		return;
 
 	// evaluate each squaddie individually to see if his node should be updated
-	for ( int slotnum = 0; slotnum < MAX_SQUAD_SIZE; slotnum++ )
+	for ( unsigned slotnum = 0; slotnum < MAX_SQUAD_SIZE; slotnum++ )
 	{
 		CASW_Marine *pMarine = Squaddie( slotnum );
 		if ( !pMarine )
@@ -533,7 +529,9 @@ void CASW_SquadFormation::FindFollowHintNodes()
 			continue;
 		}
 
-		bool bNeedNewNode = (pMarine->GetAbsOrigin().DistToSqr(pLeader->GetAbsOrigin()) < Square(asw_follow_hint_min_range.GetFloat())) || (pMarine->GetAbsOrigin().DistToSqr(pLeader->GetAbsOrigin()) > Square(asw_follow_hint_max_range.GetFloat())) || !pMarine->FVisible(pLeader) || m_nMarineHintIndex[slotnum] == INVALID_HINT_INDEX;
+		bool bNeedNewNode = ( m_vFollowPositions[slotnum].DistToSqr( pMarine->GetAbsOrigin() ) > Square( asw_follow_hint_min_range.GetFloat() ) ) || ( m_vFollowPositions[slotnum].DistToSqr( m_vFollowPositions[SQUAD_LEADER] ) > Square( asw_follow_hint_max_range.GetFloat() ) ) || !pMarine->FVisible( pLeader ) || m_nMarineHintIndex[slotnum] == INVALID_HINT_INDEX;
+		if ( slotnum != SQUAD_LEADER && !bNeedNewNode )
+			bNeedNewNode = ( m_vFollowPositions[slotnum].DistToSqr( m_vFollowPositions[SQUAD_LEADER] ) < Square( asw_follow_hint_min_range.GetFloat() ) );
 
 		// find shield bug (if any) nearest each marine
 		const float k_flShieldbugScanRangeSqr = Square(400.0f);
@@ -545,7 +543,7 @@ void CASW_SquadFormation::FindFollowHintNodes()
 			for( int iShieldbug = 0; iShieldbug < IShieldbugAutoList::AutoList().Count(); iShieldbug++ )
 			{
 				CASW_Shieldbug *pShieldbug = static_cast< CASW_Shieldbug* >( IShieldbugAutoList::AutoList()[ iShieldbug ] );
-				if( pShieldbug && pShieldbug->IsAlive() )
+				if( pShieldbug && pShieldbug->IsAlive() && pShieldbug->GetSleepState() == AISS_AWAKE )
 				{
 					float flDistSqr = pMarine->GetAbsOrigin().DistToSqr( pShieldbug->GetAbsOrigin() );
 					if( flDistSqr < flClosestShieldBugDistSqr )
@@ -596,13 +594,13 @@ void CASW_SquadFormation::FindFollowHintNodes()
 			// TODO: turn this into a hint filter
 			for ( int i = nCount - 1; i >= 0; i-- )
 			{
-				Vector vecDir = ( hints[ i ]->GetAbsOrigin() - pLeader->GetAbsOrigin() ).Normalized();
+				Vector vecDir = ( hints[ i ]->GetAbsOrigin() - pLeader->GetAbsOrigin() );
 				float flYaw = UTIL_VecToYaw( vecDir );
 				flYaw = AngleDiff( flYaw, flMovementYaw );
 				bool bRemoveNode = false;
 
 				// remove hints that are in front of the leader's overall direction of movement,
-				if (flYaw < 85.0f && flYaw > -85.0f)
+				if ( flYaw < 85.0f && flYaw > -85.0f && vecDir.LengthSqr() > Square( asw_follow_hint_min_range.GetFloat() ) )
 				{
 					bRemoveNode = true;
 				}
@@ -637,7 +635,7 @@ void CASW_SquadFormation::FindFollowHintNodes()
 							if( flDistSqr < flClosestFlankingNodeDistSqr && bHasLOS )
 							{
 								bool flNodeTaken = false;
-								for( int iSlot = 0; iSlot < MAX_SQUAD_SIZE; iSlot++ )
+								for( unsigned iSlot = 0; iSlot < MAX_SQUAD_SIZE; iSlot++ )
 								{
 									if ( iSlot != slotnum && hints[ i ]->m_nHintIndex == m_nMarineHintIndex[ iSlot ] )
 									{
@@ -672,7 +670,7 @@ void CASW_SquadFormation::FindFollowHintNodes()
 			}
 		}
 
-		g_pSortLeader = pLeader;
+		g_vecSortLeader = pLeader->GetAbsOrigin();
 		hints.Sort( CASW_SquadFormation::FollowHintSortFunc );
 
 		// if this marine is close to a shield bug, grab a flanking node
@@ -683,13 +681,11 @@ void CASW_SquadFormation::FindFollowHintNodes()
 		}
 
 		// find the first node not used by another other squaddie
-		int nNode = 0;
-
-		while ( nNode < hints.Count() )
+		FOR_EACH_VEC( hints, nNode )
 		{
 			bool bValidNode = true;
 			const Vector &vecNodePos = hints[nNode]->m_vecPosition;
-			for ( int k = 0; k < MAX_SQUAD_SIZE; k++ )
+			for ( unsigned k = 0; k < MAX_SQUAD_SIZE; k++ )
 			{
 				if ( k != slotnum && m_nMarineHintIndex[k] != INVALID_HINT_INDEX && vecNodePos.DistToSqr( MarineHintManager()->GetHintPosition( m_nMarineHintIndex[k] ) ) < Square( asw_follow_hint_min_range.GetFloat() ) )
 				{
@@ -699,16 +695,12 @@ void CASW_SquadFormation::FindFollowHintNodes()
 			}
 			if ( bValidNode )
 			{
-				m_nMarineHintIndex[ slotnum ] = hints[ nNode ]->m_nHintIndex;
-				nNode++;
+				m_nMarineHintIndex[slotnum] = hints[nNode]->m_nHintIndex;
 				break;
 			}
-			nNode++;
 		}
 	}
 }
-
-
 
 bool CASW_SquadFormation::ShouldUpdateFollowPositions() const
 {
@@ -739,21 +731,21 @@ void CASW_SquadFormation::DrawDebugGeometryOverlays()
 	}
 }
 
-void CASW_SquadFormation::FollowCommandUsed( int slotnum )
+void CASW_SquadFormation::FollowCommandUsed( unsigned slotnum )
 {
 	if ( slotnum == INVALID_SQUADDIE )
 	{
-		for (int i = 0; i < MAX_SQUAD_SIZE; i++)
+		for ( int i = 0; i < MAX_SQUAD_SIZE; i++ )
 		{
 			FollowCommandUsed(i);
 		}
 		return;
 	}
 
-	Assert(0 <= slotnum && slotnum < MAX_SQUAD_SIZE);
+	Assert( IsValid( slotnum ) );
 
 	// skip the follow hint delay when the first (automated) follow command comes through at mission start.
-	if (m_flUseHintsAfter[slotnum] == -1)
+	if ( m_flUseHintsAfter[slotnum] == -1 )
 		m_flUseHintsAfter[slotnum] = 0;
 	else
 		m_flUseHintsAfter[slotnum] = gpGlobals->curtime + asw_follow_hint_delay.GetFloat();

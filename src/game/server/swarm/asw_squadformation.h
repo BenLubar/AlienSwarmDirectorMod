@@ -16,16 +16,17 @@ public:
 	// local compiler constants
 	enum 
 	{
-		MAX_SQUAD_SIZE = ASW_MAX_MARINE_RESOURCES - 1, // NOT including the leader.
+		SQUAD_LEADER = 0,
+		FIRST_SQUAD_FOLLOWER = 1,
+		MAX_SQUAD_SIZE = ASW_MAX_MARINE_RESOURCES,
 		INVALID_SQUADDIE,
 	};
 
-	inline CASW_Marine *Leader() const { return m_hLeader; }
-	inline void Leader(CASW_Marine *val) { m_hLeader = val; }
-	inline int Count() const; // number of followers
+	inline CASW_Marine *Leader() const { return Squaddie( SQUAD_LEADER ); }
+	inline int Count() const; // number of squad members
 
 	inline CASW_Marine *Squaddie( unsigned int slotnum ) const;
-	inline CASW_Marine *operator[]( unsigned int slotnum ) const { return Squaddie(slotnum); }
+	inline CASW_Marine *operator[]( unsigned int slotnum ) const { return Squaddie( slotnum ); }
 
 	// return the slot number for a particular marine. 
 	// Return INVALID_SQUADDIE if the marine is not in this squad.
@@ -48,7 +49,7 @@ public:
 	bool ShouldUpdateFollowPositions() const;
 
 	// follow in tight formation instead of using hints for asw_follow_hint_delay seconds
-	void FollowCommandUsed( int slotnum = INVALID_SQUADDIE );
+	void FollowCommandUsed( unsigned slotnum = INVALID_SQUADDIE );
 	float m_flUseHintsAfter[MAX_SQUAD_SIZE];
 
 	// Current notion of "forward", is updated/cached in calls to GetLdrAnglMatrix
@@ -66,7 +67,6 @@ public:
 	void DrawDebugGeometryOverlays();
 
 protected:
-	CHandle<CASW_Marine> m_hLeader;
 	CHandle<CASW_Marine> m_hSquad[MAX_SQUAD_SIZE];
 
 	// the location in world where each squaddie is supposed
@@ -132,7 +132,7 @@ inline int CASW_SquadFormation::Count() const
 	int ret = 0;
 	for ( int i = 0 ; i < MAX_SQUAD_SIZE; ++i )
 	{
-		if ( !!m_hSquad[i] )
+		if ( m_hSquad[i].Get() )
 			++ret;
 	}
 	return ret;

@@ -82,7 +82,7 @@ void CASW_Marine_Hint_Manager::Reset()
 
 int CASW_Marine_Hint_Manager::FindHints( const Vector &position, const float flMinDistance, const float flMaxDistance, CUtlVector<HintData_t *> *pResult )
 {
-	const float flMinDistSqr = flMinDistance * flMinDistance;
+	const float flMinDistSqr = 0; // we want the leader to be able to use their current hint.
 	const float flMaxDistSqr = flMaxDistance * flMaxDistance;
 	int nCount = m_Hints.Count();
 	for ( int i = 0; i < nCount; i++ )

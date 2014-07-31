@@ -80,6 +80,7 @@
 #include "asw_weapon_medkit_shared.h"
 #include "asw_melee_system.h"
 #include "asw_movedata.h"
+#include "asw_boomer_blob.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -430,6 +431,15 @@ int CASW_Marine::SelectSchedule()
 					return iFollowSchedule;
 				break;
 			}
+		}
+
+		if ( IsInCombat() )
+		{
+			int iFollowSchedule = SelectFollowSchedule();
+			if ( iFollowSchedule != -1 )
+				return iFollowSchedule;
+			if ( HasCondition( COND_CAN_RANGE_ATTACK1 ) && GetEnemy() )
+				return SCHED_RANGE_ATTACK1;
 		}
 
 		for (int i = 0; i < ASW_MAX_OBJECTIVES; i++)
@@ -1161,21 +1171,7 @@ void CASW_Marine::GatherConditions()
 		SetPhysicsPropTarget( NULL );
 	}
 
-	int iCurSchedule = GetCurSchedule()->GetId();
-	bool bRangedAttackSchedule = false;
-	switch( iCurSchedule )
-	{
-	case SCHED_RANGE_ATTACK1:
-	case SCHED_RANGE_ATTACK2:
-	case SCHED_SPECIAL_ATTACK1:
-	case SCHED_SPECIAL_ATTACK2:
-		{
-			bRangedAttackSchedule = true;
-		}
-		break;
-	};
-
-	if( IsOutOfAmmo() && bRangedAttackSchedule )
+	if ( IsOutOfAmmo() )
 	{
 		SetCondition( COND_COMPLETELY_OUT_OF_AMMO );
 	}
@@ -1905,10 +1901,10 @@ bool CASW_Marine::NeedToUpdateSquad()
 bool CASW_Marine::NeedToFollowMove()
 {
 	CASW_Marine * RESTRICT pLeader = GetSquadLeader();
-	if ( !pLeader || pLeader == this )
+	if ( !pLeader || ( pLeader == this && !IsInCombat() ) )
 		return false;
 
-	if (HasCondition(COND_CAN_RANGE_ATTACK1) && GetHealth() > GetMaxHealth() / 2 && GetEnemy() && GetEnemy()->Classify() != CLASS_ASW_SHIELDBUG && GetEnemy()->GetAbsOrigin().DistToSqr(GetAbsOrigin()) < Square(ASW_FORMATION_ATTACK_DISTANCE))
+	if ( HasCondition( COND_CAN_RANGE_ATTACK1 ) && GetHealth() > GetMaxHealth() / 2 && GetEnemy() && GetEnemy()->Classify() != CLASS_ASW_SHIELDBUG && GetEnemy()->GetAbsOrigin().DistToSqr( GetAbsOrigin() ) < Square( ASW_FORMATION_ATTACK_DISTANCE ) && g_aExplosiveProjectiles.Count() == 0 )
 		return false;
 
 	// only move if we're not near our saved follow point
@@ -1923,8 +1919,7 @@ static bool ValidMarineMeleeTarget( CBaseEntity *pEnt )
 
 	// don't punch big scary aliens
 	Class_T entClass = pEnt->Classify();
-	if ( entClass == CLASS_ASW_BOOMER || entClass == CLASS_ASW_SHIELDBUG ||
-			entClass == CLASS_ASW_HARVESTER || entClass == CLASS_ASW_MORTAR_BUG )
+	if ( entClass == CLASS_ASW_BOOMER || entClass == CLASS_ASW_SHIELDBUG || entClass == CLASS_ASW_HARVESTER || entClass == CLASS_ASW_MORTAR_BUG )
 		return false;
 	
 	return true;
