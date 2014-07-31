@@ -1921,7 +1921,14 @@ static bool ValidMarineMeleeTarget( CBaseEntity *pEnt )
 	Class_T entClass = pEnt->Classify();
 	if ( entClass == CLASS_ASW_BOOMER || entClass == CLASS_ASW_SHIELDBUG || entClass == CLASS_ASW_HARVESTER || entClass == CLASS_ASW_MORTAR_BUG )
 		return false;
-	
+
+	// don't punch explosives
+	if ( entClass == CLASS_ASW_EXPLOSIVE_BARREL )
+		return false;
+	CBreakableProp *pProp = dynamic_cast<CBreakableProp *>( pEnt );
+	if ( pProp && pProp->HasInteraction( PROPINTER_PHYSGUN_BREAK_EXPLODE ) )
+		return false;
+
 	return true;
 }
 
