@@ -139,6 +139,9 @@ public:
 		SetModelScale(flSizeScale);
 		SetHealthByDifficultyLevel();
 	}
+	virtual bool IsFlammable() { return m_bFlammable; }
+	virtual bool IsFreezable() { return m_bFreezable; }
+	virtual bool IsTeslable() { return m_bTeslable; }
 	float m_flHealthScale;
 	float m_flSpeedScale;
 	float m_flSizeScale;

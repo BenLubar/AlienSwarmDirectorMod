@@ -4899,13 +4899,20 @@ float CASW_Marine::OnFired_GetDamageScale()
 
 bool CASW_Marine::IsValidEnemy(CBaseEntity *pEnemy)
 {
-	if (!BaseClass::IsValidEnemy(pEnemy))
+	if ( !BaseClass::IsValidEnemy(pEnemy) )
 		return false;
 
-	if (GetActiveASWWeapon() && GetActiveASWWeapon()->Classify() == CLASS_ASW_FLAMER && pEnemy && pEnemy->GetAbsOrigin().DistToSqr(GetAbsOrigin()) > Square(160))
-		return false;
+	if ( GetActiveASWWeapon() && GetActiveASWWeapon()->Classify() == CLASS_ASW_FLAMER )
+	{
+		if ( pEnemy->GetAbsOrigin().DistToSqr( GetAbsOrigin() ) > Square( 160 ) )
+			return false;
 
-	if (pEnemy->Classify() == CLASS_ASW_ALIEN_GOO && pEnemy->GetBaseAnimating()->IsOnFire())
+		IASW_Spawnable_NPC *pNPC = dynamic_cast<IASW_Spawnable_NPC *>( pEnemy );
+		if ( pNPC && !pNPC->IsFlammable() )
+			return false;
+	}
+
+	if ( pEnemy->Classify() == CLASS_ASW_ALIEN_GOO && pEnemy->GetBaseAnimating()->IsOnFire() )
 		return false;
 
 	return true;

@@ -35,6 +35,9 @@ public:
 	virtual void SetHoldoutAlien() = 0;				// this alien was spawned as part of a holdout wave
 	virtual bool IsHoldoutAlien() = 0;
 	virtual void CustomSettings(float flHealthScale, float flSpeedScale, float flSizeScale, bool bFlammable, bool bFreezable, bool bTeslable) = 0;
+	virtual bool IsFlammable() = 0;
+	virtual bool IsFreezable() = 0;
+	virtual bool IsTeslable() = 0;
 };
 
 #endif // _INCLUDED_ASW_SPAWNABLE_NPC_H
