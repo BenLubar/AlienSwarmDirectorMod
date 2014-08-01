@@ -1550,6 +1550,8 @@ int CASW_Weapon::GetDefaultClip1() const
 		int clip = BaseClass::GetMaxClip1();
 		if (clip < 0)
 			clip = BaseClass::GetDefaultClip1();
+		else
+			clip = MIN(clip, BaseClass::GetDefaultClip1());
 
 		clip -= clip / 2; // round up
 		return clip;
@@ -1564,6 +1566,8 @@ int CASW_Weapon::GetDefaultClip2() const
 		int clip = BaseClass::GetMaxClip2();
 		if (clip < 0)
 			clip = BaseClass::GetDefaultClip2();
+		else
+			clip = MIN(clip, BaseClass::GetDefaultClip2());
 
 		clip -= clip / 2; // round up
 		return clip;
