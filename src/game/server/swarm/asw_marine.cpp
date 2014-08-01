@@ -4930,7 +4930,7 @@ void CASW_Marine::EnergyThink()
 	{
 		if (m_flLastFired[i] > gpGlobals->curtime - asw_energy_weapons_delay.GetFloat())
 			continue;
-			
+
 		if (m_flLastRechargedAmmo1[i] < m_flLastFired[i] + asw_energy_weapons_delay.GetFloat())
 			m_flLastRechargedAmmo1[i] = m_flLastFired[i] + asw_energy_weapons_delay.GetFloat();
 		if (m_flLastRechargedAmmo2[i] < m_flLastFired[i] + asw_energy_weapons_delay.GetFloat())
@@ -4946,6 +4946,12 @@ void CASW_Marine::EnergyThink()
 		{
 			flPerSecond1 = asw_energy_weapons_rate_offhand.GetFloat();
 			flPerSecond2 = asw_energy_weapons_rate_offhand.GetFloat();
+		}
+		
+		if ( !IsInhabited() && HasCondition( COND_COMPLETELY_OUT_OF_AMMO ) )
+		{
+			// don't shoot until we have at least two thirds of our ammo back.
+			m_fFFGuardTime = MAX( m_fFFGuardTime, m_flLastRechargedAmmo1[i] + ( ( ( pWeapon->GetMaxClip1() - pWeapon->m_iClip1 ) / flPerSecond1 ) * ( 2.0f / 3.0f ) ) );
 		}
 
 		int nAddedAmmo1 = (gpGlobals->curtime - m_flLastRechargedAmmo1[i]) * flPerSecond1;
