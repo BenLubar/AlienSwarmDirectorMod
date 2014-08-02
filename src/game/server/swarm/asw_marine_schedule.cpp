@@ -2341,9 +2341,25 @@ void CASW_Marine::StartTask(const Task_t *pTask)
 		break;
 
 	case TASK_ASW_MELEE_SYSTEM:
-		if ((int) pTask->flTaskData)
+		if ( pTask->flTaskData )
 		{
-			m_iMeleeAttackID = pTask->flTaskData;
+			CASW_Melee_Attack *pAttack = NULL;
+			switch ( (int) pTask->flTaskData )
+			{
+			case 1:
+				pAttack = ASWMeleeSystem()->GetMeleeAttackByName( "melee_combo_2a" );
+				break;
+			case 2:
+				pAttack = ASWMeleeSystem()->GetMeleeAttackByName( "melee_combo_2b" );
+				break;
+			case 3:
+				pAttack = ASWMeleeSystem()->GetMeleeAttackByName( "melee_combo_2c" );
+				break;
+			default:
+				Assert( 0 );
+				return;
+			}
+			ASWMeleeSystem()->StartMeleeAttack( pAttack, this, NULL );
 		}
 		break;
 
@@ -4346,13 +4362,13 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 		"		TASK_WAIT_FOR_MOVEMENT	0"
 		"		TASK_FACE_ENEMY			0"
 		"		TASK_ANNOUNCE_ATTACK	1"	// 1 = primary attack
-		"		TASK_MELEE_ATTACK1		1"
+		"		TASK_ASW_MELEE_SYSTEM		1"
 		"		TASK_FACE_ENEMY			0"
 		"		TASK_ANNOUNCE_ATTACK	1"	// 1 = primary attack
-		"		TASK_MELEE_ATTACK1		2"
+		"		TASK_ASW_MELEE_SYSTEM		2"
 		"		TASK_FACE_ENEMY			0"
 		"		TASK_ANNOUNCE_ATTACK	1"	// 1 = primary attack
-		"		TASK_MELEE_ATTACK1		3"
+		"		TASK_ASW_MELEE_SYSTEM		3"
 		""
 		"	Interrupts"
 		//"		COND_NEW_ENEMY"
@@ -4375,13 +4391,13 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 		"		TASK_WAIT_FOR_MOVEMENT	0"
 		"		TASK_FACE_ENEMY			0"
 		"		TASK_ANNOUNCE_ATTACK	1"	// 1 = primary attack
-		"		TASK_MELEE_ATTACK1		1"
+		"		TASK_ASW_MELEE_SYSTEM		1"
 		"		TASK_FACE_ENEMY			0"
 		"		TASK_ANNOUNCE_ATTACK	1"	// 1 = primary attack
-		"		TASK_MELEE_ATTACK1		2"
+		"		TASK_ASW_MELEE_SYSTEM		2"
 		"		TASK_FACE_ENEMY			0"
 		"		TASK_ANNOUNCE_ATTACK	1"	// 1 = primary attack
-		"		TASK_MELEE_ATTACK1		3"
+		"		TASK_ASW_MELEE_SYSTEM		3"
 		""
 		"	Interrupts"
 		"		COND_NEW_ENEMY"
