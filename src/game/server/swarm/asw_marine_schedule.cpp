@@ -713,6 +713,10 @@ int CASW_Marine::TranslateSchedule( int scheduleType )
 			result = SCHED_ASW_RANGE_ATTACK1;
 		}
 	}
+	else if ( result == SCHED_RELOAD )
+	{
+		result = SCHED_ASW_RELOAD;
+	}
 
 	return result;
 }
@@ -4413,6 +4417,16 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 
 		"	Tasks"
 		"		TASK_ASW_MELEE_SYSTEM		0"
+		""
+		"	Interrupts"
+		);
+
+	DEFINE_SCHEDULE
+		(
+		SCHED_ASW_RELOAD,
+
+		"	Tasks"
+		"		TASK_RELOAD				0"
 		""
 		"	Interrupts"
 		);
