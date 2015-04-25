@@ -2134,7 +2134,7 @@ void CASW_Alien::Event_Killed( const CTakeDamageInfo &info )
 		ASWDirector()->Event_AlienKilled( this, info );
 
 	if (m_hSpawner.Get())
-		m_hSpawner->DeathNotice(this);
+		SetOwnerEntity(m_hSpawner.Get());
 
 	//bool bRagdollCreated = Dissolve( NULL, gpGlobals->curtime, false, ENTITY_DISSOLVE_ELECTRICAL );
 

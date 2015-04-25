@@ -533,7 +533,7 @@ void CASW_Buzzer::Event_Killed( const CTakeDamageInfo &info )
 
 	// notify our spawner, so it can spit out more buzzers if need be
 	if (m_hSpawner.Get())
-		m_hSpawner->DeathNotice(this);
+		SetOwnerEntity(m_hSpawner.Get());
 
 	// turn off the blur!
 	SetBodygroup( ASW_BUZZER_BODYGROUP_BLUR, ASW_BUZZER_BODYGROUP_OFF );
