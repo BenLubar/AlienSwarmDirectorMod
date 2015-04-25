@@ -1,5 +1,5 @@
-#ifndef _INCLUDED_ASW_PROP_PHYSICS_H
-#define _INCLUDED_ASW_PROP_PHYSICS_H
+#ifndef _INCLUDED_ASW_PROP_DYNAMIC_H
+#define _INCLUDED_ASW_PROP_DYNAMIC_H
 
 #include "props.h"
 
@@ -14,4 +14,4 @@ protected:
 };
 
 
-#endif // _INCLUDED_ASW_PROP_PHYSICS_H
+#endif // _INCLUDED_ASW_PROP_DYNAMIC_H

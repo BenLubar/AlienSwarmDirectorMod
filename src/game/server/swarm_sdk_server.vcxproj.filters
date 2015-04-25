@@ -2330,6 +2330,12 @@
     <ClCompile Include="swarm\asw_spawn_entity.cpp">
       <Filter>Source Files\Swarm</Filter>
     </ClCompile>
+    <ClCompile Include="swarm\func_asw_fade.cpp">
+      <Filter>Source Files\Swarm</Filter>
+    </ClCompile>
+    <ClCompile Include="swarm\prop_asw_fade.cpp">
+      <Filter>Source Files\Swarm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\shared\achievement_saverestore.h">
@@ -4751,6 +4757,12 @@
       <Filter>Source Files\Mod</Filter>
     </ClInclude>
     <ClInclude Include="swarm\asw_spawn_entity.h">
+      <Filter>Source Files\Swarm</Filter>
+    </ClInclude>
+    <ClInclude Include="swarm\func_asw_fade.h">
+      <Filter>Source Files\Swarm</Filter>
+    </ClInclude>
+    <ClInclude Include="swarm\prop_asw_fade.h">
       <Filter>Source Files\Swarm</Filter>
     </ClInclude>
   </ItemGroup>
