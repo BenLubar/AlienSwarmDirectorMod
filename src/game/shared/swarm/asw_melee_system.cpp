@@ -77,6 +77,7 @@ ConVar asw_marine_rolls( "asw_marine_rolls", "1", FCVAR_REPLICATED | FCVAR_CHEAT
 ConVar asw_melee_lock_distance( "asw_melee_lock_distance", "35", FCVAR_CHEAT, "Dist marine slides to when locked onto a melee target" );
 ConVar asw_melee_lock_slide_speed( "asw_melee_lock_slide_speed", "200", FCVAR_CHEAT, "Speed at which marine slides into place when target locked in melee" );
 #endif
+extern ConVar asw_controls;
 
 mstudioevent_for_client_server_t *GetEventIndexForSequence( mstudioseqdesc_t &seqdesc );
 void SetEventIndexForSequence( mstudioseqdesc_t &seqdesc );
@@ -483,7 +484,7 @@ void CASW_Melee_System::OnJumpPressed( CASW_Marine *pMarine, CMoveData *pMoveDat
 	}
 	else
 	{
-		pMarine->m_flMeleeYaw = RAD2DEG(atan2(-pMoveData->m_flSideMove, pMoveData->m_flForwardMove)) + ASWGameRules()->GetTopDownMovementAxis()[YAW];	// assumes 45 degree cam!
+		pMarine->m_flMeleeYaw = RAD2DEG(atan2(-pMoveData->m_flSideMove, pMoveData->m_flForwardMove)) + (asw_controls.GetBool() ? ASWGameRules()->GetTopDownMovementAxis()[YAW] : pMarine->ASWEyeAngles()[YAW]);
 	}
 	pMarine->m_bFaceMeleeYaw = true;
 
