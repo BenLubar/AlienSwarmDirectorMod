@@ -49,7 +49,7 @@ void C_Prop_ASW_Fade::ClientThink()
 	}
 
 	byte target = m_nFadeOpacity;
-	if (asw_controls.GetBool() && pMarine->GetAbsOrigin().z > m_vecFadeOrigin.z)
+	if (!asw_controls.GetBool() || pMarine->GetAbsOrigin().z > m_vecFadeOrigin.z)
 	{
 		target = 255;
 	}
