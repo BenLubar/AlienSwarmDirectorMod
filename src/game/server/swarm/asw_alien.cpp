@@ -145,6 +145,7 @@ BEGIN_DATADESC( CASW_Alien )
 	DEFINE_FIELD( m_vecLastPush, FIELD_VECTOR ),
 	DEFINE_FIELD( m_bPushed, FIELD_BOOLEAN ),
 	DEFINE_FIELD( m_bHoldoutAlien, FIELD_BOOLEAN ),
+	DEFINE_FIELD( m_bDirectorAlien, FIELD_BOOLEAN ),
 END_DATADESC()
 
 IMPLEMENT_AUTO_LIST( IAlienAutoList );
@@ -194,6 +195,7 @@ CASW_Alien::CASW_Alien( void ) :
 	m_flRangeAttackLastUpdateTime = 0.0f;
 	m_vecRangeAttackTargetPosition.Init();
 	m_bHoldoutAlien = false;
+	m_bDirectorAlien = false;
 
 	m_nAlienCollisionGroup = ASW_COLLISION_GROUP_ALIEN;
 
@@ -203,6 +205,7 @@ CASW_Alien::CASW_Alien( void ) :
 	m_bFlammable = true;
 	m_bFreezable = true;
 	m_bTeslable = true;
+	m_bFlinches = true;
 
 	meleeAttack1.Init( 0.0f, 64.0f, 0.7f, false );
 	meleeAttack2.Init( 0.0f, 64.0f, 0.7f, false );
@@ -242,7 +245,7 @@ void CASW_Alien::Spawn()
 	Precache();
 	SetModel( m_pszAlienModelName );
 
-	CustomSettings(1.0f, 1.0f, 1.0f, true, true, true);
+	CustomSettings(1.0f, 1.0f, 1.0f, true, true, true, true);
 	SetHullSizeNormal();
 
 	// Base spawn.
@@ -984,7 +987,7 @@ int CASW_Alien::OnTakeDamage_Alive( const CTakeDamageInfo &info )
 		m_RecentDamage.RemoveAtHead();
 	}
 	m_RecentDamage.Insert( info );
-	if ( m_pFlinchBehavior )
+	if ( m_pFlinchBehavior && m_bFlinches )
 	{
 		m_pFlinchBehavior->OnOuterTakeDamage( info );
 	}
@@ -2131,7 +2134,7 @@ void CASW_Alien::Event_Killed( const CTakeDamageInfo &info )
 		ASWDirector()->Event_AlienKilled( this, info );
 
 	if (m_hSpawner.Get())
-		m_hSpawner->AlienKilled(this);
+		m_hSpawner->DeathNotice(this);
 
 	//bool bRagdollCreated = Dissolve( NULL, gpGlobals->curtime, false, ENTITY_DISSOLVE_ELECTRICAL );
 
@@ -2211,7 +2214,7 @@ void CASW_Alien::Event_Killed( const CTakeDamageInfo &info )
 	BaseClass::Event_Killed(info);
 }
 
-void CASW_Alien::SetSpawner(CASW_Base_Spawner* spawner)
+void CASW_Alien::SetSpawner(CBaseEntity* spawner)
 {
 	m_hSpawner = spawner;
 }

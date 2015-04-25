@@ -150,9 +150,9 @@ void CASW_Spawner::SpawnedAllAliens()
 	SetSpawnerState(SST_Finished); // disables think functions and so on
 }
 
-void CASW_Spawner::AlienKilled( CBaseEntity *pVictim )
+void CASW_Spawner::DeathNotice( CBaseEntity *pVictim )
 {
-	BaseClass::AlienKilled( pVictim );
+	BaseClass::DeathNotice( pVictim );
 
 	m_nCurrentLiveAliens--;
 

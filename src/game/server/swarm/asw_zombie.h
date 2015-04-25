@@ -97,8 +97,8 @@ public:
 	DEFINE_CUSTOM_AI;
 
 	// IASW_Spawnable_NPC implementation
-	CHandle<CASW_Base_Spawner> m_hSpawner;
-	void SetSpawner(CASW_Base_Spawner* spawner);
+	EHANDLE m_hSpawner;
+	void SetSpawner(CBaseEntity* spawner);
 	CAI_BaseNPC* GetNPC() { return this; }
 	virtual bool CanStartBurrowed() { return false; }
 	virtual void StartBurrowed() { }

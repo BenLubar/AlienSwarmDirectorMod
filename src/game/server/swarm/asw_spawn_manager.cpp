@@ -62,7 +62,7 @@ CASW_Spawn_Manager::~CASW_Spawn_Manager()
 // NOTE: If you add new entries to this list, update the asw_spawner choices in swarm.fgd.
 //       Do not rearrange the order or you will be changing what spawns in all the maps.
 
-ASW_Alien_Class_Entry g_Aliens[]=
+ASW_Alien_Class_Entry g_Aliens[] =
 {
 	ASW_Alien_Class_Entry( "asw_drone", HULL_MEDIUMBIG ),
 	ASW_Alien_Class_Entry( "asw_buzzer", HULL_TINY_CENTERED ),
@@ -82,6 +82,8 @@ ASW_Alien_Class_Entry g_Aliens[]=
 	ASW_Alien_Class_Entry( "asw_drone_carrier", HULL_MEDIUMBIG ),
 	ASW_Alien_Class_Entry( "asw_drone_summoner", HULL_MEDIUMBIG ),
 };
+
+ASSERT_INVARIANT(NELEMS(g_Aliens) == ASW_NUM_ALIEN_CLASSES);
 
 const char * g_VariedWandererTypeCommon [] = {
 	//"asw_drone_jumper", // already used for the non-varied type.
@@ -110,12 +112,12 @@ const int g_nDroneJumperClassEntry = 5;
 
 int CASW_Spawn_Manager::GetNumAlienClasses()
 {
-	return NELEMS( g_Aliens );
+	return ASW_NUM_ALIEN_CLASSES;
 }
 
 ASW_Alien_Class_Entry* CASW_Spawn_Manager::GetAlienClass( int i )
 {
-	Assert( i >= 0 && i < NELEMS( g_Aliens ) );
+	Assert( i >= 0 && i < ASW_NUM_ALIEN_CLASSES );
 	return &g_Aliens[ i ];
 }
 

@@ -1580,7 +1580,7 @@ int CASW_Drone_Advanced::SelectSchedule( void )
 			if (pDrone)
 			{
 				pDrone->SetEnemy(GetEnemy());
-				pDrone->CustomSettings(0.75f, 1.0f, 0.75f, true, true, true);
+				pDrone->CustomSettings(0.75f, 1.0f, 0.75f, true, true, true, true);
 				pDrone->m_flBurrowTime = gpGlobals->curtime + RandomFloat(1, 6);
 			}
 		}

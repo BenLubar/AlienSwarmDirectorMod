@@ -10,6 +10,8 @@ struct AI_Waypoint_t;
 class CAI_Node;
 class CASW_Alien;
 
+#define ASW_NUM_ALIEN_CLASSES 17
+
 // The spawn manager can spawn aliens and groups of aliens
 
 class ASW_Alien_Class_Entry

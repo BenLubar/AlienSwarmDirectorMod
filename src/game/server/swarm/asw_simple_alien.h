@@ -119,15 +119,15 @@ public:
 	// =================================
 	// IASW_Spawnable_NPC implementation
 	// =================================
-	void SetSpawner(CASW_Base_Spawner* spawner) { m_hSpawner = spawner; }
-	CHandle<CASW_Base_Spawner> m_hSpawner;
+	void SetSpawner(CBaseEntity* spawner) { m_hSpawner = spawner; }
+	EHANDLE m_hSpawner;
 
 	virtual void SetAlienOrders(AlienOrder_t Orders, Vector vecOrderSpot, CBaseEntity* pOrderObject);
 	AlienOrder_t GetAlienOrders();
 	virtual void ClearAlienOrders();
 	virtual void IgnoreMarines(bool bIgnoreMarines) { }
 
-	virtual void CustomSettings(float flHealthScale, float flSpeedScale, float flSizeScale, bool bFlammable, bool bFreezable, bool bTeslable)
+	virtual void CustomSettings(float flHealthScale, float flSpeedScale, float flSizeScale, bool bFlammable, bool bFreezable, bool bTeslable, bool bFlinches)
 	{
 		m_flHealthScale = flHealthScale;
 		m_flSpeedScale = flSpeedScale;
@@ -135,6 +135,7 @@ public:
 		m_bFlammable = bFlammable;
 		m_bFreezable = bFreezable;
 		m_bTeslable = bTeslable;
+		m_bFlinches = bFlinches;
 
 		SetModelScale(flSizeScale);
 		SetHealthByDifficultyLevel();
@@ -142,12 +143,14 @@ public:
 	virtual bool IsFlammable() { return m_bFlammable; }
 	virtual bool IsFreezable() { return m_bFreezable; }
 	virtual bool IsTeslable() { return m_bTeslable; }
+	virtual bool IsFlincher() { return m_bFlinches; }
 	float m_flHealthScale;
 	float m_flSpeedScale;
 	float m_flSizeScale;
 	bool m_bFlammable;
 	bool m_bFreezable;
 	bool m_bTeslable;
+	bool m_bFlinches;
 
 	AlienOrder_t m_AlienOrders;
 	Vector m_vecAlienOrderSpot;
@@ -171,12 +174,15 @@ public:
 	virtual bool AllowedToIgnite() { return m_bFlammable; }
 	virtual void SetHoldoutAlien() { m_bHoldoutAlien = true; }
 	virtual bool IsHoldoutAlien() { return m_bHoldoutAlien; }
+	virtual void SetDirectorAlien() { m_bDirectorAlien = true; }
+	virtual bool IsDirectorAlien() { return m_bDirectorAlien; }
 
 	// debug
 	virtual int DrawDebugTextOverlays();
 	virtual void DrawDebugGeometryOverlays();
 
 	bool m_bHoldoutAlien;
+	bool m_bDirectorAlien;
 };
 
 enum {

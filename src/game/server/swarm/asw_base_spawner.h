@@ -33,8 +33,6 @@ public:
 	CBaseEntity*			GetOrderTarget();
 	bool					MoveSpawnableTo(IASW_Spawnable_NPC* pAlien, CBaseEntity* pGoalEnt, bool bIgnoreMarines);
 
-	virtual void			AlienKilled( CBaseEntity *pVictim ) { }
-
 	CBaseEntity*			GetAlienOrderTarget();
 
 	bool					IsValidOnThisSkillLevel();
@@ -76,6 +74,7 @@ protected:
 	bool m_bFlammable;
 	bool m_bFreezable;
 	bool m_bTeslable;
+	bool m_bFlinches;
 
 	// outputs
 	COutputEvent m_OnSpawned;

@@ -44,7 +44,8 @@ BEGIN_DATADESC( CASW_Simple_Alien )
 	DEFINE_FIELD(m_hMoveTarget, FIELD_EHANDLE),
 	DEFINE_FIELD(m_fArrivedTolerance, FIELD_FLOAT),
 	DEFINE_FIELD(m_bAttacking, FIELD_BOOLEAN),
-	DEFINE_FIELD( m_bHoldoutAlien, FIELD_BOOLEAN ),
+	DEFINE_FIELD(m_bHoldoutAlien, FIELD_BOOLEAN),
+	DEFINE_FIELD(m_bDirectorAlien, FIELD_BOOLEAN),
 END_DATADESC()
 
 IMPLEMENT_SERVERCLASS_ST(CASW_Simple_Alien, DT_ASW_Simple_Alien)
@@ -80,6 +81,7 @@ CASW_Simple_Alien::CASW_Simple_Alien()
 	m_fNextPainSound = 0;
 	m_bOnGround = false;
 	m_bHoldoutAlien = false;
+	m_bDirectorAlien = false;
 }
 
 CASW_Simple_Alien::~CASW_Simple_Alien()
@@ -1188,7 +1190,7 @@ void CASW_Simple_Alien::Event_Killed( const CTakeDamageInfo &info )
 	}	
 
 	if (m_hSpawner.Get())
-		m_hSpawner->AlienKilled(this);
+		m_hSpawner->DeathNotice(this);
 
 	// Calculate death force
 	Vector forceVector = CalcDeathForceVector( info );

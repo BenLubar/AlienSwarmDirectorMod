@@ -1,7 +1,6 @@
 #ifndef _INCLUDED_ASW_SPAWNABLE_NPC_H
 #define _INCLUDED_ASW_SPAWNABLE_NPC_H
 
-class CASW_Base_Spawner;
 class CAI_BaseNPC;
 
 enum AlienOrder_t
@@ -18,7 +17,7 @@ abstract_class IASW_Spawnable_NPC
 {
 public:	
 
-	virtual void SetSpawner(CASW_Base_Spawner* spawner) = 0;		// inform our spawnable about the spawner, so the spawn can be notified of the spawnable's death
+	virtual void SetSpawner(CBaseEntity* spawner) = 0;		// inform our spawnable about the spawner, so the spawn can be notified of the spawnable's death
 	virtual CAI_BaseNPC* GetNPC() = 0;
 	virtual bool CanStartBurrowed() = 0;					// spawnables should return true if they can spawn underground
 	virtual void StartBurrowed() = 0;						// should make the spawnable start underground
@@ -34,10 +33,13 @@ public:
 	virtual void SetHealthByDifficultyLevel() = 0;	// sets the alien's health to its default 
 	virtual void SetHoldoutAlien() = 0;				// this alien was spawned as part of a holdout wave
 	virtual bool IsHoldoutAlien() = 0;
-	virtual void CustomSettings(float flHealthScale, float flSpeedScale, float flSizeScale, bool bFlammable, bool bFreezable, bool bTeslable) = 0;
+	virtual void SetDirectorAlien() = 0;				// this alien was spawned by the director
+	virtual bool IsDirectorAlien() = 0;
+	virtual void CustomSettings(float flHealthScale, float flSpeedScale, float flSizeScale, bool bFlammable, bool bFreezable, bool bTeslable, bool bFlinches) = 0;
 	virtual bool IsFlammable() = 0;
 	virtual bool IsFreezable() = 0;
 	virtual bool IsTeslable() = 0;
+	virtual bool IsFlincher() = 0;
 };
 
 #endif // _INCLUDED_ASW_SPAWNABLE_NPC_H

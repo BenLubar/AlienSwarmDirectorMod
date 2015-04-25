@@ -843,7 +843,7 @@ void CASW_Parasite::FinishedInfesting()
 	}	
 
 	if (m_hSpawner.Get())
-		m_hSpawner->AlienKilled(this);
+		m_hSpawner->DeathNotice(this);
 
 	if (GetMother())
 		GetMother()->ChildAlienKilled(this);

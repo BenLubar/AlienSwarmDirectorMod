@@ -200,7 +200,8 @@ BEGIN_DATADESC( CASW_Buzzer )
 	DEFINE_FIELD(m_fHurtSlowMoveTime, FIELD_TIME),
 	DEFINE_FIELD(m_flElectroStunSlowMoveTime, FIELD_TIME),
 	DEFINE_FIELD(m_bElectroStunned, FIELD_BOOLEAN),
-	DEFINE_FIELD( m_bHoldoutAlien, FIELD_BOOLEAN ),
+	DEFINE_FIELD(m_bHoldoutAlien, FIELD_BOOLEAN),
+	DEFINE_FIELD(m_bDirectorAlien, FIELD_BOOLEAN),
 
 	// Function Pointers
 	DEFINE_INPUTFUNC( FIELD_VOID,	"DisableSwarm", InputDisableSwarm ),
@@ -532,7 +533,7 @@ void CASW_Buzzer::Event_Killed( const CTakeDamageInfo &info )
 
 	// notify our spawner, so it can spit out more buzzers if need be
 	if (m_hSpawner.Get())
-		m_hSpawner->AlienKilled(this);
+		m_hSpawner->DeathNotice(this);
 
 	// turn off the blur!
 	SetBodygroup( ASW_BUZZER_BODYGROUP_BLUR, ASW_BUZZER_BODYGROUP_OFF );
@@ -2832,7 +2833,7 @@ bool CASW_Buzzer::CreateVPhysics( void )
 }
 
 
-void CASW_Buzzer::SetSpawner(CASW_Base_Spawner* spawner)
+void CASW_Buzzer::SetSpawner(CBaseEntity* spawner)
 {
 	m_hSpawner = spawner;
 }

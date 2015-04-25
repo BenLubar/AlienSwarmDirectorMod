@@ -48,7 +48,145 @@
 	input Activate(void) : "Begins building the mission map for the next mission."
 ]
 
-@PointClass base(Targetname, Angles, asw_spawner) studioprop("models/editor/asw_spawner/asw_spawner.mdl") color(0 0 255) = mod_spawner
+@BaseClass base(Targetname, Angles) = ASWSpawnEntity
 [
-	input ResetNumAliens(void) : "Resets the spawner so that it will spawn the number of aliens previously specified in 'Max Num. of live aliens'."	
+	alien_name(target_source) : "Alien name" : "" : "Target name to give spawned aliens."
+	wait_for_input(boolean) : "Wait for input" : 0 : "Wait for the Enable input before spawning."
+	allow_long_think(boolean) : "Think outside of PVS" : 0 : "Spawned aliens think even when no marine is nearby."
+	start_distance(float) : "Distance to start spawning" : "-1" : "If a marine is this close, start spawning unless we're waiting for input. -1 means the whole map."
+	stop_distance(float) : "Distance to stop spawning" : "-1" : "If all marines are farther away than this, stop spawning. -1 means the whole map."
+
+	max_aliens_live_0(integer) : "Max live aliens on Easy difficulty" : 1 : "-1 for infinite."
+	max_aliens_live_1(integer) : "Max live aliens on Normal difficulty" : 1 : "-1 for infinite."
+	max_aliens_live_2(integer) : "Max live aliens on Hard difficulty" : 1 : "-1 for infinite."
+	max_aliens_live_3(integer) : "Max live aliens on Insane difficulty" : 1 : "-1 for infinite."
+	max_aliens_live_4(integer) : "Max live aliens on Brutal difficulty" : 1 : "-1 for infinite."
+	max_aliens_spawned_0(integer) : "Max non-director aliens on Easy difficulty" : 1 : "-1 for infinite."
+	max_aliens_spawned_1(integer) : "Max non-director aliens on Normal difficulty" : 1 : "-1 for infinite."
+	max_aliens_spawned_2(integer) : "Max non-director aliens on Hard difficulty" : 1 : "-1 for infinite."
+	max_aliens_spawned_3(integer) : "Max non-director aliens on Insane difficulty" : 1 : "-1 for infinite."
+	max_aliens_spawned_4(integer) : "Max non-director aliens on Brutal difficulty" : 1 : "-1 for infinite."
+	max_aliens_director_0(integer) : "Max director aliens on Easy Onslaught difficulty" : 1 : "-1 for infinite."
+	max_aliens_director_1(integer) : "Max director aliens on Normal Onslaught difficulty" : 1 : "-1 for infinite."
+	max_aliens_director_2(integer) : "Max director aliens on Hard Onslaught difficulty" : 1 : "-1 for infinite."
+	max_aliens_director_3(integer) : "Max director aliens on Insane Onslaught difficulty" : 1 : "-1 for infinite."
+	max_aliens_director_4(integer) : "Max director aliens on Brutal Onslaught difficulty" : 1 : "-1 for infinite."
+
+	min_spawn_interval(float) : "Minimum time between spawns" : "3" : ""
+	max_spawn_interval(float) : "Maximum time between spawns" : "5" : ""
+
+	aliens_flame(boolean) : "Aliens are flammable" : 1 : ""
+	aliens_stun(boolean) : "Aliens are stunnable" : 1 : "(Electricity)"
+	aliens_freeze(boolean) : "Aliens are freezable" : 1 : ""
+	aliens_flinch(boolean) : "Aliens flinch when damaged" : 1 : ""
+
+	health_scale(float) : "Health scale" : "1" : "Must be greater than 0."
+	size_scale(float) : "Size scale" : "1" : "Must be greater than 0."
+	speed_scale(float) : "Speed scale" : "1" : "Must be greater than 0."
+
+	max_yaw(float) : "Random Rotation" : "0" : "Maximum random rotation on yaw (degrees)."
+	max_forward(float) : "Random Front-Back" : "0" : "Maximum random shift forward or backward."
+	max_side(float) : "Random Left-Right" : "0" : "Maximum random shift left or right."
+
+	input Enable(void) : "Enable this entity."
+	input Disable(void) : "Disable this entity."
+	input Toggle(void) : "Toggle between enabled and disabled."
+
+	output OnSpawned(void) : "Non-director alien spawned."
+	output OnAnySpawned(void) : "Any alien spawned."
+	output OnDirectorSpawned(void) : "Director alien spawned."
+	output OnAllSpawned(void) : "Spawner exhausted of non-director aliens."
+	output OnAllSpawnedDead(void) : "Spawned all non-director aliens and they all died."
+]
+
+@PointClass base(ASWSpawnEntity) studioprop("models/editor/asw_spawner/asw_spawner.mdl") color(0 0 255) = asw_spawn_offscreen :
+	"Alien spawn (offscreen)"
+[
+	move_to_marines(boolean) : "Move to marines" : 0 : "When an alien spawns, should they move to the nearest marine or just loiter until someone comes close?"
+	min_distance(float) : "Minimum distance" : "720" : "Stop spawning if a marine is this close or closer."
+
+	spawn_chance_0(float) : "Chance of spawning asw_drone" : "1" : "Relative to other aliens."
+	spawn_chance_1(float) : "Chance of spawning asw_buzzer" : "1" : "Relative to other aliens."
+	spawn_chance_2(float) : "Chance of spawning asw_parasite" : "1" : "Relative to other aliens."
+	spawn_chance_3(float) : "Chance of spawning asw_shieldbug" : "1" : "Relative to other aliens."
+	spawn_chance_4(float) : "Chance of spawning asw_grub" : "1" : "Relative to other aliens."
+	spawn_chance_5(float) : "Chance of spawning asw_drone_jumper" : "1" : "Relative to other aliens."
+	spawn_chance_6(float) : "Chance of spawning asw_harvester" : "1" : "Relative to other aliens."
+	spawn_chance_7(float) : "Chance of spawning asw_parasite_defanged" : "1" : "Relative to other aliens."
+	spawn_chance_8(float) : "Chance of spawning asw_queen" : "0" : "Relative to other aliens."
+	spawn_chance_9(float) : "Chance of spawning asw_boomer" : "1" : "Relative to other aliens."
+	spawn_chance_10(float) : "Chance of spawning asw_ranger" : "1" : "Relative to other aliens."
+	spawn_chance_11(float) : "Chance of spawning asw_mortarbug" : "1" : "Relative to other aliens."
+	spawn_chance_12(float) : "Chance of spawning asw_shaman" : "1" : "Relative to other aliens."
+	spawn_chance_13(float) : "Chance of spawning asw_drone_redgiant" : "1" : "Relative to other aliens."
+	spawn_chance_14(float) : "Chance of spawning asw_drone_ghost" : "1" : "Relative to other aliens."
+	spawn_chance_15(float) : "Chance of spawning asw_drone_carrier" : "1" : "Relative to other aliens."
+	spawn_chance_16(float) : "Chance of spawning asw_drone_summoner" : "1" : "Relative to other aliens."
+]
+
+@PointClass base(ASWSpawnEntity) studioprop("models/editor/asw_spawner/asw_spawner.mdl") color(0 0 255) = asw_spawn_burrow :
+	"Alien spawn (burrow)"
+[
+	spawn_chance_0(float) : "Chance of spawning asw_drone" : "1" : "Relative to other aliens."
+	spawn_chance_5(float) : "Chance of spawning asw_drone_jumper" : "1" : "Relative to other aliens."
+	spawn_chance_10(float) : "Chance of spawning asw_ranger" : "1" : "Relative to other aliens."
+	spawn_chance_13(float) : "Chance of spawning asw_drone_redgiant" : "1" : "Relative to other aliens."
+	spawn_chance_14(float) : "Chance of spawning asw_drone_ghost" : "1" : "Relative to other aliens."
+	spawn_chance_15(float) : "Chance of spawning asw_drone_carrier" : "1" : "Relative to other aliens."
+	spawn_chance_16(float) : "Chance of spawning asw_drone_summoner" : "1" : "Relative to other aliens."
+]
+
+@PointClass base(ASWSpawnEntity) studioprop("models/editor/asw_spawner/asw_spawner.mdl") color(0 0 255) = asw_spawn_hallway :
+	"Alien spawn (hallway)"
+[
+	spawn_chance_9(float) : "Chance of spawning asw_boomer" : "1" : "Relative to other aliens."
+	spawn_chance_11(float) : "Chance of spawning asw_mortarbug" : "1" : "Relative to other aliens."
+]
+
+@PointClass base(ASWSpawnEntity) studioprop("models/editor/asw_spawner/asw_spawner.mdl") color(0 0 255) = asw_spawn_wall :
+	"Alien spawn (wall)"
+[
+	vent_is_high(boolean) : "Vent is high" : 0 : "If yes, only drones can spawn."
+
+	spawn_chance_0(float) : "Chance of spawning asw_drone" : "1" : "Relative to other aliens."
+	spawn_chance_5(float) : "Chance of spawning asw_drone_jumper" : "1" : "Relative to other aliens."
+	spawn_chance_9(float) : "Chance of spawning asw_boomer" : "1" : "Relative to other aliens."
+	spawn_chance_13(float) : "Chance of spawning asw_drone_redgiant" : "1" : "Relative to other aliens."
+	spawn_chance_14(float) : "Chance of spawning asw_drone_ghost" : "1" : "Relative to other aliens."
+	spawn_chance_15(float) : "Chance of spawning asw_drone_carrier" : "1" : "Relative to other aliens."
+	spawn_chance_16(float) : "Chance of spawning asw_drone_summoner" : "1" : "Relative to other aliens."
+]
+
+@PointClass base(ASWSpawnEntity) studioprop("models/editor/asw_spawner/asw_spawner.mdl") color(0 0 255) = asw_spawn_railing :
+	"Alien spawn (railing)"
+[
+	railing_is_high(boolean) : "Railing is high" : 0 : "If yes, only drones can spawn."
+
+	spawn_chance_0(float) : "Chance of spawning asw_drone" : "1" : "Relative to other aliens."
+	spawn_chance_5(float) : "Chance of spawning asw_drone_jumper" : "1" : "Relative to other aliens."
+	spawn_chance_10(float) : "Chance of spawning asw_ranger" : "1" : "Relative to other aliens."
+	spawn_chance_13(float) : "Chance of spawning asw_drone_redgiant" : "1" : "Relative to other aliens."
+	spawn_chance_14(float) : "Chance of spawning asw_drone_ghost" : "1" : "Relative to other aliens."
+	spawn_chance_15(float) : "Chance of spawning asw_drone_carrier" : "1" : "Relative to other aliens."
+	spawn_chance_16(float) : "Chance of spawning asw_drone_summoner" : "1" : "Relative to other aliens."
+]
+
+@PointClass base(ASWSpawnEntity) studioprop("models/editor/asw_spawner/asw_spawner.mdl") color(0 0 255) = asw_spawn_jump :
+	"Alien spawn (jump)"
+[
+	jump_height(choices) : "Jump height" : 4 : "" =
+	[
+		0 : "Low"
+		1 : "Medium"
+		2 : "High"
+		3 : "Offscreen (short)"
+		4 : "Offscreen (long)"
+	]
+
+	spawn_chance_0(float) : "Chance of spawning asw_drone" : "1" : "Relative to other aliens."
+	spawn_chance_5(float) : "Chance of spawning asw_drone_jumper" : "1" : "Relative to other aliens."
+	spawn_chance_13(float) : "Chance of spawning asw_drone_redgiant" : "1" : "Relative to other aliens."
+	spawn_chance_14(float) : "Chance of spawning asw_drone_ghost" : "1" : "Relative to other aliens."
+	spawn_chance_15(float) : "Chance of spawning asw_drone_carrier" : "1" : "Relative to other aliens."
+	spawn_chance_16(float) : "Chance of spawning asw_drone_summoner" : "1" : "Relative to other aliens."
 ]

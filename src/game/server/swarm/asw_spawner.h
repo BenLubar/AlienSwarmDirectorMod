@@ -36,7 +36,7 @@ public:
 	const Vector&			GetAlienMaxs();
 
 	void					SpawnedAllAliens();
-	virtual void			AlienKilled( CBaseEntity *pVictim );
+	virtual void			DeathNotice( CBaseEntity *pVictim );
 	virtual void			MissionStart(); // called by gamerules when mission begins
 
 	bool					ApplyCarnageMode( float fScaler, float fInvScaler );

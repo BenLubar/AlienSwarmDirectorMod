@@ -758,6 +758,7 @@ exit 1
     <ClCompile Include="sunlightshadowcontrol.cpp" />
     <ClCompile Include="..\shared\takedamageinfo.cpp" />
     <ClCompile Include="swarm\asw_campaign_fixes.cpp" />
+    <ClCompile Include="swarm\asw_spawn_entity.cpp" />
     <ClCompile Include="tanktrain.cpp" />
     <ClCompile Include="team.cpp" />
     <ClCompile Include="..\shared\teamplay_gamerules.cpp" />
@@ -1436,6 +1437,7 @@ exit 1
     <ClInclude Include="..\..\public\vphysics\stats.h" />
     <ClInclude Include="..\..\public\steam\steam_api.h" />
     <ClInclude Include="..\..\public\stringregistry.h" />
+    <ClInclude Include="swarm\asw_spawn_entity.h" />
     <ClInclude Include="team.h" />
     <ClInclude Include="..\shared\teamplay_gamerules.h" />
     <ClInclude Include="..\shared\tempentity.h" />
