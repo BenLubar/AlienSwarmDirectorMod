@@ -888,16 +888,9 @@ const QAngle& CASW_Player::EyeAngles( )
 	if ( !asw_controls.GetBool() )
 #endif
 	{
-		if ( !asw_allow_detach.GetBool() )
+		if ( !asw_allow_detach.GetBool() && GetSpectatingMarine() )
 		{
-			if ( GetSpectatingMarine() )
-			{
-				angAdjustedEyes = GetSpectatingMarine()->EyeAngles();
-			}
-			else if ( GetMarine() )
-			{
-				angAdjustedEyes = GetMarine()->EyeAngles();
-			}
+			angAdjustedEyes = GetSpectatingMarine()->EyeAngles();
 		}
 
 #ifdef CLIENT_DLL
