@@ -5,6 +5,7 @@
 #endif
 
 #include "c_func_brush.h"
+#include "c_asw_marine.h"
 
 class C_Func_ASW_Fade : public C_FuncBrush
 {
@@ -12,10 +13,14 @@ public:
 	DECLARE_CLASS(C_Func_ASW_Fade, C_FuncBrush);
 	DECLARE_CLIENTCLASS();
 
+	C_Func_ASW_Fade();
+
 	virtual void OnDataChanged(DataUpdateType_t updateType);
 	virtual void ClientThink();
 
 protected:
+	bool m_bLastControls;
+	CHandle<C_ASW_Marine> m_hLastMarine;
 	byte m_nFadeOpacity;
 };
 
