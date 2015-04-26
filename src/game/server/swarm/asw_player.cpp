@@ -67,6 +67,7 @@ ConVar asw_debug_pvs("asw_debug_pvs", "0", FCVAR_CHEAT);
 extern ConVar asw_rts_controls;
 extern ConVar asw_DebugAutoAim;
 extern ConVar asw_debug_marine_damage;
+extern ConVar asw_controls;
 
 // -------------------------------------------------------------------------------- //
 // Player animation event. Sent to the client when a player fires, jumps, reloads, etc..
@@ -2220,16 +2221,16 @@ void CASW_Player::ChangeName( const char *pszNewName )
 	engine->ClientCommand( edict(), "name \"%s\"", trimmedName );
 }
 
-#define ASW_NO_SERVERSIDE_AUTOAIM
-
 Vector CASW_Player::GetAutoaimVectorForMarine(CASW_Marine* marine, float flDelta, float flNearMissDelta)
 {
-#ifdef ASW_NO_SERVERSIDE_AUTOAIM
-	// test of no serverside autoaim
-	Vector	forward;
-	AngleVectors( EyeAngles(), &forward );	//  + m_Local.m_vecPunchAngle
-	return	forward;
-#else
+	if (asw_controls.GetBool())
+	{
+		// test of no serverside autoaim
+		Vector	forward;
+		AngleVectors( EyeAngles(), &forward );	//  + m_Local.m_vecPunchAngle
+		return	forward;
+	}
+
 	//if ( ( ShouldAutoaim() == false ) || ( flDelta == 0 ) )	
 	if (GetMarine() == NULL)
 	{
@@ -2263,7 +2264,6 @@ Vector CASW_Player::GetAutoaimVectorForMarine(CASW_Marine* marine, float flDelta
 	m_angMarineAutoAim = angles;
 	
 	return forward;
-#endif
 }
 
 QAngle CASW_Player::MarineAutoaimDeflection( Vector &vecSrc, float flDist, float flDelta, float flNearMissDelta )
