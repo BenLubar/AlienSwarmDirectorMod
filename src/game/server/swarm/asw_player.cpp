@@ -51,6 +51,7 @@
 #include "asw_spawn_manager.h"
 #include "asw_campaign_info.h"
 #include "sendprop_priorities.h"
+#include "asw_trace_filter.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -2971,9 +2972,10 @@ CBaseEntity* CASW_Player::FindPickerEntity()
 	MDLCACHE_CRITICAL_SECTION();
 
 	trace_t tr;
+	CASW_Trace_Filter filter(this, COLLISION_GROUP_NONE);
 	UTIL_TraceLine( GetCrosshairTracePos(),
 		GetCrosshairTracePos() + Vector( 0, 0, 10 ),
-		MASK_SOLID, this, COLLISION_GROUP_NONE, &tr );
+		MASK_SOLID, &filter, &tr );
 	if ( tr.fraction != 1.0 && tr.DidHitNonWorldEntity() )
 	{
 		return tr.m_pEnt;

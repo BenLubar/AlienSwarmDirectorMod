@@ -2864,6 +2864,9 @@
     <ClCompile Include="swarm\c_prop_asw_fade.cpp">
       <Filter>Source Files\Swarm</Filter>
     </ClCompile>
+    <ClCompile Include="..\shared\swarm\asw_trace_filter.cpp">
+      <Filter>Source Files\Swarm\Shared</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="achievement_notification_panel.h">
@@ -6018,6 +6021,9 @@
     </ClInclude>
     <ClInclude Include="swarm\c_prop_asw_fade.h">
       <Filter>Source Files\Swarm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\swarm\asw_trace_filter.h">
+      <Filter>Source Files\Swarm\Shared</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

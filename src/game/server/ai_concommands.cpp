@@ -15,6 +15,9 @@
 #include "ndebugoverlay.h"
 #include "datacache/imdlcache.h"
 #include "ai_addon.h"
+#ifdef INFESTED_DLL
+#include "asw_trace_filter.h"
+#endif
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -468,9 +471,16 @@ void CC_NPC_Create( const CCommand &args )
 		trace_t tr;
 		Vector forward;
 		pPlayer->EyeVectors( &forward );
+#ifdef INFESTED_DLL
+		CASW_Trace_Filter filter(pPlayer, COLLISION_GROUP_NONE);
+#endif
 		AI_TraceLine(pPlayer->EyePosition(),
 			pPlayer->EyePosition() + forward * MAX_TRACE_LENGTH,MASK_NPCSOLID, 
+#ifdef INFESTED_DLL
+			&filter, &tr );
+#else
 			pPlayer, COLLISION_GROUP_NONE, &tr );
+#endif
 		if ( tr.fraction != 1.0)
 		{
 			if (baseNPC->CapabilitiesGet() & bits_CAP_MOVE_FLY)
@@ -559,9 +569,16 @@ void CC_NPC_Create_Aimed( const CCommand &args )
 		VectorAngles( forward, angles );
 		angles.x = 0; 
 		angles.z = 0;
-		AI_TraceLine( pPlayer->EyePosition(),
+#ifdef INFESTED_DLL
+		CASW_Trace_Filter filter(pPlayer, COLLISION_GROUP_NONE);
+#endif
+		AI_TraceLine(pPlayer->EyePosition(),
 			pPlayer->EyePosition() + forward * MAX_TRACE_LENGTH,MASK_NPCSOLID, 
+#ifdef INFESTED_DLL
+			&filter, &tr );
+#else
 			pPlayer, COLLISION_GROUP_NONE, &tr );
+#endif
 
 		if ( tr.fraction != 1.0)
 		{
@@ -783,9 +800,16 @@ void CC_NPC_Teleport( void )
 	trace_t tr;
 	Vector forward;
 	pPlayer->EyeVectors( &forward );
+#ifdef INFESTED_DLL
+	CASW_Trace_Filter filter(pPlayer, COLLISION_GROUP_NONE);
+#endif
 	AI_TraceLine(pPlayer->EyePosition(),
 		pPlayer->EyePosition() + forward * MAX_TRACE_LENGTH,MASK_NPCSOLID, 
+#ifdef INFESTED_DLL
+		&filter, &tr );
+#else
 		pPlayer, COLLISION_GROUP_NONE, &tr );
+#endif
 
 	if ( tr.fraction != 1.0)
 	{
@@ -815,9 +839,16 @@ void CC_NPC_Go( void )
 	trace_t tr;
 	Vector forward;
 	pPlayer->EyeVectors( &forward );
+#ifdef INFESTED_DLL
+	CASW_Trace_Filter filter(pPlayer, COLLISION_GROUP_NONE);
+#endif
 	AI_TraceLine(pPlayer->EyePosition(),
 		pPlayer->EyePosition() + forward * MAX_TRACE_LENGTH,MASK_NPCSOLID, 
+#ifdef INFESTED_DLL
+		&filter, &tr );
+#else
 		pPlayer, COLLISION_GROUP_NONE, &tr );
+#endif
 	if ( tr.fraction != 1.0)
 	{
 		CAI_BaseNPC::ForceSelectedGo(pPlayer, tr.endpos, forward, npc_go_do_run.GetBool());

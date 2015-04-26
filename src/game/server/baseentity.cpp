@@ -71,6 +71,9 @@
 #include "cellcoord.h"
 #include "sendprop_priorities.h"
 #include "videocfg/videocfg.h"
+#ifdef INFESTED_DLL
+#include "asw_trace_filter.h"
+#endif
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -8412,9 +8415,16 @@ void CC_Ent_Create( const CCommand& args )
 			trace_t tr;
 			Vector forward;
 			pPlayer->EyeVectors( &forward );
+#ifdef INFESTED_DLL
+			CASW_Trace_Filter filter(pPlayer, COLLISION_GROUP_NONE);
+#endif
 			UTIL_TraceLine(pPlayer->EyePosition(),
-				pPlayer->EyePosition() + forward * MAX_TRACE_LENGTH,MASK_SOLID, 
+				pPlayer->EyePosition() + forward * MAX_TRACE_LENGTH, MASK_SOLID,
+#ifdef INFESTED_DLL
+				&filter, &tr);
+#else
 				pPlayer, COLLISION_GROUP_NONE, &tr );
+#endif
 			if ( tr.fraction != 1.0 )
 			{
 				// Raise the end position a little up off the floor, place the npc and drop him down

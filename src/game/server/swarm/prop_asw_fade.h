@@ -16,9 +16,9 @@ public:
 
 	CProp_ASW_Fade();
 
+	CNetworkVector(m_vecFadeOrigin);
 protected:
 	CNetworkVar(byte, m_nFadeOpacity);
-	CNetworkVector(m_vecFadeOrigin);
 };
 
 

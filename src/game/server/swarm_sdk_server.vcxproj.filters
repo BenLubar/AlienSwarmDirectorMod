@@ -2336,6 +2336,9 @@
     <ClCompile Include="swarm\prop_asw_fade.cpp">
       <Filter>Source Files\Swarm</Filter>
     </ClCompile>
+    <ClCompile Include="..\shared\swarm\asw_trace_filter.cpp">
+      <Filter>Source Files\Swarm\Shared</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\shared\achievement_saverestore.h">
@@ -4764,6 +4767,9 @@
     </ClInclude>
     <ClInclude Include="swarm\prop_asw_fade.h">
       <Filter>Source Files\Swarm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\swarm\asw_trace_filter.h">
+      <Filter>Source Files\Swarm\Shared</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

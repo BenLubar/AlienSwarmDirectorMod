@@ -31,7 +31,6 @@ void C_Func_ASW_Fade::OnDataChanged(DataUpdateType_t updateType)
 	}
 }
 
-
 void C_Func_ASW_Fade::ClientThink()
 {
 	BaseClass::ClientThink();

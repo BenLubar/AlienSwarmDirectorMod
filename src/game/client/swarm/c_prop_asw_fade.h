@@ -18,11 +18,12 @@ public:
 	virtual void OnDataChanged(DataUpdateType_t updateType);
 	virtual void ClientThink();
 
+	Vector m_vecFadeOrigin;
+
 protected:
 	bool m_bLastControls;
 	CHandle<C_ASW_Marine> m_hLastMarine;
 	byte m_nFadeOpacity;
-	Vector m_vecFadeOrigin;
 };
 
 #endif	// _INCLUDED_C_PROP_ASW_FADE_H

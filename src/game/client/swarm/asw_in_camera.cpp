@@ -404,41 +404,47 @@ void CASWInput::ASW_GetCameraLocation( C_ASW_Player *pPlayer, Vector &vecCameraL
 	// Get the current camera position.
 	vecCameraLocation = pPlayer->EyePosition();
 
-	// Get the camera angles and calculate the camera view directions.
-	Vector vecCameraDirection;
-	::input->CAM_GetCameraOffset( vecCameraDirection );
-
-	angCamera[PITCH] = vecCameraDirection[PITCH];
-	angCamera[YAW] = vecCameraDirection[YAW];
-	angCamera[ROLL] = 0;
-
-	Vector vecCamForward, vecCamRight, vecCamUp;
-	AngleVectors( angCamera, &vecCamForward, &vecCamRight, &vecCamUp );
-
-	// Get the window center.
-	int nCenterX, nCenterY;
-	ASWInput()->ASW_GetWindowCenter( nCenterX, nCenterY );
-
-	// Get the position change.
-	int nUnclampedX, nUnclampedY;
-	ASWInput()->GetSimulatedFullscreenMousePos( &nMouseX, &nMouseY, &nUnclampedX, &nUnclampedY );
-
-	// Calculate the movement delta - only needed for mouse control or controller with pan enabled.
-	int nDeltaX = 0;
-	int nDeltaY = 0;
-	if ( !ASWInput()->ControllerModeActive() || joy_pan_camera.GetBool() )
+	if (CAM_IsThirdPerson())
 	{
-		nDeltaX = nMouseX - nCenterX;
-		nDeltaY = nMouseY - nCenterY;
+		// Get the camera angles and calculate the camera view directions.
+		Vector vecCameraDirection;
+		::input->CAM_GetCameraOffset( vecCameraDirection );
 
-		// Calculate the camera shift and move the camera.
-		float flShiftX, flShiftY;
-		CalculateCameraShift( pPlayer, (float) nDeltaX / ( nCenterX * 2.0f ), (float) nDeltaY / ( nCenterY * 2.0f ), flShiftX, flShiftY );
+		angCamera[PITCH] = vecCameraDirection[PITCH];
+		angCamera[YAW] = vecCameraDirection[YAW];
+		angCamera[ROLL] = 0;
 
-		VectorMA( vecCameraLocation, flShiftX, vecCamRight, vecCameraLocation );
-		vecCamUp.z = 0;	// don't want the camera changing z
-		vecCamUp.NormalizeInPlace();
-		VectorMA( vecCameraLocation, -flShiftY, vecCamUp, vecCameraLocation );
+		Vector vecCamForward, vecCamRight, vecCamUp;
+		AngleVectors( angCamera, &vecCamForward, &vecCamRight, &vecCamUp );
+
+		// Get the window center.
+		int nCenterX, nCenterY;
+		ASWInput()->ASW_GetWindowCenter( nCenterX, nCenterY );
+
+		// Get the position change.
+		ASWInput()->GetSimulatedFullscreenMousePos( &nMouseX, &nMouseY );
+
+		// Calculate the movement delta - only needed for mouse control or controller with pan enabled.
+		int nDeltaX = 0;
+		int nDeltaY = 0;
+		if ( !ASWInput()->ControllerModeActive() || joy_pan_camera.GetBool() )
+		{
+			nDeltaX = nMouseX - nCenterX;
+			nDeltaY = nMouseY - nCenterY;
+
+			// Calculate the camera shift and move the camera.
+			float flShiftX, flShiftY;
+			CalculateCameraShift( pPlayer, (float) nDeltaX / ( nCenterX * 2.0f ), (float) nDeltaY / ( nCenterY * 2.0f ), flShiftX, flShiftY );
+
+			VectorMA( vecCameraLocation, flShiftX, vecCamRight, vecCameraLocation );
+			vecCamUp.z = 0;	// don't want the camera changing z
+			vecCamUp.NormalizeInPlace();
+			VectorMA( vecCameraLocation, -flShiftY, vecCamUp, vecCameraLocation );
+		}
+	}
+	else
+	{
+		angCamera = pPlayer->EyeAngles();
 	}
 
 	bool bDeathcam = ASWGameRules() && ( ASWGameRules()->GetMarineDeathCamInterp() > 0.0f );

@@ -22,6 +22,7 @@
 #include "in_buttons.h"
 #include "asw_gamerules.h"
 #include "asw_melee_system.h"
+#include "asw_trace_filter.h"
 #ifdef _WIN32
 #undef INVALID_HANDLE_VALUE
 #include <windows.h>
@@ -261,13 +262,20 @@ bool HUDTraceToWorld(float screenx, float screeny, Vector &HitLocation, bool bUs
 	Vector traceStart = vCameraLocation;
 	traceEnd = traceStart + TraceDirection * 3000;
 
+	C_ASW_Marine *pMarine = pPlayer->GetSpectatingMarine();
+	if (!pMarine)
+	{
+		pMarine = pPlayer->GetMarine();
+	}
+
 	if (bUseMarineHull)
 	{
 		// do a trace into the world to see what we've pointing directly at		
 		Ray_t ray2;
 		trace_t tr;
 		ray2.Init( traceStart, traceEnd, ASW_MARINE_HULL_MINS, ASW_MARINE_HULL_MAXS );
-		UTIL_TraceRay( ray2, MASK_VISIBLE, NULL, COLLISION_GROUP_NONE, &tr );
+		CASW_Trace_Filter filter(pMarine, COLLISION_GROUP_NONE);
+		UTIL_TraceRay( ray2, MASK_VISIBLE, &filter, &tr );
 		if ( tr.fraction >= 1.0f )
 			return false;
 
@@ -310,7 +318,8 @@ bool HUDTraceToWorld(float screenx, float screeny, Vector &HitLocation, bool bUs
 	{
 		// do a trace into the world to see what we've pointing directly at
 		trace_t tr;
-		UTIL_TraceLine(traceStart, traceEnd, MASK_VISIBLE, pPlayer, COLLISION_GROUP_NONE, &tr);
+		CASW_Trace_Filter filter(pMarine, COLLISION_GROUP_NONE);
+		UTIL_TraceLine(traceStart, traceEnd, MASK_VISIBLE, &filter, &tr);
 		if ( tr.fraction >= 1.0f )
 			return false;
 		// if we hit tools no light texture, retrace through it
@@ -396,7 +405,8 @@ C_BaseEntity* HUDToWorld(float screenx, float screeny,
 	vTraceEnd = vCameraLocation + vWorldSpaceCameraToCursor * ASW_MAX_AIM_TRACE;
 
 	// do a trace into the world to see what we've pointing directly at
-	UTIL_TraceLine(vCameraLocation, vTraceEnd, nTraceMask, pPlayer, COLLISION_GROUP_NONE, &tr);
+	CASW_Trace_Filter filter(pMarine, COLLISION_GROUP_NONE);
+	UTIL_TraceLine(vCameraLocation, vTraceEnd, nTraceMask, &filter, &tr);
 	if ( tr.fraction >= 1.0f )
 	{
 		if (!pMarine)

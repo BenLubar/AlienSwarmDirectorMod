@@ -113,6 +113,12 @@ void CASWInput::ApplyMouse( int nSlot, QAngle& viewangles, CUserCmd *cmd, float 
 			mouse_x = mouse_x_accumulated;
 			mouse_y = mouse_y_accumulated;
 		}
+		else
+		{
+			// call TurnTowardMouse so it calculates where our cursor is.
+			QAngle dummy;
+			TurnTowardMouse(dummy, cmd);
+		}
 		if ( ( !ASWGameRules() || ASWGameRules()->GetMarineDeathCamInterp() <= 0.0f ) && ( !C_ASW_Marine::GetLocalMarine() || !C_ASW_Marine::GetLocalMarine()->IsUsingComputerOrButtonPanel() ) )
 			CInput::ApplyMouse( nSlot, viewangles, cmd, mouse_x, mouse_y );
 

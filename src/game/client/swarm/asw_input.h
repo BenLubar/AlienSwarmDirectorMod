@@ -11,6 +11,7 @@ extern bool MarineBusy();
 
 class CASW_Player;
 class C_ASW_Player;
+class C_ASW_Marine;
 class IASW_Client_Aim_Target;
 
 // storing autoaim data for debug visualisation
