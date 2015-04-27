@@ -1473,25 +1473,25 @@ void CAlienSwarm::LoadoutSelect( CASW_Player *pPlayer, int iRosterIndex, int iIn
 		return;
 
 	// find the appropriate marine resource
-	int iMarineIndex=-1;
-	for (int i=0;i<ASWGameResource()->GetMaxMarineResources();i++)
+	CASW_Marine_Resource *pMarineResource = NULL;
+	for (int i = 0; i < ASWGameResource()->GetMaxMarineResources(); i++)
 	{
-		CASW_Marine_Resource *pMR = ASWGameResource()->GetMarineResource(i);
-		if (!pMR)
-			continue;
-
-		if (pMR->GetProfileIndex() == iRosterIndex)
+		pMarineResource = ASWGameResource()->GetMarineResource(i);
+		if (!pMarineResource)
 		{
-			iMarineIndex = i;
+			continue;
+		}
+
+		if (pMarineResource->GetProfileIndex() == iRosterIndex)
+		{
 			break;
 		}
 	}
-	if (iMarineIndex == -1)
-		return;
 
-	CASW_Marine_Resource* pMarineResource = ASWGameResource()->GetMarineResource(iMarineIndex);
-	if (!pMarineResource)
+	if (!pMarineResource || pMarineResource->GetProfileIndex() != iRosterIndex || pMarineResource->GetCommander() != pPlayer)
+	{
 		return;
+	}
 
 	// Figure out what item the marine is trying to equip
 	CASW_EquipItem *pNewItem = ASWEquipmentList()->GetItemForSlot( iInvSlot, iEquipIndex );
