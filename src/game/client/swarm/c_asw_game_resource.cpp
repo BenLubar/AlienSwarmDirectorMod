@@ -188,7 +188,7 @@ void C_ASW_Game_Resource::CMarineToCrosshairInfo::RecomputeCache()
 	// purge the array.
 	m_tMarines.RemoveAll();
 
-	const Vector vecCrosshairAimingPos = ASWInput()->GetCrosshairAimingPos();
+	const Vector vecCrosshairPos = ASWInput()->GetCrosshairTracePos();
 
 	for ( int i=0; i<pGameResource->GetMaxMarineResources(); i++ )
 	{
@@ -196,7 +196,7 @@ void C_ASW_Game_Resource::CMarineToCrosshairInfo::RecomputeCache()
 		C_ASW_Marine *pMarine;
 		if ( pMR && (pMarine = pMR->GetMarineEntity()) )
 		{
-			float dist = (vecCrosshairAimingPos - pMR->GetMarineEntity()->GetAbsOrigin()).Length2D();
+			float dist = (vecCrosshairPos - pMR->GetMarineEntity()->GetAbsOrigin()).Length2D();
 			m_tMarines.AddToTail( tuple_t(pMarine, dist) );
 		}
 	}

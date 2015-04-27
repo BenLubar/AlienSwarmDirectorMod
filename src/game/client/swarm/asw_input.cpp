@@ -275,7 +275,7 @@ bool HUDTraceToWorld(float screenx, float screeny, Vector &HitLocation, bool bUs
 		trace_t tr;
 		ray2.Init( traceStart, traceEnd, ASW_MARINE_HULL_MINS, ASW_MARINE_HULL_MAXS );
 		CASW_Trace_Filter filter(pMarine, COLLISION_GROUP_NONE);
-		UTIL_TraceRay( ray2, MASK_VISIBLE, &filter, &tr );
+		UTIL_TraceRay( ray2, MASK_VISIBLE_AND_NPCS, &filter, &tr );
 		if ( tr.fraction >= 1.0f )
 			return false;
 
@@ -319,7 +319,7 @@ bool HUDTraceToWorld(float screenx, float screeny, Vector &HitLocation, bool bUs
 		// do a trace into the world to see what we've pointing directly at
 		trace_t tr;
 		CASW_Trace_Filter filter(pMarine, COLLISION_GROUP_NONE);
-		UTIL_TraceLine(traceStart, traceEnd, MASK_VISIBLE, &filter, &tr);
+		UTIL_TraceLine(traceStart, traceEnd, MASK_VISIBLE_AND_NPCS, &filter, &tr);
 		if ( tr.fraction >= 1.0f )
 			return false;
 		// if we hit tools no light texture, retrace through it
@@ -419,7 +419,7 @@ C_BaseEntity* HUDToWorld(float screenx, float screeny,
 	else
 	{
 		HitLocation = vCameraLocation + tr.fraction * 3000 * vWorldSpaceCameraToCursor;
-		HitLocation.z = 0;
+		//HitLocation.z = 0;
 	}
 
 	
@@ -463,7 +463,7 @@ C_BaseEntity* HUDToWorld(float screenx, float screeny,
 		// check we have LOS to the target
 		CTraceFilterLOS traceFilter( pMarine, COLLISION_GROUP_NONE );
 		trace_t tr2;
-		UTIL_TraceLine( vecWeaponPos, pBestAlien->GetAimTargetRadiusPos( vecWeaponPos ), MASK_OPAQUE, &traceFilter, &tr2 );
+		UTIL_TraceLine( vecWeaponPos, pBestAlien->GetAimTargetRadiusPos( vecWeaponPos ), MASK_OPAQUE_AND_NPCS, &traceFilter, &tr2 );
 		C_BaseEntity *pEnt = pBestAlien->GetEntity();
 		bool bHasLOS = (!tr2.startsolid && (tr2.fraction >= 1.0 || tr2.m_pEnt == pEnt));
 		// we can't shoot it, so skip autoaiming to it, but still return it as an entity that we want to highlight
@@ -680,7 +680,7 @@ C_BaseEntity* HUDToWorld(float screenx, float screeny,
 	
 
 	HitLocation = vCameraLocation + tr.fraction * 3000 * vWorldSpaceCameraToCursor;
-	HitLocation.z = 0;	
+	//HitLocation.z = 0;	
 
 	return pHighlightAlien ? pHighlightAlien->GetEntity() : NULL;
 }
