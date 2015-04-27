@@ -1762,7 +1762,7 @@ void CASW_Marine::PostThink()
 
 	// !!HACK!! to fix elevators.
 	CBaseEntity *pGround = GetGroundEntity();
-	if (GetFlags() & FL_ONGROUND && pGround && !pGround->IsWorld())
+	if (GetFlags() & FL_ONGROUND && pGround && !pGround->IsWorld() && !pGround->GetAbsVelocity().IsZero())
 	{
 		SetParent(pGround);
 	}
