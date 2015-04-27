@@ -1375,7 +1375,7 @@ bool IsRadialMenuOpen( const char *menuName, bool includeFadingOut )
 
 	if ( menuName == NULL || FStrEq( s_radialMenuName[ nSlot ], menuName ) )
 	{
-		bool wasOpen = pMenu->IsVisible() && ( !pMenu->IsFading() || includeFadingOut );
+		bool wasOpen = pMenu->IsVisible() && ( s_mouseMenuKeyHeld[nSlot] || ( includeFadingOut && pMenu->IsFading() ) );
 		if ( wasOpen )
 		{
 			return true;
