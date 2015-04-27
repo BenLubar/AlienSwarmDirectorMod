@@ -57,7 +57,7 @@ ConVar asw_marine_edge_names("asw_marine_edge_names", "1", FCVAR_NONE, "Prevent 
 ConVar asw_world_healthbars("asw_world_healthbars", "1", FCVAR_NONE, "Shows health bars in the game world");
 ConVar asw_world_usingbars("asw_world_usingbars", "1", FCVAR_NONE, "Shows using bars in the game world");
 ConVar asw_marine_labels_cursor_maxdist( "asw_marine_labels_cursor_maxdist", "70", FCVAR_NONE, "Only marines within this distance of the cursor will get their health bar drawn" );
-ConVar asw_fast_reload_under_marine( "asw_fast_reload_under_marine", "0", FCVAR_NONE, "Draw the active reload bar under the marine?" );
+ConVar asw_fast_reload_under_marine( "asw_fast_reload_under_marine", "0", FCVAR_ARCHIVE, "Draw the active reload bar under the marine?" );
 ConVar asw_world_healthbar_class_icon( "asw_world_healthbar_class_icon", "0", FCVAR_NONE, "Show class icon on mouse over" );
 
 #define ASW_MAX_MARINE_NAMES 8
