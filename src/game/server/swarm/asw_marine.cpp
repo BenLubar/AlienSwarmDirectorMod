@@ -1759,7 +1759,18 @@ void CASW_Marine::PostThink()
 	{
 		StudioFrameAdvance();
 	}
-		
+
+	// !!HACK!! to fix elevators.
+	CBaseEntity *pGround = GetGroundEntity();
+	if (GetFlags() & FL_ONGROUND && pGround && !pGround->IsWorld())
+	{
+		SetParent(pGround);
+	}
+	else
+	{
+		SetParent(NULL);
+	}
+
 	ASWThinkEffects();
 }
 
