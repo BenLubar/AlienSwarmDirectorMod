@@ -54,12 +54,27 @@ void C_ASW_Shieldbug::DoAlienFootstep(Vector &vecOrigin, float fvol)
 	EmitSound( filter, entindex(), ep2 );
 }
 
-// hardcoded to match with the gun offset in the marine's autoaim
-//  this is to generally keep the marine's gun horizontal, so guns like the shotgun can more easily hit multiple enemies in one shot
-const Vector& C_ASW_Shieldbug::GetAimTargetPos(const Vector &vecFiringSrc, bool bWeaponPrefersFlatAiming)
-{ 
+const Vector& C_ASW_Shieldbug::GetAimTargetRadiusPos(const Vector &vecFiringSrc)
+{
+	// We can't get the hitboxes on the client, but it just so happens that the eyes attachment and the attach_brain attachment are in the right place for us to do some sneaky math.
 	static Vector aim_pos;
-	aim_pos = m_vecLastRenderedPos - (WorldSpaceCenter() - GetAbsOrigin());	// last rendered stores our worldspacecenter, so convert to back origin
-	aim_pos.z += ASW_MARINE_GUN_OFFSET_Z;
+	Vector vecEyes, vecBrain;
+	if (!GetAttachment("eyes", vecEyes))
+	{
+		Assert(0);
+		return GetAbsOrigin();
+	}
+	if (!GetAttachment("attach_brain", vecBrain))
+	{
+		Assert(0);
+		return GetAbsOrigin();
+	}
+	aim_pos = vecBrain * 2 - vecEyes;
 	return aim_pos;
+}
+
+
+const Vector& C_ASW_Shieldbug::GetAimTargetPos(const Vector &vecFiringSrc, bool bWeaponPrefersFlatAiming)
+{
+	return GetAimTargetRadiusPos(vecFiringSrc);
 }

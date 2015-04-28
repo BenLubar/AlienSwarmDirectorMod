@@ -41,6 +41,7 @@
 #include "voice_status.h"
 #include "cdll_bounded_cvars.h"
 #include "asw_input.h"
+#include "iasw_client_aim_target.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -205,6 +206,12 @@ void CASWHud3DMarineNames::PaintAutoaimCrosshairOn(C_BaseEntity *pEnt)
 		return;
 
 	Vector pos = (pEnt->WorldSpaceCenter() - pEnt->GetAbsOrigin()) + pEnt->GetRenderOrigin();
+	IASW_Client_Aim_Target *pTarget = dynamic_cast<IASW_Client_Aim_Target *>(pEnt);
+	if (pTarget)
+	{
+		pos = pTarget->GetAimTargetPos(pos);
+	}
+
 	Vector screenPos;
 	debugoverlay->ScreenPosition( pos, screenPos );
 

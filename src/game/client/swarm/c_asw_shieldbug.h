@@ -22,6 +22,7 @@ public:
 	virtual bool HasCustomDeathForce(){ return true; };
 	virtual Vector GetCustomDeathForce();
 	virtual const Vector& GetAimTargetPos(const Vector &vecFiringSrc, bool bWeaponPrefersFlatAiming);
+	virtual const Vector& GetAimTargetRadiusPos(const Vector &vecFiringSrc);
 private:
 	C_ASW_Shieldbug( const C_ASW_Shieldbug & ); // not defined, not accessible	
 };
