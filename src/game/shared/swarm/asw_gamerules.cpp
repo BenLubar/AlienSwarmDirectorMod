@@ -298,7 +298,7 @@ ConVar asw_flare_autoaim_radius("asw_flare_autoaim_radius", "250", FCVAR_REPLICA
 ConVar asw_vote_kick_fraction("asw_vote_kick_fraction", "0.6", FCVAR_REPLICATED | FCVAR_ARCHIVE, "Fraction of players needed to activate a kick vote");
 ConVar asw_vote_leader_fraction("asw_vote_leader_fraction", "0.6", FCVAR_REPLICATED | FCVAR_ARCHIVE, "Fraction of players needed to activate a leader vote");
 ConVar asw_vote_map_fraction("asw_vote_map_fraction", "0.6", FCVAR_REPLICATED | FCVAR_ARCHIVE, "Fraction of players needed to activate a map vote");
-ConVar asw_marine_collision("asw_marine_collision", "0", FCVAR_REPLICATED, "Whether marines collide with each other or not, in a multiplayer game");
+ConVar asw_marine_collision("asw_marine_collision", "0", FCVAR_REPLICATED | FCVAR_ARCHIVE, "Whether marines collide with each other or not, in a multiplayer game");
 ConVar asw_skill( "asw_skill","2", FCVAR_REPLICATED | FCVAR_ARCHIVE | FCVAR_ARCHIVE_XBOX, "Game skill level (1-5).", true, 1, true, 5 );
 ConVar asw_money( "asw_money", "0", FCVAR_REPLICATED, "Can players collect money?" );
 ConVar asw_client_build_maps("asw_client_build_maps", "0", FCVAR_REPLICATED, "Whether clients compile random maps rather than getting sent them");
