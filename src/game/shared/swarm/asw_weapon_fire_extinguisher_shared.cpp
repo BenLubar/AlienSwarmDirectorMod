@@ -191,6 +191,9 @@ void CASW_Weapon_FireExtinguisher::PrimaryAttack( void )
 #endif
 		// decrement ammo
 		m_iClip1 -= 1;
+#ifdef GAME_DLL
+		pMarine->OnWeaponFired(this, 1);
+#endif
 
 		if (!m_iClip1 && pMarine->GetAmmoCount(m_iPrimaryAmmoType) <= 0)
 		{

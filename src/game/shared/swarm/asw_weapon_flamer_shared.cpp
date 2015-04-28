@@ -318,6 +318,7 @@ void CASW_Weapon_Flamer::SecondaryAttack( void )
 	// If my clip is empty (and I use clips) start reload
 	if ( UsesClipsForAmmo1() && !m_iClip1 ) 
 	{
+		m_bIsSecondaryFiring = false;
 		Reload();
 		return;
 	}

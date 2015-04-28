@@ -164,34 +164,36 @@ void CASW_Weapon_Heal_Gun::PrimaryAttack( void )
 
 		case ASW_HG_FIRE_HEALSELF:
 		{
-			EHANDLE hHealEntity = m_hHealEntity.Get();
+			CBaseEntity *pHealEntity = m_hHealEntity.Get();
 
-			if ( !hHealEntity || !TargetCanBeHealed( hHealEntity.Get() ) )
+			if ( !pHealEntity || !TargetCanBeHealed( pHealEntity ) )
 			{
 				HealDetach();
 				SetFiringState( ASW_HG_FIRE_DISCHARGE );
 				break;
 			}
 
-			if ( hHealEntity.Get() == GetMarine() )
+			if ( pHealEntity == GetMarine() )
 			{
 				HealSelf();
 				break;
 			}
+
+			// fallthrough
 		}
 
 		case ASW_HG_FIRE_DISCHARGE:
 		{
 			Fire( vecSrc, vecAiming );
 
-			EHANDLE hHealEntity = m_hHealEntity.Get();
+			CBaseEntity *pHealEntity = m_hHealEntity.Get();
 
 			// Search for nearby entities to heal
-			if ( !hHealEntity )
+			if ( !pHealEntity )
 			{
 				if ( pPlayer->GetHighlightEntity() && pPlayer->GetHighlightEntity()->Classify() == CLASS_ASW_MARINE )
 				{
-					CASW_Marine* pTargetMarine = static_cast< CASW_Marine* >( pPlayer->GetHighlightEntity() );
+					CASW_Marine *pTargetMarine = assert_cast<CASW_Marine *>( pPlayer->GetHighlightEntity() );
 					if ( pTargetMarine )
 					{
 						// healing self
@@ -220,10 +222,10 @@ void CASW_Weapon_Heal_Gun::PrimaryAttack( void )
 		{
 			Fire( vecSrc, vecAiming );
 
-			EHANDLE hHealEntity = m_hHealEntity.Get();
+			CBaseEntity *pHealEntity = m_hHealEntity.Get();
 			// detach if...
 			// full health, dead or not here
-			if ( !hHealEntity || !TargetCanBeHealed( hHealEntity.Get() ) )
+			if ( !pHealEntity || !TargetCanBeHealed( pHealEntity ) )
 			{
 				HealDetach();
 				SetFiringState( ASW_HG_FIRE_DISCHARGE );
@@ -231,8 +233,8 @@ void CASW_Weapon_Heal_Gun::PrimaryAttack( void )
 			}
 			
 			// too far
-			float flHealDistance = (hHealEntity->GetAbsOrigin() - pMarine->GetAbsOrigin()).LengthSqr();
-			if ( flHealDistance > (GetWeaponRange() + SQRT3*ASW_HG_SEARCH_DIAMETER)*(GetWeaponRange() + SQRT3*ASW_HG_SEARCH_DIAMETER) )
+			float flHealDistance = (pHealEntity->GetAbsOrigin() - pMarine->GetAbsOrigin()).LengthSqr();
+			if ( flHealDistance > Square(GetWeaponRange() + SQRT3*ASW_HG_SEARCH_DIAMETER) )
 			{
 				HealDetach();
 				SetFiringState( ASW_HG_FIRE_DISCHARGE );
@@ -240,7 +242,7 @@ void CASW_Weapon_Heal_Gun::PrimaryAttack( void )
 			}
 
 			// facing another direction
-			Vector vecAttach = hHealEntity->GetAbsOrigin() - pMarine->GetAbsOrigin();
+			Vector vecAttach = pHealEntity->GetAbsOrigin() - pMarine->GetAbsOrigin();
 			Vector vecForward;
 			QAngle vecEyeAngles;
 			CASW_Player *pPlayer = pMarine->GetCommander();
@@ -472,15 +474,15 @@ void CASW_Weapon_Heal_Gun::HealEntity( void )
 {
 	// verify target
 	CASW_Marine *pMarine = GetMarine();
-	EHANDLE hHealEntity = m_hHealEntity.Get();
-	Assert( hHealEntity && hHealEntity->m_takedamage != DAMAGE_NO && pMarine );
+	CBaseEntity *pHealEntity = m_hHealEntity.Get();
+	Assert( pHealEntity && pHealEntity->m_takedamage != DAMAGE_NO && pMarine );
 	if ( !pMarine )
 		return;
 
-	if ( hHealEntity.Get()->Classify() != CLASS_ASW_MARINE )
+	if ( pHealEntity->Classify() != CLASS_ASW_MARINE )
 		return;
 
-	CASW_Marine *pTarget = static_cast<CASW_Marine*>( static_cast<CBaseEntity*>( hHealEntity.Get() ) );
+	CASW_Marine *pTarget = assert_cast<CASW_Marine *>( pHealEntity );
 	if ( !pTarget )
 		return;
 
@@ -524,6 +526,9 @@ void CASW_Weapon_Heal_Gun::HealEntity( void )
 
 	// decrement ammo
 	m_iClip1 -= 1;
+#ifdef GAME_DLL
+	pMarine->OnWeaponFired(this, 1);
+#endif
 
 	// emit heal sound
 	StartHealSound();
