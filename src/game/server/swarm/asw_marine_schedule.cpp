@@ -104,7 +104,7 @@ ConVar asw_marine_aim_error_decay_multiplier("asw_marine_aim_error_decay_multipl
 ConVar asw_blind_follow( "asw_blind_follow", "0", FCVAR_NONE, "Set to 1 to give marines short sight range while following (old school alien swarm style)" );
 ConVar asw_debug_marine_aim( "asw_debug_marine_aim", "0", FCVAR_CHEAT, "Shows debug info on marine aiming" );
 ConVar asw_debug_throw( "asw_debug_throw", "0", FCVAR_CHEAT, "Show node debug info on throw visibility checks" );
-ConVar asw_debug_order_weld( "asw_debug_order_weld", "0", FCVAR_DEVELOPMENTONLY, "Debug lines for ordering marines to offhand weld a door" );
+ConVar asw_debug_order_weld( "asw_debug_order_weld", "0", FCVAR_CHEAT, "Debug lines for ordering marines to offhand weld a door" );
 ConVar asw_marine_melee_approach_distance("asw_marine_melee_approach_distance", "120.0f", FCVAR_CHEAT, "maximum enemy distance for melee", true, 0, false, 0);
 
 ConVar asw_marine_test_new_ai("asw_marine_test_new_ai", "1", FCVAR_CHEAT, "enable Swarm Director 2 marine AI", true, 0, true, 1);
@@ -313,7 +313,7 @@ int CASW_Marine::SelectSchedule()
 
 	bool bUsingFlamer = GetActiveASWWeapon() && GetActiveASWWeapon()->Classify() == CLASS_ASW_FLAMER;
 
-	if ( HasCondition( COND_PATH_BLOCKED_BY_PHYSICS_PROP ) || ( HasCondition( COND_COMPLETELY_OUT_OF_AMMO ) && GetEnemyLKP().DistToSqr( GetAbsOrigin() ) < Square( asw_marine_melee_approach_distance.GetFloat() ) ) ||
+	if ( HasCondition( COND_PATH_BLOCKED_BY_PHYSICS_PROP ) || ( ( HasCondition( COND_COMPLETELY_OUT_OF_AMMO ) || HasCondition( COND_WEAPON_BLOCKED_BY_FRIEND ) ) && GetEnemyLKP().DistToSqr( GetAbsOrigin() ) < Square( asw_marine_melee_approach_distance.GetFloat() ) ) ||
 		( bUsingFlamer && HasCondition( COND_ENEMY_ON_FIRE ) ) || ( asw_marine_test_new_ai.GetBool() && m_fLastMobDamageTime > gpGlobals->curtime - 2.0f && RandomFloat() < 0.8f ) )
 	{
 		int iMeleeSchedule = SelectMeleeSchedule();
