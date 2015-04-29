@@ -5224,18 +5224,10 @@ void CAlienSwarm::OnSkillLevelChanged( int iNewLevel )
 	// reduce difficulty by 1 for each missing marine
 	if ( ASWGameResource() && asw_adjust_difficulty_by_number_of_marines.GetBool() )
 	{
-		int nMarines = ASWGameResource()->GetNumMarines( NULL, false );
-		if ( nMarines == 3 )
-		{
-			m_iMissionDifficulty--;
-		}
-		else if ( nMarines <= 2 )
-		{
-			m_iMissionDifficulty -= 2;
-		}
+		m_iMissionDifficulty += ASWGameResource()->GetNumMarines( NULL, false ) - 4;
 	}
-	// make sure difficulty doesn't go too low
-	m_iMissionDifficulty = MAX( m_iMissionDifficulty, 2 );
+	// make sure difficulty doesn't go too low or too high
+	m_iMissionDifficulty = clamp( m_iMissionDifficulty, 1, 99 );
 
 	// modify health of all live aliens
 	if ( ASWSpawnManager() )
