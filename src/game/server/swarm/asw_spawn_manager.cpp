@@ -811,6 +811,11 @@ bool CASW_Spawn_Manager::LineBlockedByGeometry( const Vector &vecSrc, const Vect
 
 bool CASW_Spawn_Manager::GetAlienHull( const char *szAlienClass, Hull_t &nHull )
 {
+	if (!Q_stricmp(szAlienClass, "asw_drone_uber"))
+	{
+		szAlienClass = "asw_drone";
+	}
+
 	int nCount = GetNumAlienClasses();
 	for ( int i = 0 ; i < nCount; i++ )
 	{
@@ -823,36 +828,10 @@ bool CASW_Spawn_Manager::GetAlienHull( const char *szAlienClass, Hull_t &nHull )
 	return false;
 }
 
-bool CASW_Spawn_Manager::GetAlienHull( string_t iszAlienClass, Hull_t &nHull )
-{
-	int nCount = GetNumAlienClasses();
-	for ( int i = 0 ; i < nCount; i++ )
-	{
-		if ( iszAlienClass == GetAlienClass( i )->m_iszAlienClass )
-		{
-			nHull = GetAlienClass( i )->m_nHullType;
-			return true;
-		}
-	}
-	return false;
-}
-
 bool CASW_Spawn_Manager::GetAlienBounds( const char *szAlienClass, Vector &vecMins, Vector &vecMaxs )
 {
 	Hull_t nHull;
 	if ( GetAlienHull( szAlienClass, nHull ) )
-	{
-		vecMins = NAI_Hull::Mins( nHull );
-		vecMaxs = NAI_Hull::Maxs( nHull );
-		return true;
-	}
-	return false;
-}
-
-bool CASW_Spawn_Manager::GetAlienBounds( string_t iszAlienClass, Vector &vecMins, Vector &vecMaxs )
-{
-	Hull_t nHull;
-	if ( GetAlienHull( iszAlienClass, nHull ) )
 	{
 		vecMins = NAI_Hull::Mins( nHull );
 		vecMaxs = NAI_Hull::Maxs( nHull );
@@ -985,7 +964,9 @@ CBaseEntity* CASW_Spawn_Manager::SpawnAlienAt(const char* szAlienClass, const Ve
 		pSpawnable->SetUnburrowActivity( NULL_STRING );
 	}
 
-	if (pSpawnable && pDef)
+	pSpawnable->SetDirectorAlien();
+
+	if (pDef)
 	{
 		float flHealthScale = pDef->GetFloat("HealthScale", 1);
 		if (flHealthScale <= 0)

@@ -383,7 +383,7 @@ int CASW_Holdout_Mode::SpawnAliens( int nQuantity, CASW_Holdout_Wave_Entry *pEnt
 	int nSpawned = 0;
 
 	Vector vecHullMins, vecHullMaxs;
-	ASWSpawnManager()->GetAlienBounds( pEntry->GetAlienClass(), vecHullMins, vecHullMaxs );
+	ASWSpawnManager()->GetAlienBounds( szAlienClass, vecHullMins, vecHullMaxs );
 
 	// tell each spawner to spawn an alien of our class
 	for ( int i = 0; i < spawners.Count(); i++ )

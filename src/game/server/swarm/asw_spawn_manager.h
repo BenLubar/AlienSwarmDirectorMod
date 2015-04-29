@@ -62,9 +62,7 @@ public:
 	bool LineBlockedByGeometry( const Vector &vecSrc, const Vector &vecEnd );
 	
 	bool GetAlienHull( const char *szAlienClass, Hull_t &nHull );
-	bool GetAlienHull( string_t iszAlienClass, Hull_t &nHull );
 	bool GetAlienBounds( const char *szAlienClass, Vector &vecMins, Vector &vecMaxs );
-	bool GetAlienBounds( string_t iszAlienClass, Vector &vecMins, Vector &vecMaxs );
 
 	int GetHordeToSpawn() { return m_iHordeToSpawn; }
 
