@@ -1905,7 +1905,7 @@ bool CASW_Marine::NeedToUpdateSquad()
 bool CASW_Marine::NeedToFollowMove()
 {
 	CASW_Marine * RESTRICT pLeader = GetSquadLeader();
-	if ( !pLeader || ( pLeader == this && !IsInCombat() ) )
+	if ( !pLeader || pLeader == this )
 		return false;
 
 	if ( HasCondition( COND_CAN_RANGE_ATTACK1 ) && GetHealth() > GetMaxHealth() / 2 && GetEnemy() && GetEnemy()->Classify() != CLASS_ASW_SHIELDBUG && GetEnemy()->GetAbsOrigin().DistToSqr( GetAbsOrigin() ) < Square( ASW_FORMATION_ATTACK_DISTANCE ) && g_aExplosiveProjectiles.Count() == 0 )
