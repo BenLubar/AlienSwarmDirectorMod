@@ -4212,9 +4212,7 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 		"		TASK_STOP_MOVING				1"		
 		""
 		"	Interrupts"
-		"       COND_ASW_NEW_ORDERS"
-		"		COND_NEW_ENEMY"
-		"		COND_SEE_ENEMY"
+		"		COND_ASW_NEW_ORDERS"
 		"		COND_CAN_RANGE_ATTACK1"
 		"		COND_CAN_RANGE_ATTACK2"
 	)
@@ -4266,8 +4264,6 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 		""
 		"	Interrupts"
 		"       COND_ASW_NEW_ORDERS"
-		"		COND_NEW_ENEMY"
-		"		COND_SEE_ENEMY"
 		"		COND_CAN_RANGE_ATTACK1"
 		"		COND_CAN_RANGE_ATTACK2"
 	)
