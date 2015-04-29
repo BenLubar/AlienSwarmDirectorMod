@@ -64,6 +64,7 @@
 
 ConVar asw_blend_test_scale("asw_blend_test_scale", "0.1f", FCVAR_CHEAT);
 ConVar asw_debug_pvs("asw_debug_pvs", "0", FCVAR_CHEAT);
+ConVar asw_marine_allow_lead("asw_marine_allow_lead", "0", FCVAR_CHEAT, "allow bot marines to be the squad leader", true, 0, true, 1);
 extern ConVar asw_rts_controls;
 extern ConVar asw_DebugAutoAim;
 extern ConVar asw_debug_marine_damage;
@@ -1998,10 +1999,10 @@ void CASW_Player::SwitchMarine(int num)
 		CASW_Marine_Resource* pMR = ASWGameResource()->GetMarineResource(i);
 		if (pMR)
 		{
-			if ((CASW_Player*) pMR->m_Commander == this)
+			if (pMR->m_Commander.Get() == this)
 			{
 				num--;
-				if (num < 0 && pMR->GetMarineEntity() )
+				if (num < 0 && pMR->GetMarineEntity())
 				{
 					CASW_Marine *pOldMarine = GetMarine();
 					CASW_Marine *pNewMarine = pMR->GetMarineEntity();
@@ -2043,7 +2044,7 @@ void CASW_Player::SwitchMarine(int num)
 					}
 
 					CASW_SquadFormation *pSquad = pNewMarine->GetSquadFormation();
-					if ( pSquad )
+					if (pSquad && (!pSquad->Leader() || asw_marine_allow_lead.GetBool() || !pSquad->Leader()->IsInhabited()))
 					{
 						pSquad->ChangeLeader( pNewMarine, false );
 					}
