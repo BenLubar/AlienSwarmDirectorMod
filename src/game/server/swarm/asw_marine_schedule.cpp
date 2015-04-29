@@ -108,6 +108,7 @@ ConVar asw_debug_order_weld( "asw_debug_order_weld", "0", FCVAR_CHEAT, "Debug li
 ConVar asw_marine_melee_approach_distance("asw_marine_melee_approach_distance", "120.0f", FCVAR_CHEAT, "maximum enemy distance for melee", true, 0, false, 0);
 
 ConVar asw_marine_test_new_ai("asw_marine_test_new_ai", "1", FCVAR_CHEAT, "enable Swarm Director 2 marine AI", true, 0, true, 1);
+ConVar asw_marine_too_far_from_squad("asw_marine_too_far_from_squad", "1500", FCVAR_CHEAT);
 
 extern ConVar ai_lead_time;
 
@@ -381,7 +382,7 @@ int CASW_Marine::SelectSchedule()
 
 		// if we're already there, hold position
 		float dist = GetAbsOrigin().DistTo(m_vecMoveToOrderPos);
-		if ( dist > 30 )
+		if (dist > 30 && !HasCondition(COND_ASW_TOO_FAR_FROM_SQUAD))
 		{
 			return SCHED_ASW_MOVE_TO_ORDER_POS;
 		}
@@ -635,7 +636,7 @@ int CASW_Marine::SelectSchedule()
 					SetASWOrders(ASW_ORDER_MOVE_TO, m_fHoldingYaw, &vecBest);
 
 					float dist = GetAbsOrigin().DistTo(vecBest);
-					if (dist > 30)
+					if (dist > 30 && !HasCondition(COND_ASW_TOO_FAR_FROM_SQUAD))
 					{
 						return SCHED_ASW_MOVE_TO_ORDER_POS;
 					}
@@ -1127,14 +1128,12 @@ void CASW_Marine::GatherConditions()
 	ClearCondition( COND_PATH_BLOCKED_BY_PHYSICS_PROP );
 	ClearCondition( COND_PROP_DESTROYED );
 	ClearCondition( COND_COMPLETELY_OUT_OF_AMMO );
+	ClearCondition( COND_ENEMY_ON_FIRE );
+	ClearCondition( COND_ASW_TOO_FAR_FROM_SQUAD );
 
 	if ( GetEnemy() && GetEnemy()->GetBaseAnimating() && GetEnemy()->GetBaseAnimating()->IsOnFire() )
 	{
 		SetCondition( COND_ENEMY_ON_FIRE );
-	}
-	else
-	{
-		ClearCondition( COND_ENEMY_ON_FIRE );
 	}
 
 	if( !GetCurSchedule() )
@@ -1178,6 +1177,21 @@ void CASW_Marine::GatherConditions()
 	if ( IsOutOfAmmo() )
 	{
 		SetCondition( COND_COMPLETELY_OUT_OF_AMMO );
+	}
+
+	const float flTooFar = Square(asw_marine_too_far_from_squad.GetFloat());
+	CASW_SquadFormation *pSquad = GetSquadFormation();
+	if (pSquad)
+	{
+		for (int i = 0; i < CASW_SquadFormation::MAX_SQUAD_SIZE; i++)
+		{
+			CASW_Marine *pSquaddie = GetSquadFormation()->Squaddie(i);
+			if (pSquaddie && pSquaddie->GetAbsOrigin().DistToSqr(GetAbsOrigin()) > flTooFar)
+			{
+				SetCondition(COND_ASW_TOO_FAR_FROM_SQUAD);
+				break;
+			}
+		}
 	}
 }
 
@@ -2014,7 +2028,7 @@ int CASW_Marine::SelectFollowSchedule()
 	return SCHED_ASW_FOLLOW_WAIT;
 }
 
-#define ASW_MARINE_TOO_CLOSE 40
+#define ASW_MARINE_TOO_CLOSE 60
 CASW_Marine* CASW_Marine::TooCloseToAnotherMarine()
 {
 	if ( !ASWGameResource() )
@@ -3676,6 +3690,7 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 	DECLARE_CONDITION( COND_PROP_DESTROYED )
 	DECLARE_CONDITION( COND_COMPLETELY_OUT_OF_AMMO )
 	DECLARE_CONDITION( COND_ENEMY_ON_FIRE )
+	DECLARE_CONDITION( COND_ASW_TOO_FAR_FROM_SQUAD )
 
 	DECLARE_TASK( TASK_ASW_FACE_HOLDING_YAW )
 	DECLARE_TASK( TASK_ASW_FACE_USING_ITEM )
@@ -4193,9 +4208,8 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 		"		TASK_STOP_MOVING				1"		
 		""
 		"	Interrupts"
-		"       COND_ASW_NEW_ORDERS"
-		"		COND_NEW_ENEMY"
-		"		COND_SEE_ENEMY"
+		"		COND_ASW_NEW_ORDERS"
+		"		COND_ASW_TOO_FAR_FROM_SQUAD"
 		"		COND_CAN_RANGE_ATTACK1"
 		"		COND_CAN_RANGE_ATTACK2"
 	)
@@ -4263,7 +4277,7 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 		"		TASK_STOP_MOVING				1"		
 		""
 		"	Interrupts"
-		"       COND_ASW_NEW_ORDERS"
+		"		COND_ASW_NEW_ORDERS"
 		"		COND_CAN_RANGE_ATTACK1"
 		"		COND_CAN_RANGE_ATTACK2"
 	)
