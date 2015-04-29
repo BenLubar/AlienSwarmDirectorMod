@@ -27,8 +27,6 @@ extern ConVar asw_horde_override;
 extern ConVar asw_wanderer_override;
 ConVar asw_horde_interval_min("asw_horde_interval_min", "45", FCVAR_CHEAT, "Min time between hordes" );
 ConVar asw_horde_interval_max("asw_horde_interval_max", "65", FCVAR_CHEAT, "Min time between hordes" );
-ConVar asw_horde_size_min("asw_horde_size_min", "9", FCVAR_CHEAT, "Min horde size" );
-ConVar asw_horde_size_max("asw_horde_size_max", "14", FCVAR_CHEAT, "Max horde size" );
 
 ConVar asw_director_relaxed_min_time("asw_director_relaxed_min_time", "25", FCVAR_CHEAT, "Min time that director stops spawning aliens");
 ConVar asw_director_relaxed_max_time("asw_director_relaxed_max_time", "40", FCVAR_CHEAT, "Max time that director stops spawning aliens");
@@ -109,6 +107,16 @@ void CASW_Director::LevelInitPostEntity()
 	if ( ASWSpawnManager() )
 	{
 		ASWSpawnManager()->LevelInitPostEntity();
+	}
+}
+
+void CASW_Director::LevelShutdownPostEntity()
+{
+	Shutdown();
+
+	if ( ASWSpawnManager() )
+	{
+		ASWSpawnManager()->LevelShutdownPostEntity();
 	}
 }
 
@@ -295,7 +303,7 @@ void CASW_Director::UpdateHorde()
 	}
 	else if ( m_HordeTimer.IsElapsed() )
 	{
-		if (ASWSpawnManager()->GetAwakeAliens() >= 30 || ASWSpawnManager()->GetAwakeDrones() >= 20)
+		if (ASWSpawnManager()->GetAwakeAliens() >= 100 || ASWSpawnManager()->GetAwakeDrones() >= 30)
 		{
 			if (asw_director_debug.GetBool())
 			{
@@ -304,14 +312,9 @@ void CASW_Director::UpdateHorde()
 			m_HordeTimer.Start( 10.0f );
 			return;
 		}
-		int iNumAliens = RandomInt( asw_horde_size_min.GetInt(), asw_horde_size_max.GetInt() );
 
-		if ( ASWSpawnManager()->AddHorde( iNumAliens ) )
+		if ( ASWSpawnManager()->AddRandomHorde() )
 		{
-			if ( asw_director_debug.GetBool() )
-			{
-				Msg("Created horde of size %d\n", iNumAliens);
-			}
 			m_bHordeInProgress = true;
 			
 			if ( ASWGameRules() )
@@ -442,7 +445,7 @@ void CASW_Director::UpdateWanderers()
 										m_fTimeBetweenAliens * RandomFloat( asw_interval_change_min.GetFloat(), asw_interval_change_max.GetFloat() ) );
 		}
 
-		bool bSkipWanderers = ASWSpawnManager() && ASWSpawnManager()->GetAwakeAliens() >= 25;
+		bool bSkipWanderers = ASWSpawnManager() && ASWSpawnManager()->GetAwakeAliens() >= 100;
 		if ( asw_director_debug.GetInt() > 0 )
 		{
 			if ( bSkipWanderers )
@@ -578,6 +581,11 @@ void CASW_Director::OnMissionStarted()
 {
 	//PJ - Hook in mod_player_performance
 	CMOD_Player_Performance::PlayerPerformance()->OnMissionStarted();
+
+	if (ASWSpawnManager())
+	{
+		ASWSpawnManager()->SelectSpawnSet();
+	}
 
 	if (ASWSpawnManager() && m_flPreSpawnAliens > 0 && asw_spawning_enabled.GetBool())
 	{

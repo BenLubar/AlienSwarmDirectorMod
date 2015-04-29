@@ -38,7 +38,7 @@ public:
 	int m_nTotalLinks;
 	Vector m_vecOrigin;
 	CAI_Node *m_pNode;
-	CUtlVector<CAI_Node*> m_aAreaNodes;
+	CUtlVector<CAI_Node *> m_aAreaNodes;
 };
 
 class CASW_Spawn_Manager
@@ -49,12 +49,14 @@ public:
 
 	void LevelInitPreEntity();
 	void LevelInitPostEntity();
+	void LevelShutdownPostEntity();
 	void Update();
 	bool AddHorde( int iHordeSize );			// creates a large pack of aliens somewhere near the marines
+	bool AddRandomHorde();
 	void AddAlien( bool force = false );		// creates a single alien somewhere near the marines
 
 	int SpawnAlienBatch( const char *szAlienClass, int iNumAliens, const Vector &vecPosition, const QAngle &angle, float flMarinesBeyondDist = 0 );	
-	CBaseEntity* SpawnAlienAt(const char* szAlienClass, const Vector& vecPos, const QAngle &angle);
+	CBaseEntity* SpawnAlienAt(const char* szAlienClass, const Vector& vecPos, const QAngle &angle, KeyValues *pNPC = NULL);
 
 	bool ValidSpawnPoint( const Vector &vecPosition, const Vector &vecMins, const Vector &vecMaxs, bool bCheckGround = true, float flMarineNearDistance = 0 );
 	bool LineBlockedByGeometry( const Vector &vecSrc, const Vector &vecEnd );
@@ -75,8 +77,7 @@ public:
 	ASW_Alien_Class_Entry* GetAlienClass( int i );
 
 	bool PreSpawnAliens(float flSpawnScale);
-
-	const char *RandomWandererClass( float *pflGroupChance = NULL ) const;
+	void SelectSpawnSet();
 
 	typedef CHandle<CTriggerMultiple> TriggerMultiple_t;
 	CUtlVector<TriggerMultiple_t> m_EscapeTriggers;
@@ -88,6 +89,9 @@ private:
 	bool SpawnAlientAtRandomNode();
 	void FindEscapeTriggers();
 	void DeleteRoute( AI_Waypoint_t *pWaypointList );
+	void LoadConfig(KeyValues **ppKV, const char *pszFileName, bool bWarnIfMissing = false);
+	KeyValues *RandomWanderer();
+	bool SpawnOneWanderer(CUtlVector<CAI_Node *> &candidateNodes, bool bNorth, const char *szAlienClass, KeyValues *pNPC, bool bWait = false);
 
 	// finds an area with good node connectivity.  Caller should take ownership of the CASW_Open_Area instance.
 	CASW_Open_Area* FindNearbyOpenArea( const Vector &vecSearchOrigin, int nSearchHull );
@@ -101,9 +105,13 @@ private:
 	int m_nAwakeAliens;
 	int m_nAwakeDrones;
 
+	KeyValues *m_pSpawnSet;
+	KeyValues *m_pGlobalConfig;
+	KeyValues *m_pMissionConfig;
+
 	// maintaining a list of possible nodes to spawn aliens from
-	CUtlVector<int> m_northCandidateNodes;
-	CUtlVector<int> m_southCandidateNodes;
+	CUtlVector<CAI_Node *> m_northCandidateNodes;
+	CUtlVector<CAI_Node *> m_southCandidateNodes;
 	CountdownTimer m_CandidateUpdateTimer;
 };
 

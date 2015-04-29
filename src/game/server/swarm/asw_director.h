@@ -60,6 +60,7 @@ public:
 
 	virtual void LevelInitPreEntity();
 	virtual void LevelInitPostEntity();
+	virtual void LevelShutdownPostEntity();
 	virtual void FrameUpdatePreEntityThink();
 	virtual void FrameUpdatePostEntityThink();
 

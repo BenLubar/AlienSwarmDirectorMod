@@ -49,8 +49,9 @@ private:
 	void InputEnableHordes( inputdata_t &inputdata );
 	void InputDisableHordes( inputdata_t &inputdata );
 	void InputEnableWanderers( inputdata_t &inputdata );
-	void InputDisableWanderers( inputdata_t &inputdata );
-	void InputForceHorde( inputdata_t &inputdata );
+	void InputDisableWanderers(inputdata_t &inputdata);
+	void InputForceHorde(inputdata_t &inputdata);
+	void InputForceHordeSize(inputdata_t &inputdata);
 	void InputForceWanderer( inputdata_t &inputdata );
 	void InputClearIntensity( inputdata_t &inputdata );
 	void InputStartFinale( inputdata_t &inputdata );

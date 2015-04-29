@@ -1,0 +1,860 @@
+// Changes from ASB2:
+// - asw_parasite_defanged has been removed as its presence should always indicate a harvester.
+// - asw_harvester has increased in weight by 1/10 of the asw_parasite_defanged weight.
+// - asw_drone_redgiant has been added with 1/10 the weight of asw_drone_uber.
+// - asw_drone_summoner has been added with 1/5 the weight of asw_drone_uber.
+// - asw_drone_carrier has been added with 1/2 the weight of asw_parasite.
+// - asw_shaman have been decreased in weight by a factor of 4, but 4 will spawn at once.
+//
+// Although they are not used here, the following KeyValues are also accepted in the NPC block:
+// - HealthScale (must be above 0, default 1.0)
+// - SpeedScale (must be above 0, default 1.0)
+// - SizeScale (must be above 0, default 1.0)
+// - Flammable (0 or 1, default 1)
+// - Freezable (0 or 1, default 1)
+// - Teslable (0 or 1, default 1)
+// - Flinches (0 or 1, default 1)
+//
+// If you are a map maker, please name your file alien_selection_mymapname.txt,
+// for example alien_selection_asi-jac1-landingbay_01.txt. This will prevent conflicts
+// when multiple map makers include their own alien selection files.
+
+"SpawnSet" {
+	"Name"	"default"
+	"Map"	"*"
+	"MinDifficulty"	"1"
+	"MaxDifficulty"	"99"
+	"MinHordeSize"	"10"
+	"MaxHordeSize"	"30"
+	"MinWandererSize"	"2"
+	"MaxWandererSize"	"6"
+
+	"WANDERER" {
+		"SelectionWeight"	"50"
+		"NPC" {
+			"AlienClass"	"asw_drone"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"5"
+		"NPC" {
+			"AlienClass"	"asw_drone_uber"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"10"
+		"NPC" {
+			"AlienClass"	"asw_drone_jumper"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_redgiant"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_drone_summoner"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_carrier"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"20"
+		"NPC" {
+			"AlienClass"	"asw_buzzer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"15"
+		"NPC" {
+			"AlienClass"	"asw_ranger"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_parasite"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_shieldbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"8"
+		"NPC" {
+			"AlienClass"	"asw_boomer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"4"
+		"NPC" {
+			"AlienClass"	"asw_harvester"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"3"
+		"NPC" {
+			"AlienClass"	"asw_mortarbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.75"
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+	}
+}
+
+"SpawnSet" {
+	"Name"	"Jacob's Rest - Landing Bay"
+	"Map"	"ASI-Jac1-LandingBay_01"
+	"MinDifficulty"	"1"
+	"MaxDifficulty"	"99"
+	"MinHordeSize"	"10"
+	"MaxHordeSize"	"30"
+	"MinWandererSize"	"2"
+	"MaxWandererSize"	"6"
+
+	"WANDERER" {
+		"SelectionWeight"	"50"
+		"NPC" {
+			"AlienClass"	"asw_drone"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"5"
+		"NPC" {
+			"AlienClass"	"asw_drone_uber"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"10"
+		"NPC" {
+			"AlienClass"	"asw_drone_jumper"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_redgiant"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_drone_summoner"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_carrier"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"20"
+		"NPC" {
+			"AlienClass"	"asw_buzzer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"15"
+		"NPC" {
+			"AlienClass"	"asw_ranger"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_parasite"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_shieldbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"8"
+		"NPC" {
+			"AlienClass"	"asw_boomer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"4"
+		"NPC" {
+			"AlienClass"	"asw_harvester"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"3"
+		"NPC" {
+			"AlienClass"	"asw_mortarbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.75"
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+	}
+}
+
+"SpawnSet" {
+	"Name"	"Jacob's Rest - Cargo Elevator"
+	"Map"	"ASI-Jac1-LandingBay_02"
+	"MinDifficulty"	"1"
+	"MaxDifficulty"	"99"
+	"MinHordeSize"	"10"
+	"MaxHordeSize"	"30"
+	"MinWandererSize"	"3"
+	"MaxWandererSize"	"7"
+
+	"WANDERER" {
+		"SelectionWeight"	"30"
+		"NPC" {
+			"AlienClass"	"asw_drone"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"5"
+		"NPC" {
+			"AlienClass"	"asw_drone_uber"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"10"
+		"NPC" {
+			"AlienClass"	"asw_drone_jumper"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_redgiant"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_drone_summoner"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_carrier"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"20"
+		"NPC" {
+			"AlienClass"	"asw_buzzer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"15"
+		"NPC" {
+			"AlienClass"	"asw_ranger"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_parasite"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"5"
+		"NPC" {
+			"AlienClass"	"asw_shieldbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"8"
+		"NPC" {
+			"AlienClass"	"asw_boomer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"6"
+		"NPC" {
+			"AlienClass"	"asw_harvester"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"5"
+		"NPC" {
+			"AlienClass"	"asw_mortarbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.75"
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+	}
+}
+
+"SpawnSet" {
+	"Name"	"Jacob's Rest - Deima Surface Bridge"
+	"Map"	"ASI-Jac2-Deima"
+	"MinDifficulty"	"1"
+	"MaxDifficulty"	"99"
+	"MinHordeSize"	"10"
+	"MaxHordeSize"	"30"
+	"MinWandererSize"	"1"
+	"MaxWandererSize"	"3"
+
+	"WANDERER" {
+		"SelectionWeight"	"50"
+		"NPC" {
+			"AlienClass"	"asw_drone"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"5"
+		"NPC" {
+			"AlienClass"	"asw_drone_uber"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"10"
+		"NPC" {
+			"AlienClass"	"asw_drone_jumper"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_redgiant"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_drone_summoner"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_carrier"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"20"
+		"NPC" {
+			"AlienClass"	"asw_buzzer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"15"
+		"NPC" {
+			"AlienClass"	"asw_ranger"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_parasite"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_shieldbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"8"
+		"NPC" {
+			"AlienClass"	"asw_boomer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"4"
+		"NPC" {
+			"AlienClass"	"asw_harvester"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"3"
+		"NPC" {
+			"AlienClass"	"asw_mortarbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.75"
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+	}
+}
+
+"SpawnSet" {
+	"Name"	"Jacob's Rest - Rydberg Reactor"
+	"Map"	"ASI-Jac3-Rydberg"
+	"MinDifficulty"	"1"
+	"MaxDifficulty"	"99"
+	"MinHordeSize"	"10"
+	"MaxHordeSize"	"30"
+	"MinWandererSize"	"2"
+	"MaxWandererSize"	"5"
+
+	"WANDERER" {
+		"SelectionWeight"	"50"
+		"NPC" {
+			"AlienClass"	"asw_drone"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"5"
+		"NPC" {
+			"AlienClass"	"asw_drone_uber"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"10"
+		"NPC" {
+			"AlienClass"	"asw_drone_jumper"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_redgiant"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_drone_summoner"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_carrier"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"20"
+		"NPC" {
+			"AlienClass"	"asw_buzzer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"15"
+		"NPC" {
+			"AlienClass"	"asw_ranger"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_parasite"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_shieldbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"8"
+		"NPC" {
+			"AlienClass"	"asw_boomer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"4"
+		"NPC" {
+			"AlienClass"	"asw_harvester"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"3"
+		"NPC" {
+			"AlienClass"	"asw_mortarbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.75"
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+	}
+}
+
+"SpawnSet" {
+	"Name"	"Jacob's Rest - SynTek Residential"
+	"Map"	"ASI-Jac4-Residential"
+	"MinDifficulty"	"1"
+	"MaxDifficulty"	"99"
+	"MinHordeSize"	"10"
+	"MaxHordeSize"	"30"
+	"MinWandererSize"	"1"
+	"MaxWandererSize"	"4"
+
+	"WANDERER" {
+		"SelectionWeight"	"50"
+		"NPC" {
+			"AlienClass"	"asw_drone"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"5"
+		"NPC" {
+			"AlienClass"	"asw_drone_uber"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"10"
+		"NPC" {
+			"AlienClass"	"asw_drone_jumper"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_redgiant"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_drone_summoner"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"2.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_carrier"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"20"
+		"NPC" {
+			"AlienClass"	"asw_buzzer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"15"
+		"NPC" {
+			"AlienClass"	"asw_ranger"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_parasite"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_shieldbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"8"
+		"NPC" {
+			"AlienClass"	"asw_boomer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"3"
+		"NPC" {
+			"AlienClass"	"asw_harvester"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"2"
+		"NPC" {
+			"AlienClass"	"asw_mortarbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.75"
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+	}
+}
+
+"SpawnSet" {
+	"Name"	"Jacob's Rest - Sewer Junction B5"
+	"Map"	"ASI-Jac6-SewerJunction"
+	"MinDifficulty"	"1"
+	"MaxDifficulty"	"99"
+	"MinHordeSize"	"10"
+	"MaxHordeSize"	"30"
+	"MinWandererSize"	"2"
+	"MaxWandererSize"	"5"
+
+	"WANDERER" {
+		"SelectionWeight"	"40"
+		"NPC" {
+			"AlienClass"	"asw_drone"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"5"
+		"NPC" {
+			"AlienClass"	"asw_drone_uber"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"10"
+		"NPC" {
+			"AlienClass"	"asw_drone_jumper"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_redgiant"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_drone_summoner"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_carrier"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"20"
+		"NPC" {
+			"AlienClass"	"asw_buzzer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"10"
+		"NPC" {
+			"AlienClass"	"asw_ranger"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"5"
+		"NPC" {
+			"AlienClass"	"asw_parasite"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"5"
+		"NPC" {
+			"AlienClass"	"asw_shieldbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"8"
+		"NPC" {
+			"AlienClass"	"asw_boomer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"5.5"
+		"NPC" {
+			"AlienClass"	"asw_harvester"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"5"
+		"NPC" {
+			"AlienClass"	"asw_mortarbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.75"
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+	}
+}
+
+"SpawnSet" {
+	"Name"	"Jacob's Rest - Timor Station"
+	"Map"	"ASI-Jac7-TimorStation"
+	"MinDifficulty"	"1"
+	"MaxDifficulty"	"99"
+	"MinHordeSize"	"10"
+	"MaxHordeSize"	"30"
+	"MinWandererSize"	"2"
+	"MaxWandererSize"	"4"
+
+	"WANDERER" {
+		"SelectionWeight"	"70"
+		"NPC" {
+			"AlienClass"	"asw_drone"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"5"
+		"NPC" {
+			"AlienClass"	"asw_drone_uber"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"20"
+		"NPC" {
+			"AlienClass"	"asw_drone_jumper"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_redgiant"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_drone_summoner"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_carrier"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"40"
+		"NPC" {
+			"AlienClass"	"asw_buzzer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"30"
+		"NPC" {
+			"AlienClass"	"asw_ranger"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_parasite"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_shieldbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"8"
+		"NPC" {
+			"AlienClass"	"asw_boomer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"5"
+		"NPC" {
+			"AlienClass"	"asw_harvester"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"3"
+		"NPC" {
+			"AlienClass"	"asw_mortarbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.75"
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+	}
+}

@@ -25,7 +25,8 @@ BEGIN_DATADESC( CASW_Director_Control )
 	DEFINE_INPUTFUNC( FIELD_VOID,	"DisableHordes",	InputDisableHordes ),
 	DEFINE_INPUTFUNC( FIELD_VOID,	"EnableWanderers",	InputEnableWanderers ),
 	DEFINE_INPUTFUNC( FIELD_VOID,	"DisableWanderers",	InputDisableWanderers ),
-	DEFINE_INPUTFUNC( FIELD_INTEGER,	"ForceHorde",	InputForceHorde),
+	DEFINE_INPUTFUNC( FIELD_VOID,	"ForceHorde",	InputForceHorde),
+	DEFINE_INPUTFUNC( FIELD_INTEGER,	"ForceHordeSize",	InputForceHordeSize),
 	DEFINE_INPUTFUNC( FIELD_VOID,	"ForceWanderer",	InputForceWanderer),
 	DEFINE_INPUTFUNC( FIELD_VOID,	"ClearIntensity",	InputClearIntensity ),
 	DEFINE_INPUTFUNC( FIELD_VOID,	"StartFinale",	InputStartFinale ),
@@ -79,6 +80,14 @@ void CASW_Director_Control::InputStartFinale( inputdata_t &inputdata )
 }
 
 void CASW_Director_Control::InputForceHorde( inputdata_t &inputdata )
+{
+	if ( !ASWSpawnManager() )
+		return;
+
+	ASWSpawnManager()->AddRandomHorde();
+}
+
+void CASW_Director_Control::InputForceHordeSize( inputdata_t &inputdata )
 {
 	if ( !ASWSpawnManager() )
 		return;

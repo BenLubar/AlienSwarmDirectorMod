@@ -6592,7 +6592,8 @@
 	input EnableWanderers(void) : "Enable random wandering aliens."
 	input DisableWanderers(void) : "Disable random wandering aliens."
 	input ForceWanderer(void) : "Forces the director to spawn a wanderer."
-	input ForceHorde(integer) : "Forces the director to spawn a horde of the given size. Cancels the current horde if there is one queued."
+	input ForceHorde(void) : "Forces the director to spawn a horde of a random size. Cancels the current horde if there is one queued."
+	input ForceHordeSize(integer) : "Forces the director to spawn a horde of the given size. Cancels the current horde if there is one queued."
 	input ClearIntensity(void) : "Reset the intensity of all marines to allow spawning to resume immediately."
 	input StartFinale(void) : "Enables wanderers, hordes and sends director into crazy spawning mode."
 	
