@@ -295,4 +295,27 @@ int CASW_EquipmentList::GetEquipIconTexture(bool bRegular, int iIndex)
 		return m_iExtraTexture[iIndex];
 	}
 }
+
+CON_COMMAND(asw_list_equipment, "list weapons and their IDs")
+{
+	Assert(ASWEquipmentList());
+
+	Msg("Regular\n");
+	int nRegular = ASWEquipmentList()->GetNumRegular(true);
+	for (int i = 0; i < nRegular; i++)
+	{
+		CASW_EquipItem *pRegular = ASWEquipmentList()->GetRegular(i);
+		Assert(pRegular);
+		Msg("%d: %s%s\n", i, STRING(pRegular->m_EquipClass), pRegular->m_bSelectableInBriefing ? "" : " (hidden)");
+	}
+	Msg("\n");
+	Msg("Extra\n");
+	int nExtra = ASWEquipmentList()->GetNumExtra(true);
+	for (int i = 0; i < nExtra; i++)
+	{
+		CASW_EquipItem *pExtra = ASWEquipmentList()->GetExtra(i);
+		Assert(pExtra);
+		Msg("%d: %s%s\n", i, STRING(pExtra->m_EquipClass), pExtra->m_bSelectableInBriefing ? "" : " (hidden)");
+	}
+}
 #endif
