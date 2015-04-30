@@ -421,7 +421,7 @@ int CASW_Marine::SelectSchedule()
 		for (int i = 0; i < CASW_SquadFormation::MAX_SQUAD_SIZE; i++)
 		{
 			CASW_Marine *pSquaddie = pFormation->Squaddie(i);
-			if (pSquaddie && pSquaddie->GetMarineProfile()->GetMarineClass() < pCandidate->GetMarineProfile()->GetMarineClass())
+			if (pSquaddie && pSquaddie->GetHealth() > 0 && pSquaddie->GetMarineProfile()->GetMarineClass() < pCandidate->GetMarineProfile()->GetMarineClass())
 			{
 				pCandidate = pSquaddie;
 			}
@@ -1188,7 +1188,7 @@ void CASW_Marine::GatherConditions()
 		for (int i = 0; i < CASW_SquadFormation::MAX_SQUAD_SIZE; i++)
 		{
 			CASW_Marine *pSquaddie = GetSquadFormation()->Squaddie(i);
-			if (pSquaddie && pSquaddie->GetAbsOrigin().DistToSqr(GetAbsOrigin()) > flTooFar)
+			if (pSquaddie && pSquaddie->GetHealth() > 0 && pSquaddie->GetAbsOrigin().DistToSqr(GetAbsOrigin()) > flTooFar)
 			{
 				SetCondition(COND_ASW_TOO_FAR_FROM_SQUAD);
 				break;

@@ -3549,7 +3549,7 @@ void CAlienSwarm::MarineKilled( CASW_Marine *pMarine, const CTakeDamageInfo &inf
 			for (int i = 0; i < CASW_SquadFormation::MAX_SQUAD_SIZE; i++)
 			{
 				CASW_Marine *pSquaddie = pFormation->Squaddie(i);
-				if (pSquaddie)
+				if (pSquaddie && pSquaddie->GetHealth() > 0)
 				{
 					pSquaddie->SetASWOrders(ASW_ORDER_HOLD_POSITION);
 					pFormation->ChangeLeader(pSquaddie, true);
