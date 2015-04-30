@@ -68,15 +68,7 @@
 #include "asw_alien_goo_shared.h"
 #include "asw_prop_physics.h"
 #include "asw_weapon_heal_gun_shared.h"
-#include "asw_marker.h"
 #include "asw_spawn_manager.h"
-#include "asw_objective.h"
-#include "asw_objective_kill_aliens.h"
-#include "asw_objective_kill_eggs.h"
-#include "asw_objective_kill_goo.h"
-#include "asw_objective_kill_queen.h"
-#include "asw_objective_escape.h"
-#include "asw_objective_triggered.h"
 #include "asw_weapon_medkit_shared.h"
 #include "asw_melee_system.h"
 #include "asw_movedata.h"
@@ -448,209 +440,44 @@ int CASW_Marine::SelectSchedule()
 				return SCHED_RANGE_ATTACK1;
 		}
 
-		for (int i = 0; i < ASW_MAX_OBJECTIVES; i++)
+		if (!m_hAreaToUse.Get() && m_flLastUsedButton < gpGlobals->curtime - 15)
 		{
-			CASW_Objective *pObj = ASWGameResource()->GetObjective(i);
-			if (pObj && !pObj->IsObjectiveComplete() && !pObj->IsObjectiveFailed() && !pObj->IsObjectiveHidden() && !pObj->IsObjectiveDummy())
+			CASW_Use_Area *pClosestArea = NULL;
+			float flClosestDist = COORD_EXTENT;
+
+			// check for a button to push nearby
+			for (int i = 0; i < IASW_Use_Area_List::AutoList().Count(); i++)
 			{
-				float flMinDist = -1;
-				Vector vecBest = vec3_origin;
-
-				int iPriority = 0;
-				Vector2D oldStyleMarker = pObj->GetOldStyleMarkerLocation();
-				if (oldStyleMarker != vec2_invalid)
+				CASW_Use_Area *pArea = static_cast<CASW_Use_Area*>(IASW_Use_Area_List::AutoList()[i]);
+				if (pArea->Classify() == CLASS_ASW_BUTTON_PANEL)
 				{
-					iPriority = 1;
-					vecBest.x = oldStyleMarker.x;
-					vecBest.y = oldStyleMarker.y;
-					vecBest.z = GetAbsOrigin().z; // assume the objective is around the same z-height as where we are now.
-					flMinDist = vecBest.DistToSqr(GetAbsOrigin());
-				}
+					CASW_Button_Area *pButton = assert_cast<CASW_Button_Area*>(pArea);
+					if (pButton->IsLocked() || !pButton->HasPower())
+						continue;
 
-				CASW_Marker *pMarker = NULL;
-				bool bInMarker = false;
-
-				while ((pMarker = dynamic_cast<CASW_Marker *>(gEntList.FindEntityByClassname(pMarker, "asw_marker"))) != NULL)
-				{
-					if (pMarker->GetObjective() == pObj && !pMarker->IsObjectiveComplete() && pMarker->IsMarkerEnabled())
+					float flDist = GetAbsOrigin().DistTo(pArea->WorldSpaceCenter());
+					if (flDist < flClosestDist && flDist < AUTO_HACK_DIST)
 					{
-						Vector vecMarker = pMarker->GetAbsOrigin();
-						vecMarker.x += RandomInt(-pMarker->GetMapWidth() / 2, pMarker->GetMapWidth() / 2);
-						vecMarker.y += RandomInt(-pMarker->GetMapHeight() / 2, pMarker->GetMapHeight() / 2);
-
-						float flDist = vecMarker.DistToSqr(GetAbsOrigin());
-						if (iPriority < 3 || flMinDist == -1 || flDist < flMinDist)
-						{
-							flMinDist = flDist;
-							vecBest = vecMarker;
-							iPriority = 3;
-
-							bInMarker = fabs(pMarker->GetAbsOrigin().x - GetAbsOrigin().x) <= (pMarker->GetMapWidth() / 2.0f) &&
-										fabs(pMarker->GetAbsOrigin().y - GetAbsOrigin().y) <= (pMarker->GetMapHeight() / 2.0f);
-						}
+						flClosestDist = flDist;
+						pClosestArea = pArea;
 					}
-					else if (iPriority <= 2)
-					{
-						Vector vecMarker = pMarker->GetAbsOrigin();
-						vecMarker.x += RandomInt(-pMarker->GetMapWidth() / 2, pMarker->GetMapWidth() / 2);
-						vecMarker.y += RandomInt(-pMarker->GetMapHeight() / 2, pMarker->GetMapHeight() / 2);
-
-						float flDist = vecMarker.DistToSqr(GetAbsOrigin());
-
-						if (iPriority < 2 || flMinDist > flDist)
-						{
-							flMinDist = flDist;
-							vecBest = vecMarker;
-							iPriority = 2;
-
-							bInMarker = fabs(pMarker->GetAbsOrigin().x - GetAbsOrigin().x) <= (pMarker->GetMapWidth() / 2.0f) &&
-										fabs(pMarker->GetAbsOrigin().y - GetAbsOrigin().y) <= (pMarker->GetMapHeight() / 2.0f);
-						}
-					}
-				}
-				if (bInMarker)
-				{
-					if (!m_hAreaToUse.Get() && GetSquadLeader() && !GetSquadLeader()->IsInhabited() && m_flLastUsedButton < gpGlobals->curtime - 15)
-					{
-						CASW_Use_Area *pClosestArea = NULL;
-						float flClosestDist = FLT_MAX;
-
-						// check for a button to push nearby
-						for (int i = 0; i < IASW_Use_Area_List::AutoList().Count(); i++)
-						{
-							CASW_Use_Area *pArea = static_cast<CASW_Use_Area*>(IASW_Use_Area_List::AutoList()[i]);
-							if (pArea->Classify() == CLASS_ASW_BUTTON_PANEL)
-							{
-								CASW_Button_Area *pButton = assert_cast<CASW_Button_Area*>(pArea);
-								if (pButton->IsLocked() || !pButton->HasPower())
-									continue;
-
-								float flDist = GetAbsOrigin().DistTo(pArea->WorldSpaceCenter());
-								if (flDist < flClosestDist && flDist < AUTO_HACK_DIST)
-								{
-									flClosestDist = flDist;
-									pClosestArea = pArea;
-								}
-							}
-						}
-
-						m_hAreaToUse = pClosestArea;
-
-						iHackingSchedule = SelectHackingSchedule();
-						if (iHackingSchedule != -1)
-						{
-							m_flLastUsedButton = gpGlobals->curtime;
-							return iHackingSchedule;
-						}
-					}
-					if (dynamic_cast<CASW_Objective_Kill_Aliens *>(pObj))
-					{
-						ASW_Alien_Class_Entry *pEntry = ASWSpawnManager()->GetAlienClass(dynamic_cast<CASW_Objective_Kill_Aliens *>(pObj)->m_AlienClassNum);
-						Assert(pEntry);
-						if (pEntry)
-						{
-							CBaseEntity *pEnt = gEntList.FindEntityByClassnameNearestFast(pEntry->m_iszAlienClass, GetAbsOrigin(), 0);
-							Assert(pEnt);
-							if (pEnt)
-							{
-								vecBest = pEnt->GetAbsOrigin();
-							}
-						}
-					}
-					else if (dynamic_cast<CASW_Objective_Kill_Eggs *>(pObj))
-					{
-						CBaseEntity *pEnt = gEntList.FindEntityByClassnameNearest("asw_egg", GetAbsOrigin(), 0);
-						Assert(pEnt);
-						if (pEnt)
-						{
-							vecBest = pEnt->GetAbsOrigin();
-						}
-					}
-					else if (dynamic_cast<CASW_Objective_Kill_Goo *>(pObj))
-					{
-						CBaseEntity *pEnt = gEntList.FindEntityByClassnameNearest("asw_alien_goo", GetAbsOrigin(), 0);
-						Assert(pEnt);
-						if (pEnt)
-						{
-							vecBest = pEnt->GetAbsOrigin();
-						}
-					}
-					else if (dynamic_cast<CASW_Objective_Kill_Queen *>(pObj))
-					{
-						CBaseEntity *pEnt = gEntList.FindEntityByClassnameNearest("asw_queen", GetAbsOrigin(), 0);
-						Assert(pEnt);
-						if (pEnt)
-						{
-							vecBest = pEnt->GetAbsOrigin();
-						}
-					}
-					else if (dynamic_cast<CASW_Objective_Escape *>(pObj))
-					{
-						Assert(ASWSpawnManager());
-						Assert(ASWSpawnManager()->m_EscapeTriggers.Count() == 1);
-						CTriggerMultiple *pEnt = (ASWSpawnManager() && ASWSpawnManager()->m_EscapeTriggers.Count()) ? ASWSpawnManager()->m_EscapeTriggers.Head() : NULL;
-						Assert(pEnt);
-						if (pEnt)
-						{
-							Vector mins = pEnt->CollisionProp()->OBBMins();
-							Vector maxs = pEnt->CollisionProp()->OBBMaxs();
-							if (pEnt->CollisionProp()->IsBoundsDefinedInEntitySpace())
-							{
-								mins += pEnt->GetAbsOrigin();
-								maxs += pEnt->GetAbsOrigin();
-							}
-							vecBest.x = RandomFloat(mins.x, maxs.x);
-							vecBest.y = RandomFloat(mins.y, maxs.y);
-							vecBest.z = RandomFloat(mins.z, maxs.z);
-						}
-						GetSquadFormation()->FollowCommandUsed();
-					}
-					else if (dynamic_cast<CASW_Objective_Triggered *>(pObj))
-					{
-						string_t iName = pObj->GetEntityName();
-						Assert(iName);
-
-						CBaseEntity *pEnt = assert_cast<CASW_Objective_Triggered *>(pObj)->FindTriggerEnt();
-						Assert(pEnt);
-						if (pEnt)
-						{
-							Vector mins = pEnt->CollisionProp()->OBBMins();
-							Vector maxs = pEnt->CollisionProp()->OBBMaxs();
-							if (pEnt->CollisionProp()->IsBoundsDefinedInEntitySpace())
-							{
-								mins += pEnt->GetAbsOrigin();
-								maxs += pEnt->GetAbsOrigin();
-							}
-							vecBest.x = RandomFloat(mins.x, maxs.x);
-							vecBest.y = RandomFloat(mins.y, maxs.y);
-							vecBest.z = RandomFloat(mins.z, maxs.z);
-						}
-
-						if (RandomFloat() < 0.1f)
-						{
-							GetSquadFormation()->FollowCommandUsed();
-						}
-					}
-					else
-					{
-						AssertMsg(false, "not prepared for this objective type");
-					}
-				}
-				if (flMinDist != -1)
-				{
-					SetASWOrders(ASW_ORDER_MOVE_TO, m_fHoldingYaw, &vecBest);
-
-					float dist = GetAbsOrigin().DistTo(vecBest);
-					if (dist > 30 && !HasCondition(COND_ASW_TOO_FAR_FROM_SQUAD))
-					{
-						return SCHED_ASW_MOVE_TO_ORDER_POS;
-					}
-					return SCHED_ASW_HOLD_POSITION;
 				}
 			}
+
+			m_hAreaToUse = pClosestArea;
+
+			iHackingSchedule = SelectHackingSchedule();
+			if (iHackingSchedule != -1)
+			{
+				m_flLastUsedButton = gpGlobals->curtime;
+				return iHackingSchedule;
+			}
 		}
-		if (ASWGameRules() && ASWGameRules()->GetGameState() == ASW_GS_INGAME)
-			DevWarning("%s: Could not find an incomplete objective with a marker.\n", GetDebugName());
+
+		if (pFormation->m_vecObjective != vec3_invalid && NeedToFollowMove(true))
+		{
+			return SCHED_ASW_LEAD;
+		}
 	}
 
 	//Msg("Marine's select schedule returning SCHED_ASW_HOLD_POSITION\n");
@@ -1950,10 +1777,10 @@ bool CASW_Marine::NeedToUpdateSquad()
 	return ( GetSquadLeader() == this && ( GetSquadFormation()->ShouldUpdateFollowPositions() || m_hUsingEntity.Get() ) );
 }
 
-bool CASW_Marine::NeedToFollowMove()
+bool CASW_Marine::NeedToFollowMove(bool bLeader)
 {
 	CASW_Marine * RESTRICT pLeader = GetSquadLeader();
-	if ( !pLeader || pLeader == this )
+	if ( !pLeader || ( pLeader == this && !bLeader ) )
 		return false;
 
 	if ( HasCondition( COND_CAN_RANGE_ATTACK1 ) && GetHealth() > GetMaxHealth() / 2 && GetEnemy() && GetEnemy()->Classify() != CLASS_ASW_SHIELDBUG && GetEnemy()->GetAbsOrigin().DistToSqr( GetAbsOrigin() ) < Square( ASW_FORMATION_ATTACK_DISTANCE ) && g_aExplosiveProjectiles.Count() == 0 )
@@ -2046,13 +1873,14 @@ int CASW_Marine::SelectFollowSchedule()
 			return SCHED_RANGE_ATTACK1;
 	}
 
+	
 	// check if we're too near another marine
-	CASW_Marine *pCloseMarine = TooCloseToAnotherMarine();
+	/*CASW_Marine *pCloseMarine = TooCloseToAnotherMarine();
 	if (pCloseMarine)
 	{
 		//Msg("marine is too close to %d\n", pCloseMarine->entindex());
 		return SCHED_ASW_FOLLOW_BACK_OFF;
-	}
+	}*/
 
 	if (GetSquadLeader() == NULL || GetSquadLeader() == this)
 	{
@@ -2062,7 +1890,7 @@ int CASW_Marine::SelectFollowSchedule()
 	return SCHED_ASW_FOLLOW_WAIT;
 }
 
-#define ASW_MARINE_TOO_CLOSE 60
+#define ASW_MARINE_TOO_CLOSE 40
 CASW_Marine *CASW_Marine::TooCloseToAnotherMarine()
 {
 	if ( !ASWGameResource() )
@@ -4286,6 +4114,21 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 		"		TASK_RUN_PATH					0"	
 		"		TASK_ASW_WAIT_FOR_MOVEMENT			0"
 		"		TASK_STOP_MOVING				1"		
+		""
+		"	Interrupts"
+		"		COND_ASW_NEW_ORDERS"
+		"		COND_CAN_RANGE_ATTACK1"
+		"		COND_CAN_RANGE_ATTACK2"
+	)
+
+	DEFINE_SCHEDULE
+	( 
+		SCHED_ASW_LEAD,
+
+		"	Tasks"
+		"		TASK_ASW_GET_PATH_TO_FOLLOW_TARGET		0"
+		"		TASK_RUN_PATH			 0"
+		"		TASK_ASW_WAIT_FOR_FOLLOW_MOVEMENT			0"
 		""
 		"	Interrupts"
 		"		COND_ASW_NEW_ORDERS"

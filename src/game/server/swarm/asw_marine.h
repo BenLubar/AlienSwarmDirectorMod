@@ -293,6 +293,7 @@ public:
 		SCHED_ASW_USE_AREA,
 		SCHED_ASW_OVERKILL_SHOOT,
 		SCHED_ASW_MOVE_TO_ORDER_POS,
+		SCHED_ASW_LEAD,
 		SCHED_ASW_FOLLOW_MOVE,
 		SCHED_ASW_FOLLOW_WAIT,
 		SCHED_ASW_PICKUP_WAIT,
@@ -432,7 +433,7 @@ public:
 	float m_fRandomFacing;
 	float m_fNewRandomFacingTime;
 	bool NeedToUpdateSquad(); // whether I am a squad leader and should update the follow positions for my squad
-	bool NeedToFollowMove();
+	bool NeedToFollowMove(bool bLeader = false);
 	bool m_bWasFollowing;	// were we previously doing follow orders?
 
 	void RecalculateAIYawOffset();

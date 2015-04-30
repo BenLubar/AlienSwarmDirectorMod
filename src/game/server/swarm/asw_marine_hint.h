@@ -62,7 +62,7 @@ public:
 	virtual void LevelShutdownPostEntity();	
 
 	void AddHint( CBaseEntity *pEnt, bool bLastResort = false );
-	int FindHints( CASW_Marine *pLeader, const float flMinDistance, const float flMaxDistance, CUtlVector<HintData_t *> &Result );
+	int FindHints(const Vector &position, CASW_Marine *pLeader, const float flMinDistance, const float flMaxDistance, CUtlVector<HintData_t *> &Result);
 	
 	int GetHintCount() { return m_Hints.Count(); }
 	const Vector& GetHintPosition( int nHint ) { return m_Hints[ nHint ]->m_vecPosition; }

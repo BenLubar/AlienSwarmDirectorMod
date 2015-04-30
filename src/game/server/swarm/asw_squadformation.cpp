@@ -7,6 +7,18 @@
 #include "asw_boomer_blob.h"
 #include "triggers.h"
 #include "asw_player.h"
+#include "asw_marker.h"
+#include "asw_spawn_manager.h"
+#include "asw_objective.h"
+#include "asw_objective_kill_aliens.h"
+#include "asw_objective_kill_eggs.h"
+#include "asw_objective_kill_goo.h"
+#include "asw_objective_kill_queen.h"
+#include "asw_objective_escape.h"
+#include "asw_objective_triggered.h"
+#include "asw_gamerules.h"
+#include "ai_pathfinder.h"
+#include "ai_waypoint.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -254,6 +266,11 @@ void CASW_SquadFormation::UpdateFollowPositions()
 	}
 	m_flLastSquadUpdateTime = gpGlobals->curtime;
 
+	if (!pLeader->IsInhabited())
+	{
+		UpdateGoalPosition();
+	}
+
 	if ( MarineHintManager()->GetHintCount() )
 	{
 		FindFollowHintNodes();
@@ -262,7 +279,7 @@ void CASW_SquadFormation::UpdateFollowPositions()
 	QAngle angLeaderFacing = pLeader->EyeAngles();
 	angLeaderFacing[PITCH] = 0;
 	matrix3x4_t matLeaderFacing;
-	Vector vProjectedLeaderPos = pLeader->GetAbsOrigin() + pLeader->GetAbsVelocity() * asw_follow_velocity_predict.GetFloat();
+	Vector vProjectedLeaderPos = GetLeaderPosition() + pLeader->GetAbsVelocity() * asw_follow_velocity_predict.GetFloat();
 	GetLdrAnglMatrix( vProjectedLeaderPos, angLeaderFacing, &matLeaderFacing );
 
 	for ( int i = 0 ; i < MAX_SQUAD_SIZE ; ++i )
@@ -360,7 +377,11 @@ void CASW_SquadFormation::UpdateFollowPositions()
 		}
 		else if ( MarineHintManager()->GetHintCount() && m_flUseHintsAfter[i] < gpGlobals->curtime && asw_follow_use_hints.GetBool() && ( pLeader->IsInCombat() || asw_follow_use_hints.GetInt() == 2 ) )
 		{
-			if ( m_nMarineHintIndex[i] != INVALID_HINT_INDEX )
+			if (i == CASW_SquadFormation::SQUAD_LEADER)
+			{
+				m_vFollowPositions[i] = vProjectedLeaderPos;
+			}
+			else if ( m_nMarineHintIndex[i] != INVALID_HINT_INDEX )
 			{
 				m_vFollowPositions[i] = MarineHintManager()->GetHintPosition( m_nMarineHintIndex[i] );
 			}
@@ -496,6 +517,8 @@ void CASW_SquadFormation::Reset()
 	m_flLastLeaderYaw = 0;
 	m_vLastLeaderPos.Zero();
 	m_vLastLeaderVelocity.Zero();
+	m_vecObjective = vec3_invalid;
+	m_bInMarker = false;
 }
 
 //-----------------------------------------------------------------------------
@@ -565,9 +588,11 @@ void CASW_SquadFormation::FindFollowHintNodes()
 		// clear out the old hint so we don't get stuck if there are no good hints
 		m_nMarineHintIndex[slotnum] = INVALID_HINT_INDEX;
 
+		Vector vecLeader = GetLeaderPosition();
+
 		// find a new node
 		CUtlVector< HintData_t* > hints;
-		MarineHintManager()->FindHints(pLeader, asw_follow_hint_min_range.GetFloat(), asw_follow_hint_max_range.GetFloat(), hints);
+		MarineHintManager()->FindHints(vecLeader, pLeader, asw_follow_hint_min_range.GetFloat(), asw_follow_hint_max_range.GetFloat(), hints);
 		int nCount = hints.Count();
 
 		float flMovementYaw = pLeader->GetOverallMovementDirection();
@@ -703,6 +728,207 @@ void CASW_SquadFormation::FindFollowHintNodes()
 			}
 		}
 	}
+}
+
+void CASW_SquadFormation::UpdateGoalPosition()
+{
+	Assert(Leader());
+	if (!Leader())
+	{
+		return;
+	}
+
+	m_vecObjective = vec3_invalid;
+	for (int i = 0; i < ASW_MAX_OBJECTIVES; i++)
+	{
+		CASW_Objective *pObj = ASWGameResource()->GetObjective(i);
+		if (pObj && !pObj->IsObjectiveComplete() && !pObj->IsObjectiveFailed() && !pObj->IsObjectiveHidden() && !pObj->IsObjectiveDummy())
+		{
+			float flMinDist = -1;
+			Vector vecBest = vec3_origin;
+
+			int iPriority = 0;
+			Vector2D oldStyleMarker = pObj->GetOldStyleMarkerLocation();
+			if (oldStyleMarker != vec2_invalid)
+			{
+				iPriority = 1;
+				vecBest.x = oldStyleMarker.x;
+				vecBest.y = oldStyleMarker.y;
+				vecBest.z = Leader()->GetAbsOrigin().z; // assume the objective is around the same z-height as where we are now.
+				flMinDist = vecBest.DistToSqr(Leader()->GetAbsOrigin());
+			}
+
+			CASW_Marker *pMarker = NULL;
+			bool bInMarker = false;
+
+			while ((pMarker = dynamic_cast<CASW_Marker *>(gEntList.FindEntityByClassname(pMarker, "asw_marker"))) != NULL)
+			{
+				if (pMarker->GetObjective() == pObj && !pMarker->IsObjectiveComplete() && pMarker->IsMarkerEnabled())
+				{
+					Vector vecMarker = pMarker->GetAbsOrigin();
+					vecMarker.x += RandomInt(-pMarker->GetMapWidth() / 2, pMarker->GetMapWidth() / 2);
+					vecMarker.y += RandomInt(-pMarker->GetMapHeight() / 2, pMarker->GetMapHeight() / 2);
+
+					float flDist = vecMarker.DistToSqr(Leader()->GetAbsOrigin());
+					if (iPriority < 3 || flMinDist == -1 || flDist < flMinDist)
+					{
+						flMinDist = flDist;
+						vecBest = vecMarker;
+						iPriority = 3;
+
+						bInMarker = fabs(pMarker->GetAbsOrigin().x - Leader()->GetAbsOrigin().x) <= (pMarker->GetMapWidth() / 2.0f) &&
+							fabs(pMarker->GetAbsOrigin().y - Leader()->GetAbsOrigin().y) <= (pMarker->GetMapHeight() / 2.0f);
+					}
+				}
+				else if (iPriority <= 2)
+				{
+					Vector vecMarker = pMarker->GetAbsOrigin();
+					vecMarker.x += RandomInt(-pMarker->GetMapWidth() / 2, pMarker->GetMapWidth() / 2);
+					vecMarker.y += RandomInt(-pMarker->GetMapHeight() / 2, pMarker->GetMapHeight() / 2);
+
+					float flDist = vecMarker.DistToSqr(Leader()->GetAbsOrigin());
+
+					if (iPriority < 2 || flMinDist > flDist)
+					{
+						flMinDist = flDist;
+						vecBest = vecMarker;
+						iPriority = 2;
+
+						bInMarker = fabs(pMarker->GetAbsOrigin().x - Leader()->GetAbsOrigin().x) <= (pMarker->GetMapWidth() / 2.0f) &&
+							fabs(pMarker->GetAbsOrigin().y - Leader()->GetAbsOrigin().y) <= (pMarker->GetMapHeight() / 2.0f);
+					}
+				}
+			}
+			if (bInMarker)
+			{
+				if (dynamic_cast<CASW_Objective_Kill_Aliens *>(pObj))
+				{
+					ASW_Alien_Class_Entry *pEntry = ASWSpawnManager()->GetAlienClass(dynamic_cast<CASW_Objective_Kill_Aliens *>(pObj)->m_AlienClassNum);
+					Assert(pEntry);
+					if (pEntry)
+					{
+						CBaseEntity *pEnt = gEntList.FindEntityByClassnameNearestFast(pEntry->m_iszAlienClass, Leader()->GetAbsOrigin(), 0);
+						Assert(pEnt);
+						if (pEnt)
+						{
+							vecBest = pEnt->GetAbsOrigin();
+						}
+					}
+				}
+				else if (dynamic_cast<CASW_Objective_Kill_Eggs *>(pObj))
+				{
+					CBaseEntity *pEnt = gEntList.FindEntityByClassnameNearest("asw_egg", Leader()->GetAbsOrigin(), 0);
+					Assert(pEnt);
+					if (pEnt)
+					{
+						vecBest = pEnt->GetAbsOrigin();
+					}
+				}
+				else if (dynamic_cast<CASW_Objective_Kill_Goo *>(pObj))
+				{
+					CBaseEntity *pEnt = gEntList.FindEntityByClassnameNearest("asw_alien_goo", Leader()->GetAbsOrigin(), 0);
+					Assert(pEnt);
+					if (pEnt)
+					{
+						vecBest = pEnt->GetAbsOrigin();
+					}
+				}
+				else if (dynamic_cast<CASW_Objective_Kill_Queen *>(pObj))
+				{
+					CBaseEntity *pEnt = gEntList.FindEntityByClassnameNearest("asw_queen", Leader()->GetAbsOrigin(), 0);
+					Assert(pEnt);
+					if (pEnt)
+					{
+						vecBest = pEnt->GetAbsOrigin();
+					}
+				}
+				else if (dynamic_cast<CASW_Objective_Escape *>(pObj))
+				{
+					Assert(ASWSpawnManager());
+					Assert(ASWSpawnManager()->m_EscapeTriggers.Count() == 1);
+					CTriggerMultiple *pEnt = (ASWSpawnManager() && ASWSpawnManager()->m_EscapeTriggers.Count()) ? ASWSpawnManager()->m_EscapeTriggers.Head() : NULL;
+					Assert(pEnt);
+					if (pEnt)
+					{
+						Vector mins = pEnt->CollisionProp()->OBBMins();
+						Vector maxs = pEnt->CollisionProp()->OBBMaxs();
+						if (pEnt->CollisionProp()->IsBoundsDefinedInEntitySpace())
+						{
+							mins += pEnt->GetAbsOrigin();
+							maxs += pEnt->GetAbsOrigin();
+						}
+						vecBest.x = RandomFloat(mins.x, maxs.x);
+						vecBest.y = RandomFloat(mins.y, maxs.y);
+						vecBest.z = RandomFloat(mins.z, maxs.z);
+					}
+					FollowCommandUsed();
+				}
+				else if (dynamic_cast<CASW_Objective_Triggered *>(pObj))
+				{
+					string_t iName = pObj->GetEntityName();
+					Assert(iName);
+
+					CBaseEntity *pEnt = assert_cast<CASW_Objective_Triggered *>(pObj)->FindTriggerEnt();
+					Assert(pEnt);
+					if (pEnt)
+					{
+						Vector mins = pEnt->CollisionProp()->OBBMins();
+						Vector maxs = pEnt->CollisionProp()->OBBMaxs();
+						if (pEnt->CollisionProp()->IsBoundsDefinedInEntitySpace())
+						{
+							mins += pEnt->GetAbsOrigin();
+							maxs += pEnt->GetAbsOrigin();
+						}
+						vecBest.x = RandomFloat(mins.x, maxs.x);
+						vecBest.y = RandomFloat(mins.y, maxs.y);
+						vecBest.z = RandomFloat(mins.z, maxs.z);
+					}
+
+					if (RandomFloat() < 0.1f)
+					{
+						FollowCommandUsed();
+					}
+				}
+				else
+				{
+					AssertMsg(false, "not prepared for this objective type");
+				}
+			}
+			if (flMinDist != -1)
+			{
+				m_bInMarker = true;
+				m_vecObjective = vecBest;
+				return;
+			}
+		}
+	}
+	if (ASWGameRules() && ASWGameRules()->GetGameState() == ASW_GS_INGAME)
+		DevWarning("%s: Could not find an incomplete objective with a marker.\n", Leader()->GetDebugName());
+}
+
+Vector CASW_SquadFormation::GetLeaderPosition()
+{
+	CASW_Marine *pLeader = Leader();
+	Assert(pLeader);
+	Vector position = pLeader->GetAbsOrigin();
+	if (!pLeader->IsInhabited() && m_vecObjective != vec3_invalid)
+	{
+		AI_Waypoint_t *pPath = pLeader->GetPathfinder()->BuildRoute(position, m_vecObjective, NULL, 0, NAV_GROUND);
+		if (pPath)
+		{
+			AI_Waypoint_t *pCur = pPath;
+			while (pCur && pCur->GetPos().AsVector2D().DistToSqr(position.AsVector2D()) < Square(100))
+			{
+				pCur = pCur->GetNext();
+			}
+			if (pCur)
+			{
+				position = pCur->GetPos();
+			}
+			DeleteAll(pPath);
+		}
+	}
+	return position;
 }
 
 bool CASW_SquadFormation::ShouldUpdateFollowPositions() const

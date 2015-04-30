@@ -83,28 +83,27 @@ void CASW_Marine_Hint_Manager::Reset()
 	m_LastResortHints.PurgeAndDeleteElements();
 }
 
-int CASW_Marine_Hint_Manager::FindHints(CASW_Marine *pLeader, const float flMinDistance, const float flMaxDistance, CUtlVector<HintData_t *> &result)
+int CASW_Marine_Hint_Manager::FindHints(const Vector &position, CASW_Marine *pLeader, const float flMinDistance, const float flMaxDistance, CUtlVector<HintData_t *> &result)
 {
 	Assert(pLeader);
-	const Vector &vecPosition = pLeader->GetAbsOrigin();
 	const float flMinDistSqr = 0; // we want the leader to be able to use their current hint.
 	const float flMaxDistSqr = flMaxDistance * flMaxDistance;
 	int nCount = m_Hints.Count();
 	for ( int i = 0; i < nCount; i++ )
 	{
 		HintData_t *pHint = m_Hints[i];
-		float flDistSqr = vecPosition.DistToSqr(pHint->m_vecPosition);
+		float flDistSqr = position.DistToSqr(pHint->m_vecPosition);
 		if (flDistSqr < flMinDistSqr || flDistSqr > flMaxDistSqr)
 		{
 			continue;
 		}
 
-		AI_Waypoint_t *pPath = pLeader->GetPathfinder()->BuildRoute(vecPosition, pHint->m_vecPosition, NULL, 0, NAV_GROUND);
+		AI_Waypoint_t *pPath = pLeader->GetPathfinder()->BuildRoute(position, pHint->m_vecPosition, NULL, 0, NAV_GROUND);
 		if (!pPath)
 		{
 			continue;
 		}
-		pHint->m_flDistance = vecPosition.DistTo(pPath->GetPos());
+		pHint->m_flDistance = position.DistTo(pPath->GetPos());
 		AI_Waypoint_t *pCur = pPath;
 		while (pCur->GetNext())
 		{

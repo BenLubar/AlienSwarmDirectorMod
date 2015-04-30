@@ -45,12 +45,17 @@ public:
 	// recompute the array of positions that squaddies should head towards.
 	void UpdateFollowPositions();
 
+	// find the nearest uncompleted objective
+	void UpdateGoalPosition();
+
 	// should the squaddie positions be recomputed -- assumed this function is called from a marine's Think
 	bool ShouldUpdateFollowPositions() const;
 
 	// follow in tight formation instead of using hints for asw_follow_hint_delay seconds
 	void FollowCommandUsed( unsigned slotnum = INVALID_SQUADDIE );
 	float m_flUseHintsAfter[MAX_SQUAD_SIZE];
+
+	Vector GetLeaderPosition();
 
 	// Current notion of "forward", is updated/cached in calls to GetLdrAnglMatrix
 	inline const Vector &Forward() const;
@@ -65,6 +70,9 @@ public:
 	static int FollowHintSortFunc( HintData_t* const *pHint1, HintData_t* const *pHint2 );
 
 	void DrawDebugGeometryOverlays();
+
+	Vector m_vecObjective;
+	bool m_bInMarker;
 
 protected:
 	CHandle<CASW_Marine> m_hSquad[MAX_SQUAD_SIZE];
