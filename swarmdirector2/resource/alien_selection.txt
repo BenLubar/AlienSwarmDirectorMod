@@ -858,3 +858,948 @@
 		}
 	}
 }
+
+"SpawnSet" {
+	"Name"	"Extermination - Midnight Port"
+	"Map"	"extermination01port"
+	"MinDifficulty"	"1"
+	"MaxDifficulty"	"99"
+	"MinHordeSize"	"10"
+	"MaxHordeSize"	"30"
+	"MinWandererSize"	"2"
+	"MaxWandererSize"	"6"
+
+	"WANDERER" {
+		"SelectionWeight"	"50"
+		"NPC" {
+			"AlienClass"	"asw_drone"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"5"
+		"NPC" {
+			"AlienClass"	"asw_drone_uber"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"10"
+		"NPC" {
+			"AlienClass"	"asw_drone_jumper"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_redgiant"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_drone_summoner"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_carrier"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"20"
+		"NPC" {
+			"AlienClass"	"asw_buzzer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"15"
+		"NPC" {
+			"AlienClass"	"asw_ranger"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_parasite"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_shieldbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"8"
+		"NPC" {
+			"AlienClass"	"asw_boomer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"4"
+		"NPC" {
+			"AlienClass"	"asw_harvester"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"3"
+		"NPC" {
+			"AlienClass"	"asw_mortarbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.75"
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+	}
+}
+
+"SpawnSet" {
+	"Name"	"Extermination - Road to Dawn"
+	"Map"	"extermination02road"
+	"MinDifficulty"	"1"
+	"MaxDifficulty"	"99"
+	"MinHordeSize"	"10"
+	"MaxHordeSize"	"30"
+	"MinWandererSize"	"2"
+	"MaxWandererSize"	"6"
+
+	"WANDERER" {
+		"SelectionWeight"	"50"
+		"NPC" {
+			"AlienClass"	"asw_drone"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"5"
+		"NPC" {
+			"AlienClass"	"asw_drone_uber"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"10"
+		"NPC" {
+			"AlienClass"	"asw_drone_jumper"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_redgiant"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_drone_summoner"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_carrier"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"20"
+		"NPC" {
+			"AlienClass"	"asw_buzzer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"15"
+		"NPC" {
+			"AlienClass"	"asw_ranger"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_parasite"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_shieldbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"8"
+		"NPC" {
+			"AlienClass"	"asw_boomer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"4"
+		"NPC" {
+			"AlienClass"	"asw_harvester"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"3"
+		"NPC" {
+			"AlienClass"	"asw_mortarbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.75"
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+	}
+}
+
+"SpawnSet" {
+	"Name"	"Extermination - Arctic Infiltration"
+	"Map"	"extermination03arctic"
+	"MinDifficulty"	"1"
+	"MaxDifficulty"	"99"
+	"MinHordeSize"	"10"
+	"MaxHordeSize"	"30"
+	"MinWandererSize"	"2"
+	"MaxWandererSize"	"6"
+
+	"WANDERER" {
+		"SelectionWeight"	"50"
+		"NPC" {
+			"AlienClass"	"asw_drone"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"5"
+		"NPC" {
+			"AlienClass"	"asw_drone_uber"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"10"
+		"NPC" {
+			"AlienClass"	"asw_drone_jumper"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_redgiant"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_drone_summoner"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_carrier"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"20"
+		"NPC" {
+			"AlienClass"	"asw_buzzer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"15"
+		"NPC" {
+			"AlienClass"	"asw_ranger"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_parasite"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_shieldbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"8"
+		"NPC" {
+			"AlienClass"	"asw_boomer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"4"
+		"NPC" {
+			"AlienClass"	"asw_harvester"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"3"
+		"NPC" {
+			"AlienClass"	"asw_mortarbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.75"
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+	}
+}
+
+"SpawnSet" {
+	"Name"	"Extermination - Landing Zone"
+	"Map"	"extermination04area9800"
+	"MinDifficulty"	"1"
+	"MaxDifficulty"	"99"
+	"MinHordeSize"	"10"
+	"MaxHordeSize"	"30"
+	"MinWandererSize"	"2"
+	"MaxWandererSize"	"6"
+
+	"WANDERER" {
+		"SelectionWeight"	"50"
+		"NPC" {
+			"AlienClass"	"asw_drone"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"5"
+		"NPC" {
+			"AlienClass"	"asw_drone_uber"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"10"
+		"NPC" {
+			"AlienClass"	"asw_drone_jumper"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_redgiant"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_drone_summoner"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_carrier"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"20"
+		"NPC" {
+			"AlienClass"	"asw_buzzer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"15"
+		"NPC" {
+			"AlienClass"	"asw_ranger"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_parasite"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_shieldbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"8"
+		"NPC" {
+			"AlienClass"	"asw_boomer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"4"
+		"NPC" {
+			"AlienClass"	"asw_harvester"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"3"
+		"NPC" {
+			"AlienClass"	"asw_mortarbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.75"
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+	}
+}
+
+"SpawnSet" {
+	"Name"	"Extermination - Cold Catwalks"
+	"Map"	"extermination05catwalks"
+	"MinDifficulty"	"1"
+	"MaxDifficulty"	"99"
+	"MinHordeSize"	"10"
+	"MaxHordeSize"	"30"
+	"MinWandererSize"	"2"
+	"MaxWandererSize"	"6"
+
+	"WANDERER" {
+		"SelectionWeight"	"50"
+		"NPC" {
+			"AlienClass"	"asw_drone"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"5"
+		"NPC" {
+			"AlienClass"	"asw_drone_uber"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"10"
+		"NPC" {
+			"AlienClass"	"asw_drone_jumper"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_redgiant"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_drone_summoner"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_carrier"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"20"
+		"NPC" {
+			"AlienClass"	"asw_buzzer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"15"
+		"NPC" {
+			"AlienClass"	"asw_ranger"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_parasite"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_shieldbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"8"
+		"NPC" {
+			"AlienClass"	"asw_boomer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"4"
+		"NPC" {
+			"AlienClass"	"asw_harvester"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"3"
+		"NPC" {
+			"AlienClass"	"asw_mortarbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.75"
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+	}
+}
+
+"SpawnSet" {
+	"Name"	"Extermination - Yanaurus Mine"
+	"Map"	"extermination06yanaurus"
+	"MinDifficulty"	"1"
+	"MaxDifficulty"	"99"
+	"MinHordeSize"	"10"
+	"MaxHordeSize"	"30"
+	"MinWandererSize"	"2"
+	"MaxWandererSize"	"6"
+
+	"WANDERER" {
+		"SelectionWeight"	"50"
+		"NPC" {
+			"AlienClass"	"asw_drone"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"5"
+		"NPC" {
+			"AlienClass"	"asw_drone_uber"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"10"
+		"NPC" {
+			"AlienClass"	"asw_drone_jumper"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_redgiant"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_drone_summoner"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_carrier"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"20"
+		"NPC" {
+			"AlienClass"	"asw_buzzer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"15"
+		"NPC" {
+			"AlienClass"	"asw_ranger"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_parasite"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_shieldbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"8"
+		"NPC" {
+			"AlienClass"	"asw_boomer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"4"
+		"NPC" {
+			"AlienClass"	"asw_harvester"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"3"
+		"NPC" {
+			"AlienClass"	"asw_mortarbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.75"
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+	}
+}
+
+"SpawnSet" {
+	"Name"	"Extermination - Forgotten Factory"
+	"Map"	"extermination07factory"
+	"MinDifficulty"	"1"
+	"MaxDifficulty"	"99"
+	"MinHordeSize"	"10"
+	"MaxHordeSize"	"30"
+	"MinWandererSize"	"2"
+	"MaxWandererSize"	"6"
+
+	"WANDERER" {
+		"SelectionWeight"	"50"
+		"NPC" {
+			"AlienClass"	"asw_drone"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"5"
+		"NPC" {
+			"AlienClass"	"asw_drone_uber"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"10"
+		"NPC" {
+			"AlienClass"	"asw_drone_jumper"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_redgiant"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_drone_summoner"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_carrier"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"20"
+		"NPC" {
+			"AlienClass"	"asw_buzzer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"15"
+		"NPC" {
+			"AlienClass"	"asw_ranger"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_parasite"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_shieldbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"8"
+		"NPC" {
+			"AlienClass"	"asw_boomer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"4"
+		"NPC" {
+			"AlienClass"	"asw_harvester"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"3"
+		"NPC" {
+			"AlienClass"	"asw_mortarbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.75"
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+	}
+}
+
+"SpawnSet" {
+	"Name"	"Extermination - Communication Center"
+	"Map"	"extermination08comcenter"
+	"MinDifficulty"	"1"
+	"MaxDifficulty"	"99"
+	"MinHordeSize"	"10"
+	"MaxHordeSize"	"30"
+	"MinWandererSize"	"2"
+	"MaxWandererSize"	"6"
+
+	"WANDERER" {
+		"SelectionWeight"	"50"
+		"NPC" {
+			"AlienClass"	"asw_drone"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"5"
+		"NPC" {
+			"AlienClass"	"asw_drone_uber"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"10"
+		"NPC" {
+			"AlienClass"	"asw_drone_jumper"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_redgiant"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_drone_summoner"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_carrier"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"20"
+		"NPC" {
+			"AlienClass"	"asw_buzzer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"15"
+		"NPC" {
+			"AlienClass"	"asw_ranger"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_parasite"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_shieldbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"8"
+		"NPC" {
+			"AlienClass"	"asw_boomer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"4"
+		"NPC" {
+			"AlienClass"	"asw_harvester"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"3"
+		"NPC" {
+			"AlienClass"	"asw_mortarbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.75"
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+	}
+}
+
+"SpawnSet" {
+	"Name"	"Extermination - Full Treatment (SynTek Hospital)"
+	"Map"	"extermination09hospital"
+	"MinDifficulty"	"1"
+	"MaxDifficulty"	"99"
+	"MinHordeSize"	"10"
+	"MaxHordeSize"	"30"
+	"MinWandererSize"	"2"
+	"MaxWandererSize"	"6"
+
+	"WANDERER" {
+		"SelectionWeight"	"50"
+		"NPC" {
+			"AlienClass"	"asw_drone"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"5"
+		"NPC" {
+			"AlienClass"	"asw_drone_uber"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"10"
+		"NPC" {
+			"AlienClass"	"asw_drone_jumper"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_redgiant"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_drone_summoner"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_carrier"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"20"
+		"NPC" {
+			"AlienClass"	"asw_buzzer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"15"
+		"NPC" {
+			"AlienClass"	"asw_ranger"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_parasite"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_shieldbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"8"
+		"NPC" {
+			"AlienClass"	"asw_boomer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"4"
+		"NPC" {
+			"AlienClass"	"asw_harvester"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"3"
+		"NPC" {
+			"AlienClass"	"asw_mortarbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.75"
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+	}
+}
