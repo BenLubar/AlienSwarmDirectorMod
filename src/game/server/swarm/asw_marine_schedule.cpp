@@ -746,9 +746,7 @@ void CASW_Marine::TaskFail( AI_TaskFailureCode_t code )
 		{
 			if (GetPhysicsPropTarget())
 			{
-				Vector vecOrderPos = GetNavigator()->GetNetwork()->GetNodePosition( this, GetPathfinder()->NearestNodeToNPC() );
-				SetASWOrders( ASW_ORDER_MOVE_TO, -1, &vecOrderPos );
-				SetPhysicsPropTarget( NULL );
+				SetSchedule(SCHED_MELEE_ATTACK_PROP1);
 				return;
 			}
 			CBaseEntity *pEnt = gEntList.FindEntityByClassnameNearest("prop_physics", GetAbsOrigin(), 128);
