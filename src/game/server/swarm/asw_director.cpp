@@ -26,7 +26,9 @@ extern ConVar asw_spawning_enabled;
 extern ConVar asw_horde_override;
 extern ConVar asw_wanderer_override;
 ConVar asw_horde_interval_min("asw_horde_interval_min", "45", FCVAR_CHEAT, "Min time between hordes" );
-ConVar asw_horde_interval_max("asw_horde_interval_max", "65", FCVAR_CHEAT, "Min time between hordes" );
+ConVar asw_horde_interval_max("asw_horde_interval_max", "65", FCVAR_CHEAT, "Min time between hordes");
+ConVar asw_horde_interval_scale("asw_horde_interval_scale", "10", FCVAR_CHEAT, "actual time between hordes = interval * scale / (offset + mission difficulty)");
+ConVar asw_horde_interval_offset("asw_horde_interval_offset", "5", FCVAR_CHEAT, "actual time between hordes = interval * scale / (offset + mission difficulty)");
 
 ConVar asw_director_relaxed_min_time("asw_director_relaxed_min_time", "25", FCVAR_CHEAT, "Min time that director stops spawning aliens");
 ConVar asw_director_relaxed_max_time("asw_director_relaxed_max_time", "40", FCVAR_CHEAT, "Max time that director stops spawning aliens");
@@ -35,6 +37,8 @@ ConVar asw_director_peak_max_time("asw_director_peak_max_time", "3", FCVAR_CHEAT
 ConVar asw_interval_min("asw_interval_min", "1.0f", FCVAR_CHEAT, "Director: Alien spawn interval will never go lower than this");
 ConVar asw_interval_initial_min("asw_interval_initial_min", "5", FCVAR_CHEAT, "Director: Min time between alien spawns when first entering spawning state");
 ConVar asw_interval_initial_max("asw_interval_initial_max", "7", FCVAR_CHEAT, "Director: Max time between alien spawns when first entering spawning state");
+ConVar asw_interval_initial_scale("asw_interval_initial_scale", "10", FCVAR_CHEAT, "actual time until first wanderer = interval * scale / (offset + mission difficulty)");
+ConVar asw_interval_initial_offset("asw_interval_initial_offset", "5", FCVAR_CHEAT, "actual time until first wanderer = interval * scale / (offset + mission difficulty)");
 ConVar asw_interval_change_min("asw_interval_change_min", "0.9", FCVAR_CHEAT, "Director: Min scale applied to alien spawn interval each spawn");
 ConVar asw_interval_change_max("asw_interval_change_max", "0.95", FCVAR_CHEAT, "Director: Max scale applied to alien spawn interval each spawn");
 
@@ -290,8 +294,8 @@ void CASW_Director::UpdateHorde()
 
 	if ( !m_HordeTimer.HasStarted() )
 	{
-		float flDuration = RandomFloat( asw_horde_interval_min.GetFloat(), asw_horde_interval_max.GetFloat() );
-		if ( m_bFinale )
+		float flDuration = RandomFloat( asw_horde_interval_min.GetFloat(), asw_horde_interval_max.GetFloat() ) * asw_horde_interval_scale.GetFloat() / ( asw_horde_interval_offset.GetFloat() + (float) ASWGameRules()->GetMissionDifficulty() );
+		if ( m_bFinale || flDuration < 5.0f || !IsFinite( flDuration ) )
 		{
 			flDuration = RandomFloat( 5.0f, 10.0f );
 		}
@@ -436,13 +440,20 @@ void CASW_Director::UpdateWanderers()
 		if ( m_fTimeBetweenAliens == 0 )
 		{
 			// initial time between alien spawns
-			m_fTimeBetweenAliens = RandomFloat( asw_interval_initial_min.GetFloat(), asw_interval_initial_max.GetFloat() );
+			m_fTimeBetweenAliens = RandomFloat( asw_interval_initial_min.GetFloat(), asw_interval_initial_max.GetFloat() ) * asw_interval_initial_scale.GetFloat() / ( asw_interval_initial_offset.GetFloat() + (float) ASWGameRules()->GetMissionDifficulty() );;
 		}
 		else
 		{
 			// reduce the time by some random amount each interval
-			m_fTimeBetweenAliens = MAX( asw_interval_min.GetFloat(),
-										m_fTimeBetweenAliens * RandomFloat( asw_interval_change_min.GetFloat(), asw_interval_change_max.GetFloat() ) );
+			m_fTimeBetweenAliens = m_fTimeBetweenAliens * RandomFloat( asw_interval_change_min.GetFloat(), asw_interval_change_max.GetFloat() );
+		}
+		if (!IsFinite(m_fTimeBetweenAliens))
+		{
+			m_fTimeBetweenAliens = asw_interval_min.GetFloat();
+		}
+		else
+		{
+			m_fTimeBetweenAliens = MAX(asw_interval_min.GetFloat(), m_fTimeBetweenAliens);
 		}
 
 		bool bSkipWanderers = ASWSpawnManager() && ASWSpawnManager()->GetAwakeAliens() >= 100;
