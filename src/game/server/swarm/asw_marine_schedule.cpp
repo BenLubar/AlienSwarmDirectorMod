@@ -81,6 +81,7 @@
 #include "asw_melee_system.h"
 #include "asw_movedata.h"
 #include "asw_boomer_blob.h"
+#include "asw_weapon_healgrenade_shared.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -1233,22 +1234,39 @@ int CASW_Marine::SelectGiveAmmoSchedule()
 	return -1;
 }
 
-bool CASW_Marine::CanHeal() const
+CASW_Weapon *CASW_Marine::CanHeal() const
 {
 	for ( int iWeapon = 0; iWeapon < ASW_NUM_INVENTORY_SLOTS; iWeapon++ )
 	{
 		CASW_Weapon *pWeapon = GetASWWeapon( iWeapon );
 		if ( pWeapon && pWeapon->Classify() == CLASS_ASW_HEAL_GUN && pWeapon->HasAmmo() )
 		{
-			return true;
+			return pWeapon;
 		}
 	}
 
-	return false;
+	return NULL;
+}
+
+CASW_Weapon *CASW_Marine::CanAOEHeal() const
+{
+	for ( int iWeapon = 0; iWeapon < ASW_NUM_INVENTORY_SLOTS; iWeapon++ )
+	{
+		CASW_Weapon *pWeapon = GetASWWeapon( iWeapon );
+		if ( pWeapon && pWeapon->Classify() == CLASS_ASW_HEALGRENADE && pWeapon->HasAmmo() )
+		{
+			return pWeapon;
+		}
+	}
+
+	return NULL;
 }
 
 #define MARINE_START_HEAL_THRESHOLD 0.65f
 #define MARINE_STOP_HEAL_THRESHOLD 0.85f
+
+// Faith's beacons heal up to 100 and Bastille's up to 90.
+#define HEALGRENADE_CAPACITY 90
 
 int CASW_Marine::SelectHealSchedule()
 {
@@ -1261,30 +1279,49 @@ int CASW_Marine::SelectHealSchedule()
 		}
 	}
 
+	CASW_SquadFormation *pSquad = GetSquadFormation();
+	if (!pSquad)
+		return -1;
+
+	if (CanAOEHeal())
+	{
+		CASW_Marine *pMost = this;
+		int iMost = 0;
+		int iMissingHealth = 0;
+		for (int i = 0; i < CASW_SquadFormation::MAX_SQUAD_SIZE; i++) {
+			CASW_Marine *pSquaddie = pSquad->Squaddie(i);
+			if (pSquaddie && pSquaddie->GetHealth() > 0)
+			{
+				int iMissing = pSquaddie->GetMaxHealth() - pSquaddie->GetHealth();
+				iMissingHealth += iMissing;
+				if (iMissing > iMost)
+				{
+					iMost = iMissing;
+					pMost = pSquaddie;
+				}
+			}
+		}
+
+		if (iMissingHealth / HEALGRENADE_CAPACITY > IHealGrenadeAutoList::AutoList().Count())
+		{
+			m_hHealTarget = pMost;
+			return SCHED_ASW_HEAL_AOE;
+		}
+	}
+
 	if (!CanHeal())
 	{
 		m_hHealTarget = NULL;
 		return -1;
 	}
 
-	CASW_SquadFormation *pSquad = GetSquadFormation();
-	if (!pSquad)
-		return -1;
-
 	// assume there is at most one other medic in the squad.
 	CASW_Marine *pOtherMedic = NULL;
-	if (pSquad->Leader() && pSquad->Leader() != this && pSquad->Leader()->CanHeal())
-	{
-		pOtherMedic = pSquad->Leader();
-	}
-	else
-	{
-		for (int i = 0; i < CASW_SquadFormation::MAX_SQUAD_SIZE; i++) {
-			if (pSquad->Squaddie(i) && pSquad->Squaddie(i) != this && pSquad->Squaddie(i)->CanHeal())
-			{
-				pOtherMedic = pSquad->Squaddie(i);
-				break;
-			}
+	for (int i = 0; i < CASW_SquadFormation::MAX_SQUAD_SIZE; i++) {
+		if (pSquad->Squaddie(i) && pSquad->Squaddie(i) != this && pSquad->Squaddie(i)->CanHeal())
+		{
+			pOtherMedic = pSquad->Squaddie(i);
+			break;
 		}
 	}
 	CASW_Marine *pOtherMedicTarget = NULL;
@@ -1292,11 +1329,6 @@ int CASW_Marine::SelectHealSchedule()
 		pOtherMedicTarget = pOtherMedic->m_hHealTarget;
 
 	// iterate over all squadmates, looking for most needy target for health
-	if (pSquad->Leader() && pSquad->Leader()->GetHealth() < pSquad->Leader()->GetMaxHealth() * MARINE_START_HEAL_THRESHOLD && pOtherMedicTarget != pSquad->Leader())
-	{
-		if (!m_hHealTarget.Get() || m_hHealTarget->GetHealth() > pSquad->Leader()->GetHealth())
-			m_hHealTarget = pSquad->Leader();
-	}
 	for (int i = 0; i < CASW_SquadFormation::MAX_SQUAD_SIZE; i++) {
 		if (pSquad->Squaddie(i) && pSquad->Squaddie(i)->GetHealth() < pSquad->Squaddie(i)->GetMaxHealth() * MARINE_START_HEAL_THRESHOLD && pOtherMedicTarget != pSquad->Squaddie(i))
 		{
@@ -1525,7 +1557,7 @@ static bool AdjustOffhandItemDestination( CASW_Marine *pMarine, CASW_Weapon *pWe
 			return false;
 		}
 
-		CASW_Marine *pLeader = static_cast< CASW_Marine* >( pMarine->GetSquadLeader() );
+		CASW_Marine *pLeader = pMarine->GetSquadLeader();
 		float flDists[2];
 		flDists[0] = routeFwd  ? GetWaypointDistToEnd( pMarine->GetAbsOrigin(), routeFwd ) : FLT_MAX;
 		flDists[1] = routeBack ? GetWaypointDistToEnd( pMarine->GetAbsOrigin(), routeBack ) : FLT_MAX;		
@@ -2320,6 +2352,26 @@ void CASW_Marine::StartTask(const Task_t *pTask)
 		}
 		break;
 
+	case TASK_ASW_SWAP_TO_HEAL_BEACON:
+		{
+			CASW_Weapon *pWeapon = GetActiveASWWeapon();
+			if( !pWeapon || pWeapon->Classify() != CLASS_ASW_HEALGRENADE )
+			{
+				for ( int iWeapon = 0; iWeapon < ASW_NUM_INVENTORY_SLOTS; iWeapon++ )
+				{
+					CASW_Weapon *pWeapon = GetASWWeapon( iWeapon );
+					if ( pWeapon && pWeapon->Classify() == CLASS_ASW_HEALGRENADE && pWeapon->HasAmmo() )
+					{
+						Weapon_Switch( pWeapon );
+						break;
+					}
+				}
+			}
+
+			TaskComplete();
+		}
+		break;
+
 	case TASK_ASW_HEAL_MARINE:
 		{
 			CASW_Weapon *pWeapon = GetActiveASWWeapon();
@@ -2359,6 +2411,11 @@ void CASW_Marine::StartTask(const Task_t *pTask)
 			}
 		}
 		break;
+
+	case TASK_ASW_DROP_HEAL_BEACON:
+		{
+			break;
+		}
 
 	case TASK_ASW_MELEE_SYSTEM:
 		if ( pTask->flTaskData )
@@ -2868,6 +2925,12 @@ void CASW_Marine::RunTask( const Task_t *pTask )
 		}
 		break;
 
+	case TASK_ASW_SWAP_TO_HEAL_BEACON:
+		{
+			// this is done in StartTask
+		}
+		break;
+
 	case TASK_ASW_HEAL_MARINE:
 		{
 			CASW_Weapon *pWeapon = GetActiveASWWeapon();
@@ -2917,6 +2980,17 @@ void CASW_Marine::RunTask( const Task_t *pTask )
 				if ( bHealSucceeded )
 					pHealgun->PrimaryAttack();
 			}		
+		}
+		break;
+
+	case TASK_ASW_DROP_HEAL_BEACON:
+		{
+			CASW_Weapon *pWeapon = GetActiveASWWeapon();
+			if (pWeapon && pWeapon->Classify() == CLASS_ASW_HEALGRENADE && pWeapon->HasAmmo())
+			{
+				pWeapon->PrimaryAttack();
+			}
+			TaskComplete();
 		}
 		break;
 
@@ -3385,6 +3459,8 @@ bool CASW_Marine::CheckAutoWeaponSwitch()
 	// healing has a higher priority than swapping weapons.
 	if (pWeapon && pWeapon->Classify() == CLASS_ASW_HEAL_GUN && IsCurSchedule(SCHED_ASW_HEAL_MARINE))
 		return true;
+	if (pWeapon && pWeapon->Classify() == CLASS_ASW_HEALGRENADE && IsCurSchedule(SCHED_ASW_HEAL_AOE))
+		return true;
 
 	// marine doesn't auto switch weapons the first two times he's hurt
 	m_iHurtWithoutOffensiveWeapon++;
@@ -3718,6 +3794,8 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 	DECLARE_TASK( TASK_ASW_MOVE_TO_HEAL )
 	DECLARE_TASK( TASK_ASW_SWAP_TO_HEAL_GUN )
 	DECLARE_TASK( TASK_ASW_HEAL_MARINE )
+	DECLARE_TASK( TASK_ASW_SWAP_TO_HEAL_BEACON )
+	DECLARE_TASK( TASK_ASW_DROP_HEAL_BEACON )
 	DECLARE_TASK( TASK_ASW_MELEE_SYSTEM )
 
 	DECLARE_ANIMEVENT( AE_MARINE_KICK )
@@ -4360,6 +4438,20 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 		"		TASK_ASW_MOVE_TO_HEAL				0"
 		"		TASK_ASW_SWAP_TO_HEAL_GUN			0"
 		"		TASK_ASW_HEAL_MARINE				0"
+		""
+		"	Interrupts"
+		""
+		);
+
+	DEFINE_SCHEDULE
+		(
+		SCHED_ASW_HEAL_AOE,
+
+		"	Tasks"
+		"		TASK_ASW_GET_PATH_TO_HEAL			0"
+		"		TASK_ASW_MOVE_TO_HEAL				0"
+		"		TASK_ASW_SWAP_TO_HEAL_BEACON			0"
+		"		TASK_ASW_DROP_HEAL_BEACON			0"
 		""
 		"	Interrupts"
 		""

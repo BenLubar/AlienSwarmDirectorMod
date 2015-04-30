@@ -304,6 +304,7 @@ public:
 		SCHED_MELEE_ATTACK_PROP1, // melee a physics prop, typically because it's obstructing
 		SCHED_ENGAGE_AND_MELEE_ATTACK1,
 		SCHED_ASW_HEAL_MARINE,
+		SCHED_ASW_HEAL_AOE,
 
 		SCHED_ASW_ATTACK1_WITH_RIFLE,
 		SCHED_ASW_ATTACK2_WITH_RIFLE,
@@ -357,6 +358,8 @@ public:
 		TASK_ASW_MOVE_TO_HEAL,
 		TASK_ASW_SWAP_TO_HEAL_GUN,
 		TASK_ASW_HEAL_MARINE,
+		TASK_ASW_SWAP_TO_HEAL_BEACON,
+		TASK_ASW_DROP_HEAL_BEACON,
 		TASK_ASW_MELEE_SYSTEM,
 		NEXT_TASK,
 	};
@@ -528,7 +531,8 @@ public:
 	CHandle<CASW_Marine> m_hGiveAmmoTarget;
 
 	CHandle<CASW_Marine> m_hHealTarget;
-	bool CanHeal() const;
+	CASW_Weapon *CanHeal() const;
+	CASW_Weapon *CanAOEHeal() const;
 	int SelectHealSchedule();
 
 	// weapons
