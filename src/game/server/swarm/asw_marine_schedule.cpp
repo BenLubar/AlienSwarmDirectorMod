@@ -417,21 +417,25 @@ int CASW_Marine::SelectSchedule()
 				break;
 			}
 		}
+		CASW_Marine *pCandidate = this;
 		for (int i = 0; i < CASW_SquadFormation::MAX_SQUAD_SIZE; i++)
 		{
 			CASW_Marine *pSquaddie = pFormation->Squaddie(i);
-			if (pSquaddie && pSquaddie->GetMarineProfile()->GetMarineClass() < GetMarineProfile()->GetMarineClass())
+			if (pSquaddie && pSquaddie->GetMarineProfile()->GetMarineClass() < pCandidate->GetMarineProfile()->GetMarineClass())
 			{
-				// officer > special weapons > medic > tech
-				pSquaddie->SetASWOrders(ASW_ORDER_HOLD_POSITION);
-				SetASWOrders(ASW_ORDER_FOLLOW);
-				pFormation->ChangeLeader(pSquaddie, true);
-
-				int iFollowSchedule = SelectFollowSchedule();
-				if (iFollowSchedule != -1)
-					return iFollowSchedule;
-				break;
+				pCandidate = pSquaddie;
 			}
+		}
+		if (pCandidate != this)
+		{
+			// officer > special weapons > medic > tech
+			pCandidate->SetASWOrders(ASW_ORDER_HOLD_POSITION);
+			SetASWOrders(ASW_ORDER_FOLLOW);
+			pFormation->ChangeLeader(pCandidate, true);
+
+			int iFollowSchedule = SelectFollowSchedule();
+			if (iFollowSchedule != -1)
+				return iFollowSchedule;
 		}
 
 		if ( IsInCombat() )
