@@ -89,10 +89,6 @@ void CASW_Weapon_Hornet_Barrage::PrimaryAttack()
 	if ( m_iRocketsToFire.Get() > 0 )
 		return;	
 
-#ifndef CLIENT_DLL
-	bool bThisActive = (pMarine && pMarine->GetActiveWeapon() == this);
-#endif
-
 	// mine weapon is lost when all mines are gone
 	if ( UsesClipsForAmmo1() && !m_iClip1 ) 
 	{
