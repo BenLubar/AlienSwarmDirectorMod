@@ -4,6 +4,8 @@
 #pragma once
 #endif
 
+#include "object_motion_blur_effect.h"
+
 class C_ASW_ClientRagdoll : public C_ClientRagdoll
 {
 
@@ -26,6 +28,8 @@ public:
 	bool m_bElectroShock;
 	const char *pszGibParticleEffect;
 	bool m_bHurled;
+
+	CMotionBlurObject m_MotionBlurObject;
 };
 
 

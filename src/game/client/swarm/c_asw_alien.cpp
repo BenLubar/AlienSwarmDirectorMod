@@ -30,7 +30,7 @@
 
 #define ASW_GIB_ASAP 0.175f
 
-ConVar asw_alien_object_motion_blur_scale( "asw_alien_object_motion_blur_scale", "0.2" );
+ConVar asw_alien_object_motion_blur_scale( "asw_alien_object_motion_blur_scale", "0.0", FCVAR_ARCHIVE );
 ConVar asw_drone_gib_time_min("asw_drone_gib_time_min", "0.2", 0, "Minimum time a Swarm Drone ragdoll will stay around before gibbing");
 ConVar asw_drone_gib_time_max("asw_drone_gib_time_max", "0.2", 0, "Maximum time a Swarm Drone ragdoll will stay around before gibbing");
 ConVar asw_drone_fade_time_min("asw_drone_fade_time_min", "2.0", 0, "Minimum time a Swarm Drone ragdoll will stay around before fading");
@@ -73,7 +73,7 @@ float C_ASW_Alien::sm_flLastFootstepTime = 0.0f;
 
 C_ASW_Alien::C_ASW_Alien() : 
 m_GlowObject( this ),
-m_MotionBlurObject( this, 0.0f )
+m_MotionBlurObject( this, asw_alien_object_motion_blur_scale.GetFloat() )
 {
 	m_bStepSideLeft = false;
 	m_nLastSetModel = 0;

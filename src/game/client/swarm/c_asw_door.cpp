@@ -34,10 +34,13 @@ bool C_ASW_Door::s_bLoadedFullySealedIconTexture = false;
 int  C_ASW_Door::s_nSealedIconTextureID = -1;
 int  C_ASW_Door::s_nFullySealedIconTextureID = -1;
 
+ConVar asw_door_object_motion_blur_scale( "asw_door_object_motion_blur_scale", "0.0", FCVAR_ARCHIVE );
+
 // for mousing over door health
 CUtlVector<C_ASW_Door*>	g_ClientDoorList;
 
-C_ASW_Door::C_ASW_Door()
+C_ASW_Door::C_ASW_Door() :
+m_MotionBlurObject( this, asw_door_object_motion_blur_scale.GetFloat() )
 {
 	m_fLastWeldedTime = 0.0f;
 

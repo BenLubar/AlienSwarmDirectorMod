@@ -69,7 +69,7 @@ ConVar asw_left_hand_ik("asw_left_hand_ik", "0", FCVAR_CHEAT, "IK the marine's l
 ConVar asw_marine_shoulderlight("asw_marine_shoulderlight", "2", 0, "Should marines have a shoulder light effect on them.");
 ConVar asw_hide_local_marine("asw_hide_local_marine", "0", FCVAR_CHEAT, "If enabled, your current marine will be invisible");
 ConVar asw_override_footstep_volume( "asw_override_footstep_volume", "0", FCVAR_CHEAT, "Overrides footstep volume instead of it being surface dependent" );
-ConVar asw_marine_object_motion_blur_scale( "asw_marine_object_motion_blur_scale", "0.0" );
+ConVar asw_marine_object_motion_blur_scale( "asw_marine_object_motion_blur_scale", "0.0", FCVAR_ARCHIVE );
 ConVar asw_damage_spark_rate( "asw_damage_spark_rate", "0.24", FCVAR_CHEAT, "Base number of seconds between spark sounds/effects at critical damage." );
 extern ConVar asw_DebugAutoAim;
 extern float g_fMarinePoisonDuration;

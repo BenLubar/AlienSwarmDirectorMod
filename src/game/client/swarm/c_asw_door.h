@@ -3,6 +3,7 @@
 
 #include "c_props.h"
 #include "asw_shareddefs.h"
+#include "object_motion_blur_effect.h"
 
 class C_ASW_Door : public C_BasePropDoor
 {
@@ -49,6 +50,7 @@ public:
 	Vector m_vecClosedPosition;
 
 	float m_fLastWeldedTime;
+	CMotionBlurObject m_MotionBlurObject;
 
 	// checks the client door list for a door near this position
 	static C_ASW_Door* GetDoorNear(Vector vecSrc);

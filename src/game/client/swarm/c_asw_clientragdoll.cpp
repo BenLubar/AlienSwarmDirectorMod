@@ -16,13 +16,16 @@ BEGIN_DATADESC( C_ASW_ClientRagdoll )
 	DEFINE_FIELD( m_iSourceEntityIndex, FIELD_INTEGER ),
 END_DATADESC()
 
+extern ConVar asw_alien_object_motion_blur_scale;
 ConVar asw_drone_ridiculous( "asw_drone_ridiculous", "0", FCVAR_CHEAT, "If true, hurl drone ragdolls at camera in a ridiculous fashion." );
 ConVar asw_drone_gib_velocity( "asw_drone_gib_velocity", "1.75", FCVAR_CHEAT, "Drone gibs will inherit the velocity of the parent ragdoll scaled by this" );
 extern ConVar asw_breakable_aliens;
 extern ConVar asw_alien_debug_death_style;
 ConVar asw_gore( "asw_gore", "0", FCVAR_NONE );
 
-C_ASW_ClientRagdoll::C_ASW_ClientRagdoll( bool bRestoring ) : BaseClass( bRestoring )
+C_ASW_ClientRagdoll::C_ASW_ClientRagdoll( bool bRestoring ) :
+BaseClass( bRestoring ),
+m_MotionBlurObject(this, asw_alien_object_motion_blur_scale.GetFloat())
 {
 	m_nDeathStyle = 0;
 	m_bElectroShock = false;
@@ -218,7 +221,7 @@ void C_ASW_ClientRagdoll::ClientThink( void )
 		if ( asw_alien_debug_death_style.GetBool() )
 			Msg( "C_ASW_ClientRagdoll::ClientThink: m_nDeathStyle = %d\n",  m_nDeathStyle );
 
-		if ( m_nDeathStyle == kDIE_BREAKABLE && asw_breakable_aliens.GetBool() )
+		if ( m_nDeathStyle == kDIE_BREAKABLE && asw_breakable_aliens.GetBool() && !asw_gore.GetBool() )
 		{
 			BreakRagdoll();
 			return;
@@ -236,7 +239,7 @@ void C_ASW_ClientRagdoll::ClientThink( void )
 		}
 
 		// if we're set to fade, MAKE IT SO
-		if ( m_nDeathStyle == kDIE_RAGDOLLFADE )
+		if ( m_nDeathStyle == kDIE_RAGDOLLFADE && !asw_gore.GetBool() )
 		{
 			// this tells the ragdoll to fade out.
 			SUB_Remove();
