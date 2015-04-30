@@ -2044,12 +2044,12 @@ void CASW_Player::SwitchMarine(int num)
 					}
 
 					CASW_SquadFormation *pSquad = pNewMarine->GetSquadFormation();
-					if (pSquad && (!pSquad->Leader() || asw_marine_allow_lead.GetBool() || !pSquad->Leader()->IsInhabited()))
+					if (pSquad && (!pSquad->Leader() || (!asw_marine_allow_lead.GetBool() && !pSquad->Leader()->IsInhabited())))
 					{
 						pSquad->ChangeLeader( pNewMarine, false );
 					}
 
-					if ( pOldMarine )
+					if ( pOldMarine && !asw_marine_allow_lead.GetBool() )
 					{
 						if ( pOldMarine->GetASWOrders() == ASW_ORDER_HOLD_POSITION )
 						{
