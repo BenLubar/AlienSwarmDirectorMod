@@ -2047,12 +2047,12 @@ int CASW_Marine::SelectFollowSchedule()
 	}
 
 	// check if we're too near another marine
-	/*CASW_Marine *pCloseMarine = TooCloseToAnotherMarine();
+	CASW_Marine *pCloseMarine = TooCloseToAnotherMarine();
 	if (pCloseMarine)
 	{
 		//Msg("marine is too close to %d\n", pCloseMarine->entindex());
 		return SCHED_ASW_FOLLOW_BACK_OFF;
-	}*/
+	}
 
 	if (GetSquadLeader() == NULL || GetSquadLeader() == this)
 	{
@@ -2063,7 +2063,7 @@ int CASW_Marine::SelectFollowSchedule()
 }
 
 #define ASW_MARINE_TOO_CLOSE 60
-CASW_Marine* CASW_Marine::TooCloseToAnotherMarine()
+CASW_Marine *CASW_Marine::TooCloseToAnotherMarine()
 {
 	if ( !ASWGameResource() )
 		return NULL;

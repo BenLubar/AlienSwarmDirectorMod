@@ -7,6 +7,9 @@
 
 #include "cbase.h"
 #include "asw_marine_hint.h"
+#include "asw_marine.h"
+#include "ai_pathfinder.h"
+#include "ai_waypoint.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -80,20 +83,45 @@ void CASW_Marine_Hint_Manager::Reset()
 	m_LastResortHints.PurgeAndDeleteElements();
 }
 
-int CASW_Marine_Hint_Manager::FindHints( const Vector &position, const float flMinDistance, const float flMaxDistance, CUtlVector<HintData_t *> *pResult )
+int CASW_Marine_Hint_Manager::FindHints(CASW_Marine *pLeader, const float flMinDistance, const float flMaxDistance, CUtlVector<HintData_t *> &result)
 {
+	Assert(pLeader);
+	const Vector &vecPosition = pLeader->GetAbsOrigin();
 	const float flMinDistSqr = 0; // we want the leader to be able to use their current hint.
 	const float flMaxDistSqr = flMaxDistance * flMaxDistance;
 	int nCount = m_Hints.Count();
 	for ( int i = 0; i < nCount; i++ )
 	{
-		float flDistSqr = position.DistToSqr( m_Hints[ i ]->m_vecPosition );
-		if ( flDistSqr < flMinDistSqr || flDistSqr > flMaxDistSqr )
+		HintData_t *pHint = m_Hints[i];
+		float flDistSqr = vecPosition.DistToSqr(pHint->m_vecPosition);
+		if (flDistSqr < flMinDistSqr || flDistSqr > flMaxDistSqr)
+		{
 			continue;
+		}
 
-		pResult->AddToTail( m_Hints[ i ] );
+		AI_Waypoint_t *pPath = pLeader->GetPathfinder()->BuildRoute(vecPosition, pHint->m_vecPosition, NULL, 0, NAV_GROUND);
+		if (!pPath)
+		{
+			continue;
+		}
+		pHint->m_flDistance = vecPosition.DistTo(pPath->GetPos());
+		AI_Waypoint_t *pCur = pPath;
+		while (pCur->GetNext())
+		{
+			AI_Waypoint_t *pNext = pCur->GetNext();
+			pHint->m_flDistance += pCur->GetPos().DistTo(pNext->GetPos());
+			pCur = pNext;
+		}
+		DeleteAll(pPath);
+
+		if (pHint->m_flDistance > flMaxDistance)
+		{
+			continue;
+		}
+
+		result.AddToTail( pHint );
 	}
-	return pResult->Count();
+	return result.Count();
 }
 
 void CASW_Marine_Hint_Manager::AddHint( CBaseEntity *pEnt, bool bLastResort )

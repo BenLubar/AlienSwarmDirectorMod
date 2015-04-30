@@ -501,13 +501,17 @@ void CASW_SquadFormation::Reset()
 //-----------------------------------------------------------------------------
 // Purpose: Sorts AI nodes by proximity to leader
 //-----------------------------------------------------------------------------
-Vector g_vecSortLeader;
 int CASW_SquadFormation::FollowHintSortFunc( HintData_t* const *pHint1, HintData_t* const *pHint2 )
 {
-	int nDist1 = (int) (*pHint1)->GetAbsOrigin().DistToSqr( g_vecSortLeader );
-	int nDist2 = (int) (*pHint2)->GetAbsOrigin().DistToSqr( g_vecSortLeader );
+	float flDist1 = (*pHint1)->m_flDistance;
+	float flDist2 = (*pHint2)->m_flDistance;
 
-	return ( nDist1 - nDist2 );
+	if (flDist1 == flDist2)
+	{
+		return 0;
+	}
+
+	return flDist1 > flDist2 ? 1 : -1;
 }
 
 //-----------------------------------------------------------------------------
@@ -563,7 +567,7 @@ void CASW_SquadFormation::FindFollowHintNodes()
 
 		// find a new node
 		CUtlVector< HintData_t* > hints;
-		MarineHintManager()->FindHints(pLeader->GetAbsOrigin(), asw_follow_hint_min_range.GetFloat(), asw_follow_hint_max_range.GetFloat(), &hints);
+		MarineHintManager()->FindHints(pLeader, asw_follow_hint_min_range.GetFloat(), asw_follow_hint_max_range.GetFloat(), hints);
 		int nCount = hints.Count();
 
 		float flMovementYaw = pLeader->GetOverallMovementDirection();
@@ -670,7 +674,6 @@ void CASW_SquadFormation::FindFollowHintNodes()
 			}
 		}
 
-		g_vecSortLeader = pLeader->GetAbsOrigin();
 		hints.Sort( CASW_SquadFormation::FollowHintSortFunc );
 
 		// if this marine is close to a shield bug, grab a flanking node

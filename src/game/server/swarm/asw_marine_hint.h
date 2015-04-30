@@ -14,6 +14,8 @@
 #include "igamesystem.h"
 #include "ai_initutils.h"
 
+class CASW_Marine;
+
 class CASW_Marine_Hint_Ent : public CServerOnlyEntity
 {
 	DECLARE_CLASS( CASW_Marine_Hint_Ent, CServerOnlyEntity );
@@ -42,6 +44,7 @@ public:
 	Vector m_vecPosition;
 	float m_flYaw;
 	int m_nHintIndex;
+	float m_flDistance;
 };
 
 //-----------------------------------------------------------------------------
@@ -59,7 +62,7 @@ public:
 	virtual void LevelShutdownPostEntity();	
 
 	void AddHint( CBaseEntity *pEnt, bool bLastResort = false );
-	int FindHints( const Vector &position, const float flMinDistance, const float flMaxDistance, CUtlVector<HintData_t *> *pResult );
+	int FindHints( CASW_Marine *pLeader, const float flMinDistance, const float flMaxDistance, CUtlVector<HintData_t *> &Result );
 	
 	int GetHintCount() { return m_Hints.Count(); }
 	const Vector& GetHintPosition( int nHint ) { return m_Hints[ nHint ]->m_vecPosition; }
