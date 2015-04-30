@@ -2118,3 +2118,528 @@
 		}
 	}
 }
+
+"SpawnSet" {
+	"Name"	"Lana's Escape - Lana's Bridge"
+	"Map"	"as_sci1_bridge"
+	"MinDifficulty"	"1"
+	"MaxDifficulty"	"99"
+	"MinHordeSize"	"10"
+	"MaxHordeSize"	"30"
+	"MinWandererSize"	"2"
+	"MaxWandererSize"	"6"
+
+	"WANDERER" {
+		"SelectionWeight"	"50"
+		"NPC" {
+			"AlienClass"	"asw_drone"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"5"
+		"NPC" {
+			"AlienClass"	"asw_drone_uber"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"10"
+		"NPC" {
+			"AlienClass"	"asw_drone_jumper"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_redgiant"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_drone_summoner"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_carrier"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"20"
+		"NPC" {
+			"AlienClass"	"asw_buzzer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"15"
+		"NPC" {
+			"AlienClass"	"asw_ranger"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_parasite"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_shieldbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"8"
+		"NPC" {
+			"AlienClass"	"asw_boomer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"4"
+		"NPC" {
+			"AlienClass"	"asw_harvester"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"3"
+		"NPC" {
+			"AlienClass"	"asw_mortarbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.75"
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+	}
+}
+
+"SpawnSet" {
+	"Name"	"Lana's Escape - Lana's Sewer"
+	"Map"	"as_sci2_sewer"
+	"MinDifficulty"	"1"
+	"MaxDifficulty"	"99"
+	"MinHordeSize"	"10"
+	"MaxHordeSize"	"30"
+	"MinWandererSize"	"2"
+	"MaxWandererSize"	"6"
+
+	"WANDERER" {
+		"SelectionWeight"	"50"
+		"NPC" {
+			"AlienClass"	"asw_drone"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"5"
+		"NPC" {
+			"AlienClass"	"asw_drone_uber"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"10"
+		"NPC" {
+			"AlienClass"	"asw_drone_jumper"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_redgiant"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_drone_summoner"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_carrier"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"20"
+		"NPC" {
+			"AlienClass"	"asw_buzzer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"15"
+		"NPC" {
+			"AlienClass"	"asw_ranger"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_parasite"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_shieldbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"8"
+		"NPC" {
+			"AlienClass"	"asw_boomer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"4"
+		"NPC" {
+			"AlienClass"	"asw_harvester"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"3"
+		"NPC" {
+			"AlienClass"	"asw_mortarbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.75"
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+	}
+}
+
+"SpawnSet" {
+	"Name"	"Lana's Escape - Lana's Maintenance"
+	"Map"	"as_sci3_maintenance"
+	"MinDifficulty"	"1"
+	"MaxDifficulty"	"99"
+	"MinHordeSize"	"10"
+	"MaxHordeSize"	"30"
+	"MinWandererSize"	"2"
+	"MaxWandererSize"	"6"
+
+	"WANDERER" {
+		"SelectionWeight"	"50"
+		"NPC" {
+			"AlienClass"	"asw_drone"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"5"
+		"NPC" {
+			"AlienClass"	"asw_drone_uber"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"10"
+		"NPC" {
+			"AlienClass"	"asw_drone_jumper"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_redgiant"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_drone_summoner"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_carrier"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"20"
+		"NPC" {
+			"AlienClass"	"asw_buzzer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"15"
+		"NPC" {
+			"AlienClass"	"asw_ranger"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_parasite"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_shieldbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"8"
+		"NPC" {
+			"AlienClass"	"asw_boomer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"4"
+		"NPC" {
+			"AlienClass"	"asw_harvester"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"3"
+		"NPC" {
+			"AlienClass"	"asw_mortarbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.75"
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+	}
+}
+
+"SpawnSet" {
+	"Name"	"Lana's Escape - Lana's Vents"
+	"Map"	"as_sci4_vent"
+	"MinDifficulty"	"1"
+	"MaxDifficulty"	"99"
+	"MinHordeSize"	"10"
+	"MaxHordeSize"	"30"
+	"MinWandererSize"	"2"
+	"MaxWandererSize"	"6"
+
+	"WANDERER" {
+		"SelectionWeight"	"50"
+		"NPC" {
+			"AlienClass"	"asw_drone"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"5"
+		"NPC" {
+			"AlienClass"	"asw_drone_uber"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"10"
+		"NPC" {
+			"AlienClass"	"asw_drone_jumper"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_redgiant"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_drone_summoner"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_carrier"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"20"
+		"NPC" {
+			"AlienClass"	"asw_buzzer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"15"
+		"NPC" {
+			"AlienClass"	"asw_ranger"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_parasite"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_shieldbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"8"
+		"NPC" {
+			"AlienClass"	"asw_boomer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"4"
+		"NPC" {
+			"AlienClass"	"asw_harvester"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"3"
+		"NPC" {
+			"AlienClass"	"asw_mortarbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.75"
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+	}
+}
+
+"SpawnSet" {
+	"Name"	"Lana's Escape - Lana's Complex"
+	"Map"	"as_sci5_complex"
+	"MinDifficulty"	"1"
+	"MaxDifficulty"	"99"
+	"MinHordeSize"	"10"
+	"MaxHordeSize"	"30"
+	"MinWandererSize"	"2"
+	"MaxWandererSize"	"6"
+
+	"WANDERER" {
+		"SelectionWeight"	"50"
+		"NPC" {
+			"AlienClass"	"asw_drone"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"5"
+		"NPC" {
+			"AlienClass"	"asw_drone_uber"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"10"
+		"NPC" {
+			"AlienClass"	"asw_drone_jumper"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_redgiant"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_drone_summoner"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.5"
+		"NPC" {
+			"AlienClass"	"asw_drone_carrier"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"20"
+		"NPC" {
+			"AlienClass"	"asw_buzzer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"15"
+		"NPC" {
+			"AlienClass"	"asw_ranger"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_parasite"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"1"
+		"NPC" {
+			"AlienClass"	"asw_shieldbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"8"
+		"NPC" {
+			"AlienClass"	"asw_boomer"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"4"
+		"NPC" {
+			"AlienClass"	"asw_harvester"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"3"
+		"NPC" {
+			"AlienClass"	"asw_mortarbug"
+		}
+	}
+	"WANDERER" {
+		"SelectionWeight"	"0.75"
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+		"NPC" {
+			"AlienClass"	"asw_shaman"
+		}
+	}
+}
