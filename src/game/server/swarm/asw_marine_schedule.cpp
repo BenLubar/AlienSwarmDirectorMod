@@ -1774,7 +1774,7 @@ int CASW_Marine::FindThrowNode( const Vector &vThreatPos, float flMinThreatDist,
 bool CASW_Marine::NeedToUpdateSquad()
 {
 	// basically, if I am a leader and I've moved, an update is needed.
-	return ( GetSquadLeader() == this && ( GetSquadFormation()->ShouldUpdateFollowPositions() || m_hUsingEntity.Get() ) );
+	return ( GetSquadLeader() == this && GetSquadFormation()->ShouldUpdateFollowPositions() );
 }
 
 bool CASW_Marine::NeedToFollowMove(bool bLeader)

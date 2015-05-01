@@ -257,7 +257,8 @@ float GetClosestBoomerBlobDistSqr( const Vector &vecNode, const Vector &vecFrom 
 
 void CASW_SquadFormation::UpdateFollowPositions()
 {
-	VPROF("CASW_SquadFormation::UpdateFollowPositions");
+	VPROF_BUDGET("CASW_SquadFormation::UpdateFollowPositions", "SquadFormation");
+
 	CASW_Marine * RESTRICT pLeader = Leader();
 	if ( !pLeader )
 	{
@@ -542,9 +543,16 @@ int CASW_SquadFormation::FollowHintSortFunc( HintData_t* const *pHint1, HintData
 //-----------------------------------------------------------------------------
 void CASW_SquadFormation::FindFollowHintNodes()
 {
+	VPROF_BUDGET("CASW_SquadFormation::FindFollowHintNodes", "SquadFormation");
+
 	CASW_Marine *pLeader = Leader();
 	if ( !pLeader )
 		return;
+
+	Vector vecLeader = GetLeaderPosition();
+
+	CUtlVector<HintData_t *> hints;
+	int nCount = -1;
 
 	// evaluate each squaddie individually to see if his node should be updated
 	for ( unsigned slotnum = 0; slotnum < MAX_SQUAD_SIZE; slotnum++ )
@@ -556,7 +564,7 @@ void CASW_SquadFormation::FindFollowHintNodes()
 			continue;
 		}
 
-		bool bNeedNewNode = ( m_vFollowPositions[slotnum].DistToSqr( pMarine->GetAbsOrigin() ) > Square( asw_follow_hint_min_range.GetFloat() ) ) || ( m_vFollowPositions[slotnum].DistToSqr( m_vFollowPositions[SQUAD_LEADER] ) > Square( asw_follow_hint_max_range.GetFloat() ) ) || !pMarine->FVisible( pLeader ) || m_nMarineHintIndex[slotnum] == INVALID_HINT_INDEX;
+		bool bNeedNewNode = ( m_vFollowPositions[slotnum].DistToSqr( pMarine->GetAbsOrigin() ) > Square( asw_follow_hint_min_range.GetFloat() ) ) || ( m_vFollowPositions[slotnum].DistToSqr( vecLeader ) > Square( asw_follow_hint_max_range.GetFloat() ) ) || !pMarine->FVisible( pLeader ) || m_nMarineHintIndex[slotnum] == INVALID_HINT_INDEX;
 		if ( slotnum != SQUAD_LEADER && !bNeedNewNode )
 			bNeedNewNode = ( m_vFollowPositions[slotnum].DistToSqr( m_vFollowPositions[SQUAD_LEADER] ) < Square( asw_follow_hint_min_range.GetFloat() ) );
 
@@ -588,12 +596,12 @@ void CASW_SquadFormation::FindFollowHintNodes()
 		// clear out the old hint so we don't get stuck if there are no good hints
 		m_nMarineHintIndex[slotnum] = INVALID_HINT_INDEX;
 
-		Vector vecLeader = GetLeaderPosition();
-
 		// find a new node
-		CUtlVector< HintData_t* > hints;
-		MarineHintManager()->FindHints(vecLeader, pLeader, asw_follow_hint_min_range.GetFloat(), asw_follow_hint_max_range.GetFloat(), hints);
-		int nCount = hints.Count();
+		if (nCount == -1)
+		{
+			MarineHintManager()->FindHints(vecLeader, pLeader, asw_follow_hint_min_range.GetFloat(), asw_follow_hint_max_range.GetFloat(), hints);
+			nCount = hints.Count();
+		}
 
 		float flMovementYaw = pLeader->GetOverallMovementDirection();
 
@@ -933,8 +941,7 @@ Vector CASW_SquadFormation::GetLeaderPosition()
 
 bool CASW_SquadFormation::ShouldUpdateFollowPositions() const
 {
-	// we haven't updated in a quarter second.
-	return Leader() && gpGlobals->curtime > m_flLastSquadUpdateTime + 0.25f;
+	return Leader() && gpGlobals->curtime > m_flLastSquadUpdateTime + 1;
 }
 
 void CASW_SquadFormation::DrawDebugGeometryOverlays()

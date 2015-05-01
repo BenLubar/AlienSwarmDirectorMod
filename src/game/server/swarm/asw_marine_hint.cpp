@@ -85,6 +85,7 @@ void CASW_Marine_Hint_Manager::Reset()
 
 int CASW_Marine_Hint_Manager::FindHints(const Vector &position, CASW_Marine *pLeader, const float flMinDistance, const float flMaxDistance, CUtlVector<HintData_t *> &result)
 {
+	VPROF_BUDGET("CASW_Marine_Hint_Manager::FindHints", "SquadFormation");
 	Assert(pLeader);
 	const float flMinDistSqr = 0; // we want the leader to be able to use their current hint.
 	const float flMaxDistSqr = flMaxDistance * flMaxDistance;
