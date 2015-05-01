@@ -77,10 +77,8 @@ public:
 
 	void DebugInfo();
 
-	KeyValues *m_CampaignKeyValues;
-
 	bool IsJacobCampaign();
-	char m_szCampaignFilename[64];
+	string_t m_iszCampaignFilename;
 };
 
 #endif // _INCLUDED_ASW_CAMPAIGN_INFO_H
