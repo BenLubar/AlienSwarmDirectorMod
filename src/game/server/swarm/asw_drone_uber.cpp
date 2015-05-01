@@ -26,6 +26,8 @@ CASW_Drone_Uber::~CASW_Drone_Uber()
 }
 
 LINK_ENTITY_TO_CLASS( asw_drone_uber, CASW_Drone_Uber );
+LINK_ENTITY_TO_CLASS( asw_drone_redgiant, CASW_Drone_Uber );
+LINK_ENTITY_TO_CLASS( asw_drone_summoner, CASW_Drone_Uber );
 
 BEGIN_DATADESC( CASW_Drone_Uber )
 

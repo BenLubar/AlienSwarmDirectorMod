@@ -152,10 +152,8 @@ CASW_Drone_Advanced::~CASW_Drone_Advanced()
 
 LINK_ENTITY_TO_CLASS( asw_drone, CASW_Drone_Advanced );
 LINK_ENTITY_TO_CLASS( asw_drone_jumper, CASW_Drone_Advanced );
-LINK_ENTITY_TO_CLASS( asw_drone_redgiant, CASW_Drone_Advanced );
 LINK_ENTITY_TO_CLASS( asw_drone_ghost, CASW_Drone_Advanced );
 LINK_ENTITY_TO_CLASS( asw_drone_carrier, CASW_Drone_Advanced );
-LINK_ENTITY_TO_CLASS( asw_drone_summoner, CASW_Drone_Advanced );
 
 BEGIN_DATADESC( CASW_Drone_Advanced )
 	DEFINE_FIELD( m_hBlockingDoor, FIELD_EHANDLE ),
@@ -243,12 +241,13 @@ void CASW_Drone_Advanced::Spawn( void )
 		}
 		else if (ClassMatches("asw_drone_carrier"))
 		{
+			SetRenderColor(250, 103, 5);
 			CASW_Prop_Dynamic* pParasite = assert_cast<CASW_Prop_Dynamic *>(CreateEntityByName("prop_dynamic"));
 			if (pParasite)
 			{
 				pParasite->KeyValue("DefaultAnim", "idle");
 				pParasite->SetModel("models/aliens/parasite/parasite.mdl");
-				pParasite->Spawn();
+				DispatchSpawn(pParasite);
 				pParasite->SetSolid(SOLID_NONE);
 				pParasite->SetCollisionGroup(COLLISION_GROUP_DEBRIS);
 				pParasite->SetParent(this, LookupAttachment("blood_spray"));
@@ -256,7 +255,6 @@ void CASW_Drone_Advanced::Spawn( void )
 				pParasite->SetLocalOrigin(vec3_origin);
 				m_hMutationHelper = pParasite;
 			}
-			SetRenderColor(250, 103, 5);
 		}
 		else if (ClassMatches("asw_drone_summoner"))
 		{
@@ -264,10 +262,11 @@ void CASW_Drone_Advanced::Spawn( void )
 			CASW_Dynamic_Light* pGlow = assert_cast<CASW_Dynamic_Light *>(CreateEntityByName("asw_dynamic_light"));
 			if (pGlow)
 			{
-				pGlow->Spawn();
+				DispatchSpawn(pGlow);
 				pGlow->SetParent(this, LookupAttachment("eyes"));
+				pGlow->SetLocalOrigin(vec3_origin);
 				pGlow->SetLightRadius(256.0f);
-				pGlow->SetExponent(3);
+				pGlow->SetExponent(5);
 				pGlow->SetRenderColor(255, 255, 255);
 				m_hMutationHelper = pGlow;
 			}
@@ -1368,7 +1367,7 @@ void CASW_Drone_Advanced::Event_Killed( const CTakeDamageInfo &info )
 			CASW_Parasite *pParasite = assert_cast<CASW_Parasite *>(CreateEntityByName("asw_parasite"));
 			if (pParasite)
 			{
-				pParasite->Spawn();
+				DispatchSpawn(pParasite);
 				pParasite->SetAbsOrigin(pMutationHelper->GetAbsOrigin());
 				pParasite->SetAbsAngles(pMutationHelper->GetAbsAngles());
 				pParasite->JumpAttack(true);
@@ -2448,9 +2447,13 @@ bool CASW_Drone_Advanced::ShouldClearOrdersOnMovementComplete()
 
 void CASW_Drone_Advanced::RescaleCustomSettings()
 {
-	if (ClassMatches("asw_drone_redgiant"))
+	if (ClassMatches("asw_drone_uber"))
 	{
-		m_flSizeScale *= 1.3f;
+		m_flSizeScale *= 1.5f;
+	}
+	else if (ClassMatches("asw_drone_redgiant"))
+	{
+		m_flSizeScale *= 1.5f;
 		m_flSpeedScale *= 1.3f;
 		m_flHealthScale *= asw_skill.GetInt() * 2.5f + 2.5f;
 	}
