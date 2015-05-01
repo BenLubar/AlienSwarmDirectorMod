@@ -2,6 +2,7 @@ Suggested Campaigns
 ===================
 
 - [Area 9800](http://www.area9800.com/downloads/), 2 missions
+- [City 17](https://sites.google.com/site/ascity17/), 5 missions
 - [Dead City](http://www.moddb.com/games/alien-swarm/addons/dead-city-v-12), 3 missions
 - [Extermination](http://www.moddb.com/games/alien-swarm/addons/extermination-campaign2), 9 missions
 - [Lana's Escape](http://www.gamewatcher.com/mods/alien-swarm-mod/lana-s-escape-v1-00), 5 missions
