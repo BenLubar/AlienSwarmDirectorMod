@@ -7,6 +7,13 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
+static CStringPool s_CampaignStringPool(StringPoolCaseSensitive);
+
+static string_t AllocCampaignString(const char *pszString)
+{
+	return MAKE_STRING(s_CampaignStringPool.Allocate(pszString));
+}
+
 CASW_Campaign_Info::CASW_Campaign_Info()
 {
 	m_iNumMissions = 0;
@@ -65,15 +72,15 @@ bool CASW_Campaign_Info::LoadCampaign(const char *szCampaignName)
 		return false;
 	}
 
-	m_iszCampaignFilename = AllocPooledString(szCampaignName);
-	m_CampaignName = AllocPooledString(m_CampaignKeyValues->GetString("CampaignName"));
-	m_IntroMap = AllocPooledString(m_CampaignKeyValues->GetString("IntroMap"));
-	m_OutroMap = AllocPooledString(m_CampaignKeyValues->GetString("OutroMap"));
-	m_CampaignTextureName = AllocPooledString(m_CampaignKeyValues->GetString("CampaignTextureName"));
-	m_CampaignTextureLayer1 = AllocPooledString(m_CampaignKeyValues->GetString("CampaignTextureLayer1"));
-	m_CampaignTextureLayer2 = AllocPooledString(m_CampaignKeyValues->GetString("CampaignTextureLayer2"));
-	m_CampaignTextureLayer3 = AllocPooledString(m_CampaignKeyValues->GetString("CampaignTextureLayer3"));
-	m_CustomCreditsFile = AllocPooledString(m_CampaignKeyValues->GetString("CustomCreditsFile", "scripts/asw_credits"));
+	m_iszCampaignFilename = AllocCampaignString(szCampaignName);
+	m_CampaignName = AllocCampaignString(m_CampaignKeyValues->GetString("CampaignName"));
+	m_IntroMap = AllocCampaignString(m_CampaignKeyValues->GetString("IntroMap"));
+	m_OutroMap = AllocCampaignString(m_CampaignKeyValues->GetString("OutroMap"));
+	m_CampaignTextureName = AllocCampaignString(m_CampaignKeyValues->GetString("CampaignTextureName"));
+	m_CampaignTextureLayer1 = AllocCampaignString(m_CampaignKeyValues->GetString("CampaignTextureLayer1"));
+	m_CampaignTextureLayer2 = AllocCampaignString(m_CampaignKeyValues->GetString("CampaignTextureLayer2"));
+	m_CampaignTextureLayer3 = AllocCampaignString(m_CampaignKeyValues->GetString("CampaignTextureLayer3"));
+	m_CustomCreditsFile = AllocCampaignString(m_CampaignKeyValues->GetString("CustomCreditsFile", "scripts/asw_credits"));
 	m_iGalaxyX = m_CampaignKeyValues->GetInt("GalaxyX");
 	m_iGalaxyY = m_CampaignKeyValues->GetInt("GalaxyY");
 	m_iSearchLightX[0] = m_CampaignKeyValues->GetInt("Searchlight1X");
@@ -99,15 +106,15 @@ bool CASW_Campaign_Info::LoadCampaign(const char *szCampaignName)
 			m_pMission[m_iNumMissions] = new CASW_Campaign_Mission_t;
 
 			m_pMission[m_iNumMissions]->m_iMissionIndex = m_iNumMissions;
-			m_pMission[m_iNumMissions]->m_MissionName = AllocPooledString(pkvMission->GetString("MissionName", "Unknown Mission"));
-			m_pMission[m_iNumMissions]->m_MapName = AllocPooledString(pkvMission->GetString("MapName"));
+			m_pMission[m_iNumMissions]->m_MissionName = AllocCampaignString(pkvMission->GetString("MissionName", "Unknown Mission"));
+			m_pMission[m_iNumMissions]->m_MapName = AllocCampaignString(pkvMission->GetString("MapName"));
 			m_pMission[m_iNumMissions]->m_iLocationX = pkvMission->GetInt("LocationX");
 			m_pMission[m_iNumMissions]->m_iLocationY = pkvMission->GetInt("LocationY");
 			m_pMission[m_iNumMissions]->m_iDifficultyMod = pkvMission->GetInt("DifficultyModifier");
-			m_pMission[m_iNumMissions]->m_LinksString = AllocPooledString(pkvMission->GetString("Links"));
-			m_pMission[m_iNumMissions]->m_LocationDescription = AllocPooledString(pkvMission->GetString("LocationDescription"));
-			m_pMission[m_iNumMissions]->m_ThreatString = AllocPooledString(pkvMission->GetString("ThreatString"));
-			m_pMission[m_iNumMissions]->m_Briefing = AllocPooledString(pkvMission->GetString("ShortBriefing"));
+			m_pMission[m_iNumMissions]->m_LinksString = AllocCampaignString(pkvMission->GetString("Links"));
+			m_pMission[m_iNumMissions]->m_LocationDescription = AllocCampaignString(pkvMission->GetString("LocationDescription"));
+			m_pMission[m_iNumMissions]->m_ThreatString = AllocCampaignString(pkvMission->GetString("ThreatString"));
+			m_pMission[m_iNumMissions]->m_Briefing = AllocCampaignString(pkvMission->GetString("ShortBriefing"));
 			m_pMission[m_iNumMissions]->m_bAlwaysVisible = pkvMission->GetBool("AlwaysVisible");
 			m_pMission[m_iNumMissions]->m_bNeedsMoreThanOneMarine = pkvMission->GetBool("NeedsMoreThanOneMarine", false);
 			m_pMission[m_iNumMissions]->m_bRandomlyGenerated = pkvMission->GetBool("RandomlyGenerated", false);
@@ -156,22 +163,22 @@ bool CASW_Campaign_Info::LoadCampaign(const char *szCampaignName)
 	else if (!V_stricmp(szCampaignName, "tarnorcampaign1"))
 	{
 		// Tears for Tarnor uses the example campaign credits filename.
-		m_CustomCreditsFile = AllocPooledString("resource/tarnor_credits");
+		m_CustomCreditsFile = AllocCampaignString("resource/tarnor_credits");
 	}
 	else if (!V_stricmp(szCampaignName, "operationcleansweep"))
 	{
 		// Operation Cleansweep uses the example campaign credits filename.
-		m_CustomCreditsFile = AllocPooledString("resource/operationcleansweepcredits");
+		m_CustomCreditsFile = AllocCampaignString("resource/operationcleansweepcredits");
 	}
 	else if (!V_stricmp(szCampaignName, "royalharvest"))
 	{
 		// Royal Harvest uses the example campaign credits filename.
-		m_CustomCreditsFile = AllocPooledString("resource/royalharvest_credits");
+		m_CustomCreditsFile = AllocCampaignString("resource/royalharvest_credits");
 	}
 	else if (!V_stricmp(szCampaignName, "zoidbergcampaign"))
 	{
 		// Zoidberg Reactor uses the example campaign credits filename.
-		m_CustomCreditsFile = AllocPooledString("resource/zoidberg_credits");
+		m_CustomCreditsFile = AllocCampaignString("resource/zoidberg_credits");
 	}
 
 	return true;
