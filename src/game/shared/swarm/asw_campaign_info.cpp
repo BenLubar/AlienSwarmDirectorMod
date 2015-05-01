@@ -51,10 +51,6 @@ void CASW_Campaign_Info::ClearCampaign()
 		m_pMission[i] = NULL;
 	}
 	m_iNumMissions = 0;
-	m_CampaignName = NULL_STRING;
-	m_CampaignTextureName = NULL_STRING;
-	m_IntroMap = NULL_STRING;
-	m_OutroMap = NULL_STRING;
 }
 
 bool CASW_Campaign_Info::LoadCampaign(const char *szCampaignName)

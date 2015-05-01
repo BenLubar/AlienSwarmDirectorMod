@@ -129,7 +129,7 @@ bool CASW_Campaign_Save::LoadGameFromFile(const char *szFileName)
 		m_PlayerIDs.Purge();
 
 		// go through each sub section, adding the relevant details
-		KeyValues *pkvSubSection = pSaveKeyValues->GetFirstSubKey();
+		KeyValues *pkvSubSection = pSaveKeyValues->GetFirstTrueSubKey();
 		while ( pkvSubSection )
 		{
 			// mission details
@@ -199,7 +199,7 @@ bool CASW_Campaign_Save::LoadGameFromFile(const char *szFileName)
 				}				
 			}
 			
-			pkvSubSection = pkvSubSection->GetNextKey();
+			pkvSubSection = pkvSubSection->GetNextTrueSubKey();
 		}
 		return true;
 	}
