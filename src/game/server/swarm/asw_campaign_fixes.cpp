@@ -78,11 +78,11 @@ public:
 			}
 		}
 
-		// Fixes the tech marine requirement never being turned off after the last hack.
+		// Fixes the tech marine requirement never being turned off after the last hack and the impossible-to-pass door that has node connections through it.
 		if (!V_stricmp(pszMap, "dc2-breaking_an_entry"))
 		{
 			CASW_Button_Area *pEndButton = NULL;
-			while ((pEndButton = dynamic_cast<CASW_Button_Area *>(gEntList.FindEntityByClassname(pEndButton, "trigger_asw_button_area"))))
+			while ((pEndButton = dynamic_cast<CASW_Button_Area *>(gEntList.FindEntityByClassname(pEndButton, "trigger_asw_button_area"))) != NULL)
 			{
 				if (!V_stricmp(STRING(pEndButton->m_szPanelPropName), "elevator_pc"))
 				{
@@ -94,6 +94,17 @@ public:
 					}
 					break;
 				}
+			}
+
+			CBaseEntity *pController = CreateEntityByName("info_node_link_controller");
+			Assert(pController);
+			if (pController)
+			{
+				pController->KeyValue("mins", "-96 -32 -36");
+				pController->KeyValue("maxs", "96 32 192");
+				pController->KeyValue("initialstate", "0");
+				pController->SetAbsOrigin(Vector(48, 3216, 32));
+				DispatchSpawn(pController);
 			}
 		}
 
