@@ -51,6 +51,17 @@ public:
 			}
 		}
 
+		// Fixes the train leaving without all the marines if at least 4 marines are already on the train.
+		if (!V_stricmp(pszMap, "tft-spaceport"))
+		{
+			CASW_Door_Area *pMarinesPast = dynamic_cast<CASW_Door_Area *>(gEntList.FindEntityByName(NULL, "victory_train_area"));
+			Assert(pMarinesPast);
+			if (pMarinesPast)
+			{
+				pMarinesPast->m_nPlayersRequired = ASW_MAX_MARINE_RESOURCES;
+			}
+		}
+
 		// Fixes the tech marine requirement never being turned off after the last hack.
 		if (!V_stricmp(pszMap, "dc1-omega_city"))
 		{
