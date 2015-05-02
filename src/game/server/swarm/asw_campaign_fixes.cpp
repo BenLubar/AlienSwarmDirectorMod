@@ -24,12 +24,14 @@ public:
 		const char *pszMap = STRING(gpGlobals->mapname);
 
 		// Fixes cargo elevator leaving without all the marines if at least 4 marines are already on the elevator.
-		if (!V_stricmp(pszMap, "asi-jac1-landingbay_02"))
+		if (!V_stricmp(pszMap, "asi-jac1-landingbay_02") || !V_stricmp(pszMap, "asi-jac1-landingbay_pract"))
 		{
 			CASW_Door_Area *pMarinesPast = dynamic_cast<CASW_Door_Area *>(gEntList.FindEntityByName(NULL, "trigger_lift_marine_check"));
 			Assert(pMarinesPast);
 			if (pMarinesPast)
+			{
 				pMarinesPast->m_nPlayersRequired = ASW_MAX_MARINE_RESOURCES;
+			}
 		}
 
 		// Fixes the last segment of a bridge on deima being extended before the marines get there.
