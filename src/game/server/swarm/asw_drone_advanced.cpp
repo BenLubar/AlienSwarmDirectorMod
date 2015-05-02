@@ -32,7 +32,7 @@
 #include "asw_weapon.h"
 #include "asw_marine_speech.h"
 #include "ammodef.h"
-#include "asw_dynamic_light.h"
+#include "particle_system.h"
 #include "asw_prop_dynamic.h"
 #include "asw_parasite.h"
 #include "asw_spawn_manager.h"
@@ -259,15 +259,14 @@ void CASW_Drone_Advanced::Spawn( void )
 		else if (ClassMatches("asw_drone_summoner"))
 		{
 			SetRenderColor(130, 238, 40);
-			CASW_Dynamic_Light* pGlow = assert_cast<CASW_Dynamic_Light *>(CreateEntityByName("asw_dynamic_light"));
+			CParticleSystem* pGlow = assert_cast<CParticleSystem *>(CreateEntityByName("info_particle_system"));
 			if (pGlow)
 			{
+				pGlow->KeyValue("effect_name", "powerup_increased_speed");
 				DispatchSpawn(pGlow);
-				pGlow->SetParent(this, LookupAttachment("eyes"));
-				pGlow->SetLocalOrigin(vec3_origin);
-				pGlow->SetLightRadius(256.0f);
-				pGlow->SetExponent(5);
-				pGlow->SetRenderColor(255, 255, 255);
+				pGlow->SetParent(this, LookupAttachment("blood_spray"));
+				pGlow->SetLocalOrigin(Vector(0, 0, 16));
+				pGlow->StartParticleSystem();
 				m_hMutationHelper = pGlow;
 			}
 			
@@ -313,7 +312,12 @@ void CASW_Drone_Advanced::Precache( void )
 	PrecacheModel( "models/aliens/drone/ragdoll_leg_r.mdl" );
 	PrecacheModel( "models/aliens/drone/ragdoll_leg.mdl" );
 	PrecacheModel( "models/aliens/drone/gib_torso.mdl" );
-	
+
+	if (ClassMatches("asw_drone_summoner"))
+	{
+		PrecacheParticleSystem("powerup_increased_speed");
+	}
+
 	BaseClass::Precache();
 }
 
