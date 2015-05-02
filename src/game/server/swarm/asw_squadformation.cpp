@@ -566,7 +566,7 @@ void CASW_SquadFormation::FindFollowHintNodes()
 
 		bool bNeedNewNode = ( m_vFollowPositions[slotnum].DistToSqr( pMarine->GetAbsOrigin() ) > Square( asw_follow_hint_min_range.GetFloat() ) ) || ( m_vFollowPositions[slotnum].DistToSqr( vecLeader ) > Square( asw_follow_hint_max_range.GetFloat() ) ) || !pMarine->FVisible( pLeader ) || m_nMarineHintIndex[slotnum] == INVALID_HINT_INDEX;
 		if ( slotnum != SQUAD_LEADER && !bNeedNewNode )
-			bNeedNewNode = ( m_vFollowPositions[slotnum].DistToSqr( m_vFollowPositions[SQUAD_LEADER] ) < Square( asw_follow_hint_min_range.GetFloat() ) );
+			bNeedNewNode = ( m_vFollowPositions[slotnum].DistToSqr( vecLeader ) < Square( asw_follow_hint_min_range.GetFloat() ) );
 
 		// find shield bug (if any) nearest each marine
 		const float k_flShieldbugScanRangeSqr = Square(400.0f);

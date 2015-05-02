@@ -307,7 +307,7 @@ int CASW_Marine::SelectSchedule()
 
 	bool bUsingFlamer = GetActiveASWWeapon() && GetActiveASWWeapon()->Classify() == CLASS_ASW_FLAMER;
 
-	if ( HasCondition( COND_PATH_BLOCKED_BY_PHYSICS_PROP ) || ( ( HasCondition( COND_COMPLETELY_OUT_OF_AMMO ) || HasCondition( COND_WEAPON_BLOCKED_BY_FRIEND ) ) && GetEnemyLKP().DistToSqr( GetAbsOrigin() ) < Square( asw_marine_melee_approach_distance.GetFloat() ) ) ||
+	if ( HasCondition( COND_PATH_BLOCKED_BY_PHYSICS_PROP ) || ( ( HasCondition( COND_COMPLETELY_OUT_OF_AMMO ) || HasCondition( COND_WEAPON_BLOCKED_BY_FRIEND ) || !GetActiveASWWeapon() || !GetActiveASWWeapon()->IsOffensiveWeapon() ) && GetEnemyLKP().DistToSqr( GetAbsOrigin() ) < Square( asw_marine_melee_approach_distance.GetFloat() ) ) ||
 		( bUsingFlamer && HasCondition( COND_ENEMY_ON_FIRE ) ) || ( asw_marine_test_new_ai.GetBool() && m_fLastMobDamageTime > gpGlobals->curtime - 2.0f && RandomFloat() < 0.8f ) )
 	{
 		int iMeleeSchedule = SelectMeleeSchedule();
@@ -1031,7 +1031,7 @@ void CASW_Marine::BuildScheduleTestBits()
 	SetCustomInterruptCondition(COND_SQUADMATE_WANTS_AMMO);
 	SetCustomInterruptCondition(COND_SQUADMATE_NEEDS_AMMO);
 	SetCustomInterruptCondition(COND_PATH_BLOCKED_BY_PHYSICS_PROP);
-	SetCustomInterruptCondition(COND_COMPLETELY_OUT_OF_AMMO);
+	//SetCustomInterruptCondition(COND_COMPLETELY_OUT_OF_AMMO);
 }
 
 int CASW_Marine::SelectGiveAmmoSchedule()
@@ -1823,11 +1823,9 @@ int CASW_Marine::SelectMeleeSchedule()
 	{
 		bool bLastManStanding = true;
 
-		CASW_Game_Resource *pGameResource = ASWGameResource();
-		for ( int i = 0; i < pGameResource->GetMaxMarineResources(); i++ )
+		for ( int i = 0; i < CASW_SquadFormation::MAX_SQUAD_SIZE; i++ )
 		{
-			CASW_Marine_Resource *pMR = pGameResource->GetMarineResource(i);
-			CASW_Marine *pMarine = pMR ? pMR->GetMarineEntity() : NULL;
+			CASW_Marine *pMarine = GetSquadFormation() ? GetSquadFormation()->Squaddie(i) : NULL;
 			if( pMarine && pMarine != this && pMarine->GetHealth() > 0 )
 			{
 				bLastManStanding = false;
@@ -1835,7 +1833,7 @@ int CASW_Marine::SelectMeleeSchedule()
 			}
 		}
 
-		if ( ( GetHealth() > GetMaxHealth() / 2 || bLastManStanding ) && GetAbsOrigin().DistToSqr( GetEnemyLKP() ) < Square( 100.0f ) )
+		if ( ( GetHealth() > GetMaxHealth() / 2 || bLastManStanding || !GetActiveASWWeapon() || !GetActiveASWWeapon()->IsOffensiveWeapon() ) && GetAbsOrigin().DistToSqr( GetEnemyLKP() ) < Square( 100.0f ) )
 		{
 			if ( ValidMarineMeleeTarget( GetEnemy() ) )
 			{
@@ -2360,16 +2358,14 @@ const Vector &CASW_Marine::GetEnemyLKP() const
 	{
 		return GetAlienGooTarget()->GetAbsOrigin();
 	}
-	else
-	{
-		CASW_Prop_Physics *pPropPhysics = dynamic_cast< CASW_Prop_Physics *>( GetEnemy() );
-		if ( pPropPhysics && pPropPhysics->m_takedamage == DAMAGE_YES && pPropPhysics->m_iHealth > 0 )
-		{
-			return pPropPhysics->GetAbsOrigin();
-		}
 
-		return BaseClass::GetEnemyLKP();
+	CASW_Prop_Physics *pPropPhysics = dynamic_cast< CASW_Prop_Physics *>( GetEnemy() );
+	if ( pPropPhysics && pPropPhysics->m_takedamage == DAMAGE_YES && pPropPhysics->m_iHealth > 0 )
+	{
+		return pPropPhysics->GetAbsOrigin();
 	}
+
+	return BaseClass::GetEnemyLKP();
 }
 
 void CASW_Marine::RunTask( const Task_t *pTask )
