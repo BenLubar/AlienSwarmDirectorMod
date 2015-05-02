@@ -1,6 +1,7 @@
 #include "cbase.h"
 #include "asw_door_area.h"
 #include "func_movelinear.h"
+#include "asw_button_area.h"
 #include "asw_base_spawner.h"
 #include "asw_marine_hint.h"
 #include "ai_network.h"
@@ -44,6 +45,57 @@ public:
 				{
 					Assert(pOutput->NumberOfElements() == 2);
 					pOutput->DeleteAllElements();
+				}
+			}
+		}
+
+		// Fixes the tech marine requirement never being turned off after the last hack.
+		if (!V_stricmp(pszMap, "dc1-omega_city"))
+		{
+			CASW_Button_Area *pEndButton = dynamic_cast<CASW_Button_Area *>(gEntList.FindEntityByName(NULL, "end_button"));
+			Assert(pEndButton);
+			if (pEndButton)
+			{
+				CBaseEntityOutput *pOutput = pEndButton->FindNamedOutput("OnButtonHackCompleted");
+				Assert(pOutput);
+				if (pOutput)
+				{
+					pOutput->ParseEventAction("asw_tech_marine_req,DisableTechMarineReq,,0,1");
+				}
+			}
+		}
+
+		// Fixes the tech marine requirement never being turned off after the last hack.
+		if (!V_stricmp(pszMap, "dc2-breaking_an_entry"))
+		{
+			CASW_Button_Area *pEndButton = NULL;
+			while ((pEndButton = dynamic_cast<CASW_Button_Area *>(gEntList.FindEntityByClassname(pEndButton, "trigger_asw_button_area"))))
+			{
+				if (!V_stricmp(STRING(pEndButton->m_szPanelPropName), "elevator_pc"))
+				{
+					CBaseEntityOutput *pOutput = pEndButton->FindNamedOutput("OnButtonHackCompleted");
+					Assert(pOutput);
+					if (pOutput)
+					{
+						pOutput->ParseEventAction("asw_tech_marine_req,DisableTechMarineReq,,0,1");
+					}
+					break;
+				}
+			}
+		}
+
+		// Fixes the tech marine requirement never being turned off after the last hack.
+		if (!V_stricmp(pszMap, "dc3-search_and_rescue"))
+		{
+			CASW_Button_Area *pC4PlantedButton = dynamic_cast<CASW_Button_Area *>(gEntList.FindEntityByName(NULL, "c4_planted_button"));
+			Assert(pC4PlantedButton);
+			if (pC4PlantedButton)
+			{
+				CBaseEntityOutput *pOutput = pC4PlantedButton->FindNamedOutput("OnButtonHackCompleted");
+				Assert(pOutput);
+				if (pOutput)
+				{
+					pOutput->ParseEventAction("asw_tech_marine_req,DisableTechMarineReq,,0,1");
 				}
 			}
 		}
