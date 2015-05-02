@@ -1206,6 +1206,12 @@ void CServerGameDLL::ServerActivate( edict_t *pEdictList, int edictCount, int cl
 		}
 	}
 
+	// Swarm Director 2: Load the nav mesh before LevelInitPostEntity so we can kill it in asw_campaign_fixes if it's bad.
+#ifndef _XBOX
+	// load the Navigation Mesh for this map
+	TheNavMesh->Load();
+#endif
+
 	IGameSystem::LevelInitPostEntityAllSystems();
 	// No more precaching after PostEntityAllSystems!!!
 	CBaseEntity::SetAllowPrecache( false );
@@ -1215,13 +1221,6 @@ void CServerGameDLL::ServerActivate( edict_t *pEdictList, int edictCount, int cl
 	{
 		think_limit.SetValue( 0 );
 	}
-
-#ifndef _XBOX
-	// load the Navigation Mesh for this map
-	TheNavMesh->Load();
-#endif
-
-
 }
 
 //-----------------------------------------------------------------------------

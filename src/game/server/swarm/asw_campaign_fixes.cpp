@@ -6,6 +6,8 @@
 #include "asw_marine_hint.h"
 #include "ai_network.h"
 #include "ai_link.h"
+#include <filesystem.h>
+#include "nav_mesh.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -16,8 +18,20 @@ ConVar asw_follow_ignore_hints("asw_follow_ignore_hints", "0.1", FCVAR_CHEAT, "I
 class CASW_Campaign_Fixes : public CAutoGameSystem
 {
 public:
-
-	CASW_Campaign_Fixes() : CAutoGameSystem("CASW_Campaign_Fixes") {}
+	CASW_Campaign_Fixes() : CAutoGameSystem("CASW_Campaign_Fixes")
+	{
+		m_NavMeshCRCs["dc1-omega_city"]        = 0xa7aa6e32;
+		m_NavMeshCRCs["dc2-breaking_an_entry"] = 0x1faaa8ef;
+		m_NavMeshCRCs["dc3-search_and_rescue"] = 0x66b4094d;
+		m_NavMeshCRCs["delusion-01"]           = 0xa350fd52;
+		m_NavMeshCRCs["ocs_1"]                 = 0xa5044ec4;
+		m_NavMeshCRCs["ocs_2"]                 = 0x624f30e4;
+		m_NavMeshCRCs["ocs_3"]                 = 0x2619ecf3;
+		m_NavMeshCRCs["forestentrance"]        = 0xf0e03965;
+		m_NavMeshCRCs["research7"]             = 0x5f2f7ee8;
+		m_NavMeshCRCs["miningcamp"]            = 0x7fcf5fde;
+		m_NavMeshCRCs["themines2"]             = 0x4174db11;
+	}
 
 	virtual void LevelInitPostEntity()
 	{
@@ -202,7 +216,30 @@ public:
 				hints.PurgeAndDeleteElements();
 			}
 		}
+
+		// Fixes maps with known terrible navmeshes by reverting to pre-navmesh navigation.
+		if (m_NavMeshCRCs.Defined(pszMap))
+		{
+			CFmtStr pszNavMeshName("maps/%s.nav", pszMap);
+			CUtlBuffer buf; // FIXME: I'm really lazy and this reads the entire file at once just so I can compute a 4-byte checksum of it.
+			                // However, the navmesh already has to fit in memory, and this happens before the level finishes loading, so it shouldn't matter.
+			if (filesystem->ReadFile(pszNavMeshName, "GAME", buf))
+			{
+				CRC32_t crc = CRC32_ProcessSingleBuffer(buf.Base(), buf.TellMaxPut());
+				buf.Clear();
+
+#ifdef DEBUG
+				DevMsg("CRC of %s navmesh is 0x%08x\n", pszMap, crc);
+#endif
+				if (crc == m_NavMeshCRCs[m_NavMeshCRCs.Find(pszMap)])
+				{
+					TheNavMesh->Reset();
+				}
+			}
+		}
 	}
+
+	CUtlStringMap<CRC32_t> m_NavMeshCRCs;
 };
 
 static CASW_Campaign_Fixes g_CampaignFixes;
