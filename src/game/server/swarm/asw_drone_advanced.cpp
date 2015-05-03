@@ -176,11 +176,13 @@ BEGIN_DATADESC( CASW_Drone_Advanced )
 	DEFINE_FIELD( m_bHasAttacked, FIELD_BOOLEAN ),
 	DEFINE_FIELD( m_hMutationHelper, FIELD_EHANDLE ),
 	DEFINE_FIELD( m_bAllowSummonRoar, FIELD_BOOLEAN ),
+	DEFINE_FIELD( m_bIsSummoner, FIELD_BOOLEAN ),
 END_DATADESC()
 
 IMPLEMENT_SERVERCLASS_ST( CASW_Drone_Advanced, DT_ASW_Drone_Advanced )
 	SendPropExclude( "DT_BaseAnimating", "m_flPoseParameter" ),
 	SendPropEHandle( SENDINFO( m_hAimTarget ) ),
+	SendPropBool( SENDINFO( m_bIsSummoner ) ),
 END_SEND_TABLE()
 
 
@@ -270,6 +272,7 @@ void CASW_Drone_Advanced::Spawn( void )
 				m_hMutationHelper = pGlow;
 			}
 			
+			m_bIsSummoner = true;
 			m_bAllowSummonRoar = true;
 		}
 	}	
@@ -316,6 +319,7 @@ void CASW_Drone_Advanced::Precache( void )
 	if (ClassMatches("asw_drone_summoner"))
 	{
 		PrecacheParticleSystem("powerup_increased_speed");
+		PrecacheScriptSound("ASW_Drone.SummonRoar");
 	}
 	else if (ClassMatches("asw_drone_carrier"))
 	{
@@ -1571,14 +1575,14 @@ int CASW_Drone_Advanced::SelectSchedule( void )
 	if (m_bAllowSummonRoar && ASWGameRules() && GetEnemy())
 	{
 		m_bAllowSummonRoar = false;
-		for (int i = RandomInt(0, 5) + ASWGameRules()->GetMissionDifficulty() * 2; i > 0; i--)
+		for (int i = RandomInt(0, 5) + ASWGameRules()->GetMissionDifficulty(); i > 0; i--)
 		{
-			Vector position = GetAbsOrigin() + Vector(RandomFloat(-768, 768), RandomFloat(-768, 768), 32);
+			Vector position = GetAbsOrigin() + Vector(RandomFloat(-384, 384), RandomFloat(-384, 384), 32);
 
 			trace_t tr;
 			// make sure we don't spawn on the other side of a wall
 			UTIL_TraceHull(GetAbsOrigin(), position, GetHullMins(), GetHullMaxs(), MASK_NPCSOLID_BRUSHONLY, this, COLLISION_GROUP_NONE, &tr);
-			position = VectorLerp(GetAbsOrigin(), position, tr.fraction);
+			position = VectorLerp(GetAbsOrigin(), position, clamp(tr.fraction, 0, 1));
 
 			// face our enemy
 			QAngle direction(0, UTIL_VecToYaw(GetEnemyLKP() - position), 0);
@@ -1588,10 +1592,11 @@ int CASW_Drone_Advanced::SelectSchedule( void )
 			if (pDrone)
 			{
 				pDrone->SetEnemy(GetEnemy());
-				pDrone->CustomSettings(0.75f, 1.0f, 0.75f, true, true, true, true);
-				pDrone->m_flBurrowTime = gpGlobals->curtime + RandomFloat(1, 6);
+				pDrone->CustomSettings(0.75f, 1.25f, 0.75f, true, true, true, true);
+				pDrone->m_flBurrowTime = gpGlobals->curtime + RandomFloat(1, 3);
 			}
 		}
+
 		return SCHED_ALIEN_SHOVER_ROAR;
 	}
 

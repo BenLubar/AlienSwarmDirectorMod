@@ -10,6 +10,7 @@
 
 IMPLEMENT_CLIENTCLASS_DT(C_ASW_Drone_Advanced, DT_ASW_Drone_Advanced, CASW_Drone_Advanced)
 	RecvPropEHandle( RECVINFO( m_hAimTarget ) ),
+	RecvPropBool( RECVINFO( m_bIsSummoner ) ),
 END_RECV_TABLE()
 
 BEGIN_PREDICTION_DATA( C_ASW_Drone_Advanced )
@@ -65,7 +66,8 @@ C_ASW_Drone_Advanced::C_ASW_Drone_Advanced()
 {
 	m_flCurrentTravelYaw = -1;
 	m_flCurrentTravelSpeed = 0;
-	m_bWasJumping = 0.0f;
+	m_bWasJumping = false;
+	m_bDidSummonRoar = false;
 
 	for (int i=0;i<MAXSTUDIOPOSEPARAM;i++)
 	{
@@ -342,5 +344,25 @@ void C_ASW_Drone_Advanced::GetPoseParameters( CStudioHdr *pStudioHdr, float pose
 	for( int i=0; i < pStudioHdr->GetNumPoseParameters(); i++)
 	{
 		poseParameter[i] = m_flClientPoseParameter[i];
+	}
+}
+
+void C_ASW_Drone_Advanced::FireEvent(const Vector& origin, const QAngle& angles, int event, const char *options)
+{
+	switch (event)
+	{
+	case AE_CL_PLAYSOUND:
+		{
+			if (m_bIsSummoner && !m_bDidSummonRoar && FStrEq(options, "ASW_Drone.Roar"))
+			{
+				m_bDidSummonRoar = true;
+				options = "ASW_Drone.SummonRoar";
+			}
+			BaseClass::FireEvent(origin, angles, event, options);
+		}
+		break;
+
+	default:
+		BaseClass::FireEvent(origin, angles, event, options);
 	}
 }

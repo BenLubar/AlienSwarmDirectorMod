@@ -22,9 +22,10 @@ public:
 	void UpdatePoseParams();	
 	virtual const Vector& GetAimTargetPos(const Vector &vecFiringSrc, bool bWeaponPrefersFlatAiming);
 	virtual void GetPoseParameters( CStudioHdr *pStudioHdr, float poseParameter[MAXSTUDIOPOSEPARAM]);
+	virtual void FireEvent(const Vector& origin, const QAngle& angles, int event, const char *options);
 
-	CNetworkVar( EHANDLE, m_hAimTarget );
-
+	CNetworkHandle( C_BaseEntity, m_hAimTarget );
+	CNetworkVar( bool, m_bIsSummoner );
 
 private:
 	C_ASW_Drone_Advanced( const C_ASW_Drone_Advanced & ); // not defined, not accessible
@@ -32,6 +33,7 @@ private:
 	float m_flCurrentTravelSpeed;
 	float m_flClientPoseParameter[MAXSTUDIOPOSEPARAM];
 	bool m_bWasJumping;
+	bool m_bDidSummonRoar;
 };
 
 #endif /* _INLCUDE_C_ASW_DRONE_ADVANCED_H */

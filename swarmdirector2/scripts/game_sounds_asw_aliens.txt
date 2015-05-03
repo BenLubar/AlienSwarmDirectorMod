@@ -158,6 +158,15 @@
 	}
 }
 
+"ASW_Drone.SummonRoar"
+{
+	"channel"		"CHAN_VOICE"
+	"soundlevel"	"SNDLVL_100dB"
+	"volume"		"1.0"
+	"pitch"			"100"
+	"wave"			"aliens\voc\drone_mutations\summoner_roar.wav"
+}
+
 "ASW_Drone.Pain"
 {
 	"channel"		"CHAN_VOICE"
