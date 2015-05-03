@@ -105,6 +105,10 @@ public:
 	bool CheckInfestTarget( CBaseEntity *pOther );
 	EHANDLE m_hPrepareToInfest;
 
+	// when we spawn from a dying asw_drone_carrier, we don't want to die to the same bullet that killed it.
+	void SetDamageImmuneUntil(float flTime) { m_flDamageImmuneUntil = flTime; }
+	float m_flDamageImmuneUntil;
+
 protected:
 	DEFINE_CUSTOM_AI;
 };

@@ -53,6 +53,7 @@ CASW_Parasite::CASW_Parasite( void )// : CASW_Alien()
 	m_pszAlienModelName = SWARM_PARASITE_MODEL;
 	m_nAlienCollisionGroup = ASW_COLLISION_GROUP_ALIEN;
 	m_bNeverRagdoll = true;
+	m_flDamageImmuneUntil = 0;
 }
 
 LINK_ENTITY_TO_CLASS( asw_parasite, CASW_Parasite );
@@ -110,17 +111,16 @@ void CASW_Parasite::Spawn( void )
 	if (FClassnameIs(this, "asw_parasite_defanged"))
 	{
 		m_bDefanged = true;
-		m_iHealth	= ASWGameRules()->ModifyAlienHealthBySkillLevel(10);
 		SetBodygroup( 0, 1 );
 		m_fSuicideTime = gpGlobals->curtime + 60;
 	}
 	else
 	{
 		m_bDefanged = false;
-		m_iHealth	= ASWGameRules()->ModifyAlienHealthBySkillLevel(25);
 		SetBodygroup( 0, 0 );
 		m_fSuicideTime = 0;
 	}
+	SetHealthByDifficultyLevel();
 
 	SetMoveType( MOVETYPE_STEP );
 	SetHullType(HULL_TINY);
@@ -639,6 +639,12 @@ void CASW_Parasite::NormalTouch( CBaseEntity* pOther )
 
 bool CASW_Parasite::CheckInfestTarget( CBaseEntity *pOther )
 {
+	if (m_flDamageImmuneUntil >= gpGlobals->curtime)
+	{
+		// no fair infesting while we're invulnerable.
+		return false;
+	}
+
 	CASW_Marine* pMarine = CASW_Marine::AsMarine( pOther );
 	if ( pMarine )
 	{
@@ -1189,21 +1195,20 @@ CASW_Alien* CASW_Parasite::GetMother()
 
 int CASW_Parasite::OnTakeDamage_Alive( const CTakeDamageInfo &info )
 {
-	int result = 0;
+	if (m_flDamageImmuneUntil >= gpGlobals->curtime)
+	{
+		return 0;
+	}
 
 	// scale damage up while in the air
 	if (m_bMidJump)
 	{
-		CTakeDamageInfo newDamage = info;		
+		CTakeDamageInfo newDamage = info;
 		newDamage.ScaleDamage(10.0f);
-		result = BaseClass::OnTakeDamage_Alive(newDamage);
-	}
-	else
-	{
-		result = BaseClass::OnTakeDamage_Alive(info);
+		return BaseClass::OnTakeDamage_Alive(newDamage);
 	}
 
-	return result;
+	return BaseClass::OnTakeDamage_Alive(info);
 }
 
 void CASW_Parasite::UpdateSleepState(bool bInPVS)

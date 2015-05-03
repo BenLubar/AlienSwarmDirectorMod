@@ -245,7 +245,7 @@ void CASW_Drone_Advanced::Spawn( void )
 			CASW_Prop_Dynamic* pParasite = assert_cast<CASW_Prop_Dynamic *>(CreateEntityByName("prop_dynamic"));
 			if (pParasite)
 			{
-				pParasite->KeyValue("DefaultAnim", "idle");
+				pParasite->KeyValue("DefaultAnim", "Idle");
 				pParasite->SetModel("models/aliens/parasite/parasite.mdl");
 				DispatchSpawn(pParasite);
 				pParasite->SetSolid(SOLID_NONE);
@@ -316,6 +316,10 @@ void CASW_Drone_Advanced::Precache( void )
 	if (ClassMatches("asw_drone_summoner"))
 	{
 		PrecacheParticleSystem("powerup_increased_speed");
+	}
+	else if (ClassMatches("asw_drone_carrier"))
+	{
+		UTIL_PrecacheOther("asw_parasite");
 	}
 
 	BaseClass::Precache();
@@ -1371,9 +1375,10 @@ void CASW_Drone_Advanced::Event_Killed( const CTakeDamageInfo &info )
 			CASW_Parasite *pParasite = assert_cast<CASW_Parasite *>(CreateEntityByName("asw_parasite"));
 			if (pParasite)
 			{
-				DispatchSpawn(pParasite);
 				pParasite->SetAbsOrigin(pMutationHelper->GetAbsOrigin());
 				pParasite->SetAbsAngles(pMutationHelper->GetAbsAngles());
+				pParasite->SetDamageImmuneUntil(gpGlobals->curtime + 0.1f);
+				DispatchSpawn(pParasite);
 				pParasite->JumpAttack(true);
 			}
 		}
