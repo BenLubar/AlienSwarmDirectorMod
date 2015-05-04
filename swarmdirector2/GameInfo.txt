@@ -3,7 +3,7 @@ GameInfo {
 	GameData		"../../../sourcemods/swarmdirector2/fgd/alienswarmdirectormod.fgd"
 	InstancePath	"tilegen/instances/"
 	Developer		"Ben Lubar"
-	Developer_URL	"https://github.com/BenLubar/AlienSwarmDirectorMod"
+	Developer_URL	"https://github.com/BenLubar/SwarmDirector2"
 	Manual			"https://steamcommunity.com/groups/swarm-director-2"
 	Icon			"resource/logo"
 
