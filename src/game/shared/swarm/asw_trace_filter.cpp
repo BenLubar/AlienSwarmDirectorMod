@@ -17,8 +17,6 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-extern ConVar asw_controls;
-
 CASW_Trace_Filter::CASW_Trace_Filter(CBasePlayer *pPlayer, Collision_Group_t collisionGroup)
 	: BaseClass(NULL, collisionGroup)
 {
@@ -38,7 +36,19 @@ bool CASW_Trace_Filter::ShouldHitEntity(IHandleEntity *pServerEntity, int conten
 		return BaseClass::ShouldHitEntity(pServerEntity, contentsMask);
 	}
 
-	if (asw_controls.GetBool())
+#ifdef CLIENT_DLL
+	extern ConVar asw_controls;
+	if (!asw_controls.GetBool())
+#else
+	if (m_pMarine->IsInhabited() && m_pMarine->GetCommander() && !m_pMarine->GetCommander()->m_bASWControls)
+#endif
+	{
+		if (pServerEntity == m_pMarine)
+		{
+			return false;
+		}
+	}
+	else
 	{
 		CFunc_ASW_Fade *pBrush = dynamic_cast<CFunc_ASW_Fade *>(pServerEntity);
 		if (pBrush && pBrush->GetAbsOrigin().z > m_pMarine->GetAbsOrigin().z)
@@ -50,13 +60,6 @@ bool CASW_Trace_Filter::ShouldHitEntity(IHandleEntity *pServerEntity, int conten
 #define m_vecFadeOrigin m_vecFadeOrigin.Get()
 #endif
 		if (pProp && pProp->m_vecFadeOrigin.z > m_pMarine->GetAbsOrigin().z)
-		{
-			return false;
-		}
-	}
-	else
-	{
-		if (pServerEntity == m_pMarine)
 		{
 			return false;
 		}

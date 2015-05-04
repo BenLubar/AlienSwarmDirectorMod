@@ -181,6 +181,30 @@ ConVar asw_auto_reload("asw_auto_reload", "1", FCVAR_ARCHIVE, "Whether your mari
 ConVar asw_turret_fog_start("asw_turret_fog_start", "900", 0, "Fog start distance for turret view");
 ConVar asw_turret_fog_end("asw_turret_fog_end", "1200", 0, "Fog end distance for turret view");
 
+void ASW_Controls_Changed(IConVar *var, const char *pOldValue, float flOldValue);
+ConVar asw_controls("asw_controls", "1", FCVAR_ARCHIVE, "Disable to get normal FPS controls (affects only you)", ASW_Controls_Changed);
+void ASW_Controls_Changed(IConVar *var, const char *pOldValue, float flOldValue)
+{
+	if (!ASWGameRules())
+		return;
+
+	Assert(ASWInput());
+
+	if (asw_controls.GetBool())
+	{
+		ASWInput()->CAM_ToThirdPerson();
+	}
+	else
+	{
+		ASWInput()->CAM_ToFirstPerson();
+	}
+
+	if (engine->IsInGame())
+	{
+		engine->ClientCmd(VarArgs("cl_asw_controls %d\n", asw_controls.GetInt()));
+	}
+}
+
 extern ConVar asw_allow_detach;
 extern ConVar asw_stim_cam_time;
 extern ConVar asw_rts_controls;
@@ -1399,6 +1423,9 @@ void C_ASW_Player::OnDataChanged( DataUpdateType_t updateType )
 #endif
 			// inform server of our autoreload preferences
 			engine->ClientCmd( VarArgs( "cl_autoreload %d\n", asw_auto_reload.GetInt() ) );
+
+			// inform server of our view preferences
+			engine->ClientCmd( VarArgs( "cl_asw_controls %d\n", asw_controls.GetInt() ) );
 
 			// tell other players that we're fully connected
 			engine->ClientCmd( "cl_fullyjoined\n" );

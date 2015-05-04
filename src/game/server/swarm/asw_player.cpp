@@ -68,7 +68,6 @@ ConVar asw_marine_allow_lead("asw_marine_allow_lead", "0", FCVAR_CHEAT, "allow b
 extern ConVar asw_rts_controls;
 extern ConVar asw_DebugAutoAim;
 extern ConVar asw_debug_marine_damage;
-extern ConVar asw_controls;
 
 // -------------------------------------------------------------------------------- //
 // Player animation event. Sent to the client when a player fires, jumps, reloads, etc..
@@ -1722,7 +1721,17 @@ bool CASW_Player::ClientCommand( const CCommand &args )
 		}
 		m_fMapGenerationProgress = clamp(atof(args[1]), 0.0f, 1.0f);
 		return true;
-	}	
+	}
+	else if ( FStrEq( pcmd, "cl_asw_controls" ) )
+	{
+		if ( args.ArgC() < 2 )
+		{
+			Warning( "Player sent bad cl_asw_controls command\n" );
+		}
+
+		m_bASWControls = (atoi(args[1]) != 0);
+		return true;
+	}
 	
 	return BaseClass::ClientCommand( args );
 }
@@ -2224,7 +2233,7 @@ void CASW_Player::ChangeName( const char *pszNewName )
 
 Vector CASW_Player::GetAutoaimVectorForMarine(CASW_Marine* marine, float flDelta, float flNearMissDelta)
 {
-	if (asw_controls.GetBool())
+	if (m_bASWControls)
 	{
 		// test of no serverside autoaim
 		Vector	forward;

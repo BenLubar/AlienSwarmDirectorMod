@@ -68,7 +68,13 @@ static ConVar asw_marine_friction( "asw_marine_friction","10", FCVAR_NOTIFY | FC
 static ConVar asw_sv_maxspeed( "asw_sv_maxspeed", "500", FCVAR_NOTIFY | FCVAR_REPLICATED);
 static ConVar asw_debug_steps("asw_debug_steps", "0", FCVAR_CHEAT | FCVAR_REPLICATED, "Gives debug info on moving up/down steps");
 static ConVar asw_debug_air_move("asw_debug_air_move", "0", FCVAR_CHEAT | FCVAR_REPLICATED, "Gives debug info on air moving");
+
+#ifdef CLIENT_DLL
 extern ConVar asw_controls;
+#define ASW_CONTROLS (asw_controls.GetBool())
+#else
+#define ASW_CONTROLS (player ? ToASW_Player(player)->m_bASWControls : true)
+#endif
 
 // tickcount currently isn't set during prediction, although gpGlobals->curtime and
 // gpGlobals->frametime are. We should probably set tickcount (to player->m_nTickBase),
@@ -1019,7 +1025,7 @@ void CASW_MarineGameMovement::CheckWaterJump( void )
 	return;
 #endif
 
-	if ( asw_controls.GetBool() )
+	if ( ASW_CONTROLS )
 		AngleVectors( ASWGameRules()->GetTopDownMovementAxis(), &forward ); 
 	else
 		AngleVectors( mv->m_vecViewAngles, &forward );  // Determine movement angles
@@ -1121,7 +1127,7 @@ void CASW_MarineGameMovement::WaterMove( void )
 	float speed, newspeed, addspeed, accelspeed;
 	Vector forward, right, up;
 
-	if ( asw_controls.GetBool() )
+	if ( ASW_CONTROLS )
 		AngleVectors( ASWGameRules()->GetTopDownMovementAxis(), &forward, &right, &up ); 
 	else
 		AngleVectors (mv->m_vecViewAngles, &forward, &right, &up);  // Determine movement angles 
@@ -1526,7 +1532,7 @@ void CASW_MarineGameMovement::AirMove( void )
 	float		wishspeed;
 	Vector forward, right, up;
 
-	if ( asw_controls.GetBool() )
+	if ( ASW_CONTROLS )
 		AngleVectors( ASWGameRules()->GetTopDownMovementAxis(), &forward, &right, &up ); 
 	else
 		AngleVectors (mv->m_vecViewAngles, &forward, &right, &up);  // Determine movement angles  
@@ -1686,7 +1692,7 @@ void CASW_MarineGameMovement::WalkMove( void )
 	trace_t pm;
 	Vector forward, right, up;
 
-	if ( asw_controls.GetBool() )
+	if ( ASW_CONTROLS )
 		AngleVectors( ASWGameRules()->GetTopDownMovementAxis(), &forward, &right, &up ); 
 	else
 		AngleVectors (mv->m_vecViewAngles, &forward, &right, &up);  // Determine movement angles  
@@ -2414,7 +2420,7 @@ void CASW_MarineGameMovement::FullObserverMove( void )
 	Vector wishdir, wishend;
 	float wishspeed;
 
-	if ( asw_controls.GetBool() )
+	if ( ASW_CONTROLS )
 		AngleVectors( ASWGameRules()->GetTopDownMovementAxis(), &forward, &right, &up ); 
 	else
 		AngleVectors (mv->m_vecViewAngles, &forward, &right, &up);  // Determine movement angles 
@@ -2497,7 +2503,7 @@ void CASW_MarineGameMovement::FullNoClipMove( float factor, float maxacceleratio
 	float wishspeed;
 	float maxspeed = asw_sv_maxspeed.GetFloat() * factor;
 
-	if ( asw_controls.GetBool() )
+	if ( ASW_CONTROLS )
 		AngleVectors( ASWGameRules()->GetTopDownMovementAxis(), &forward, &right, &up ); 
 	else
 		AngleVectors (mv->m_vecViewAngles, &forward, &right, &up);  // Determine movement angles 
@@ -4701,7 +4707,7 @@ void CASW_MarineGameMovement::PlayerMove( void )
 	}
 	
 	// use fixed axis?
-	if ( asw_controls.GetBool() )
+	if ( ASW_CONTROLS )
 		AngleVectors( ASWGameRules()->GetTopDownMovementAxis(), &m_vecForward, &m_vecRight, &m_vecUp ); 
 	else
 		AngleVectors (mv->m_vecViewAngles, &m_vecForward, &m_vecRight, &m_vecUp );  // Determine movement angles
@@ -4905,7 +4911,7 @@ void CASW_MarineGameMovement::FullTossMove( void )
 		float wishspeed;
 		int i;
 		
-		if ( asw_controls.GetBool() )
+		if ( ASW_CONTROLS )
 			AngleVectors( ASWGameRules()->GetTopDownMovementAxis(), &forward, &right, &up ); 
 		else
 			AngleVectors (mv->m_vecViewAngles, &forward, &right, &up);  // Determine movement angles
@@ -5008,7 +5014,7 @@ void CASW_MarineGameMovement::IsometricMove( void )
 	float fmove, smove;
 	Vector forward, right, up;
 	
-	if ( asw_controls.GetBool() )
+	if ( ASW_CONTROLS )
 		AngleVectors( ASWGameRules()->GetTopDownMovementAxis(), &forward, &right, &up ); 
 	else
 		AngleVectors (mv->m_vecViewAngles, &forward, &right, &up);  // Determine movement angles

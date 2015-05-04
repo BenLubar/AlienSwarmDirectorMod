@@ -63,7 +63,6 @@ extern ConVar asw_melee_debug;
 extern ConVar asw_debug_marine_damage;
 extern ConVar asw_stim_time_scale;
 extern ConVar asw_marine_ff;
-extern ConVar asw_controls;
 ConVar asw_leadership_radius("asw_leadership_radius", "600", FCVAR_REPLICATED, "Radius of the leadership field around NCOs with the leadership skill");
 ConVar asw_marine_speed_scale_easy("asw_marine_speed_scale_easy", "0.96", FCVAR_REPLICATED);
 ConVar asw_marine_speed_scale_normal("asw_marine_speed_scale_normal", "1.0", FCVAR_REPLICATED);
@@ -220,7 +219,12 @@ Vector CASW_Marine::EyePosition()
 			return GetASWVehicle()->GetEntity()->GetAbsOrigin();
 	}
 
+#ifdef CLIENT_DLL
+	extern ConVar asw_controls;
 	if (!asw_controls.GetBool())
+#else
+	if (!IsInhabited() || (GetCommander() && !GetCommander()->m_bASWControls))
+#endif
 	{
 		Vector position;
 		QAngle angles;

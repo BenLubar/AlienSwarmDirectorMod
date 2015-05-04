@@ -91,22 +91,8 @@ ConVar asw_DebugAutoAim("asw_DebugAutoAim", "0", FCVAR_REPLICATED | FCVAR_CHEAT)
 ConVar asw_marine_nearby_angle("asw_marine_nearby_angle", "-75", FCVAR_REPLICATED | FCVAR_CHEAT);
 ConVar asw_rts_controls("asw_rts_controls", "0", FCVAR_REPLICATED | FCVAR_CHEAT);
 
-void ASW_Controls_Changed( IConVar *var, const char *pOldValue, float flOldValue );
-ConVar asw_controls("asw_controls", "1", FCVAR_REPLICATED, "Disable to get normal FPS controls (affects all players on the server)", ASW_Controls_Changed);
-void ASW_Controls_Changed( IConVar *var, const char *pOldValue, float flOldValue )
-{
 #ifdef CLIENT_DLL
-	if ( !ASWGameRules() )
-		return;
-
-	if ( asw_controls.GetBool() )
-		ASWInput()->CAM_ToThirdPerson();
-	else
-		ASWInput()->CAM_ToFirstPerson();
-#endif
-}
-
-#ifdef CLIENT_DLL		
+	extern ConVar asw_controls;
 	extern ConVar asw_vehicle_cam_height;
 	extern ConVar asw_vehicle_cam_pitch;
 	extern ConVar asw_vehicle_cam_dist;
@@ -378,7 +364,7 @@ Vector CASW_Player::EyePosition( )
 #ifdef CLIENT_DLL
 	if ( !asw_controls.GetBool() && ( engine->IsPlayingDemo() || GetSpectatingMarine() ) && ( !ASWGameRules() || ASWGameRules()->GetMarineDeathCamInterp() <= 0.0f ) )
 #else
-	if ( !asw_controls.GetBool() )
+	if ( !m_bASWControls )
 #endif
 	{
 		if ( !asw_allow_detach.GetBool() && pMarine )
@@ -885,7 +871,7 @@ const QAngle& CASW_Player::EyeAngles( )
 #ifdef CLIENT_DLL
 	if ( !asw_controls.GetBool() && ( engine->IsPlayingDemo() || ( GetMarine() && GetMarine()->GetCurrentMeleeAttack() ) || GetSpectatingMarine() || ( ASWGameRules() && ASWGameRules()->GetMarineDeathCamInterp() > 0.0f ) ) )
 #else
-	if ( !asw_controls.GetBool() )
+	if ( !m_bASWControls )
 #endif
 	{
 		if ( !asw_allow_detach.GetBool() && GetSpectatingMarine() )
@@ -971,7 +957,7 @@ Vector CASW_Player::EarPosition( void )
 #ifdef CLIENT_DLL
 	if ( !asw_controls.GetBool() && engine->IsPlayingDemo() )
 #else
-	if ( !asw_controls.GetBool() )
+	if ( !m_bASWControls )
 #endif
 	{
 		return BaseClass::EarPosition();
