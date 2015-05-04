@@ -3099,7 +3099,7 @@
 		}
 	}
 	"WANDERER" {
-		"SelectionWeight"	"1"
+		"SelectionWeight"	"6" // SD2: increased by 5
 		"NPC" {
 			"AlienClass"	"asw_drone_summoner"
 		}
@@ -3246,7 +3246,7 @@
 		}
 	}
 	"WANDERER" {
-		"SelectionWeight"	"4"
+		"SelectionWeight"	"9" // SD2: increased by 5
 		"NPC" {
 			"AlienClass"	"asw_harvester"
 		}
@@ -3315,7 +3315,7 @@
 		}
 	}
 	"WANDERER" {
-		"SelectionWeight"	"0.5"
+		"SelectionWeight"	"5.5" // SD2: increased by 5
 		"NPC" {
 			"AlienClass"	"asw_drone_carrier"
 		}
