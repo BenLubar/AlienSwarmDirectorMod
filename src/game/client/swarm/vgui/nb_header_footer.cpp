@@ -13,6 +13,8 @@
 
 using namespace vgui;
 
+ConVar asw_background_movie("asw_background_movie", "1", FCVAR_ARCHIVE, "Enables or Disables the background movie in your main menu. 1 = enabled, 0 = disabled", true, 0, true, 1);
+
 CASW_Background_Movie *g_pBackgroundMovie = NULL;
 
 CASW_Background_Movie* ASWBackgroundMovie()
@@ -385,7 +387,7 @@ void CNB_Header_Footer::PaintBackground()
 {
 	BaseClass::PaintBackground();
 
-	if ( m_bMovieEnabled && ASWBackgroundMovie() )
+	if ( m_bMovieEnabled && ASWBackgroundMovie() && asw_background_movie.GetBool() )
 	{
 		ASWBackgroundMovie()->Update();
 		if ( ASWBackgroundMovie()->SetTextureMaterial() != -1 )

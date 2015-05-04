@@ -18,6 +18,16 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include <tier0/memdbgon.h>
 
+Color g_rgbaStatsReportPlayerColors [] = {
+	Color(225, 60, 60, 255),
+	Color(200, 200, 60, 255),
+	Color(60, 225, 60, 255),
+	Color(30, 90, 225, 255),
+	Color(60, 225, 225, 255),
+	Color(225, 60, 145, 255),
+	Color(145, 30, 225, 255),
+	Color(225, 120, 60, 255)
+};
 
 StatsReport::StatsReport( vgui::Panel *parent, const char *name ) : vgui::EditablePanel( parent, name )
 {
@@ -42,16 +52,6 @@ StatsReport::StatsReport( vgui::Panel *parent, const char *name ) : vgui::Editab
 	m_pStatGraphPlayer = new StatGraphPlayer( this, "StatGraphPlayer" );
 
 	m_pDebrief = new DebriefTextPage( this, "Debrief" );
-
-	m_rgbaStatsReportPlayerColors[ 0 ] = Color( 225, 60, 60, 255 );
-	m_rgbaStatsReportPlayerColors[ 1 ] = Color( 200, 200, 60, 255 );
-	m_rgbaStatsReportPlayerColors[ 2 ] = Color( 60, 225, 60, 255 );
-	m_rgbaStatsReportPlayerColors[ 3 ] = Color( 30, 90, 225, 255 );
-	m_rgbaStatsReportPlayerColors[ 4 ] = Color( 60, 225, 225, 255 );
-	m_rgbaStatsReportPlayerColors[ 5 ] = Color( 225, 60, 145, 255 );
-	m_rgbaStatsReportPlayerColors[ 6 ] = Color( 145, 30, 225, 255 );
-	m_rgbaStatsReportPlayerColors[ 7 ] = Color( 225, 120, 60, 255 );
-	COMPILE_TIME_ASSERT( ASW_STATS_REPORT_MAX_PLAYERS == 8 );
 }
 
 StatsReport::~StatsReport()
@@ -172,7 +172,7 @@ void StatsReport::OnThink()
 
 			bool bDead = ( pMR->m_TimelineHealth.GetValueAtInterp( m_pStatGraphPlayer->m_fTimeInterp ) <= 0.0f );
 			
-			m_pObjectiveMap->AddBlip( MapBlip_t( vPos, bDead ? Color( 255, 255, 255, 255 ) : m_rgbaStatsReportPlayerColors[ nMarine ], bDead ? MAP_BLIP_TEXTURE_DEATH : MAP_BLIP_TEXTURE_NORMAL ) );
+			m_pObjectiveMap->AddBlip( MapBlip_t( vPos, bDead ? Color( 255, 255, 255, 255 ) : g_rgbaStatsReportPlayerColors[ nMarine ], bDead ? MAP_BLIP_TEXTURE_DEATH : MAP_BLIP_TEXTURE_NORMAL ) );
 
 			if ( m_pReadyCheckImages[ nMarine ]->IsVisible() )
 			{
@@ -323,7 +323,7 @@ void StatsReport::SetPlayerNames( void )
 		{
 			C_ASW_Player *pCommander = pMR->GetCommander();
 
-			Color color = m_rgbaStatsReportPlayerColors[ nMarine ];
+			Color color = g_rgbaStatsReportPlayerColors[ nMarine ];
 
 			if ( pPlayer != pCommander )
 			{

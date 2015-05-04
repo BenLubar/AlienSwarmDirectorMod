@@ -17,6 +17,7 @@
 #include "asw_hud_minimap.h"
 #include "hud_element_helper.h"
 #include "SoftLine.h"
+#include "stats_report.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include <tier0/memdbgon.h>
@@ -518,8 +519,10 @@ void ObjectiveMapDrawingPanel::Paint()
 				vgui::surface()->DrawSetTexture(pMinimap->m_nWhiteTexture);
 				vgui::Vertex_t start, end;		
 
+				const Color &playerColor = g_rgbaStatsReportPlayerColors[pMinimap->m_MapLines[i].player_index];
+
 				// draw main line
-				vgui::surface()->DrawSetColor(Color(DRAWING_LINE_R, DRAWING_LINE_G, DRAWING_LINE_B, 0.5f * alpha));
+				vgui::surface()->DrawSetColor(Color(playerColor.r(), playerColor.g(), playerColor.b(), 0.5f * alpha));
 
 				//vgui::surface()->DrawTexturedRect(x, y, x2, y2);
 				//surface()->DrawLine(x,y,x2,y2);
@@ -528,7 +531,7 @@ void ObjectiveMapDrawingPanel::Paint()
 				SoftLine::DrawPolygonLine(start, end);
 				
 				// draw translucent ones around it to give it some softness	
-				vgui::surface()->DrawSetColor(Color(DRAWING_LINE_R, DRAWING_LINE_G, DRAWING_LINE_B, 0.5f * alpha));
+				vgui::surface()->DrawSetColor(Color(playerColor.r(), playerColor.g(), playerColor.b(), 0.5f * alpha));
 
 				start.Init(Vector2D(x - 0.50f,y - 0.50f), Vector2D(0,0));
 				end.Init(Vector2D(x2 - 0.50f,y2 - 0.50f), Vector2D(1,1));

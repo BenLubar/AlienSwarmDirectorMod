@@ -886,6 +886,8 @@ void ClientModeASW::FireGameEvent( IGameEvent *event )
 	else if ( Q_strcmp( "game_newmap", eventname ) == 0 )
 	{
 		engine->ClientCmd("exec newmapsettings\n");
+
+		engine->ClientCmd_Unrestricted(VarArgs("exec configloader/maps/%s.cfg\n", engine->GetLevelNameShort()));
 	}
 
 	if ( !Q_strcmp( "achievement_earned", eventname ) )

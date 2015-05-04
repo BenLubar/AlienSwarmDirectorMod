@@ -25,6 +25,7 @@ class CAvatarImagePanel;
 #define ASW_STATS_REPORT_MAX_PLAYERS ASW_MAX_MARINE_RESOURCES
 #define ASW_STATS_REPORT_CATEGORIES 4
 
+extern Color g_rgbaStatsReportPlayerColors[ASW_STATS_REPORT_MAX_PLAYERS];
 
 // shows stats breakdowns
 
@@ -53,7 +54,6 @@ public:
 
 	DebriefTextPage *m_pDebrief;
 
-	Color m_rgbaStatsReportPlayerColors[ ASW_STATS_REPORT_MAX_PLAYERS ];
 	float m_fPlayerNamePosY[ ASW_STATS_REPORT_MAX_PLAYERS ];
 };
 

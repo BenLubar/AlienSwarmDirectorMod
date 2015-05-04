@@ -26,10 +26,6 @@ class CASWHudMinimap;
 #define MAP_LINE_SOLID_TIME 5.0f
 #define MAP_LINE_FADE_TIME 3.0f
 
-#define DRAWING_LINE_R 255
-#define DRAWING_LINE_G 255
-#define DRAWING_LINE_B 0
-
 // a point for the lines drawn by players on the minimap
 class MapLine
 {

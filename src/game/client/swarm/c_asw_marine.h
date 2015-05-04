@@ -279,7 +279,7 @@ public:
 
 	// emote system
 	void TickEmotes(float d);
-	bool TickEmote(float d, bool bEmote, bool& bClientEmote, float& fEmoteTime);
+	bool TickEmote(float d, bool bEmote, bool& bClientEmote, float& fEmoteTime, float& flEmoteStart);
 	CNetworkVar(bool, bEmoteMedic);
 	CNetworkVar(bool, bEmoteAmmo);
 	CNetworkVar(bool, bEmoteSmile);
@@ -292,6 +292,8 @@ public:
 		bClientEmoteGo, bClientEmoteExclaim, bClientEmoteAnimeSmile, bClientEmoteQuestion;
 	float fEmoteMedicTime, fEmoteAmmoTime, fEmoteSmileTime, fEmoteStopTime,
 		fEmoteGoTime, fEmoteExclaimTime, fEmoteAnimeSmileTime, fEmoteQuestionTime;
+	float fEmoteMedicStart, fEmoteAmmoStart, fEmoteSmileStart, fEmoteStopStart,
+		fEmoteGoStart, fEmoteExclaimStart, fEmoteAnimeSmileStart, fEmoteQuestionStart;
 
 	// driving
 	IASW_Client_Vehicle* GetASWVehicle();

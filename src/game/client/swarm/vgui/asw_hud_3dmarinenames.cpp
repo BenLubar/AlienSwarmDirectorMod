@@ -61,6 +61,18 @@ ConVar asw_marine_labels_cursor_maxdist( "asw_marine_labels_cursor_maxdist", "70
 ConVar asw_fast_reload_under_marine( "asw_fast_reload_under_marine", "0", FCVAR_ARCHIVE, "Draw the active reload bar under the marine?" );
 ConVar asw_world_healthbar_class_icon( "asw_world_healthbar_class_icon", "0", FCVAR_NONE, "Show class icon on mouse over" );
 
+ConVar asw_arrows_for_offscreen_teammates("asw_arrows_for_offscreen_teammates", "1", FCVAR_ARCHIVE, "Enables or Disables the arrows which point to teammates which are out of screen", true, 0, true, 1);
+ConVar asw_fast_reload_under_marine_scale("asw_fast_reload_under_marine_scale", "1", FCVAR_ARCHIVE, "Scales the original Fast Reload Bar", true, 1, true, 12);
+ConVar asw_ammo_under_marine("asw_ammo_under_marine", "0", FCVAR_ARCHIVE, "Enable the ammo bar under marines in 3D view.", true, 0, true, 1);
+ConVar asw_magazine_under_marine("asw_magazine_under_marine", "0", FCVAR_ARCHIVE, "Enable an ammo notification on low magazine count.", true, 0, true, 1);
+ConVar asw_magazine_under_marine_offscreen("asw_magazine_under_marine_offscreen", "0", FCVAR_ARCHIVE, "Enable an ammo notification if the marine is offscreen.", true, 0, true, 1);
+ConVar asw_magazine_under_marine_frequency("asw_magazine_under_marine_frequency", "20", FCVAR_ARCHIVE, "Enable an ammo notification on low magazine count.", true, 0.01f, true, 600);
+ConVar asw_magazine_under_marine_recall_time("asw_magazine_under_marine_recall_time", "10", FCVAR_ARCHIVE, "Time the Ammo Call Emote will be remembered and displayed at the left of a marine if enabled", true, 0, true, 60);
+ConVar asw_medic_under_marine("asw_medic_under_marine", "0", FCVAR_ARCHIVE, "Enable a medic notification on low health.", true, 0, true, 1);
+ConVar asw_medic_under_marine_offscreen("asw_medic_under_marine_offscreen", "0", FCVAR_ARCHIVE, "Enable a medic notification if the marine is offscreen.", true, 0, true, 1);
+ConVar asw_medic_under_marine_frequency("asw_medic_under_marine_frequency", "60", FCVAR_ARCHIVE, "Enable a medic notification on low health.", true, 0.01f, true, 600);
+ConVar asw_medic_under_marine_recall_time("asw_medic_under_marine_recall_time", "10", FCVAR_ARCHIVE, "Time the Medic Call Emote will be remembered and displayed at the left of a marine if enabled", true, 0, true, 60);
+
 #define ASW_MAX_MARINE_NAMES 8
 #define ASW_MIN_MARINE_ARROW_SIZE 20
 #define ASW_MAX_MARINE_ARROW_SIZE 60
@@ -466,22 +478,22 @@ static Vector ComputeClippedMarineLabelCoordinates( float xPos, float yPos,
 }
 
 
-void CASWHud3DMarineNames::PaintMarineLabel( int iMyMarineNum, C_ASW_Marine * RESTRICT pMarine, C_ASW_Marine_Resource * RESTRICT pMR, bool bLocal )
-{	
-	VPROF( "CASWHud3DMarineNames::PaintMarineLabel" );
+void CASWHud3DMarineNames::PaintMarineLabel(int iMyMarineNum, C_ASW_Marine * RESTRICT pMarine, C_ASW_Marine_Resource * RESTRICT pMR, bool bLocal)
+{
+	VPROF("CASWHud3DMarineNames::PaintMarineLabel");
 
-	if ( !pMarine )
+	if (!pMarine)
 		return;
 
 	C_ASW_Player *pLocal = C_ASW_Player::GetLocalASWPlayer();
-	if ( !pLocal )
+	if (!pLocal)
 		return;
-	
-	// Verify we have input.
-	Assert( ASWInput() != NULL );
 
-	wchar_t wszMarineName[ ASW_MAX_PLAYER_NAME_LENGTH_3D ];
-	pMR->GetDisplayName( wszMarineName, sizeof( wszMarineName ) );
+	// Verify we have input.
+	Assert(ASWInput() != NULL);
+
+	wchar_t wszMarineName[ASW_MAX_PLAYER_NAME_LENGTH_3D];
+	pMR->GetDisplayName(wszMarineName, sizeof(wszMarineName));
 
 	/*
 	// make sure name is not too long
@@ -490,36 +502,36 @@ void CASWHud3DMarineNames::PaintMarineLabel( int iMyMarineNum, C_ASW_Marine * RE
 	*/
 
 	CASW_Marine_Profile *pProfile = pMarine->GetMarineProfile();
-	if ( !pProfile )
+	if (!pProfile)
 		return;
 
 	const wchar_t *pwszMarineProfileName = NULL;
-	
-	if ( asw_player_names.GetInt() == 2 && pMarine->IsInhabited() && gpGlobals->maxClients > 1 )
+
+	if (asw_player_names.GetInt() == 2 && pMarine->IsInhabited() && gpGlobals->maxClients > 1)
 	{
-		pwszMarineProfileName = g_pVGuiLocalize->Find( pProfile->GetShortName() );
+		pwszMarineProfileName = g_pVGuiLocalize->Find(pProfile->GetShortName());
 	}
 
-	if ( pMarine->entindex() == ASWInput()->ASW_GetOrderingMarine() )
+	if (pMarine->entindex() == ASWInput()->ASW_GetOrderingMarine())
 	{
-		PaintBoxAround( pMarine, 6 );
+		PaintBoxAround(pMarine, 6);
 	}
-	
+
 	// find the color to use
-	Color nMarineTextColor(255,255,255,255);
-	if ( bLocal )	// yellow if currently selected marine
+	Color nMarineTextColor(255, 255, 255, 255);
+	if (bLocal)	// yellow if currently selected marine
 	{
 		nMarineTextColor[2] = 0;
 	}
-	else if ( pMR->IsInhabited() )		// other player's inhabited marines go blue
+	else if (pMR->IsInhabited())		// other player's inhabited marines go blue
 	{
-		nMarineTextColor.SetColor( 0, 144, 188, 255 );
+		nMarineTextColor.SetColor(0, 144, 188, 255);
 	}
 
 	// if marine is injured pulse it red	
-	float diffr = ( 255.0f - nMarineTextColor.r() ) * pMarine->m_fRedNamePulse;
-	float diffg = (   0.0f - nMarineTextColor.g() ) * pMarine->m_fRedNamePulse;
-	float diffb = (   0.0f - nMarineTextColor.b() ) * pMarine->m_fRedNamePulse;
+	float diffr = (255.0f - nMarineTextColor.r()) * pMarine->m_fRedNamePulse;
+	float diffg = (0.0f - nMarineTextColor.g()) * pMarine->m_fRedNamePulse;
+	float diffb = (0.0f - nMarineTextColor.b()) * pMarine->m_fRedNamePulse;
 	nMarineTextColor[0] += diffr;
 	nMarineTextColor[1] += diffg;
 	nMarineTextColor[2] += diffb;
@@ -529,12 +541,12 @@ void CASWHud3DMarineNames::PaintMarineLabel( int iMyMarineNum, C_ASW_Marine * RE
 	Vector vMarinePos = pMarine->GetRenderOrigin();
 	//bool bMarineIsKnockedOut = pMarine->m_hKnockedOutRagdoll.Get() || pMarine->IsIncap() ;
 	bool bMarineIsKnockedOut = false;
-	if ( pMarine->IsInVehicle() && pMarine->GetASWVehicle() && pMarine->GetASWVehicle()->GetEntity() )
+	if (pMarine->IsInVehicle() && pMarine->GetASWVehicle() && pMarine->GetASWVehicle()->GetEntity())
 	{
 		vMarinePos = pMarine->GetASWVehicle()->GetEntity()->GetAbsOrigin();
-		if ( gpGlobals->maxClients>1 && pMarine->GetClientsideVehicle() && pMarine->GetClientsideVehicle()->GetEntity() )
+		if (gpGlobals->maxClients > 1 && pMarine->GetClientsideVehicle() && pMarine->GetClientsideVehicle()->GetEntity())
 		{
-			vMarinePos = pMarine->GetClientsideVehicle()->GetEntity()->GetAbsOrigin();		
+			vMarinePos = pMarine->GetClientsideVehicle()->GetEntity()->GetAbsOrigin();
 		}
 	}
 	//if ( bMarineIsKnockedOut )
@@ -546,58 +558,60 @@ void CASWHud3DMarineNames::PaintMarineLabel( int iMyMarineNum, C_ASW_Marine * RE
 	Vector vecCameraFocus;
 	QAngle ang;
 	int omx, omy;
-	ASWInput()->ASW_GetCameraLocation( pLocal, vecCameraFocus, ang, omx, omy, false);
+	ASWInput()->ASW_GetCameraLocation(pLocal, vecCameraFocus, ang, omx, omy, false);
 
-	float flMarineDistanceFromCamera = vecCameraFocus.DistTo( vMarinePos );
+	float flMarineDistanceFromCamera = vecCameraFocus.DistTo(vMarinePos);
 
 	// if marine is behind the player, convert it to a shortened vector, so it doesn't go behind the plane of the camera
-	if ( !!debugoverlay->ScreenPosition( vMarinePos - Vector( 0.0f, 10.0f, 0.0f ), screenPos ) )
+	if (!!debugoverlay->ScreenPosition(vMarinePos - Vector(0.0f, 10.0f, 0.0f), screenPos))
 	{
 		Vector offset;
-		AngleVectors( ang, &offset );
-		if ( ::input->CAM_IsThirdPerson() )
+		AngleVectors(ang, &offset);
+		if (::input->CAM_IsThirdPerson())
 		{
 			offset *= ASWInput()->ASW_GetCameraDist();
 		}
 
 		vecCameraFocus += offset;
 		Vector dir = vMarinePos - vecCameraFocus;
-		VectorNormalize( dir );
+		VectorNormalize(dir);
 		vMarinePos = vecCameraFocus + dir * 500;
 	}
 
-	if ( !debugoverlay->ScreenPosition( vMarinePos - Vector(0,10,0), screenPos ) )
+	if (!debugoverlay->ScreenPosition(vMarinePos - Vector(0, 10, 0), screenPos))
 	{
-		const int nMaxX = ScreenWidth() - YRES( 50 );
-		const int nMaxY = ScreenHeight() - YRES( 75 );
-		const int nMinX = 0 + YRES( 50 );
-		const int nMinY = 0 + YRES( 25 );
+		const int nMaxX = ScreenWidth() - YRES(50);
+		const int nMaxY = ScreenHeight() - YRES(75);
+		const int nMinX = 0 + YRES(50);
+		const int nMinY = 0 + YRES(25);
 		// we're going to draw a box. The box contains some combination of these elements:
 		/*
 		+-----+
 		| _   |
-		||\   | 
+		||\   |
 		|  \  |
 		|   \ |
 		+-----+
 		+-------------+
 		| MARINE NAME |
-		+-------------+
-		[ health bar  ]
+		medic +-------------+ ammo
+		call [ health bar  ] call
+		[ ammo bar    ]
 		[ use bar     ]
+		[ reload bar  ]
 		+-------------+
 		*/
 		// the presence or absence and size of these elements depends on a variety of factors.
 		// first, is the marine on screen?
-		bool bMarineOnScreen = ( screenPos.x  >= 0 ) && ( screenPos.x <= nMaxX ) &&
-			( screenPos.y  >= 0 ) && ( screenPos.y <= nMaxY ) ;
+		bool bMarineOnScreen = (screenPos.x >= 0) && (screenPos.x <= nMaxX) &&
+			(screenPos.y >= 0) && (screenPos.y <= nMaxY);
 
 		// COPYPASTA: if the marine isn't on screen, compute an appropriate screen point to use
 		// (don't just clip to screen coords, which makes direction change inappropriately)
-		if ( !bMarineOnScreen )
+		if (!bMarineOnScreen && asw_arrows_for_offscreen_teammates.GetBool())
 		{
-			screenPos = ComputeClippedMarineLabelCoordinates( screenPos.x, screenPos.y,
-				nMinX, nMaxX, nMinY, nMaxY );
+			screenPos = ComputeClippedMarineLabelCoordinates(screenPos.x, screenPos.y,
+				nMinX, nMaxX, nMinY, nMaxY);
 		}
 
 		// compute the size of the arrow. it draws only if a marine is off the screen.
@@ -605,24 +619,24 @@ void CASWHud3DMarineNames::PaintMarineLabel( int iMyMarineNum, C_ASW_Marine * RE
 		// 6/57.6.  It is encapsulated in a square.
 		int iArrowSize = 0;
 
-		if ( !bMarineOnScreen )
+		if (!bMarineOnScreen)
 		{
 			int iArrowScale = ASW_MAX_MARINE_ARROW_SIZE;
 
-			if ( !bMarineIsKnockedOut )
+			if (!bMarineIsKnockedOut)
 			{
 				float flInterpArrowScale = 0.0f;
 
-				if ( flMarineDistanceFromCamera > ASW_MAX_MARINE_OFFSCREEN_END_DISTANCE )
+				if (flMarineDistanceFromCamera > ASW_MAX_MARINE_OFFSCREEN_END_DISTANCE)
 				{
 					flInterpArrowScale = 1.0f;
 				}
-				else if ( flMarineDistanceFromCamera > ASW_MAX_MARINE_OFFSCREEN_START_DISTANCE )
+				else if (flMarineDistanceFromCamera > ASW_MAX_MARINE_OFFSCREEN_START_DISTANCE)
 				{
-					flInterpArrowScale = ( flMarineDistanceFromCamera - ASW_MAX_MARINE_OFFSCREEN_START_DISTANCE ) / ( ASW_MAX_MARINE_OFFSCREEN_END_DISTANCE - ASW_MAX_MARINE_OFFSCREEN_START_DISTANCE );
+					flInterpArrowScale = (flMarineDistanceFromCamera - ASW_MAX_MARINE_OFFSCREEN_START_DISTANCE) / (ASW_MAX_MARINE_OFFSCREEN_END_DISTANCE - ASW_MAX_MARINE_OFFSCREEN_START_DISTANCE);
 				}
 
-				iArrowScale = ASW_MIN_MARINE_ARROW_SIZE + flInterpArrowScale * ( ASW_MAX_MARINE_ARROW_SIZE - ASW_MIN_MARINE_ARROW_SIZE );
+				iArrowScale = ASW_MIN_MARINE_ARROW_SIZE + flInterpArrowScale * (ASW_MAX_MARINE_ARROW_SIZE - ASW_MIN_MARINE_ARROW_SIZE);
 			}
 
 			iArrowSize = iArrowScale * nMaxY / 576;
@@ -630,28 +644,30 @@ void CASWHud3DMarineNames::PaintMarineLabel( int iMyMarineNum, C_ASW_Marine * RE
 		}
 
 		// compute the size of the health bar.
-		int nHealthBarWidth  = 0;
+		int nHealthBarWidth = 0;
 		int nHealthBarHeight = 0;
+		int iMarineTargetIndex = ASWGameResource()->GetMarineCrosshairCache()->FindIndexForMarine(pMarine);
+		bool bShowMarineBars = iMarineTargetIndex >= 0 && ASWGameResource()->GetMarineCrosshairCache()->GetElement(iMarineTargetIndex).m_fDistToCursor < asw_marine_labels_cursor_maxdist.GetFloat();
 
-		if ( asw_world_healthbars.GetBool() && bMarineOnScreen )		//  || !bMarineOnScreen
+		if (asw_world_healthbars.GetBool() && bMarineOnScreen)		//  || !bMarineOnScreen
 		{
 			// only draw health bars for marines near the cursor or their health is low/healing
-			int idx = ASWGameResource()->GetMarineCrosshairCache()->FindIndexForMarine( pMarine );
+			int idx = ASWGameResource()->GetMarineCrosshairCache()->FindIndexForMarine(pMarine);
 			if ( //!bMarineOnScreen ||
-				 ( idx >= 0 && ASWGameResource()->GetMarineCrosshairCache()->GetElement(idx).m_fDistToCursor < asw_marine_labels_cursor_maxdist.GetFloat() ) || 
-				 pMR->GetHealthPercent() < 0.4f || pMR->IsInfested() || pMarine->m_fLastHealTime + 1.0f > gpGlobals->curtime )
+				(idx >= 0 && ASWGameResource()->GetMarineCrosshairCache()->GetElement(idx).m_fDistToCursor < asw_marine_labels_cursor_maxdist.GetFloat()) ||
+				pMR->GetHealthPercent() < 0.4f || pMR->IsInfested() || pMarine->m_fLastHealTime + 1.0f > gpGlobals->curtime)
 			{
-				nHealthBarWidth  = GetHealthBarMaxWidth( bMarineIsKnockedOut );
-				nHealthBarHeight = MAX( GetClassIconSize( bMarineOnScreen ), GetHealthBarMaxHeight( bMarineIsKnockedOut ) );
+				nHealthBarWidth = GetHealthBarMaxWidth(bMarineIsKnockedOut);
+				nHealthBarHeight = MAX(GetClassIconSize(bMarineOnScreen), GetHealthBarMaxHeight(bMarineIsKnockedOut));
 			}
 		}
 
 		// compute the size of the using bar.
-		int nUsingBarWidth  = 0;
-		int nUsingBarHeight = 0;  
-		if ( asw_world_usingbars.GetBool() && bMarineOnScreen && !bLocal && GetUsingFraction( pMarine ) > 0 )
+		int nUsingBarWidth = 0;
+		int nUsingBarHeight = 0;
+		if (asw_world_usingbars.GetBool() && bMarineOnScreen && !bLocal && GetUsingFraction(pMarine) > 0)
 		{
-			nUsingBarWidth  = GetUsingBarMaxWidth();
+			nUsingBarWidth = GetUsingBarMaxWidth();
 			nUsingBarHeight = GetUsingBarMaxHeight();
 		}
 
@@ -660,13 +676,13 @@ void CASWHud3DMarineNames::PaintMarineLabel( int iMyMarineNum, C_ASW_Marine * RE
 
 		int nMarineNameWidth = 0, nMarineNameHeight = 0;
 		int nMarineProfileNameWidth = 0, nMarineProfileNameHeight = 0;
-		if ( asw_marine_names.GetBool() )
+		if (asw_marine_names.GetBool())
 		{
-			g_pMatSystemSurface->GetTextSize( nMarineFont, wszMarineName, nMarineNameWidth, nMarineNameHeight );
+			g_pMatSystemSurface->GetTextSize(nMarineFont, wszMarineName, nMarineNameWidth, nMarineNameHeight);
 		}
-		if ( pwszMarineProfileName && bMarineOnScreen )
+		if (pwszMarineProfileName && bMarineOnScreen)
 		{
-			g_pMatSystemSurface->GetTextSize( m_hSmallMarineNameFont, pwszMarineProfileName, nMarineProfileNameWidth, nMarineProfileNameHeight );
+			g_pMatSystemSurface->GetTextSize(m_hSmallMarineNameFont, pwszMarineProfileName, nMarineProfileNameWidth, nMarineProfileNameHeight);
 		}
 
 		// this is the vertical padding between the arrow and the marine name, or the marine name and the player name
@@ -674,64 +690,64 @@ void CASWHud3DMarineNames::PaintMarineLabel( int iMyMarineNum, C_ASW_Marine * RE
 
 		// compute the total height of the label box
 #define PAD(x) ((x) + isel((x), nLineSpacing, 0))
-		int nTotalBoxHeight = PAD( iArrowSize ) +
-			PAD( nHealthBarHeight ) + 
-			PAD( nUsingBarHeight ) + 
-			nMarineNameHeight + 
+		int nTotalBoxHeight = PAD(iArrowSize) +
+			PAD(nHealthBarHeight) +
+			PAD(nUsingBarHeight) +
+			nMarineNameHeight +
 			nMarineProfileNameHeight;
-		int nTotalBoxWidth = MAX( nMarineNameWidth, MAX( iArrowSize, nHealthBarWidth ) );
-		nTotalBoxWidth = MAX( nMarineProfileNameWidth, nTotalBoxWidth );
+		int nTotalBoxWidth = MAX(nMarineNameWidth, MAX(iArrowSize, nHealthBarWidth));
+		nTotalBoxWidth = MAX(nMarineProfileNameWidth, nTotalBoxWidth);
 #undef PAD
 
 		// round the figures *UP* to the nearest multiple of 2
 		nTotalBoxHeight = RoundUpToPowerOfTwo<1>(nTotalBoxHeight); // ( nTotalBoxHeight & 1 ) ? nTotalBoxHeight + 1 : nTotalBoxHeight;
-		nTotalBoxWidth  = RoundUpToPowerOfTwo<1>(nTotalBoxWidth);  // ( nTotalBoxWidth  & 1 ) ? nTotalBoxWidth  + 1 : nTotalBoxWidth ;
-		Assert( nTotalBoxHeight < nMaxY );
-		Assert( nTotalBoxWidth < nMaxX );
+		nTotalBoxWidth = RoundUpToPowerOfTwo<1>(nTotalBoxWidth);  // ( nTotalBoxWidth  & 1 ) ? nTotalBoxWidth  + 1 : nTotalBoxWidth ;
+		Assert(nTotalBoxHeight < nMaxY);
+		Assert(nTotalBoxWidth < nMaxX);
 
 		// now, determine where to draw the box. we would like it to be centered on the marine,
 		// but if necessary we'll push it in from the sides 
 		int nBoxCenterX = screenPos.x;
-		int nBoxCenterY = screenPos.y + nTotalBoxHeight/2;
+		int nBoxCenterY = screenPos.y + nTotalBoxHeight / 2;
 
 		// if off to the left, push to the right
-		if ( nBoxCenterX - ( nTotalBoxWidth / 2 ) < nMinX )
+		if (nBoxCenterX - (nTotalBoxWidth / 2) < nMinX)
 		{
-			nBoxCenterX -= nBoxCenterX - ( nTotalBoxWidth / 2 ) - nMinX;
+			nBoxCenterX -= nBoxCenterX - (nTotalBoxWidth / 2) - nMinX;
 		}
-		else if ( nBoxCenterX + ( nTotalBoxWidth / 2 ) >= nMaxX )
+		else if (nBoxCenterX + (nTotalBoxWidth / 2) >= nMaxX)
 			// if off to the right, push to the left
 		{
-			nBoxCenterX -= nBoxCenterX + ( nTotalBoxWidth / 2 ) - nMaxX;
+			nBoxCenterX -= nBoxCenterX + (nTotalBoxWidth / 2) - nMaxX;
 		}
 
 		// if too high, push down
-		if ( nBoxCenterY - ( nTotalBoxHeight / 2 ) < nMinY )
+		if (nBoxCenterY - (nTotalBoxHeight / 2) < nMinY)
 		{
-			nBoxCenterY -= nBoxCenterY - ( nTotalBoxHeight / 2 ) - nMinY;
+			nBoxCenterY -= nBoxCenterY - (nTotalBoxHeight / 2) - nMinY;
 		}
-		else if ( nBoxCenterY + ( nTotalBoxHeight / 2 ) > nMaxY )
+		else if (nBoxCenterY + (nTotalBoxHeight / 2) > nMaxY)
 		{	// if too high, push up
-			nBoxCenterY -= nBoxCenterY + ( nTotalBoxHeight / 2 ) - nMaxY;
+			nBoxCenterY -= nBoxCenterY + (nTotalBoxHeight / 2) - nMaxY;
 		}
 
 		// compute the top left, top right, bot left, and bot right coords for convenience
 		// int nBoxLeftExtent  = nBoxCenterX - ( nTotalBoxWidth  / 2 );
 		// int nBoxRightExtent = nBoxCenterX + ( nTotalBoxWidth  / 2 );
-		int nBoxTopExtent   = nBoxCenterY - ( nTotalBoxHeight / 2 );
+		int nBoxTopExtent = nBoxCenterY - (nTotalBoxHeight / 2);
 		// int nBoxBotExtent   = nBoxCenterY + ( nTotalBoxHeight / 2 );
 
 		/////////////////////////////// 
 		// now draw from top to bottom
 		///////////////////////////////
 		int nCursorY = nBoxTopExtent;
-		if ( iArrowSize > 0 )
+		if (iArrowSize > 0)
 		{
 			int iArrowHalfSize = iArrowSize / 2;
 			// draw a red pointing, potentially blinking, arrow
 			Vector vecFacing(screenPos.x - (ScreenWidth() * 0.5f), screenPos.y - (ScreenHeight() * 0.5f), 0);
 			float fFacingYaw = -UTIL_VecToYaw(vecFacing);
-			Vector2D vArrowCenter( nBoxCenterX , nCursorY + iArrowHalfSize );
+			Vector2D vArrowCenter(nBoxCenterX, nCursorY + iArrowHalfSize);
 
 			Vector vecCornerTL(-iArrowHalfSize, -iArrowHalfSize, 0);
 			Vector vecCornerTR(iArrowHalfSize, -iArrowHalfSize, 0);
@@ -747,112 +763,187 @@ void CASWHud3DMarineNames::PaintMarineLabel( int iMyMarineNum, C_ASW_Marine * RE
 			VectorRotate(vecCornerBL, angFacing, vecCornerBL_rotated);
 
 			// if the pointee marine is KO'd, make the arrow blink.
-			if ( bMarineIsKnockedOut )
+			if (bMarineIsKnockedOut)
 			{
-				surface()->DrawSetColor( fmod( gpGlobals->curtime , 0.5f ) <= 0.25f ? Color(255,0,0,255) : Color(0,0,0,0) );
+				surface()->DrawSetColor(fmod(gpGlobals->curtime, 0.5f) <= 0.25f ? Color(255, 0, 0, 255) : Color(0, 0, 0, 0));
 			}
-			else 
+			else
 			{
-				surface()->DrawSetColor( Color(131,151,160,255) );
+				surface()->DrawSetColor(Color(131, 151, 160, 255));
 			}
 
 			surface()->DrawSetTexture(m_nMarinePointerTexture);
 
-			Vertex_t points[4] = 
-			{ 
-				Vertex_t( Vector2D(vArrowCenter.x + vecCornerTL_rotated.x, vArrowCenter.y + vecCornerTL_rotated.y), 
-				Vector2D(0,0) ), 
-				Vertex_t( Vector2D(vArrowCenter.x + vecCornerTR_rotated.x, vArrowCenter.y + vecCornerTR_rotated.y), 
-				Vector2D(1,0) ), 
-				Vertex_t( Vector2D(vArrowCenter.x + vecCornerBR_rotated.x, vArrowCenter.y + vecCornerBR_rotated.y), 
-				Vector2D(1,1) ), 
-				Vertex_t( Vector2D(vArrowCenter.x + vecCornerBL_rotated.x, vArrowCenter.y + vecCornerBL_rotated.y), 
-				Vector2D(0,1) ) 
-			}; 
-			surface()->DrawTexturedPolygon( 4, points );
+			Vertex_t points[4] =
+			{
+				Vertex_t(Vector2D(vArrowCenter.x + vecCornerTL_rotated.x, vArrowCenter.y + vecCornerTL_rotated.y),
+				Vector2D(0, 0)),
+				Vertex_t(Vector2D(vArrowCenter.x + vecCornerTR_rotated.x, vArrowCenter.y + vecCornerTR_rotated.y),
+				Vector2D(1, 0)),
+				Vertex_t(Vector2D(vArrowCenter.x + vecCornerBR_rotated.x, vArrowCenter.y + vecCornerBR_rotated.y),
+				Vector2D(1, 1)),
+				Vertex_t(Vector2D(vArrowCenter.x + vecCornerBL_rotated.x, vArrowCenter.y + vecCornerBL_rotated.y),
+				Vector2D(0, 1))
+			};
+			surface()->DrawTexturedPolygon(4, points);
 
 			nCursorY += iArrowSize + nLineSpacing;
 		}
 
 		// draw the marine name
-		if ( asw_marine_names.GetBool() )
+		if (asw_marine_names.GetBool())
 		{
-			Assert( nMarineNameWidth > 0 );
+			Assert(nMarineNameWidth > 0);
 			{
-				int nTextPosX = nBoxCenterX - ( nMarineNameWidth / 2 ) ;	// center it on the x
-				int nNameLength = Q_wcslen( wszMarineName );
+				int nTextPosX = nBoxCenterX - (nMarineNameWidth / 2);	// center it on the x
+				int nNameLength = Q_wcslen(wszMarineName);
 
 				// drop shadow
-				vgui::surface()->DrawSetTextFont( nMarineFont );
-				vgui::surface()->DrawSetTextColor( 0, 0, 0, 200 );
-				vgui::surface()->DrawSetTextPos( nTextPosX+1, nCursorY+1 );
-				vgui::surface()->DrawPrintText( wszMarineName, nNameLength );
+				vgui::surface()->DrawSetTextFont(nMarineFont);
+				vgui::surface()->DrawSetTextColor(0, 0, 0, 200);
+				vgui::surface()->DrawSetTextPos(nTextPosX + 1, nCursorY + 1);
+				vgui::surface()->DrawPrintText(wszMarineName, nNameLength);
 
 				// actual text
-				vgui::surface()->DrawSetTextColor( nMarineTextColor.r(), nMarineTextColor.g(), nMarineTextColor.b(), 200 );
-				vgui::surface()->DrawSetTextPos( nTextPosX, nCursorY );
-				vgui::surface()->DrawPrintText( wszMarineName, nNameLength );
+				vgui::surface()->DrawSetTextColor(nMarineTextColor.r(), nMarineTextColor.g(), nMarineTextColor.b(), 200);
+				vgui::surface()->DrawSetTextPos(nTextPosX, nCursorY);
+				vgui::surface()->DrawPrintText(wszMarineName, nNameLength);
 
 				// advance cursor
-				nCursorY += nMarineNameHeight + MAX( nLineSpacing, YRES(2) );
+				nCursorY += nMarineNameHeight + MAX(nLineSpacing, YRES(2));
 			}
-			if ( pwszMarineProfileName && bMarineOnScreen )
+			if (pwszMarineProfileName && bMarineOnScreen)
 			{
-				int nTextPosX = nBoxCenterX - ( nMarineProfileNameWidth / 2 ) ;	// center it on the x
-				int nNameLength = Q_wcslen( pwszMarineProfileName );
+				int nTextPosX = nBoxCenterX - (nMarineProfileNameWidth / 2);	// center it on the x
+				int nNameLength = Q_wcslen(pwszMarineProfileName);
 
 				// drop shadow
-				vgui::surface()->DrawSetTextFont( m_hSmallMarineNameFont );
-				vgui::surface()->DrawSetTextColor( 0, 0, 0, 200 );
-				vgui::surface()->DrawSetTextPos( nTextPosX+1, nCursorY+1 );
-				vgui::surface()->DrawPrintText( pwszMarineProfileName, nNameLength );
+				vgui::surface()->DrawSetTextFont(m_hSmallMarineNameFont);
+				vgui::surface()->DrawSetTextColor(0, 0, 0, 200);
+				vgui::surface()->DrawSetTextPos(nTextPosX + 1, nCursorY + 1);
+				vgui::surface()->DrawPrintText(pwszMarineProfileName, nNameLength);
 
 				// actual text
-				vgui::surface()->DrawSetTextColor( nMarineTextColor.r(), nMarineTextColor.g(), nMarineTextColor.b(), 200 );
-				vgui::surface()->DrawSetTextPos( nTextPosX, nCursorY );
-				vgui::surface()->DrawPrintText( pwszMarineProfileName, nNameLength );
+				vgui::surface()->DrawSetTextColor(nMarineTextColor.r(), nMarineTextColor.g(), nMarineTextColor.b(), 200);
+				vgui::surface()->DrawSetTextPos(nTextPosX, nCursorY);
+				vgui::surface()->DrawPrintText(pwszMarineProfileName, nNameLength);
 
 				// advance cursor
-				nCursorY += nMarineProfileNameHeight + MAX( nLineSpacing, YRES(2) );
+				nCursorY += nMarineProfileNameHeight + MAX(nLineSpacing, YRES(2));
 			}
 		}
 
 		// draw the talk icon to the left of the name
-		if ( !asw_voice_side_icon.GetBool() )
+		if (!asw_voice_side_icon.GetBool())
 		{
 			int nNameWidth = nMarineNameWidth;
 			int nNameHeight = nMarineNameHeight;
-			PaintTalkingIcon( pMarine, nBoxCenterX - (nNameWidth/2) - (GetTalkingIconSize() + YRES(2)), nCursorY -nNameHeight - (GetTalkingIconSize()-nNameHeight) );
+			PaintTalkingIcon(pMarine, nBoxCenterX - (nNameWidth / 2) - (GetTalkingIconSize() + YRES(2)), nCursorY - nNameHeight - (GetTalkingIconSize() - nNameHeight));
 		}
 
 		// draw the health bar
-		if ( nHealthBarHeight > 0 )
+		if (bShowMarineBars && bMarineOnScreen)
 		{
-			if ( GetClassIconSize( bMarineOnScreen ) <= 0 )
+			if (GetClassIconSize(bMarineOnScreen) <= 0)
 				nCursorY += YRES(2);
 
-			PaintHealthBar( pMarine, nBoxCenterX, nCursorY, bMarineOnScreen );
-			nCursorY += nHealthBarHeight + nLineSpacing;
+			PaintHealthBar(pMarine, nBoxCenterX, nCursorY, bMarineOnScreen);
 		}
 
 		C_ASW_Weapon *pWeapon = pMarine->GetActiveASWWeapon();
-		if ( !pWeapon )
+		if (!pWeapon)
 			return;
 
-		// draw the reload bar
-		if ( bLocal && pWeapon && pWeapon->IsReloading() && asw_fast_reload_enabled.GetBool() && asw_fast_reload_under_marine.GetBool() )
+		// draw ammo bar
+		if (!bMarineIsKnockedOut && bShowMarineBars && bMarineOnScreen && pWeapon && asw_ammo_under_marine.GetBool())
 		{
-			PaintReloadBar( pWeapon, nBoxCenterX, nCursorY );
 			nCursorY += nHealthBarHeight + nLineSpacing;
+			PaintAmmoBar(pMR->GetAmmoPercent(), nBoxCenterX, nCursorY);
 		}
 
 		// draw the using bar
-		if ( nUsingBarHeight > 0 )
+		if (!bMarineIsKnockedOut && bShowMarineBars && bMarineOnScreen)
 		{
-			PaintUsingBar( pMarine, nBoxCenterX, nCursorY );
-			nCursorY += nUsingBarHeight + nLineSpacing;
+			nCursorY += nHealthBarHeight + nLineSpacing;
+			PaintUsingBar(pMarine, nBoxCenterX, nCursorY);
 		}
 
+		// draw the reload bar
+		if (bLocal && pWeapon && pWeapon->IsReloading() && asw_fast_reload_enabled.GetBool() && asw_fast_reload_under_marine.GetBool())
+		{
+			nCursorY += nHealthBarHeight + nLineSpacing;
+			PaintReloadBar(pWeapon, nBoxCenterX, nCursorY);
+		}
+
+		// medic sign left to the marine on low hp
+		if (!bMarineIsKnockedOut && (bMarineOnScreen || asw_medic_under_marine_offscreen.GetBool()) && asw_medic_under_marine.GetFloat() > 0 && (pMarine->GetHealth() <= pMarine->GetMaxHealth() * asw_medic_under_marine.GetFloat() || pMarine->fEmoteMedicStart + asw_medic_under_marine_recall_time.GetFloat() > gpGlobals->curtime))
+		{
+			// the icons size, squared box
+			const int iIconSize = 48;
+
+			// iteratie time offset storage
+			while (gpGlobals->curtime > m_flUnderMarineMedicLastTime + 2 * asw_medic_under_marine_frequency.GetFloat())
+			{
+				m_flUnderMarineMedicLastTime += 2 * asw_medic_under_marine_frequency.GetFloat();
+			}
+
+			// get the intensity based on the time offset relative to the current time
+			float flIconIntensity = (gpGlobals->curtime - m_flUnderMarineMedicLastTime) / asw_medic_under_marine_frequency.GetFloat();
+
+			// invert intensity if above half the range of frequency within the range of 0 to 2*frequency
+			if (flIconIntensity > 1.0f)
+			{
+				flIconIntensity = 2.0f - flIconIntensity;
+			}
+
+			// draw textures
+			surface()->DrawSetColor(Color(255, 255, 255, flIconIntensity*255.0f));
+			surface()->DrawSetTexture(m_nMedicTexture);
+			int xPos = nBoxCenterX - 0.5f * GetHealthBarMaxWidth(false);
+			Vertex_t points[4] =
+			{
+				Vertex_t(Vector2D(xPos - iIconSize, nCursorY - iIconSize), Vector2D(0, 0)),
+				Vertex_t(Vector2D(xPos, nCursorY - iIconSize), Vector2D(1, 0)),
+				Vertex_t(Vector2D(xPos, nCursorY), Vector2D(1, 1)),
+				Vertex_t(Vector2D(xPos - iIconSize, nCursorY), Vector2D(0, 1))
+			};
+			surface()->DrawTexturedPolygon(4, points);
+		}
+
+		// ammo sign right to the marine on low magazines
+		if (!bMarineIsKnockedOut && (bMarineOnScreen || asw_magazine_under_marine_offscreen.GetBool()) && asw_magazine_under_marine.GetFloat() > 0 && (pMR->GetClipsPercentForHUD() <= asw_magazine_under_marine.GetFloat() || pMarine->fEmoteAmmoStart + asw_magazine_under_marine_recall_time.GetFloat() > gpGlobals->curtime))
+		{
+			// the icons size, squared box
+			const int iIconSize = 48;
+
+			// iteratie time offset storage
+			while (gpGlobals->curtime > m_flUnderMarineMagazineLastTime + 2 * asw_magazine_under_marine_frequency.GetFloat())
+			{
+				m_flUnderMarineMagazineLastTime += 2 * asw_magazine_under_marine_frequency.GetFloat();
+			}
+
+			// get the intensity based on the time offset relative to the current time
+			float flIconIntensity = (gpGlobals->curtime - m_flUnderMarineMagazineLastTime) / asw_magazine_under_marine_frequency.GetFloat();
+
+			// invert intensity if above half the range of 2*frequency
+			if (flIconIntensity > 1.0f)
+			{
+				flIconIntensity = 2.0f - flIconIntensity;
+			}
+
+			// draw textures
+			surface()->DrawSetColor(Color(255, 255, 255, flIconIntensity*255.0f));
+			surface()->DrawSetTexture(m_nAmmoTexture);
+			int xPos = nBoxCenterX + 0.5f * GetHealthBarMaxWidth(false);
+			Vertex_t points[4] =
+			{
+				Vertex_t(Vector2D(xPos, nCursorY - iIconSize), Vector2D(0, 0)),
+				Vertex_t(Vector2D(xPos + iIconSize, nCursorY - iIconSize), Vector2D(1, 0)),
+				Vertex_t(Vector2D(xPos + iIconSize, nCursorY), Vector2D(1, 1)),
+				Vertex_t(Vector2D(xPos, nCursorY), Vector2D(0, 1))
+			};
+			surface()->DrawTexturedPolygon(4, points);
+		}
 	}
 	else 
 	{
@@ -1142,6 +1233,7 @@ bool CASWHud3DMarineNames::PaintReloadBar( C_ASW_Weapon *pWeapon, float xPos, fl
 	int class_icon_size = GetClassIconSize( true );
 	int t = GetHealthBarMaxHeight( false );
 	int w = GetHealthBarMaxWidth( false );
+	w *= asw_fast_reload_under_marine_scale.GetFloat();
 
 	int iGap = YRES( 2 );
 	int overall_width = w + iGap + class_icon_size;
@@ -1237,6 +1329,57 @@ bool CASWHud3DMarineNames::PaintReloadBar( C_ASW_Weapon *pWeapon, float xPos, fl
 	vgui::surface()->DrawTexturedPolygon( 4, delaypoints );
 
 	///////////
+	return true;
+}
+
+bool CASWHud3DMarineNames::PaintAmmoBar(float ammoPercentage, float xPos, float yPos)
+{
+	Color colorBG = Color(32, 32, 32, 255);
+	Color colorBorder = Color(255, 255, 255, 128);
+	Color colorBar = Color(170, 170, 170, 255);
+
+	int class_icon_size = GetClassIconSize(true); //this seems to alwaays return 0
+	int h = GetHealthBarMaxHeight(false); // those commands return the size of Healtbars
+	int w = GetHealthBarMaxWidth(false);  // which is right under every marine
+
+	int iGap = YRES(2);
+	int overall_width = w + iGap + class_icon_size;
+
+	xPos += class_icon_size + iGap;
+	//yPos += (class_icon_size - h) / 2;
+
+	int iYPos = yPos;
+	xPos = xPos - ((overall_width)* 0.5f);
+	int iXPos = xPos;
+
+	// white border
+	vgui::surface()->DrawSetColor(colorBorder);
+	vgui::surface()->DrawFilledRect(iXPos - 1, iYPos - 1, iXPos + w + 1, iYPos + h + 1);
+
+	// draw the BG first
+	vgui::surface()->DrawSetColor(colorBG);
+	vgui::surface()->DrawSetTexture(m_nFastReloadBarBG);
+	vgui::Vertex_t bgpoints[4] =
+	{
+		vgui::Vertex_t(Vector2D(iXPos, iYPos), Vector2D(0, 0)),
+		vgui::Vertex_t(Vector2D(iXPos + w, iYPos), Vector2D(1, 0)),
+		vgui::Vertex_t(Vector2D(iXPos + w, iYPos + h), Vector2D(1, 1)),
+		vgui::Vertex_t(Vector2D(iXPos, iYPos + h), Vector2D(0, 1))
+	};
+	vgui::surface()->DrawTexturedPolygon(4, bgpoints);
+
+	// then the ammo capacity
+	vgui::surface()->DrawSetColor(colorBar);
+	vgui::surface()->DrawSetTexture(m_nHorizHealthBar);
+	vgui::Vertex_t barpoints[4] =
+	{
+		vgui::Vertex_t(Vector2D(iXPos, iYPos), Vector2D(0, 0)),
+		vgui::Vertex_t(Vector2D(iXPos + w*ammoPercentage, iYPos), Vector2D(1, 0)),
+		vgui::Vertex_t(Vector2D(iXPos + w*ammoPercentage, iYPos + h), Vector2D(1, 1)),
+		vgui::Vertex_t(Vector2D(iXPos, iYPos + h), Vector2D(0, 1))
+	};
+	vgui::surface()->DrawTexturedPolygon(4, barpoints);
+
 	return true;
 }
 

@@ -13,6 +13,7 @@
 #include "nb_main_panel.h"
 #include "c_asw_campaign_save.h"
 #include "c_asw_game_resource.h"
+#include "ammodef.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -227,6 +228,26 @@ float C_ASW_Marine_Resource::GetClipsPercent()
 		fResult = 1.0f;
 
 	return fResult;
+}
+
+// From player2k's https://code.google.com/p/better-hud-mod-alienswarm
+float C_ASW_Marine_Resource::GetClipsPercentForHUD()
+{
+	C_ASW_Marine *pMarine = GetMarineEntity();
+	if (!pMarine)
+	{
+		return 0;
+	}
+
+	C_ASW_Weapon *pWeapon = pMarine->GetActiveASWWeapon();
+	if (!pWeapon)
+	{
+		return 0;
+	}
+
+	int iGuns = pMarine->GetNumberOfWeaponsUsingAmmo(pWeapon->GetPrimaryAmmoType());
+	int iMaxAmmo = GetAmmoDef()->MaxCarry(pWeapon->GetPrimaryAmmoType(), pMarine);
+	return (float) pMarine->GetAmmoCount(pWeapon->GetPrimaryAmmoType()) / (float) (iMaxAmmo * iGuns);
 }
 
 float C_ASW_Marine_Resource::GetMedsPercent()

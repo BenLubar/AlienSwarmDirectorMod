@@ -249,6 +249,29 @@ void CNB_Select_Marine_Panel::OnCommand( const char *command )
 					MarkForDeletion();
 					Briefing()->SetChangingWeaponSlot( 0 );
 				}
+
+				CASW_Marine_Profile* pProfile = Briefing()->GetMarineProfileByProfileIndex( nProfileIndex );
+				if ( pProfile )
+				{
+					engine->ClientCmd_Unrestricted(VarArgs("exec configloader/chars/%s\n", pProfile->m_PortraitName));
+					switch (pProfile->GetMarineClass())
+					{
+					case MARINE_CLASS_NCO:
+						engine->ClientCmd_Unrestricted("exec configloader/chars/Officer\n");
+						break;
+					case MARINE_CLASS_SPECIAL_WEAPONS:
+						engine->ClientCmd_Unrestricted("exec configloader/chars/SpecialWeapons\n");
+						break;
+					case MARINE_CLASS_MEDIC:
+						engine->ClientCmd_Unrestricted("exec configloader/chars/Medic\n");
+						break;
+					case MARINE_CLASS_TECH:
+						engine->ClientCmd_Unrestricted("exec configloader/chars/Tech\n");
+						break;
+					default:
+						Assert(0);
+					}
+				}
 			}
 			else
 			{

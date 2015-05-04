@@ -69,6 +69,7 @@ public:
 	float GetHealthPercent();
 	float GetAmmoPercent();
 	float GetClipsPercent();
+	float GetClipsPercentForHUD();
 	bool IsLowAmmo() { return (GetAmmoPercent() <= 0.2f); }
 	
 	float m_fScannerTime;	// if we're a tech marine, this stores the status of our ring for the local player

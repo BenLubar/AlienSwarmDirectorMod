@@ -22,6 +22,8 @@
 
 using namespace vgui;
 
+ConVar asw_stats_reduce("asw_stats_reduce", "0", FCVAR_ARCHIVE, "Show 100+ kills instead of 1234 kills on the debriefing screen.", true, 0, true, 1);
+
 ExperienceStatLine::ExperienceStatLine( Panel *parent, const char *name, CASW_Earned_XP_t XPType ) : vgui::EditablePanel( parent, name )
 {
 	m_XPType = XPType;
@@ -164,7 +166,7 @@ void ExperienceStatLine::InitFor( C_ASW_Player *pPlayer )
 		case ASW_XP_KILLS:
 		{
 			wchar_t num[ 8 ];
-			if ( pPlayer->GetStatNumXP( ASW_XP_KILLS ) > 100 )
+			if ( pPlayer->GetStatNumXP( ASW_XP_KILLS ) > 100 && asw_stats_reduce.GetBool() )
 			{
 				V_snwprintf( num, sizeof( num ), L"100+" );
 			}
@@ -199,7 +201,7 @@ void ExperienceStatLine::InitFor( C_ASW_Player *pPlayer )
 		case ASW_XP_FRIENDLY_FIRE:
 		{
 			wchar_t num[ 8 ];
-			if ( pPlayer->GetStatNumXP( ASW_XP_FRIENDLY_FIRE ) > 100 )
+			if ( pPlayer->GetStatNumXP( ASW_XP_FRIENDLY_FIRE ) > 100 && asw_stats_reduce.GetBool() )
 			{
 				V_snwprintf( num, sizeof( num ), L"100+" );
 			}
@@ -217,7 +219,7 @@ void ExperienceStatLine::InitFor( C_ASW_Player *pPlayer )
 		case ASW_XP_DAMAGE_TAKEN:
 		{
 			wchar_t num[ 8 ];
-			if ( pPlayer->GetStatNumXP( ASW_XP_DAMAGE_TAKEN ) > 100 )
+			if ( pPlayer->GetStatNumXP( ASW_XP_DAMAGE_TAKEN ) > 100 && asw_stats_reduce.GetBool() )
 			{
 				V_snwprintf( num, sizeof( num ), L"100+" );
 			}
@@ -235,7 +237,7 @@ void ExperienceStatLine::InitFor( C_ASW_Player *pPlayer )
 		case ASW_XP_HEALING:
 		{
 			wchar_t num[ 8 ];
-			if ( pPlayer->GetStatNumXP( ASW_XP_HEALING ) > 500 )
+			if ( pPlayer->GetStatNumXP( ASW_XP_HEALING ) > 500 && asw_stats_reduce.GetBool() )
 			{
 				V_snwprintf( num, sizeof( num ), L"500+" );
 			}
@@ -253,7 +255,7 @@ void ExperienceStatLine::InitFor( C_ASW_Player *pPlayer )
 		case ASW_XP_HACKING:
 		{
 			wchar_t num[ 8 ];
-			if ( pPlayer->GetStatNumXP( ASW_XP_HACKING ) > 2 )
+			if ( pPlayer->GetStatNumXP( ASW_XP_HACKING ) > 2 && asw_stats_reduce.GetBool() )
 			{
 				V_snwprintf( num, sizeof( num ), L"2+" );
 			}

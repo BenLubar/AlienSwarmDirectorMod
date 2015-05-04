@@ -40,6 +40,8 @@ using namespace vgui;
 
 #include "ConVar.h"
 
+#include "stats_report.h"
+
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
@@ -1155,15 +1157,17 @@ void CASWHudMinimapLinePanel::Paint()
 				surface()->DrawSetTexture(m_pMap->m_nWhiteTexture);
 				vgui::Vertex_t start, end;				
 
+				const Color &playerColor = g_rgbaStatsReportPlayerColors[m_pMap->m_MapLines[i].player_index];
+
 				// draw main line
-				surface()->DrawSetColor(Color(DRAWING_LINE_R, DRAWING_LINE_G, DRAWING_LINE_B, 0.5f * alpha));
+				surface()->DrawSetColor(Color(playerColor.r(), playerColor.g(), playerColor.b(), 0.5f * alpha));
 				//surface()->DrawLine(x,y,x2,y2);
 				start.Init(Vector2D(x,y), Vector2D(0,0));
 				end.Init(Vector2D(x2,y2), Vector2D(1,1));
 				SoftLine::DrawPolygonLine(start, end);
 				
 				// draw translucent ones around it to give it some softness	
-				surface()->DrawSetColor(Color(DRAWING_LINE_R, DRAWING_LINE_G, DRAWING_LINE_B, 0.5f * alpha));
+				surface()->DrawSetColor(Color(playerColor.r(), playerColor.g(), playerColor.b(), 0.5f * alpha));
 
 				start.Init(Vector2D(x - 0.50f,y - 0.50f), Vector2D(0,0));
 				end.Init(Vector2D(x2 - 0.50f,y2 - 0.50f), Vector2D(1,1));
