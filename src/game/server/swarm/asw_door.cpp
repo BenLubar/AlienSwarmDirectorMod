@@ -47,6 +47,8 @@
 #include "asw_fail_advice.h"
 #include "asw_gamerules.h"
 #include "asw_boomer_blob.h"
+#include "func_asw_fade.h"
+#include "prop_asw_fade.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -525,6 +527,9 @@ public:
 		
 		if ( pEntity )
 		{
+			if ( dynamic_cast<CFunc_ASW_Fade *>( pEntity ) || dynamic_cast<CProp_ASW_Fade *>( pEntity ) )
+				return false;
+
 			if ( !pEntity->ShouldCollide( m_collisionGroup, contentsMask ) )
 				return false;
 			
