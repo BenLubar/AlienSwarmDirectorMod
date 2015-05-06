@@ -10,10 +10,12 @@ IMPLEMENT_CLIENTCLASS_DT(C_Prop_ASW_Fade, DT_Prop_ASW_Fade, CProp_ASW_Fade)
 	RecvPropVector(RECVINFO(m_vecFadeOrigin)),
 END_RECV_TABLE()
 
+extern ConVar asw_fade_duration;
 extern ConVar asw_controls;
 
 C_Prop_ASW_Fade::C_Prop_ASW_Fade()
 {
+	m_flInterpStart = 0;
 	m_bLastControls = true;
 	m_hLastMarine = NULL;
 }
@@ -29,6 +31,8 @@ void C_Prop_ASW_Fade::OnDataChanged(DataUpdateType_t updateType)
 		{
 			SetRenderMode(kRenderTransTexture);
 		}
+		m_bFaded = false;
+		m_nNormalOpacity = GetRenderAlpha();
 	}
 }
 
@@ -47,33 +51,32 @@ void C_Prop_ASW_Fade::ClientThink()
 	{
 		pMarine = pPlayer->GetMarine();
 	}
-	if (!pMarine)
-	{
-		m_hLastMarine = NULL;
-		return;
-	}
 
-	byte target = m_nFadeOpacity;
-	if (!asw_controls.GetBool() || pMarine->GetAbsOrigin().z > m_vecFadeOrigin.z)
+	bool bFade = asw_controls.GetBool() && pMarine && pMarine->GetAbsOrigin().z <= m_vecFadeOrigin.z;
+	byte target = bFade ? m_nFadeOpacity : m_nNormalOpacity;
+	byte prev = bFade ? m_nNormalOpacity : m_nFadeOpacity;
+	if (bFade != m_bFaded)
 	{
-		target = 255;
+		m_bFaded = bFade;
+		m_flInterpStart = gpGlobals->curtime - fabs((m_nFadeOpacity != m_nNormalOpacity) ? asw_fade_duration.GetFloat() * (GetRenderAlpha() - prev) / (m_nFadeOpacity - m_nNormalOpacity) : asw_fade_duration.GetFloat());
+		m_flInterpStart = MAX(0, m_flInterpStart);
 	}
 
 	if (asw_controls.GetBool() != m_bLastControls || pMarine != m_hLastMarine.Get())
 	{
 		m_bLastControls = asw_controls.GetBool();
 		m_hLastMarine = pMarine;
+		m_flInterpStart = 0;
 		SetRenderAlpha(target);
 		return;
 	}
 
-	byte current = GetRenderAlpha();
-	if (current > target)
+	if (m_flInterpStart + asw_fade_duration.GetFloat() <= gpGlobals->curtime)
 	{
-		SetRenderAlpha(current - 1);
+		SetRenderAlpha(target);
 	}
-	else if (current < target)
+	else if (m_flInterpStart > 0)
 	{
-		SetRenderAlpha(current + 1);
+		SetRenderAlpha(Lerp((gpGlobals->curtime - m_flInterpStart) / asw_fade_duration.GetFloat(), prev, target));
 	}
 }

@@ -23,6 +23,9 @@ public:
 protected:
 	bool m_bLastControls;
 	CHandle<C_ASW_Marine> m_hLastMarine;
+	bool m_bFaded;
+	float m_flInterpStart;
+	byte m_nNormalOpacity;
 	byte m_nFadeOpacity;
 };
 
