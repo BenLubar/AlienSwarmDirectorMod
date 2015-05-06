@@ -100,7 +100,6 @@ ConVar asw_debug_throw( "asw_debug_throw", "0", FCVAR_CHEAT, "Show node debug in
 ConVar asw_debug_order_weld( "asw_debug_order_weld", "0", FCVAR_CHEAT, "Debug lines for ordering marines to offhand weld a door" );
 ConVar asw_marine_melee_approach_distance("asw_marine_melee_approach_distance", "120.0f", FCVAR_CHEAT, "maximum enemy distance for melee", true, 0, false, 0);
 
-ConVar asw_marine_test_new_ai("asw_marine_test_new_ai", "1", FCVAR_CHEAT, "enable Swarm Director 2 marine AI", true, 0, true, 1);
 ConVar asw_marine_too_far_from_squad("asw_marine_too_far_from_squad", "1500", FCVAR_CHEAT);
 
 extern ConVar ai_lead_time;
@@ -308,7 +307,7 @@ int CASW_Marine::SelectSchedule()
 	bool bUsingFlamer = GetActiveASWWeapon() && GetActiveASWWeapon()->Classify() == CLASS_ASW_FLAMER;
 
 	if ( HasCondition( COND_PATH_BLOCKED_BY_PHYSICS_PROP ) || ( ( HasCondition( COND_COMPLETELY_OUT_OF_AMMO ) || HasCondition( COND_WEAPON_BLOCKED_BY_FRIEND ) || !GetActiveASWWeapon() || !GetActiveASWWeapon()->IsOffensiveWeapon() ) && GetEnemyLKP().DistToSqr( GetAbsOrigin() ) < Square( asw_marine_melee_approach_distance.GetFloat() ) ) ||
-		( bUsingFlamer && HasCondition( COND_ENEMY_ON_FIRE ) ) || ( asw_marine_test_new_ai.GetBool() && m_fLastMobDamageTime > gpGlobals->curtime - 2.0f && RandomFloat() < 0.8f ) )
+		( bUsingFlamer && HasCondition( COND_ENEMY_ON_FIRE ) ) || ( m_fLastMobDamageTime > gpGlobals->curtime - 2.0f && RandomFloat() < 0.8f ) )
 	{
 		int iMeleeSchedule = SelectMeleeSchedule();
 		if( iMeleeSchedule != -1 )
@@ -325,7 +324,7 @@ int CASW_Marine::SelectSchedule()
 
 	if ( m_hUsingEntity.Get() )
 	{
-		if (asw_marine_test_new_ai.GetBool() && GetSquadLeader() != NULL && !GetSquadLeader()->IsInhabited() && GetSquadLeader() != this)
+		if (GetSquadLeader() != NULL && !GetSquadLeader()->IsInhabited() && GetSquadLeader() != this)
 		{
 			// make the squad leader think about protecting us instead of charging ahead
 			GetSquadLeader()->SetASWOrders(ASW_ORDER_HOLD_POSITION);
@@ -363,7 +362,7 @@ int CASW_Marine::SelectSchedule()
 			return iFollowSchedule;
 	}
 
-	if ( GetASWOrders() == ASW_ORDER_MOVE_TO && ( !asw_marine_test_new_ai.GetBool() || GetSquadLeader() != this ) )
+	if ( GetASWOrders() == ASW_ORDER_MOVE_TO )
 	{/*
 		if ( HasCondition(COND_CAN_RANGE_ATTACK1) )
 		{
@@ -391,7 +390,7 @@ int CASW_Marine::SelectSchedule()
 			return SCHED_RANGE_ATTACK1;
 	}
 	
-	if (asw_marine_test_new_ai.GetBool() && GetSquadLeader() == this)
+	if (GetSquadLeader() == this)
 	{
 		CASW_SquadFormation *pFormation = GetSquadFormation();
 		for (int i = 0; i < CASW_SquadFormation::MAX_SQUAD_SIZE; i++)
@@ -574,23 +573,20 @@ void CASW_Marine::TaskFail( AI_TaskFailureCode_t code )
 			m_flResetAmmoIgnoreListTime = gpGlobals->curtime + 15.0f;
 		}
 
-		if (asw_marine_test_new_ai.GetBool())
+		if (GetPhysicsPropTarget())
 		{
-			if (GetPhysicsPropTarget())
-			{
-				SetSchedule(SCHED_MELEE_ATTACK_PROP1);
-				return;
-			}
-			CBaseEntity *pEnt = gEntList.FindEntityByClassnameNearest("prop_physics", GetAbsOrigin(), 128);
-			if (!pEnt || pEnt->m_takedamage != DAMAGE_YES || pEnt->GetHealth() <= 0 || pEnt->GetCollisionGroup() == COLLISION_GROUP_DEBRIS)
-				pEnt = gEntList.FindEntityByClassnameNearest("prop_physics_override", GetAbsOrigin(), 128);
-			if (!pEnt || pEnt->m_takedamage != DAMAGE_YES || pEnt->GetHealth() <= 0 || pEnt->GetCollisionGroup() == COLLISION_GROUP_DEBRIS)
-				pEnt = gEntList.FindEntityByClassnameNearest("func_physbox", GetAbsOrigin(), 128);
-			if (pEnt && pEnt->m_takedamage == DAMAGE_YES && pEnt->GetHealth() > 0 && pEnt->GetCollisionGroup() != COLLISION_GROUP_DEBRIS)
-				SetPhysicsPropTarget(pEnt);
+			SetSchedule(SCHED_MELEE_ATTACK_PROP1);
+			return;
 		}
+		CBaseEntity *pEnt = gEntList.FindEntityByClassnameNearest("prop_physics", GetAbsOrigin(), 128);
+		if (!pEnt || pEnt->m_takedamage != DAMAGE_YES || pEnt->GetHealth() <= 0 || pEnt->GetCollisionGroup() == COLLISION_GROUP_DEBRIS)
+			pEnt = gEntList.FindEntityByClassnameNearest("prop_physics_override", GetAbsOrigin(), 128);
+		if (!pEnt || pEnt->m_takedamage != DAMAGE_YES || pEnt->GetHealth() <= 0 || pEnt->GetCollisionGroup() == COLLISION_GROUP_DEBRIS)
+			pEnt = gEntList.FindEntityByClassnameNearest("func_physbox", GetAbsOrigin(), 128);
+		if (pEnt && pEnt->m_takedamage == DAMAGE_YES && pEnt->GetHealth() > 0 && pEnt->GetCollisionGroup() != COLLISION_GROUP_DEBRIS)
+			SetPhysicsPropTarget(pEnt);
 
-		if (asw_marine_test_new_ai.GetBool() && !m_hAreaToUse.Get() && GetSquadLeader() && !GetSquadLeader()->IsInhabited() && m_flLastUsedButton < gpGlobals->curtime - 15)
+		if (!m_hAreaToUse.Get() && GetSquadLeader() && !GetSquadLeader()->IsInhabited() && m_flLastUsedButton < gpGlobals->curtime - 15)
 		{
 			CASW_Use_Area *pClosestArea = NULL;
 			float flClosestDist = FLT_MAX;
@@ -650,7 +646,7 @@ int CASW_Marine::SelectHackingSchedule()
 	if ( !GetMarineProfile() || (GetMarineProfile()->GetMarineClass() != MARINE_CLASS_TECH && !m_hAreaToUse.Get()) )
 		return -1;
 
-	if (GetMarineProfile()->GetMarineClass() == MARINE_CLASS_TECH && (asw_marine_auto_hack.GetBool() || (asw_marine_test_new_ai.GetBool() && GetSquadLeader() && !GetSquadLeader()->IsInhabited())))
+	if (GetMarineProfile()->GetMarineClass() == MARINE_CLASS_TECH && (asw_marine_auto_hack.GetBool() || (GetSquadLeader() && !GetSquadLeader()->IsInhabited())))
 	{
 		CASW_Use_Area *pClosestArea = NULL;
 		float flClosestDist = FLT_MAX;
@@ -2991,22 +2987,19 @@ bool CASW_Marine::SetNewAimError(CBaseEntity *pTarget)
 	//  create some random error amount, within our angle
 	m_fMarineAimError = random->RandomFloat( asw_marine_aim_error_min.GetFloat(), asw_marine_aim_error_max.GetFloat() );
 
-	if ( asw_marine_test_new_ai.GetBool() )
-	{
-		float enemySpeed = pTarget->GetBaseAnimating() ? pTarget->GetBaseAnimating()->m_flGroundSpeed : 0;
-		if (enemySpeed < 1)
-			enemySpeed = 1;
-		float dot = DotProduct(pTarget->Forward(), Forward());
+	float enemySpeed = pTarget->GetBaseAnimating() ? pTarget->GetBaseAnimating()->m_flGroundSpeed : 0;
+	if (enemySpeed < 1)
+		enemySpeed = 1;
+	float dot = DotProduct(pTarget->Forward(), Forward());
 
-		float adjustment = 1 + (1 - fabs(dot)) / enemySpeed * asw_marine_aim_error_correction.GetFloat();
+	float adjustment = 1 + (1 - fabs(dot)) / enemySpeed * asw_marine_aim_error_correction.GetFloat();
 
-		if ( asw_debug_marine_aim.GetBool() )
-			Msg( "%s: enemy facing (%f, %f, %f) facing (%f, %f, %f) enemy speed (%f) dot product (%f) adjustment (%f)\n",
-				GetDebugName(), pTarget->Forward().x, pTarget->Forward().y, pTarget->Forward().z,
-				Forward().x, Forward().y, Forward().z, enemySpeed, dot, adjustment );
+	if ( asw_debug_marine_aim.GetBool() )
+		Msg( "%s: enemy facing (%f, %f, %f) facing (%f, %f, %f) enemy speed (%f) dot product (%f) adjustment (%f)\n",
+			GetDebugName(), pTarget->Forward().x, pTarget->Forward().y, pTarget->Forward().z,
+			Forward().x, Forward().y, Forward().z, enemySpeed, dot, adjustment );
 
-		m_fMarineAimError /= adjustment;
-	}
+	m_fMarineAimError /= adjustment;
 
 	if ( m_fMarineAimError > fabs( angleDiff ) )
 	{

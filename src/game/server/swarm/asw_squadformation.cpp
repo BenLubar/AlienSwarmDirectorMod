@@ -558,8 +558,9 @@ void CASW_SquadFormation::FindFollowHintNodes()
 	for ( unsigned slotnum = 0; slotnum < MAX_SQUAD_SIZE; slotnum++ )
 	{
 		CASW_Marine *pMarine = Squaddie( slotnum );
-		if ( !pMarine )
+		if ( !pMarine || pMarine->IsInhabited() )
 		{
+			// Missing or inhabited marines don't take nodes.
 			m_nMarineHintIndex[slotnum] = INVALID_HINT_INDEX;
 			continue;
 		}
@@ -601,6 +602,8 @@ void CASW_SquadFormation::FindFollowHintNodes()
 		{
 			MarineHintManager()->FindHints(vecLeader, pLeader, asw_follow_hint_min_range.GetFloat(), asw_follow_hint_max_range.GetFloat(), hints);
 			nCount = hints.Count();
+
+			hints.Sort(CASW_SquadFormation::FollowHintSortFunc);
 		}
 
 		float flMovementYaw = pLeader->GetOverallMovementDirection();
@@ -707,8 +710,6 @@ void CASW_SquadFormation::FindFollowHintNodes()
 			}
 		}
 
-		hints.Sort( CASW_SquadFormation::FollowHintSortFunc );
-
 		// if this marine is close to a shield bug, grab a flanking node
 		if( !pEscapeVolume && pClosestShieldbug && iClosestFlankingNode != INVALID_HINT_INDEX )
 		{
@@ -716,23 +717,48 @@ void CASW_SquadFormation::FindFollowHintNodes()
 			continue;
 		}
 
-		// find the first node not used by another other squaddie
-		FOR_EACH_VEC( hints, nNode )
+		if (pEscapeVolume)
 		{
-			bool bValidNode = true;
-			const Vector &vecNodePos = hints[nNode]->m_vecPosition;
-			for ( unsigned k = 0; k < MAX_SQUAD_SIZE; k++ )
+			// If we're escaping, pick the closest node to us - we don't care if it's already taken.
+			FOR_EACH_VEC( hints, nNode )
 			{
-				if ( k != slotnum && m_nMarineHintIndex[k] != INVALID_HINT_INDEX && vecNodePos.DistToSqr( MarineHintManager()->GetHintPosition( m_nMarineHintIndex[k] ) ) < Square( asw_follow_hint_min_range.GetFloat() ) )
+				bool bValidNode = true;
+				const Vector &vecNodePos = hints[nNode]->m_vecPosition;
+				for ( unsigned k = 0; k < MAX_SQUAD_SIZE; k++ )
 				{
-					bValidNode = false;
+					if ( k != slotnum && m_nMarineHintIndex[k] != INVALID_HINT_INDEX && vecNodePos.DistToSqr( MarineHintManager()->GetHintPosition( m_nMarineHintIndex[k] ) ) < Square( asw_follow_hint_min_range.GetFloat() ) )
+					{
+						bValidNode = false;
+						break;
+					}
+				}
+				if ( bValidNode )
+				{
+					m_nMarineHintIndex[slotnum] = hints[nNode]->m_nHintIndex;
 					break;
 				}
 			}
-			if ( bValidNode )
+		}
+		else
+		{
+			// find the first node not used by another other squaddie
+			FOR_EACH_VEC( hints, nNode )
 			{
-				m_nMarineHintIndex[slotnum] = hints[nNode]->m_nHintIndex;
-				break;
+				bool bValidNode = true;
+				const Vector &vecNodePos = hints[nNode]->m_vecPosition;
+				for ( unsigned k = 0; k < MAX_SQUAD_SIZE; k++ )
+				{
+					if ( k != slotnum && m_nMarineHintIndex[k] != INVALID_HINT_INDEX && vecNodePos.DistToSqr( MarineHintManager()->GetHintPosition( m_nMarineHintIndex[k] ) ) < Square( asw_follow_hint_min_range.GetFloat() ) )
+					{
+						bValidNode = false;
+						break;
+					}
+				}
+				if ( bValidNode )
+				{
+					m_nMarineHintIndex[slotnum] = hints[nNode]->m_nHintIndex;
+					break;
+				}
 			}
 		}
 	}
@@ -745,6 +771,8 @@ void CASW_SquadFormation::UpdateGoalPosition()
 	{
 		return;
 	}
+
+	Vector vecPrevObjective = m_vecObjective;
 
 	m_vecObjective = vec3_invalid;
 	for (int i = 0; i < ASW_MAX_OBJECTIVES; i++)
@@ -904,8 +932,12 @@ void CASW_SquadFormation::UpdateGoalPosition()
 			}
 			if (flMinDist != -1)
 			{
-				m_bInMarker = true;
+				m_bInMarker = bInMarker;
 				m_vecObjective = vecBest;
+				if (asw_squad_debug.GetInt() >= 2)
+				{
+					Msg("%s: Objective position (%f %f %f) -> (%f %f %f), in marker: %s\n", Leader()->GetDebugName(), VectorExpand(vecPrevObjective), VectorExpand(vecBest), bInMarker ? "true" : "false");
+				}
 				return;
 			}
 		}

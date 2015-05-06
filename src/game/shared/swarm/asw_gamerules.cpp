@@ -139,8 +139,6 @@ extern ConVar old_radius_damage;
 	ConVar sv_timeout_when_fully_connected( "sv_timeout_when_fully_connected", "30", FCVAR_NONE, "Once fully connected, player will be kicked if he doesn't send a network message within this interval." );
 	ConVar mm_swarm_state( "mm_swarm_state", "ingame", FCVAR_DEVELOPMENTONLY );
 
-	extern ConVar asw_marine_test_new_ai;
-
 	static void UpdateMatchmakingTagsCallback( IConVar *pConVar, const char *pOldValue, float flOldValue )
 	{
 		// update sv_tags to force an update of the matchmaking tags
@@ -3541,7 +3539,7 @@ void CAlienSwarm::MarineKilled( CASW_Marine *pMarine, const CTakeDamageInfo &inf
 		pArea->OnMarineKilled( pMarine );
 	}
 
-	if (asw_marine_test_new_ai.GetBool() && !pMarine->IsInhabited())
+	if (!pMarine->IsInhabited())
 	{
 		CASW_SquadFormation *pFormation = pMarine->GetSquadFormation();
 		if (pFormation && pFormation->Leader() == pMarine)

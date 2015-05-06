@@ -397,7 +397,6 @@ extern ConVar asw_marine_ff_absorption;
 ConVar asw_movement_direction_tolerance( "asw_movement_direction_tolerance", "30.0", FCVAR_CHEAT );
 ConVar asw_movement_direction_interval( "asw_movement_direction_interval", "0.5", FCVAR_CHEAT );
 
-extern ConVar asw_marine_test_new_ai;
 extern ConVar asw_energy_weapons;
 ConVar asw_energy_weapons_delay("asw_energy_weapons_delay", "0.5", FCVAR_CHEAT);
 ConVar asw_energy_weapons_rate_base("asw_energy_weapons_rate_base", "0.5", FCVAR_CHEAT);
@@ -1045,14 +1044,6 @@ int CASW_Marine::OnTakeDamage_Alive( const CTakeDamageInfo &info )
 
 		newInfo.ScaleDamage( asw_sentry_friendly_fire_scale.GetFloat() );
 	}
-
-	// AI marines take much less damage from explosive barrels since they're too dumb to not get near them
-	if ( !IsInhabited() && info.GetAttacker() && info.GetAttacker()->Classify() == CLASS_ASW_EXPLOSIVE_BARREL && !asw_marine_test_new_ai.GetBool() )
-	{
-		newInfo.ScaleDamage( 0.1f );
-		if ( asw_debug_marine_damage.GetBool() )
-			Msg( "  Scaled AI taking damage from explosive barrel down to %f\n", newInfo.GetDamage() );
-	}
 	
 	// don't allow FF from melee attacks
 	bool bFriendlyFire = newInfo.GetAttacker() && newInfo.GetAttacker()->Classify() == CLASS_ASW_MARINE;
@@ -1064,42 +1055,32 @@ int CASW_Marine::OnTakeDamage_Alive( const CTakeDamageInfo &info )
 			pOtherMarine->GetMarineResource()->m_iAliensKilledSinceLastFriendlyFireIncident = 0;
 		}
 
-		if ( pOtherMarine && !pOtherMarine->IsInhabited() && !(newInfo.GetDamageType() & DMG_DIRECT) && !asw_marine_test_new_ai.GetBool() )
+		if (newInfo.GetDamageType() & DMG_CLUB)
 		{
-			// don't allow any damage if it's an AI firing:  NOTE: This isn't 100% accurate, since the AI could've fired the shot, then a player switched into the marine while the projectile was in the air
 			if (asw_debug_marine_damage.GetBool())
-				Msg("  but all ignored, since it's from an AI\n");
+				Msg("  but all ignored, since it's FF meleee dmg\n");
 			return 0;
-		}
-		else
+		}			
+
+		// drop the damage down by our absorption buffer
+		bool bFlamerDot = !!(newInfo.GetDamageType() & ( DMG_BURN | DMG_DIRECT ) );
+		if ( newInfo.GetDamage() > 0 && newInfo.GetAttacker() != this && !bFlamerDot )
 		{
-			if (newInfo.GetDamageType() & DMG_CLUB)
+			bool bHardcoreMode = ASWGameRules() && ASWGameRules()->IsHardcoreMode();
+			if ( !bHardcoreMode && asw_marine_ff_absorption.GetInt() != 0 )
 			{
-				if (asw_debug_marine_damage.GetBool())
-					Msg("  but all ignored, since it's FF meleee dmg\n");
-				return 0;
-			}			
+				float flNewDamage = info.GetDamage() * GetFFAbsorptionScale();
+				newInfo.SetDamage(flNewDamage);
 
-			// drop the damage down by our absorption buffer
-			bool bFlamerDot = !!(newInfo.GetDamageType() & ( DMG_BURN | DMG_DIRECT ) );
-			if ( newInfo.GetDamage() > 0 && newInfo.GetAttacker() != this && !bFlamerDot )
-			{
-				bool bHardcoreMode = ASWGameRules() && ASWGameRules()->IsHardcoreMode();
-				if ( !bHardcoreMode && asw_marine_ff_absorption.GetInt() != 0 )
+				if ( asw_debug_marine_damage.GetBool() )
 				{
-					float flNewDamage = info.GetDamage() * GetFFAbsorptionScale();
-					newInfo.SetDamage(flNewDamage);
-
-					if ( asw_debug_marine_damage.GetBool() )
-					{
-						Msg(" FF damage (%f) reduced to %f from FF absorption (%f)\n", newInfo.GetDamage(), flNewDamage, GetFFAbsorptionScale());
-					}
+					Msg(" FF damage (%f) reduced to %f from FF absorption (%f)\n", newInfo.GetDamage(), flNewDamage, GetFFAbsorptionScale());
 				}
-				
-				GetMarineSpeech()->QueueChatter( CHATTER_FRIENDLY_FIRE, gpGlobals->curtime + 0.4f, gpGlobals->curtime + 1.0f );
-
-				m_fLastFriendlyFireTime = gpGlobals->curtime;
 			}
+				
+			GetMarineSpeech()->QueueChatter( CHATTER_FRIENDLY_FIRE, gpGlobals->curtime + 0.4f, gpGlobals->curtime + 1.0f );
+
+			m_fLastFriendlyFireTime = gpGlobals->curtime;
 		}
 	}
 
@@ -1501,7 +1482,7 @@ int CASW_Marine::OnTakeDamage_Alive( const CTakeDamageInfo &info )
 		}
 
 		// call for medic
-		if (asw_marine_test_new_ai.GetBool() && !IsInhabited() && iPreDamageHealth <= iDamageTaken * 4 && GetHealth() > 0)
+		if (!IsInhabited() && iPreDamageHealth <= iDamageTaken * 4 && GetHealth() > 0)
 		{
 			DoEmote(0);
 		}

@@ -69,7 +69,6 @@ ConVar asw_old_shieldbug ("asw_old_shieldbug", "0", FCVAR_CHEAT, "1= old shield 
 ConVar asw_shieldbug_force_defend("asw_shieldbug_force_defend", "0", FCVAR_CHEAT, "0 = no force, 1 = force open, 2 = force defend");
 extern ConVar sv_gravity;
 extern ConVar asw_debug_marine_chatter;
-extern ConVar asw_marine_test_new_ai;
 
 IMPLEMENT_AUTO_LIST( IShieldbugAutoList );
 
@@ -998,23 +997,19 @@ int	CASW_Shieldbug::DrawDebugTextOverlays()
 
 Vector CASW_Shieldbug::BodyTarget(const Vector &posSrc, bool bNoisy)
 {
-	// make marines shoot at the bubble instead of the 
-	if (asw_marine_test_new_ai.GetBool())
-	{
-		int dummy, nHitbox;
-		bool bSuccess = LookupHitbox("bubble", dummy, nHitbox);
-		Assert(bSuccess);
-		Vector mins, maxs;
-		bSuccess = ComputeHitboxSurroundingBox(nHitbox, &mins, &maxs);
-		Assert(bSuccess);
-		Vector fuzz;
-		fuzz.Init();
-		if (bNoisy) {
-			fuzz = RandomVector(-8, 8);
-		}
-		return (maxs + mins) / 2 + fuzz;
+	// make marines shoot at the bubble instead of the middle of the body
+	int dummy, nHitbox;
+	bool bSuccess = LookupHitbox("bubble", dummy, nHitbox);
+	Assert(bSuccess);
+	Vector mins, maxs;
+	bSuccess = ComputeHitboxSurroundingBox(nHitbox, &mins, &maxs);
+	Assert(bSuccess);
+	Vector fuzz;
+	fuzz.Init();
+	if (bNoisy) {
+		fuzz = RandomVector(-8, 8);
 	}
-	return BaseClass::BodyTarget(posSrc, bNoisy);
+	return (maxs + mins) / 2 + fuzz;
 }
 
 AI_BEGIN_CUSTOM_NPC( asw_shieldbug, CASW_Shieldbug )

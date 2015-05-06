@@ -22,8 +22,6 @@ IMPLEMENT_SERVERCLASS_ST(CASW_Door_Area, DT_ASW_Door_Area)
 
 END_SEND_TABLE()
 
-extern ConVar asw_marine_test_new_ai;
-
 CASW_Door_Area::CASW_Door_Area()
 {	
 	AddEFlags( EFL_FORCE_CHECK_TRANSMIT );
@@ -62,7 +60,7 @@ void CASW_Door_Area::ActivateMultiTrigger(CBaseEntity *pActivator)
 				CASW_Game_Resource *pGameResource = ASWGameResource();
 				if (pGameResource)
 				{
-					if (asw_marine_test_new_ai.GetBool() && HasWelder(pMarine) && !pMarine->IsInhabited())
+					if (HasWelder(pMarine) && !pMarine->IsInhabited())
 					{
 						// we can cut the door ourselves
 						pMarine->OrderUseOffhandItem(2, (pMarine->GetAbsOrigin() + pDoor->GetAbsOrigin()) / 2);
@@ -92,7 +90,7 @@ void CASW_Door_Area::ActivateMultiTrigger(CBaseEntity *pActivator)
 							}
 							m_fNextCutCheck = gpGlobals->curtime + 2.0f;	// check again sooner if we tried to say the line but couldn't for some reason
 
-							if (asw_marine_test_new_ai.GetBool() && !pMarine->IsInhabited())
+							if (!pMarine->IsInhabited())
 							{
 								// use our position because we're the closest to the door.
 								pFound->OrderUseOffhandItem(2, (pMarine->GetAbsOrigin() + pDoor->GetAbsOrigin()) / 2);
