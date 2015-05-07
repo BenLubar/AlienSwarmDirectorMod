@@ -52,6 +52,7 @@
 #include "asw_campaign_info.h"
 #include "sendprop_priorities.h"
 #include "asw_trace_filter.h"
+#include "asw_squadformation.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"

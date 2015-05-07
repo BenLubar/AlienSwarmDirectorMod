@@ -81,6 +81,7 @@
 #include "asw_objective_escape.h"
 #include "sendprop_priorities.h"
 #include "asw_marine_gamemovement.h"
+#include "asw_squadformation.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -4958,4 +4959,9 @@ void CASW_Marine::EnergyThink()
 	}
 
 	SetNextThink(gpGlobals->curtime + 0.1f, "EnergyWeapons");
+}
+
+CASW_SquadFormation *CASW_Marine::GetSquadFormation()
+{
+	return m_hSquadFormation.Get();
 }

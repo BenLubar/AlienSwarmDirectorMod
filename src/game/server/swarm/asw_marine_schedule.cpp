@@ -74,6 +74,7 @@
 #include "asw_movedata.h"
 #include "asw_boomer_blob.h"
 #include "asw_weapon_healgrenade_shared.h"
+#include "asw_squadformation.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -100,6 +101,7 @@ ConVar asw_debug_throw( "asw_debug_throw", "0", FCVAR_CHEAT, "Show node debug in
 ConVar asw_debug_order_weld( "asw_debug_order_weld", "0", FCVAR_CHEAT, "Debug lines for ordering marines to offhand weld a door" );
 ConVar asw_marine_melee_approach_distance("asw_marine_melee_approach_distance", "120.0f", FCVAR_CHEAT, "maximum enemy distance for melee", true, 0, false, 0);
 
+ConVar asw_debug_marine_ai("asw_debug_marine_ai", "0", FCVAR_CHEAT, "Print debugging messages about marine AI.", true, 0, true, 1);
 ConVar asw_marine_too_far_from_squad("asw_marine_too_far_from_squad", "1500", FCVAR_CHEAT);
 
 extern ConVar ai_lead_time;

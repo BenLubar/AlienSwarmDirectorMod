@@ -7,7 +7,6 @@
 #include "asw_shareddefs.h"
 #include "asw_playeranimstate.h"
 #include "asw_lag_compensation.h"
-#include "asw_squadformation.h"
 
 class CASW_Player;
 class CASW_Marine_Resource;
@@ -464,7 +463,7 @@ public:
 	virtual bool FValidateHintType( CAI_Hint *pHint );
 
 	CHandle<CASW_SquadFormation> m_hSquadFormation;
-	inline CASW_SquadFormation *GetSquadFormation() { return m_hSquadFormation; } // get the formation in which I participate
+	CASW_SquadFormation *GetSquadFormation(); // get the formation in which I participate
 	CASW_Marine *GetSquadLeader();  // If I'm following in a squad, get the leader I'm following
 
 	// tracking movement through the level

@@ -1,4 +1,5 @@
 #include "cbase.h"
+#include "asw_squadformation.h"
 #include "asw_marine.h"
 #include "asw_marine_profile.h"
 #include "asw_marine_hint.h"
@@ -31,7 +32,9 @@ ConVar asw_follow_use_hints( "asw_follow_use_hints", "2", FCVAR_CHEAT, "0 = foll
 ConVar asw_follow_hint_delay( "asw_follow_hint_delay", "5", FCVAR_CHEAT, "The number of seconds marines will ignore follow hints after being told to follow" );
 ConVar asw_follow_hint_debug( "asw_follow_hint_debug", "0", FCVAR_CHEAT );
 ConVar asw_follow_velocity_predict( "asw_follow_velocity_predict", "0.3", FCVAR_CHEAT, "Marines travelling in diamond follow formation will predict their leader's movement ahead by this many seconds" );
-ConVar asw_squad_debug( "asw_squad_debug", "1", FCVAR_CHEAT, "Draw debug overlays for squad movement" );
+
+ConVar asw_squad_debug( "asw_squad_debug", "1", FCVAR_NONE, "Draw debug overlays for squad movement" );
+extern ConVar asw_debug_marine_ai;
 
 // TODO: is boomer bomb radius ever larger than 500 units?
 #define OUT_OF_BOOMER_BOMB_RANGE 500
@@ -191,16 +194,13 @@ Vector CASW_SquadFormation::GetLdrAnglMatrix( const Vector &origin, const QAngle
 		}
 	}
 
-	m_vCachedForward = vecLeaderAim;
-	if (m_vCachedForward[1] == 0 && m_vCachedForward[0] == 0)
+	if (vecLeaderAim.y == 0 && vecLeaderAim.x == 0)
 	{
 		m_flCurrentForwardAbsoluteEulerYaw = 0;
 	}
 	else
 	{
-		m_flCurrentForwardAbsoluteEulerYaw = (atan2(vecLeaderAim[1], vecLeaderAim[0]) * (180.0 / M_PI));
-		m_flCurrentForwardAbsoluteEulerYaw = 
-			fsel( m_flCurrentForwardAbsoluteEulerYaw, m_flCurrentForwardAbsoluteEulerYaw, m_flCurrentForwardAbsoluteEulerYaw + 360 );
+		m_flCurrentForwardAbsoluteEulerYaw = AngleNormalizePositive(atan2(vecLeaderAim.y, vecLeaderAim.x) * (180.0 / M_PI));
 	}
 	
 
@@ -934,7 +934,7 @@ void CASW_SquadFormation::UpdateGoalPosition()
 			{
 				m_bInMarker = bInMarker;
 				m_vecObjective = vecBest;
-				if (asw_squad_debug.GetInt() >= 2)
+				if (asw_debug_marine_ai.GetBool())
 				{
 					Msg("%s: Objective position (%f %f %f) -> (%f %f %f), in marker: %s\n", Leader()->GetDebugName(), VectorExpand(vecPrevObjective), VectorExpand(vecBest), bInMarker ? "true" : "false");
 				}
@@ -1014,7 +1014,11 @@ void CASW_SquadFormation::FollowCommandUsed( unsigned slotnum )
 
 	// skip the follow hint delay when the first (automated) follow command comes through at mission start.
 	if ( m_flUseHintsAfter[slotnum] == -1 )
+	{
 		m_flUseHintsAfter[slotnum] = 0;
+	}
 	else
+	{
 		m_flUseHintsAfter[slotnum] = gpGlobals->curtime + asw_follow_hint_delay.GetFloat();
+	}
 }

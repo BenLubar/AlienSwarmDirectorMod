@@ -2,6 +2,8 @@
 #define ASW_SQUADFORMATION_H
 #pragma once
 
+#include "asw_shareddefs.h"
+
 class CASW_Marine;
 class CAI_Hint;
 class HintData_t;
@@ -57,9 +59,6 @@ public:
 
 	Vector GetLeaderPosition();
 
-	// Current notion of "forward", is updated/cached in calls to GetLdrAnglMatrix
-	inline const Vector &Forward() const;
-
 	CASW_SquadFormation() : m_flLastSquadUpdateTime(0) { Reset(); }
 	bool SanityCheck() const;
 
@@ -91,8 +90,7 @@ protected:
 	float m_flLastLeaderYaw;
 	Vector m_vLastLeaderPos;
 
-	Vector m_vLastLeaderVelocity; // velocity leader had at last update. If it changes radically, we reupdate immediately.
-	Vector m_vCachedForward;
+	Vector m_vLastLeaderVelocity;
 
 	float m_flCurrentForwardAbsoluteEulerYaw;
 	float m_flLastSquadUpdateTime;
@@ -113,27 +111,22 @@ private:
 inline CASW_Marine *CASW_SquadFormation::Squaddie( unsigned int slotnum ) const 
 {
 	Assert( IsValid(slotnum) );
+	if (!IsValid(slotnum))
+	{
+		return NULL;
+	}
 	return m_hSquad[slotnum];
 }
-
-
-inline const Vector &CASW_SquadFormation::Forward() const
-{
-	return m_vCachedForward;
-}
-
 
 inline bool CASW_SquadFormation::IsValid( unsigned slotnum )
 {
 	return slotnum < MAX_SQUAD_SIZE;
 }
 
-
 inline const Vector &CASW_SquadFormation::GetIdealPosition( unsigned slotnum ) const
 {
 	return m_vFollowPositions[slotnum];
 }
-
 
 inline int CASW_SquadFormation::Count() const
 {
