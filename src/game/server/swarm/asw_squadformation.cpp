@@ -936,7 +936,7 @@ void CASW_SquadFormation::UpdateGoalPosition()
 				m_vecObjective = vecBest;
 				if (asw_debug_marine_ai.GetBool())
 				{
-					Msg("%s: Objective position (%f %f %f) -> (%f %f %f), in marker: %s\n", Leader()->GetDebugName(), VectorExpand(vecPrevObjective), VectorExpand(vecBest), bInMarker ? "true" : "false");
+					DevMsg(Leader(), "Objective position (%f %f %f) -> (%f %f %f), in marker: %s\n", VectorExpand(vecPrevObjective), VectorExpand(vecBest), bInMarker ? "true" : "false");
 				}
 				return;
 			}

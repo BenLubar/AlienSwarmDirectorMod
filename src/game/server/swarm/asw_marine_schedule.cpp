@@ -273,6 +273,10 @@ int CASW_Marine::SelectSchedule()
 {
 	if (GetForcedActionRequest() || GetCurrentMeleeAttack())
 	{
+		if (asw_debug_marine_ai.GetBool())
+		{
+			DevMsg(this, "Schedule: SCHED_ASW_MELEE_SYSTEM because I am doing %s.\n", GetForcedActionRequest() ? "a forced action" : GetCurrentMeleeAttack()->m_szAttackName);
+		}
 		return SCHED_ASW_MELEE_SYSTEM;
 	}
 
@@ -283,37 +287,95 @@ int CASW_Marine::SelectSchedule()
 		{
 			// switch our enemy to the egg if the parasite hasn't hatched yet.
 			SetEnemy(pParasite->GetEgg());
+			if (asw_debug_marine_ai.GetBool())
+			{
+				DevMsg(this, "Schedule: changing enemy to %s because %s has not hatched yet.\n", GetEnemy()->GetDebugName(), pParasite->GetDebugName());
+			}
 		}
 	}
 
 	if ( (HasCondition(COND_ENEMY_DEAD) || HasCondition(COND_ENEMY_OCCLUDED) || HasCondition(COND_WEAPON_SIGHT_OCCLUDED))
 		&& m_fOverkillShootTime > gpGlobals->curtime)
 	{
+		if (asw_debug_marine_ai.GetBool())
+		{
+			DevMsg(this, "Schedule: SCHED_ASW_OVERKILL_SHOOT for %f more seconds.\n", m_fOverkillShootTime - gpGlobals->curtime);
+		}
 		return SCHED_ASW_OVERKILL_SHOOT;
 	}
 
 	if (m_bWaitingToRappel && !m_bOnGround)
 	{
+		if (asw_debug_marine_ai.GetBool())
+		{
+			DevMsg(this, "Schedule: SCHED_ASW_RAPPEL.\n");
+		}
 		return SCHED_ASW_RAPPEL;
 	}
 	
 	if (m_bPreventMovement)
+	{
+		if (asw_debug_marine_ai.GetBool())
+		{
+			DevMsg(this, "Schedule: SCHED_ASW_HOLD_POSITION because I'm not allowed to move.\n");
+		}
 		return SCHED_ASW_HOLD_POSITION;
+	}
 
 	// if we acquire a new enemy, create our aim error offset
 	if (HasCondition(COND_NEW_ENEMY))
+	{
 		SetNewAimError(GetEnemy());
+		if (asw_debug_marine_ai.GetBool())
+		{
+			DevMsg(this, "Schedule: %s is my new enemy. My aim error is now %f degrees.\n", GetEnemy()->GetDebugName(), m_fMarineAimError);
+		}
+	}
 
 	ClearCondition( COND_ASW_NEW_ORDERS );
 
-	bool bUsingFlamer = GetActiveASWWeapon() && GetActiveASWWeapon()->Classify() == CLASS_ASW_FLAMER;
-
-	if ( HasCondition( COND_PATH_BLOCKED_BY_PHYSICS_PROP ) || ( ( HasCondition( COND_COMPLETELY_OUT_OF_AMMO ) || HasCondition( COND_WEAPON_BLOCKED_BY_FRIEND ) || !GetActiveASWWeapon() || !GetActiveASWWeapon()->IsOffensiveWeapon() ) && GetEnemyLKP().DistToSqr( GetAbsOrigin() ) < Square( asw_marine_melee_approach_distance.GetFloat() ) ) ||
-		( bUsingFlamer && HasCondition( COND_ENEMY_ON_FIRE ) ) || ( m_fLastMobDamageTime > gpGlobals->curtime - 2.0f && RandomFloat() < 0.8f ) )
+	if (HasCondition(COND_PATH_BLOCKED_BY_PHYSICS_PROP) || (GetActiveASWWeapon() && GetActiveASWWeapon()->Classify() == CLASS_ASW_FLAMER && HasCondition(COND_ENEMY_ON_FIRE)) || (m_fLastMobDamageTime > gpGlobals->curtime - 2.0f && RandomFloat() < 0.8f) ||
+		((HasCondition(COND_COMPLETELY_OUT_OF_AMMO) || HasCondition(COND_WEAPON_BLOCKED_BY_FRIEND) || !GetActiveASWWeapon() || !GetActiveASWWeapon()->IsOffensiveWeapon()) && GetEnemyLKP().DistToSqr(GetAbsOrigin()) < Square(asw_marine_melee_approach_distance.GetFloat())))
 	{
 		int iMeleeSchedule = SelectMeleeSchedule();
-		if( iMeleeSchedule != -1 )
+		if (iMeleeSchedule != -1)
+		{
+			if (asw_debug_marine_ai.GetBool())
+			{
+				if (HasCondition(COND_PATH_BLOCKED_BY_PHYSICS_PROP))
+				{
+					DevMsg(this, "Schedule: %s because I am blocked by %s.\n", GetSchedule(iMeleeSchedule)->GetName(), GetPhysicsPropTarget()->GetDebugName());
+				}
+				else if (GetActiveASWWeapon() && GetActiveASWWeapon()->Classify() == CLASS_ASW_FLAMER && HasCondition(COND_ENEMY_ON_FIRE))
+				{
+					DevMsg(this, "Schedule: %s because I am using a flamer and my enemy (%s) is on fire.\n", GetSchedule(iMeleeSchedule)->GetName(), GetEnemy()->GetDebugName());
+				}
+				else if (m_fLastMobDamageTime > gpGlobals->curtime - 2.0f)
+				{
+					DevMsg(this, "Schedule: %s because I was last hurt %f seconds ago and I succeeded an 80% random chance.\n", gpGlobals->curtime - m_fLastMobDamageTime);
+				}
+				else if (GetEnemyLKP().DistToSqr(GetAbsOrigin()) < Square(asw_marine_melee_approach_distance.GetFloat()))
+				{
+					if (HasCondition(COND_COMPLETELY_OUT_OF_AMMO))
+					{
+						DevMsg(this, "Schedule: %s because I am completely out of ammo and my enemy is %f<%f units away.\n", GetSchedule(iMeleeSchedule)->GetName(), GetEnemyLKP().DistTo(GetAbsOrigin()), asw_marine_melee_approach_distance.GetFloat());
+					}
+					else if (HasCondition(COND_WEAPON_BLOCKED_BY_FRIEND))
+					{
+						DevMsg(this, "Schedule: %s because my line of sight is blocked by my friend and my enemy is %f<%f units away.\n", GetSchedule(iMeleeSchedule)->GetName(), GetEnemyLKP().DistTo(GetAbsOrigin()), asw_marine_melee_approach_distance.GetFloat());
+					}
+					else if (!GetActiveASWWeapon())
+					{
+						DevMsg(this, "Schedule: %s because I have no weapon and my enemy is %f<%f units away.\n", GetSchedule(iMeleeSchedule)->GetName(), GetEnemyLKP().DistTo(GetAbsOrigin()), asw_marine_melee_approach_distance.GetFloat());
+					}
+					else if (!GetActiveASWWeapon()->IsOffensiveWeapon())
+					{
+						DevMsg(this, "Schedule: %s because my %s is not an offensive weapon and my enemy is %f<%f units away.\n", GetSchedule(iMeleeSchedule)->GetName(), GetActiveASWWeapon()->GetClassname(), GetEnemyLKP().DistTo(GetAbsOrigin()), asw_marine_melee_approach_distance.GetFloat());
+					}
+				}
+			}
 			return iMeleeSchedule;
+		}
 	}
 
 	int iOffhandSchedule = SelectOffhandItemSchedule();
@@ -330,6 +392,10 @@ int CASW_Marine::SelectSchedule()
 		{
 			// make the squad leader think about protecting us instead of charging ahead
 			GetSquadLeader()->SetASWOrders(ASW_ORDER_HOLD_POSITION);
+		}
+		if (asw_debug_marine_ai.GetBool())
+		{
+			DevMsg(this, "Schedule: SCHED_ASW_USING_OVER_TIME because I am using %s.\n", m_hUsingEntity->GetDebugName());
 		}
 		return SCHED_ASW_USING_OVER_TIME;
 	}
