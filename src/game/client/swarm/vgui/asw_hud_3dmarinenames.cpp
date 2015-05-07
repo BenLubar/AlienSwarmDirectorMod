@@ -876,7 +876,7 @@ void CASWHud3DMarineNames::PaintMarineLabel(int iMyMarineNum, C_ASW_Marine * RES
 		}
 
 		// medic sign left to the marine on low hp
-		if (!bMarineIsKnockedOut && (bMarineOnScreen || asw_medic_under_marine_offscreen.GetBool()) && asw_medic_under_marine.GetFloat() > 0 && (pMarine->GetHealth() <= pMarine->GetMaxHealth() * asw_medic_under_marine.GetFloat() || pMarine->fEmoteMedicStart + asw_medic_under_marine_recall_time.GetFloat() > gpGlobals->curtime))
+		if (!bMarineIsKnockedOut && (bMarineOnScreen || asw_medic_under_marine_offscreen.GetBool()) && asw_medic_under_marine.GetFloat() > 0 && (pMarine->GetHealth() <= pMarine->GetMaxHealth() * asw_medic_under_marine.GetFloat() || pMarine->m_flEmoteMedicStart + asw_medic_under_marine_recall_time.GetFloat() > gpGlobals->curtime))
 		{
 			// the icons size, squared box
 			const int iIconSize = 48;
@@ -911,7 +911,7 @@ void CASWHud3DMarineNames::PaintMarineLabel(int iMyMarineNum, C_ASW_Marine * RES
 		}
 
 		// ammo sign right to the marine on low magazines
-		if (!bMarineIsKnockedOut && (bMarineOnScreen || asw_magazine_under_marine_offscreen.GetBool()) && asw_magazine_under_marine.GetFloat() > 0 && (pMR->GetClipsPercentForHUD() <= asw_magazine_under_marine.GetFloat() || pMarine->fEmoteAmmoStart + asw_magazine_under_marine_recall_time.GetFloat() > gpGlobals->curtime))
+		if (!bMarineIsKnockedOut && (bMarineOnScreen || asw_magazine_under_marine_offscreen.GetBool()) && asw_magazine_under_marine.GetFloat() > 0 && (pMR->GetClipsPercentForHUD() <= asw_magazine_under_marine.GetFloat() || pMarine->m_flEmoteAmmoStart + asw_magazine_under_marine_recall_time.GetFloat() > gpGlobals->curtime))
 		{
 			// the icons size, squared box
 			const int iIconSize = 48;

@@ -191,14 +191,14 @@ IMPLEMENT_SERVERCLASS_ST(CASW_Marine, DT_ASW_Marine)
 	SendPropBool	(SENDINFO(m_bOnFire)),
 
 	// emotes
-	SendPropBool	(SENDINFO(bEmoteMedic)),
-	SendPropBool	(SENDINFO(bEmoteAmmo)),
-	SendPropBool	(SENDINFO(bEmoteSmile)),
-	SendPropBool	(SENDINFO(bEmoteStop)),
-	SendPropBool	(SENDINFO(bEmoteGo)),
-	SendPropBool	(SENDINFO(bEmoteExclaim)),
-	SendPropBool	(SENDINFO(bEmoteAnimeSmile)),	
-	SendPropBool	(SENDINFO(bEmoteQuestion)),	
+	SendPropBool	(SENDINFO(m_bEmoteMedic)),
+	SendPropBool	(SENDINFO(m_bEmoteAmmo)),
+	SendPropBool	(SENDINFO(m_bEmoteSmile)),
+	SendPropBool	(SENDINFO(m_bEmoteStop)),
+	SendPropBool	(SENDINFO(m_bEmoteGo)),
+	SendPropBool	(SENDINFO(m_bEmoteExclaim)),
+	SendPropBool	(SENDINFO(m_bEmoteAnime)),	
+	SendPropBool	(SENDINFO(m_bEmoteQuestion)),	
 
 	// driving
 	SendPropEHandle( SENDINFO ( m_hASWVehicle ) ),
@@ -250,13 +250,13 @@ BEGIN_DATADESC( CASW_Marine )
 	DEFINE_FIELD( m_hASWVehicle, FIELD_EHANDLE ),
 	DEFINE_FIELD( m_bDriving, FIELD_BOOLEAN ),
 	DEFINE_FIELD( m_bIsInVehicle, FIELD_BOOLEAN ),
-	DEFINE_FIELD( bEmoteMedic, FIELD_BOOLEAN ),
-	DEFINE_FIELD( bEmoteAmmo, FIELD_BOOLEAN ),
-	DEFINE_FIELD( bEmoteStop, FIELD_BOOLEAN ),
-	DEFINE_FIELD( bEmoteGo, FIELD_BOOLEAN ),
-	DEFINE_FIELD( bEmoteExclaim, FIELD_BOOLEAN ),
-	DEFINE_FIELD( bEmoteAnimeSmile, FIELD_BOOLEAN ),
-	DEFINE_FIELD( bEmoteQuestion, FIELD_BOOLEAN ),
+	DEFINE_FIELD( m_bEmoteMedic, FIELD_BOOLEAN ),
+	DEFINE_FIELD( m_bEmoteAmmo, FIELD_BOOLEAN ),
+	DEFINE_FIELD( m_bEmoteStop, FIELD_BOOLEAN ),
+	DEFINE_FIELD( m_bEmoteGo, FIELD_BOOLEAN ),
+	DEFINE_FIELD( m_bEmoteExclaim, FIELD_BOOLEAN ),
+	DEFINE_FIELD( m_bEmoteAnime, FIELD_BOOLEAN ),
+	DEFINE_FIELD( m_bEmoteQuestion, FIELD_BOOLEAN ),
 	DEFINE_FIELD( m_Commander, FIELD_EHANDLE),	
 	DEFINE_FIELD( m_hRemoteTurret, FIELD_EHANDLE ),
 	DEFINE_FIELD( m_fHoldingYaw, FIELD_FLOAT ),
@@ -3518,49 +3518,49 @@ void CASW_Marine::DoEmote(int iEmote)
 		case 0:
 		{
 			GetMarineSpeech()->Chatter(CHATTER_MEDIC);
-			bEmoteMedic = true;
+			m_bEmoteMedic = true;
 			break;
 		}
 		case 1:
 		{
 			GetMarineSpeech()->Chatter(CHATTER_NEED_AMMO);
-			bEmoteAmmo = true;
+			m_bEmoteAmmo = true;
 			break;
 		}
 		case 2:
 		{
-			bEmoteSmile = true;
+			m_bEmoteSmile = true;
 			break;
 		}
 		case 3:
 		{
 			GetMarineSpeech()->Chatter(CHATTER_HOLD_POSITION);
 			DoAnimationEvent(PLAYERANIMEVENT_HALT);
-			bEmoteStop = true;
+			m_bEmoteStop = true;
 			break;
 		}
 		case 4:
 		{
 			GetMarineSpeech()->Chatter(CHATTER_FOLLOW_ME);
 			DoAnimationEvent(PLAYERANIMEVENT_GO);
-			bEmoteGo = true;
+			m_bEmoteGo = true;
 			break;
 		}
 		case 5:
 		{
 			GetMarineSpeech()->Chatter(CHATTER_WATCH_OUT);
-			bEmoteExclaim = true;
+			m_bEmoteExclaim = true;
 			break;
 		}
 		case 7:
 		{
 			GetMarineSpeech()->Chatter(CHATTER_QUESTION);
-			bEmoteQuestion = true;
+			m_bEmoteQuestion = true;
 			break;
 		}
 		default:
 		{
-			bEmoteAnimeSmile = true;
+			m_bEmoteAnime = true;
 			break;
 		}
 	}
@@ -4446,7 +4446,7 @@ void CASW_Marine::OnWeaponOutOfAmmo(bool bChatter)
 	if (bChatter && GetMarineSpeech())
 	{
 		GetMarineSpeech()->Chatter(CHATTER_NO_AMMO);
-		bEmoteAmmo = true;
+		m_bEmoteAmmo = true;
 
 		CASW_Marine_Resource *pMR = GetMarineResource();
 		if ( pMR )

@@ -131,14 +131,14 @@ BEGIN_NETWORK_TABLE( CASW_Marine, DT_ASW_Marine )
 	RecvPropBool		( RECVINFO ( m_bOnFire ) ),
 
 	//emotes
-	RecvPropBool	(RECVINFO(bEmoteMedic)),
-	RecvPropBool	(RECVINFO(bEmoteAmmo)),
-	RecvPropBool	(RECVINFO(bEmoteSmile)),
-	RecvPropBool	(RECVINFO(bEmoteStop)),
-	RecvPropBool	(RECVINFO(bEmoteGo)),
-	RecvPropBool	(RECVINFO(bEmoteExclaim)),
-	RecvPropBool	(RECVINFO(bEmoteAnimeSmile)),
-	RecvPropBool	(RECVINFO(bEmoteQuestion)),
+	RecvPropBool	(RECVINFO(m_bEmoteMedic)),
+	RecvPropBool	(RECVINFO(m_bEmoteAmmo)),
+	RecvPropBool	(RECVINFO(m_bEmoteSmile)),
+	RecvPropBool	(RECVINFO(m_bEmoteStop)),
+	RecvPropBool	(RECVINFO(m_bEmoteGo)),
+	RecvPropBool	(RECVINFO(m_bEmoteExclaim)),
+	RecvPropBool	(RECVINFO(m_bEmoteAnime)),
+	RecvPropBool	(RECVINFO(m_bEmoteQuestion)),
 
 	// driving
 	RecvPropEHandle (RECVINFO(m_hASWVehicle)),
@@ -450,10 +450,20 @@ C_ASW_Marine::C_ASW_Marine() :
 	m_fRedNamePulse = 0;
 	m_bRedNamePulseUp = true;
 
-	bClientEmoteMedic = bClientEmoteAmmo = bClientEmoteSmile = bClientEmoteStop
-		= bClientEmoteGo = bClientEmoteExclaim = bClientEmoteAnimeSmile = bClientEmoteQuestion = false;
-	fEmoteMedicTime = fEmoteAmmoTime = fEmoteSmileTime = fEmoteStopTime
-		= fEmoteGoTime = fEmoteExclaimTime = fEmoteAnimeSmileTime = fEmoteQuestionTime = 0;
+#define INIT_EMOTE(x) \
+		m_bEmote##x = false; \
+		m_bClientEmote##x = false; \
+		m_flEmote##x##Time = 0; \
+		m_flEmote##x##Start = 0
+	INIT_EMOTE(Medic);
+	INIT_EMOTE(Ammo);
+	INIT_EMOTE(Smile);
+	INIT_EMOTE(Stop);
+	INIT_EMOTE(Go);
+	INIT_EMOTE(Exclaim);
+	INIT_EMOTE(Anime);
+	INIT_EMOTE(Question);
+#undef INIT_EMOTE
 
 	m_surfaceProps = 0;
 	m_pSurfaceData = NULL;

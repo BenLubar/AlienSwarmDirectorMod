@@ -178,27 +178,19 @@ void CASW_Marine::SetFacingPoint(const Vector &vec, float fDuration)
 //   to go to 2.0 on all machines and tick down to zero (whereupon it gets set to false again)
 void CASW_Marine::TickEmotes(float d)
 {
-#ifdef CLIENT_DLL
-#define CLIENT_ONLY_EMOTE(x) , x
-#else
-#define CLIENT_ONLY_EMOTE(x)
-#endif
-	bEmoteMedic = TickEmote(d, bEmoteMedic, bClientEmoteMedic, fEmoteMedicTime CLIENT_ONLY_EMOTE(fEmoteMedicStart));
-	bEmoteAmmo = TickEmote(d, bEmoteAmmo, bClientEmoteAmmo, fEmoteAmmoTime CLIENT_ONLY_EMOTE(fEmoteAmmoStart));
-	bEmoteSmile = TickEmote(d, bEmoteSmile, bClientEmoteSmile, fEmoteSmileTime CLIENT_ONLY_EMOTE(fEmoteSmileStart));
-	bEmoteStop = TickEmote(d, bEmoteStop, bClientEmoteStop, fEmoteStopTime CLIENT_ONLY_EMOTE(fEmoteStopStart));
-	bEmoteGo = TickEmote(d, bEmoteGo, bClientEmoteGo, fEmoteGoTime CLIENT_ONLY_EMOTE(fEmoteGoStart));
-	bEmoteExclaim = TickEmote(d, bEmoteExclaim, bClientEmoteExclaim, fEmoteExclaimTime CLIENT_ONLY_EMOTE(fEmoteExclaimStart));
-	bEmoteAnimeSmile = TickEmote(d, bEmoteAnimeSmile, bClientEmoteAnimeSmile, fEmoteAnimeSmileTime CLIENT_ONLY_EMOTE(fEmoteAnimeSmileStart));
-	bEmoteQuestion = TickEmote(d, bEmoteQuestion, bClientEmoteQuestion, fEmoteQuestionTime CLIENT_ONLY_EMOTE(fEmoteQuestionStart));
-#undef CLIENT_ONLY_EMOTE
+#define TICK_EMOTE(x) m_bEmote##x = TickEmote(d, m_bEmote##x, m_bClientEmote##x, m_flEmote##x##Time, m_flEmote##x##Start)
+	TICK_EMOTE(Medic);
+	TICK_EMOTE(Ammo);
+	TICK_EMOTE(Smile);
+	TICK_EMOTE(Stop);
+	TICK_EMOTE(Go);
+	TICK_EMOTE(Exclaim);
+	TICK_EMOTE(Anime);
+	TICK_EMOTE(Question);
+#undef TICK_EMOTE
 }
 
-#ifdef CLIENT_DLL
-bool CASW_Marine::TickEmote(float d, bool bEmote, bool& bClientEmote, float& fEmoteTime, float& flEmoteStart)
-#else
-bool CASW_Marine::TickEmote(float d, bool bEmote, bool& bClientEmote, float& fEmoteTime)
-#endif
+bool CASW_Marine::TickEmote(float d, bool bEmote, bool& bClientEmote, float& flEmoteTime, float& flEmoteStart)
 {
 	if (bEmote != bClientEmote)
 	{
@@ -206,17 +198,15 @@ bool CASW_Marine::TickEmote(float d, bool bEmote, bool& bClientEmote, float& fEm
 		if (bEmote)
 		{
 			// started an emote
-			fEmoteTime = 2.0;
-#ifdef CLIENT_DLL
+			flEmoteTime = 2.0;
 			flEmoteStart = gpGlobals->curtime;
-#endif
 		}
 	}
 
 	if (bEmote)		// if we're doing an emote, tick down the emote timer
 	{
-		fEmoteTime -= d * 2;
-		if (fEmoteTime <= 0)
+		flEmoteTime -= d * 2;
+		if (flEmoteTime <= 0)
 			bEmote = false;	
 	}
 	return bEmote;

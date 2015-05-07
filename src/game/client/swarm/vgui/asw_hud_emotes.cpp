@@ -55,14 +55,16 @@ public:
 	virtual void PaintEmote(C_BaseEntity* pEnt, float fTime, int iTexture, float fScale=1.0f);
 	virtual bool ShouldDraw( void ) { return asw_draw_hud.GetBool() && CASW_HudElement::ShouldDraw(); }
 
-	CPanelAnimationVarAliasType( int, m_nMedicTexture,		"MedicEmoteTexture",	"vgui/swarm/Emotes/EmoteMedic", "textureid" );
-	CPanelAnimationVarAliasType( int, m_nAmmoTexture,		"AmmoEmoteTexture",		"vgui/swarm/Emotes/EmoteAmmo", "textureid" );
-	CPanelAnimationVarAliasType( int, m_nSmileTexture,		"SmileEmoteTexture",	"vgui/swarm/Emotes/EmoteSmile", "textureid" );
-	CPanelAnimationVarAliasType( int, m_nStopTexture,		"StopEmoteTexture",		"vgui/swarm/Emotes/EmoteStop", "textureid" );
-	CPanelAnimationVarAliasType( int, m_nGoTexture,			"GoEmoteTexture",		"vgui/swarm/Emotes/EmoteGo", "textureid" );
-	CPanelAnimationVarAliasType( int, m_nExclaimTexture,	"ExclaimEmoteTexture",	"vgui/swarm/Emotes/EmoteExclaim", "textureid" );
-	CPanelAnimationVarAliasType( int, m_nAnimeTexture,		"AnimeEmoteTexture",	"vgui/swarm/Emotes/EmoteAnime", "textureid" );
-	CPanelAnimationVarAliasType( int, m_nQuestionTexture,	"QuestionTexture",	"vgui/swarm/Emotes/EmoteQuestion", "textureid" );
+#define DECLARE_EMOTE(x) CPanelAnimationVarAliasType(int, m_n##x##Texture, #x "EmoteTexture", "vgui/swarm/Emotes/Emote" #x, "textureid")
+	DECLARE_EMOTE(Medic);
+	DECLARE_EMOTE(Ammo);
+	DECLARE_EMOTE(Smile);
+	DECLARE_EMOTE(Stop);
+	DECLARE_EMOTE(Go);
+	DECLARE_EMOTE(Exclaim);
+	DECLARE_EMOTE(Anime);
+	DECLARE_EMOTE(Question);
+#undef DECLARE_EMOTE
 	CPanelAnimationVarAliasType( int, m_nWrenchTexture,		"WrenchTexture",	"vgui/swarm/ClassIcons/EngineerIcon", "textureid" );
 	CPanelAnimationVarAliasType( int, m_nSentryUpTexture,	"SentryUpTexture",	"vgui/swarm/ClassIcons/SentryBuild", "textureid" );
 	CPanelAnimationVarAliasType( int, m_nSentryDnTexture,	"SentryDnTexture",	"vgui/swarm/ClassIcons/SentryDismantle", "textureid" );
@@ -124,22 +126,18 @@ void CASWHudEmotes::PaintEmotes()
 
 void CASWHudEmotes::PaintEmotesFor(C_ASW_Marine* pMarine)
 {
-	if (pMarine->bClientEmoteMedic)
-		PaintEmote(pMarine, pMarine->fEmoteMedicTime, m_nMedicTexture);
-	if (pMarine->bClientEmoteAmmo)
-		PaintEmote(pMarine, pMarine->fEmoteAmmoTime, m_nAmmoTexture);
-	if (pMarine->bClientEmoteSmile)
-		PaintEmote(pMarine, pMarine->fEmoteSmileTime, m_nSmileTexture);
-	if (pMarine->bClientEmoteStop)
-		PaintEmote(pMarine, pMarine->fEmoteStopTime, m_nStopTexture);
-	if (pMarine->bClientEmoteGo)
-		PaintEmote(pMarine, pMarine->fEmoteGoTime, m_nGoTexture);
-	if (pMarine->bClientEmoteExclaim)
-		PaintEmote(pMarine, pMarine->fEmoteExclaimTime, m_nExclaimTexture);
-	if (pMarine->bClientEmoteAnimeSmile)
-		PaintEmote(pMarine, pMarine->fEmoteAnimeSmileTime, m_nAnimeTexture);
-	if (pMarine->bClientEmoteQuestion)
-		PaintEmote(pMarine, pMarine->fEmoteQuestionTime, m_nQuestionTexture);
+#define PAINT_EMOTE(x) \
+		if (pMarine->m_bClientEmote##x) \
+			PaintEmote(pMarine, pMarine->m_flEmote##x##Time, m_n##x##Texture);
+	PAINT_EMOTE(Medic);
+	PAINT_EMOTE(Ammo);
+	PAINT_EMOTE(Smile);
+	PAINT_EMOTE(Stop);
+	PAINT_EMOTE(Go);
+	PAINT_EMOTE(Exclaim);
+	PAINT_EMOTE(Anime);
+	PAINT_EMOTE(Question);
+#undef PAINT_EMOTE
 
 	bool bBuildingSentry = false;
 	bool bWelding = false;
@@ -218,7 +216,7 @@ void CASWHudEmotes::PaintEmote(C_BaseEntity* pEnt, float fTime, int iTexture, fl
 	Vector vecFacing;
 	AngleVectors(pEnt->GetRenderAngles(), &vecFacing);
 	vecFacing *= 5;
-	if (!debugoverlay->ScreenPosition( pEnt->GetRenderOrigin() + Vector(0,40,70) + vecFacing, screenPos )) 
+	if (!debugoverlay->ScreenPosition( pEnt->GetRenderOrigin() + Vector(0, 0, 100) + vecFacing, screenPos )) 
 	{
 		//Msg("Emote marinepos: %s\n", VecToString(pEnt->GetRenderOrigin()));
 		//Msg("Emote marinefacing: %s\n", VecToString(vecFacing));

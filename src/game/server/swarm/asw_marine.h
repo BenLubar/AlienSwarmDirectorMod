@@ -662,20 +662,22 @@ public:
 
 	// emote system
 	void TickEmotes(float d);
-	bool TickEmote(float d, bool bEmote, bool& bClientEmote, float& fEmoteTime);
+	bool TickEmote(float d, bool bEmote, bool& bClientEmote, float& flEmoteTime, float& flEmoteStart);
 	void DoEmote(int iEmote);
-	CNetworkVar(bool, bEmoteMedic);
-	CNetworkVar(bool, bEmoteAmmo);
-	CNetworkVar(bool, bEmoteSmile);
-	CNetworkVar(bool, bEmoteStop);
-	CNetworkVar(bool, bEmoteGo);
-	CNetworkVar(bool, bEmoteExclaim);
-	CNetworkVar(bool, bEmoteAnimeSmile);
-	CNetworkVar(bool, bEmoteQuestion);
-	bool bClientEmoteMedic, bClientEmoteAmmo, bClientEmoteSmile, bClientEmoteStop,
-		bClientEmoteGo, bClientEmoteExclaim, bClientEmoteAnimeSmile, bClientEmoteQuestion; 		// these are unused by the server.dll but are here for shared code purposes
-	float fEmoteMedicTime, fEmoteAmmoTime, fEmoteSmileTime, fEmoteStopTime,
-		fEmoteGoTime, fEmoteExclaimTime, fEmoteAnimeSmileTime, fEmoteQuestionTime;
+#define DECLARE_EMOTE(x) \
+		CNetworkVar(bool, m_bEmote##x); \
+		bool m_bClientEmote##x; \
+		float m_flEmote##x##Time; \
+		float m_flEmote##x##Start
+	DECLARE_EMOTE(Medic);
+	DECLARE_EMOTE(Ammo);
+	DECLARE_EMOTE(Smile);
+	DECLARE_EMOTE(Stop);
+	DECLARE_EMOTE(Go);
+	DECLARE_EMOTE(Exclaim);
+	DECLARE_EMOTE(Anime);
+	DECLARE_EMOTE(Question);
+#undef DECLARE_EMOTE
 
 	// driving
 	virtual void StartDriving(IASW_Vehicle* pVehicle);
