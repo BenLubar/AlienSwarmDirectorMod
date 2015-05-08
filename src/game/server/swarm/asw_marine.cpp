@@ -155,10 +155,12 @@ IMPLEMENT_SERVERCLASS_ST(CASW_Marine, DT_ASW_Marine)
 	SendPropAngle( SENDINFO_VECTORELEM(m_angRotation, 0), 13, SPROP_NOSCALE|SPROP_CHANGES_OFTEN, CBaseEntity::SendProxy_AnglesX ),
 	SendPropAngle( SENDINFO_VECTORELEM(m_angRotation, 1), 13, SPROP_NOSCALE|SPROP_CHANGES_OFTEN, CBaseEntity::SendProxy_AnglesY ),
 	SendPropAngle( SENDINFO_VECTORELEM(m_angRotation, 2), 13, SPROP_NOSCALE|SPROP_CHANGES_OFTEN, CBaseEntity::SendProxy_AnglesZ ),
+	SendPropVector(SENDINFO(m_vecBaseVelocity), -1, SPROP_COORD),
 #else
 	SendPropAngle( SENDINFO_VECTORELEM(m_angRotation, 0), 13, SPROP_CHANGES_OFTEN, CBaseEntity::SendProxy_AnglesX ),
 	SendPropAngle( SENDINFO_VECTORELEM(m_angRotation, 1), 13, SPROP_CHANGES_OFTEN, CBaseEntity::SendProxy_AnglesY ),
 	SendPropAngle( SENDINFO_VECTORELEM(m_angRotation, 2), 13, SPROP_CHANGES_OFTEN, CBaseEntity::SendProxy_AnglesZ ),
+	SendPropVector(SENDINFO(m_vecBaseVelocity), 20, 0, -1000, 1000),
 #endif
 
 	SendPropFloat		( SENDINFO(m_fAIPitch), 0, SPROP_NOSCALE),
@@ -1740,17 +1742,6 @@ void CASW_Marine::PostThink()
 	if (IsInhabited())
 	{
 		StudioFrameAdvance();
-	}
-
-	// !!HACK!! to fix elevators.
-	CBaseEntity *pGround = GetGroundEntity();
-	if (GetFlags() & FL_ONGROUND && pGround && !pGround->IsWorld() && !pGround->GetAbsVelocity().IsZero())
-	{
-		SetParent(pGround);
-	}
-	else
-	{
-		SetParent(NULL);
 	}
 
 	ASWThinkEffects();

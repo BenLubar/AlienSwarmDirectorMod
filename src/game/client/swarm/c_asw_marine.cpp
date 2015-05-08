@@ -102,6 +102,7 @@ BEGIN_NETWORK_TABLE( CASW_Marine, DT_ASW_Marine )
 	RecvPropFloat( RECVINFO_NAME( m_angNetworkAngles[0], m_angRotation[0] ) ),
 	RecvPropFloat( RECVINFO_NAME( m_angNetworkAngles[1], m_angRotation[1] ) ),
 	RecvPropFloat( RECVINFO_NAME( m_angNetworkAngles[2], m_angRotation[2] ) ),
+	RecvPropVector( RECVINFO( m_vecBaseVelocity ) ),
 
 	RecvPropFloat		( RECVINFO( m_fAIPitch ) ),
 	RecvPropInt			( RECVINFO( m_fFlags) ),
