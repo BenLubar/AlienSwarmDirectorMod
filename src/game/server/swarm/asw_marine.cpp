@@ -192,14 +192,14 @@ IMPLEMENT_SERVERCLASS_ST(CASW_Marine, DT_ASW_Marine)
 	SendPropBool	(SENDINFO(m_bOnFire)),
 
 	// emotes
-	SendPropBool	(SENDINFO(m_bEmoteMedic)),
-	SendPropBool	(SENDINFO(m_bEmoteAmmo)),
-	SendPropBool	(SENDINFO(m_bEmoteSmile)),
-	SendPropBool	(SENDINFO(m_bEmoteStop)),
-	SendPropBool	(SENDINFO(m_bEmoteGo)),
-	SendPropBool	(SENDINFO(m_bEmoteExclaim)),
-	SendPropBool	(SENDINFO(m_bEmoteAnime)),	
-	SendPropBool	(SENDINFO(m_bEmoteQuestion)),	
+	SendPropBool	(SENDINFO_NAME(m_bEmoteMedic,    bEmoteMedic)),
+	SendPropBool	(SENDINFO_NAME(m_bEmoteAmmo,     bEmoteAmmo)),
+	SendPropBool	(SENDINFO_NAME(m_bEmoteSmile,    bEmoteSmile)),
+	SendPropBool	(SENDINFO_NAME(m_bEmoteStop,     bEmoteStop)),
+	SendPropBool	(SENDINFO_NAME(m_bEmoteGo,       bEmoteGo)),
+	SendPropBool	(SENDINFO_NAME(m_bEmoteExclaim,  bEmoteExclaim)),
+	SendPropBool	(SENDINFO_NAME(m_bEmoteAnime,    bEmoteAnimeSmile)),
+	SendPropBool	(SENDINFO_NAME(m_bEmoteQuestion, bEmoteQuestion)),
 
 	// driving
 	SendPropEHandle( SENDINFO ( m_hASWVehicle ) ),

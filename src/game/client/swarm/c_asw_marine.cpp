@@ -131,14 +131,14 @@ BEGIN_NETWORK_TABLE( CASW_Marine, DT_ASW_Marine )
 	RecvPropBool		( RECVINFO ( m_bOnFire ) ),
 
 	//emotes
-	RecvPropBool	(RECVINFO(m_bEmoteMedic)),
-	RecvPropBool	(RECVINFO(m_bEmoteAmmo)),
-	RecvPropBool	(RECVINFO(m_bEmoteSmile)),
-	RecvPropBool	(RECVINFO(m_bEmoteStop)),
-	RecvPropBool	(RECVINFO(m_bEmoteGo)),
-	RecvPropBool	(RECVINFO(m_bEmoteExclaim)),
-	RecvPropBool	(RECVINFO(m_bEmoteAnime)),
-	RecvPropBool	(RECVINFO(m_bEmoteQuestion)),
+	RecvPropBool	(RECVINFO_NAME(m_bEmoteMedic,    bEmoteMedic)),
+	RecvPropBool	(RECVINFO_NAME(m_bEmoteAmmo,     bEmoteAmmo)),
+	RecvPropBool	(RECVINFO_NAME(m_bEmoteSmile,    bEmoteSmile)),
+	RecvPropBool	(RECVINFO_NAME(m_bEmoteStop,     bEmoteStop)),
+	RecvPropBool	(RECVINFO_NAME(m_bEmoteGo,		 bEmoteGo)),
+	RecvPropBool	(RECVINFO_NAME(m_bEmoteExclaim,  bEmoteExclaim)),
+	RecvPropBool	(RECVINFO_NAME(m_bEmoteAnime,    bEmoteAnimeSmile)),
+	RecvPropBool	(RECVINFO_NAME(m_bEmoteQuestion, bEmoteQuestion)),
 
 	// driving
 	RecvPropEHandle (RECVINFO(m_hASWVehicle)),
