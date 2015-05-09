@@ -738,9 +738,11 @@ CASW_Marine* UTIL_ASW_MarineCanSee(CASW_Marine_Resource* pMarineResource, const 
 
 #ifdef CLIENT_DLL
 	extern ConVar asw_controls;
-	if ( asw_controls.GetBool() )
+	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
+	if (asw_controls.GetInt() == 1)
 #else
-	if ( pMarineResource->IsInhabited() && pMarineResource->GetCommander() && pMarineResource->GetCommander()->m_bASWControls )
+	Assert(!pMarineResource->IsInhabited() || !pMarineResource->GetCommander() || (pMarineResource->GetCommander()->m_iASWControls >= 0 && pMarineResource->GetCommander()->m_iASWControls <= 2));
+	if (pMarineResource->IsInhabited() && pMarineResource->GetCommander() && pMarineResource->GetCommander()->m_iASWControls == 1)
 #endif
 	{
 		trace_t tr;

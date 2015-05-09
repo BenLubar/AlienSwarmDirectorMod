@@ -42,7 +42,8 @@ void CASWInput::ActivateMouse (void)
 void CASWInput::ResetMouse( void )
 {
 	HACK_GETLOCALPLAYER_GUARD( "Mouse behavior is tied to a specific player's status - splitscreen player would depend on which player (if any) is using mouse control" );
-	if ( MarineControllingTurret() || ( !asw_controls.GetBool() && ( !ASWGameRules() || ASWGameRules()->GetMarineDeathCamInterp() <= 0.0f ) && ( !C_ASW_Marine::GetLocalMarine() || !C_ASW_Marine::GetLocalMarine()->IsUsingComputerOrButtonPanel() )  && !IsRadialMenuOpen(NULL, false) ) )
+	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
+	if ( MarineControllingTurret() || ( asw_controls.GetInt() != 1 && ( !ASWGameRules() || ASWGameRules()->GetMarineDeathCamInterp() <= 0.0f ) && ( !C_ASW_Marine::GetLocalMarine() || !C_ASW_Marine::GetLocalMarine()->IsUsingComputerOrButtonPanel() )  && !IsRadialMenuOpen(NULL, false) ) )
 	{
 		int x, y;
 		GetWindowCenter( x, y );
@@ -80,8 +81,9 @@ void CASWInput::ApplyMouse( int nSlot, QAngle& viewangles, CUserCmd *cmd, float 
 
 	if ( ASWInput()->ControllerModeActive() )
 		return;
-		
-	if ( asw_controls.GetBool() && !MarineControllingTurret() )
+
+	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
+	if (asw_controls.GetInt() == 1 && !MarineControllingTurret())
 	{
 		TurnTowardMouse( viewangles, cmd );
 

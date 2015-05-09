@@ -155,7 +155,8 @@ void ASWCircularProgressBar::PaintBackground()
 	if ( !crosshair.GetBool() )
 		return;
 
-	if ( !asw_controls.GetBool() )
+	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
+	if ( asw_controls.GetInt() != 1 )
 		return;
 
 	int x = 0;
@@ -227,7 +228,8 @@ void ASWCircularProgressBar::Paint()
 	if ( !crosshair.GetBool() )
 		return;
 
-	if ( !asw_controls.GetBool() )
+	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
+	if (asw_controls.GetInt() != 1)
 		return;
 
 	int x = 0;

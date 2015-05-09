@@ -362,9 +362,11 @@ Vector CASW_Player::EyePosition( )
 	}
 	// revert to hl2 camera
 #ifdef CLIENT_DLL
-	if ( !asw_controls.GetBool() && ( engine->IsPlayingDemo() || GetSpectatingMarine() ) && ( !ASWGameRules() || ASWGameRules()->GetMarineDeathCamInterp() <= 0.0f ) )
+	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
+	if ( asw_controls.GetInt() != 1 && ( engine->IsPlayingDemo() || GetSpectatingMarine() ) && ( !ASWGameRules() || ASWGameRules()->GetMarineDeathCamInterp() <= 0.0f ) )
 #else
-	if ( !m_bASWControls )
+	Assert(m_iASWControls >= 0 && m_iASWControls <= 2);
+	if ( m_iASWControls != 1 )
 #endif
 	{
 		if ( !asw_allow_detach.GetBool() && pMarine )
@@ -869,9 +871,11 @@ const QAngle& CASW_Player::EyeAngles( )
 
 	// revert to hl2 camera
 #ifdef CLIENT_DLL
-	if ( !asw_controls.GetBool() && ( engine->IsPlayingDemo() || ( GetMarine() && GetMarine()->GetCurrentMeleeAttack() ) || GetSpectatingMarine() || ( ASWGameRules() && ASWGameRules()->GetMarineDeathCamInterp() > 0.0f ) ) )
+	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
+	if (asw_controls.GetInt() != 1 && (engine->IsPlayingDemo() || (GetMarine() && GetMarine()->GetCurrentMeleeAttack()) || GetSpectatingMarine() || (ASWGameRules() && ASWGameRules()->GetMarineDeathCamInterp() > 0.0f)))
 #else
-	if ( !m_bASWControls )
+	Assert(m_iASWControls >= 0 && m_iASWControls <= 2);
+	if ( m_iASWControls != 1 )
 #endif
 	{
 		if ( !asw_allow_detach.GetBool() && GetSpectatingMarine() )
@@ -955,9 +959,11 @@ Vector CASW_Player::EarPosition( void )
 {
 	// revert to hl2 camera
 #ifdef CLIENT_DLL
-	if ( !asw_controls.GetBool() && engine->IsPlayingDemo() )
+	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
+	if (asw_controls.GetInt() != 1 && engine->IsPlayingDemo())
 #else
-	if ( !m_bASWControls )
+	Assert(m_iASWControls >= 0 && m_iASWControls <= 2);
+	if ( m_iASWControls != 1 )
 #endif
 	{
 		return BaseClass::EarPosition();

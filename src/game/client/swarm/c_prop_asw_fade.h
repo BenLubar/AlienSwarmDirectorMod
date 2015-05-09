@@ -21,7 +21,7 @@ public:
 	Vector m_vecFadeOrigin;
 
 protected:
-	bool m_bLastControls;
+	int m_iLastControls;
 	CHandle<C_ASW_Marine> m_hLastMarine;
 	bool m_bFaded;
 	float m_flInterpStart;

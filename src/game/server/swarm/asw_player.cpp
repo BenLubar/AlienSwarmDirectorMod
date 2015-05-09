@@ -1730,7 +1730,8 @@ bool CASW_Player::ClientCommand( const CCommand &args )
 			Warning( "Player sent bad cl_asw_controls command\n" );
 		}
 
-		m_bASWControls = (atoi(args[1]) != 0);
+		Assert(atoi(args[1]) >= 0 && atoi(args[1]) <= 2);
+		m_iASWControls = clamp<int>(atoi(args[1]), 0, 2);
 		return true;
 	}
 	
@@ -2234,7 +2235,8 @@ void CASW_Player::ChangeName( const char *pszNewName )
 
 Vector CASW_Player::GetAutoaimVectorForMarine(CASW_Marine* marine, float flDelta, float flNearMissDelta)
 {
-	if (m_bASWControls)
+	Assert(m_iASWControls >= 0 && m_iASWControls <= 2);
+	if (m_iASWControls == 1)
 	{
 		// test of no serverside autoaim
 		Vector	forward;

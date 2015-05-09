@@ -486,9 +486,11 @@ void CASW_Melee_System::OnJumpPressed( CASW_Marine *pMarine, CMoveData *pMoveDat
 	{
 #ifdef CLIENT_DLL
 		extern ConVar asw_controls;
-		bool bFirstPerson = !asw_controls.GetBool();
+		Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
+		bool bFirstPerson = asw_controls.GetInt() != 1;
 #else
-		bool bFirstPerson = !pMarine->IsInhabited() || (pMarine->GetCommander() && !pMarine->GetCommander()->m_bASWControls);
+		Assert(!pMarine->IsInhabited() || !pMarine->GetCommander() || (pMarine->GetCommander()->m_iASWControls >= 0 && pMarine->GetCommander()->m_iASWControls <= 2));
+		bool bFirstPerson = !pMarine->IsInhabited() || !pMarine->GetCommander() || pMarine->GetCommander()->m_iASWControls != 1;
 #endif
 		pMarine->m_flMeleeYaw = RAD2DEG(atan2(-pMoveData->m_flSideMove, pMoveData->m_flForwardMove)) + (bFirstPerson ? pMarine->ASWEyeAngles()[YAW] : ASWGameRules()->GetTopDownMovementAxis()[YAW]);
 	}

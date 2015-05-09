@@ -236,7 +236,7 @@ public:
 	float m_flPendingSteamStatsStart;
 	bool m_bSentPromotedMessage;
 
-	bool m_bASWControls;
+	int m_iASWControls;
 
 #if !defined(NO_STEAM)
 	CCallResult< CASW_Player, GSStatsReceived_t > m_CallbackGSStatsReceived;

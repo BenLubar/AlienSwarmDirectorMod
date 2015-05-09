@@ -182,7 +182,7 @@ ConVar asw_turret_fog_start("asw_turret_fog_start", "900", 0, "Fog start distanc
 ConVar asw_turret_fog_end("asw_turret_fog_end", "1200", 0, "Fog end distance for turret view");
 
 void ASW_Controls_Changed(IConVar *var, const char *pOldValue, float flOldValue);
-ConVar asw_controls("asw_controls", "1", FCVAR_ARCHIVE, "Disable to get normal FPS controls (affects only you)", ASW_Controls_Changed);
+ConVar asw_controls("asw_controls", "1", FCVAR_ARCHIVE, "Disable to get normal FPS controls (affects only you)", true, 0, true, 2, ASW_Controls_Changed);
 void ASW_Controls_Changed(IConVar *var, const char *pOldValue, float flOldValue)
 {
 	if (!ASWGameRules())
@@ -190,7 +190,7 @@ void ASW_Controls_Changed(IConVar *var, const char *pOldValue, float flOldValue)
 
 	Assert(ASWInput());
 
-	if (asw_controls.GetBool())
+	if (asw_controls.GetInt() == 1)
 	{
 		ASWInput()->CAM_ToThirdPerson();
 	}
@@ -1838,6 +1838,7 @@ void C_ASW_Player::MarineStopMoveIfBlocked(float flFrameTime, CUserCmd *pCmd, C_
 	QAngle vAngles = pCmd->viewangles;
 	vAngles.x = 0;
 
+	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
 	if ( asw_controls.GetInt() == 1 )
 		AngleVectors( ASW_MOVEMENT_AXIS, &currentdir, &rightdir, NULL );
 	else
@@ -2141,7 +2142,8 @@ void C_ASW_Player::MarinePerformClientSideObstacleAvoidance( float flFrameTime, 
 
 	vAngles.x = 0;
 
-	if (asw_controls.GetBool())
+	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
+	if (asw_controls.GetInt() == 1)
 	{
 		AngleVectors( ASW_MOVEMENT_AXIS, &currentdir, &rightdir, NULL );
 	}

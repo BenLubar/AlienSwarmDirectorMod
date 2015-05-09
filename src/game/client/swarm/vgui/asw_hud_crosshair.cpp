@@ -170,7 +170,8 @@ void CASWHudCrosshair::Paint( void )
 		}
 		else
 		{
-			if ( !asw_controls.GetBool() )
+			Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
+			if (asw_controls.GetInt() != 1)
 				return;
 			DrawDirectionalCrosshair( x, y, YRES( asw_crosshair_progress_size.GetInt() ) );
 		}

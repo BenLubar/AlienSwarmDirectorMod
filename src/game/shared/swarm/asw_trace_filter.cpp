@@ -38,9 +38,11 @@ bool CASW_Trace_Filter::ShouldHitEntity(IHandleEntity *pServerEntity, int conten
 
 #ifdef CLIENT_DLL
 	extern ConVar asw_controls;
-	if (!asw_controls.GetBool())
+	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
+	if (asw_controls.GetInt() != 1)
 #else
-	if (m_pMarine->IsInhabited() && m_pMarine->GetCommander() && !m_pMarine->GetCommander()->m_bASWControls)
+	Assert(!m_pMarine->IsInhabited() || !m_pMarine->GetCommander() || (m_pMarine->GetCommander()->m_iASWControls >= 0 && m_pMarine->GetCommander()->m_iASWControls <= 2));
+	if (!m_pMarine->IsInhabited() || !m_pMarine->GetCommander() || m_pMarine->GetCommander()->m_iASWControls != 1)
 #endif
 	{
 		if (pServerEntity == m_pMarine)

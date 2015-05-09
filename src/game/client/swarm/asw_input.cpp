@@ -31,7 +31,6 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-extern ConVar asw_controls;
 ConVar asw_marine_linear_turn_rate("asw_marine_linear_turn_rate", "600", FCVAR_CHEAT, "Linear turning rate of the marine (used as minimum when fractional turning is employed)");
 ConVar asw_marine_fraction_turn_scale("asw_marine_fraction_turn_scale", "0", FCVAR_CHEAT, "Scale for the fractional marine turning (large turns)");
 
