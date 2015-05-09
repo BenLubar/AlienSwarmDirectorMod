@@ -265,10 +265,7 @@ inline CASW_Player *ToASW_Player( CBaseEntity *pEntity )
 	if ( !pEntity || !pEntity->IsPlayer() )
 		return NULL;
 
-#ifdef _DEBUG
-	Assert( dynamic_cast<CASW_Player*>( pEntity ) != 0 );
-#endif
-	return static_cast< CASW_Player* >( pEntity );
+	return assert_cast< CASW_Player* >( pEntity );
 }
 
 
