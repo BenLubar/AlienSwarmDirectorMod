@@ -1697,8 +1697,7 @@ void CASW_MarineGameMovement::WalkMove( void )
 	else
 		AngleVectors (mv->m_vecViewAngles, &forward, &right, &up);  // Determine movement angles  
 
-	CHandle< CBaseEntity > oldground;
-	oldground = marine->GetGroundEntity();
+	CBaseEntity *oldground = marine->GetGroundEntity();
 	
 	// Copy movement amounts
 	fmove = mv->m_flForwardMove;
@@ -3639,9 +3638,8 @@ int CASW_MarineGameMovement::CheckStuck( void )
 #ifndef DEDICATED
 	if ( developer.GetBool() )
 	{
-		bool isServer = player->IsServer();
-		engine->Con_NPrintf( isServer, "%s stuck on object %i/%s", 
-			isServer ? "server" : "client",
+		engine->Con_NPrintf( IsServerDll() ? 1 : 0, "%s stuck on object %i/%s", 
+			IsServerDll() ? "server" : "client",
 			hitent , MoveHelper()->GetName(hitent) );
 	}
 #endif
@@ -3691,7 +3689,7 @@ int CASW_MarineGameMovement::CheckStuck( void )
 	// Deal with precision error in network.
 	// 
 	// World or BSP model
-	if ( !player->IsServer() )
+#ifdef CLIENT_DLL
 	{
 		if ( MoveHelper()->IsWorldEntity( hitent ) )
 		{
@@ -3716,9 +3714,10 @@ int CASW_MarineGameMovement::CheckStuck( void )
 			//Msg(" Failed\n");
 		}
 	}
+#endif
 
 	// Only an issue on the client.
-	idx = player->IsServer() ? 0 : 1;
+	idx = IsServerDll() ? 0 : 1;
 
 	fTime = Plat_FloatTime();
 	// Too soon?
@@ -4712,6 +4711,15 @@ void CASW_MarineGameMovement::PlayerMove( void )
 	else
 		AngleVectors (mv->m_vecViewAngles, &m_vecForward, &m_vecRight, &m_vecUp );  // Determine movement angles
 
+#ifdef CLIENT_DLL
+	if (marine->m_hElevator.Get())
+	{
+		Vector base = mv->GetAbsOrigin();
+		base.z = marine->m_hElevator->GetAbsOrigin().z + marine->m_flElevatorOffset;
+		mv->SetAbsOrigin(base);
+	}
+#endif
+
 	// Always try and unstick us unless we are a couple of the movement modes
 	//if ( CheckInterval( STUCK ) )
 	{
@@ -4816,7 +4824,7 @@ void CASW_MarineGameMovement::PlayerMove( void )
 			break;
 
 		default:
-			DevMsg( 1, "Bogus pmove marine movetype %i on (%i) 0=cl 1=sv\n", marine->GetMoveType(), player->IsServer());
+			DevMsg( 1, "Bogus pmove marine movetype %i on %s\n", marine->GetMoveType(), IsServerDll() ? "server" : "client");
 			break;
 	}
 	//Msg("After move: ");  CheckStuck();

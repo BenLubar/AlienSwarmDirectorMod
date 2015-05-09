@@ -102,7 +102,6 @@ BEGIN_NETWORK_TABLE( CASW_Marine, DT_ASW_Marine )
 	RecvPropFloat( RECVINFO_NAME( m_angNetworkAngles[0], m_angRotation[0] ) ),
 	RecvPropFloat( RECVINFO_NAME( m_angNetworkAngles[1], m_angRotation[1] ) ),
 	RecvPropFloat( RECVINFO_NAME( m_angNetworkAngles[2], m_angRotation[2] ) ),
-	RecvPropVector( RECVINFO( m_vecBaseVelocity ) ),
 
 	RecvPropFloat		( RECVINFO( m_fAIPitch ) ),
 	RecvPropInt			( RECVINFO( m_fFlags) ),
@@ -232,99 +231,8 @@ BEGIN_PREDICTION_DATA( C_ASW_Marine )
 	DEFINE_FIELD( m_flJumpJetStartTime, FIELD_FLOAT ),
 	DEFINE_FIELD( m_flJumpJetEndTime, FIELD_FLOAT ),
 
-	/*
-	DEFINE_FIELD( m_bSlowHeal, FIELD_BOOLEAN ),
-	DEFINE_FIELD( m_vecFacingPointFromServer, FIELD_VECTOR ),
-	DEFINE_FIELD( m_hRemoteTurret, FIELD_EHANDLE ),
-	DEFINE_FIELD( m_hASWVehicle, FIELD_EHANDLE ),
-	DEFINE_FIELD( m_bDriving, FIELD_BOOLEAN ),
-	DEFINE_FIELD( m_bIsInVehicle, FIELD_BOOLEAN ),
-	DEFINE_FIELD( bEmoteMedic, FIELD_BOOLEAN ),
-	DEFINE_FIELD( bEmoteAmmo, FIELD_BOOLEAN ),
-	DEFINE_FIELD( bEmoteStop, FIELD_BOOLEAN ),
-	DEFINE_FIELD( bEmoteGo, FIELD_BOOLEAN ),
-	DEFINE_FIELD( bEmoteExclaim, FIELD_BOOLEAN ),
-	DEFINE_FIELD( bEmoteAnimeSmile, FIELD_BOOLEAN ),
-	DEFINE_FIELD( bEmoteQuestion, FIELD_BOOLEAN ),
-	DEFINE_FIELD( m_Commander, FIELD_EHANDLE),
-	DEFINE_FIELD( m_fStopFacingPointTime, FIELD_FLOAT ),
-	DEFINE_FIELD( m_bHacking, FIELD_BOOLEAN ),
-	DEFINE_FIELD( m_hCurrentHack, FIELD_EHANDLE),
-	DEFINE_FIELD( m_hUsingEntity, FIELD_EHANDLE),
-	DEFINE_FIELD( m_fLastTurningYaw, FIELD_FLOAT),
-	DEFINE_FIELD( m_vecLastRenderedPos, FIELD_VECTOR),
-	DEFINE_FIELD( m_bUseLastRenderedEyePosition, FIELD_BOOLEAN),
+	DEFINE_PRED_FIELD_TOL(m_vecBaseVelocity, FIELD_VECTOR, FTYPEDESC_INSENDTABLE, 0.05),
 
-	// extra test
-	//DEFINE_FIELD( m_vecCustomRenderOrigin, FIELD_VECTOR),
-	//DEFINE_FIELD( m_vecPredictionError, FIELD_VECTOR),
-	//DEFINE_FIELD(  m_flPredictionErrorTime, FIELD_FLOAT),
-	//DEFINE_FIELD( m_fAIPitch, FIELD_FLOAT),
-	//DEFINE_FIELD( m_AIEyeAngles, FIELD_VECTOR),
-	DEFINE_FIELD( m_hLastWeaponSwitchedTo, FIELD_EHANDLE),
-	DEFINE_FIELD( m_ShadowDirection, FIELD_VECTOR),
-	DEFINE_FIELD( m_hMarineResource, FIELD_EHANDLE),
-	DEFINE_FIELD( m_CurrentBlipStrength, FIELD_FLOAT),
-	DEFINE_FIELD( m_CurrentBlipDirection, FIELD_INTEGER),
-	DEFINE_FIELD( m_LastThinkTime, FIELD_FLOAT),
-	DEFINE_FIELD( m_hMarineFollowTarget, FIELD_EHANDLE),	
-	DEFINE_FIELD( m_bPreventMovement, FIELD_BOOLEAN),
-	DEFINE_FIELD( m_ASWOrders, FIELD_INTEGER),
-	DEFINE_FIELD( m_hOrderArrow, FIELD_EHANDLE),			
-	DEFINE_FIELD( bPlayingFlamerSound, FIELD_BOOLEAN),
-	DEFINE_FIELD( m_fFlameTime, FIELD_FLOAT),
-	DEFINE_SOUNDPATCH( m_pFlamerLoopSound),
-	DEFINE_FIELD( bPlayingFireExtinguisherSound, FIELD_BOOLEAN),
-	DEFINE_FIELD( m_fFireExtinguisherTime, FIELD_FLOAT),
-	DEFINE_SOUNDPATCH( m_pFireExtinguisherLoopSound ),
-	DEFINE_FIELD( m_fNextHeartbeat, FIELD_FLOAT),
-	DEFINE_FIELD( m_fFFGuardTime, FIELD_FLOAT),
-	DEFINE_FIELD( m_iMaxHealth, FIELD_INTEGER),
-	DEFINE_FIELD( m_bOnFire, FIELD_BOOLEAN),
-	DEFINE_FIELD( m_bClientOnFire, FIELD_BOOLEAN),
-	DEFINE_FIELD( m_fInfestedTime, FIELD_FLOAT),
-	DEFINE_FIELD( m_fInfestedStartTime, FIELD_FLOAT),
-	DEFINE_FIELD( m_fRedNamePulse, FIELD_FLOAT),
-	DEFINE_FIELD( m_bRedNamePulseUp, FIELD_BOOLEAN),
-	DEFINE_FIELD( m_vecFacingPoint, FIELD_VECTOR),
-	DEFINE_FIELD( bEmoteSmile, FIELD_BOOLEAN),
-	DEFINE_FIELD( bClientEmoteMedic, FIELD_BOOLEAN),
-	DEFINE_FIELD( bClientEmoteAmmo, FIELD_BOOLEAN),
-	DEFINE_FIELD( bClientEmoteSmile, FIELD_BOOLEAN),
-	DEFINE_FIELD( bClientEmoteStop, FIELD_BOOLEAN),
-	DEFINE_FIELD( bClientEmoteGo, FIELD_BOOLEAN),
-	DEFINE_FIELD( bClientEmoteExclaim, FIELD_BOOLEAN),
-	DEFINE_FIELD( bClientEmoteAnimeSmile, FIELD_BOOLEAN),
-	DEFINE_FIELD( bClientEmoteQuestion, FIELD_BOOLEAN),
-	DEFINE_FIELD( fEmoteMedicTime, FIELD_FLOAT),
-	DEFINE_FIELD( fEmoteAmmoTime, FIELD_FLOAT),
-	DEFINE_FIELD( fEmoteSmileTime, FIELD_FLOAT),
-	DEFINE_FIELD( fEmoteStopTime, FIELD_FLOAT),
-	DEFINE_FIELD( fEmoteGoTime, FIELD_FLOAT),
-	DEFINE_FIELD( fEmoteExclaimTime, FIELD_FLOAT),
-	DEFINE_FIELD( fEmoteAnimeSmileTime, FIELD_FLOAT),
-	DEFINE_FIELD( fEmoteQuestionTime, FIELD_FLOAT),
-	DEFINE_FIELD( m_bHasClientsideVehicle, FIELD_BOOLEAN),
-	DEFINE_FIELD( m_bKnockedOut, FIELD_BOOLEAN),
-	DEFINE_FIELD( m_fPoison, FIELD_FLOAT),
-	DEFINE_FIELD( m_hShoulderCone, FIELD_EHANDLE),
-	DEFINE_FIELD( m_fLastYawHack, FIELD_FLOAT),
-	DEFINE_FIELD( m_fLastPitchHack, FIELD_FLOAT),
-	DEFINE_FIELD( m_bStepSideLeft, FIELD_BOOLEAN),
-	*/
-
-	/*
-	DEFINE_FIELD( CUtlVector < EHANDLE > m_TouchingDoors'
-	DEFINE_FIELD( IASW_Client_Vehicle* m_pClientsideVehicle'
-	DEFINE_FIELD( IASWPlayerAnimState *m_PlayerAnimState'
-	DEFINE_FIELD( Beam_t *m_pFlashlightBeam'
-	DEFINE_FIELD( dlight_t* m_pFlashlightDLight'
-	DEFINE_FIELD( CSmartPtr < CASWGenericEmitter > m_hFlameEmitter'
-	DEFINE_FIELD( CSmartPtr < CASWGenericEmitter > m_hFlameStreamEmitter'
-	DEFINE_FIELD( CSmartPtr < CASWGenericEmitter > m_hFireExtinguisherEmitter'
-	DEFINE_FIELD( CSmartPtr < CASWGenericEmitter > m_hHealEmitter'
-	DEFINE_FIELD( CNewParticleEffect *m_pBurningEffect'
-	*/
 END_PREDICTION_DATA()
 
 /*
@@ -473,6 +381,8 @@ C_ASW_Marine::C_ASW_Marine() :
 	m_iPowerupType = -1;
 	m_flPowerupExpireTime = -1;
 	m_bPowerupExpires = false;
+
+	m_hElevator = NULL;
 }
 
 
@@ -626,27 +536,16 @@ const Vector& C_ASW_Marine::GetRenderOrigin()
 {
 	m_vecCustomRenderOrigin = GetAbsOrigin();
 
-	/*
-	if (m_PlayerAnimState && !m_PlayerAnimState->IsAnimatingJump())
-	{
-		C_BaseEntity *pEnt = cl_entitylist->FirstBaseEntity();
-		while (pEnt)
-		{
-			if (FClassnameIs(pEnt, "class C_DynamicProp"))
-			{
-				//Msg("Setting z to %f\n", pEnt->GetAbsOrigin().z + 10);
-				m_vecCustomRenderOrigin.z = pEnt->GetAbsOrigin().z + 10;			
-				break;
-			}
-			pEnt = cl_entitylist->NextBaseEntity( pEnt );
-		}
-	}
-	*/
 	if (IsInhabited())
 	{
 		Vector vSmoothOffset;
 		GetPredictionErrorSmoothingVector( vSmoothOffset );
 		m_vecCustomRenderOrigin += vSmoothOffset;
+	}
+
+	if (m_hElevator.Get())
+	{
+		m_vecCustomRenderOrigin.z = m_hElevator->GetRenderOrigin().z + m_flElevatorOffset;
 	}
 
 	return m_vecCustomRenderOrigin;
@@ -770,10 +669,6 @@ void C_ASW_Marine::ClientThink()
 		C_EnvProjectedTexture::SetVisibleBBoxMinHeight( GetAbsOrigin().z - 64.0f );
 	}
 
-	if (IsInhabited())
-	{
-		//m_vecLastRenderedPos = GetRenderOrigin();
-	}
 	if (asw_DebugAutoAim.GetInt() == 3)
 	{
 		Msg("%f: Drawmodel render origin %s\n", gpGlobals->curtime, VecToString(GetRenderOrigin()));
@@ -1056,6 +951,17 @@ void C_ASW_Marine::OnDataChanged( DataUpdateType_t updateType )
 		// We want to think every frame.
 		SetNextClientThink( CLIENT_THINK_ALWAYS );
 		return;
+	}
+
+	C_BaseToggle *pElevator = dynamic_cast<C_BaseToggle *>(GetGroundEntity());
+	if (pElevator)
+	{
+		m_hElevator = pElevator;
+		m_flElevatorOffset = GetAbsOrigin().z - pElevator->GetAbsOrigin().z;
+	}
+	else
+	{
+		m_hElevator = NULL;
 	}
 
 	if ( m_bClientSideRagdoll && m_pClientsideRagdoll )

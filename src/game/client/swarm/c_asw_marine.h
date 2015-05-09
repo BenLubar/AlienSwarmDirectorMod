@@ -29,6 +29,7 @@ class C_ASW_Order_Arrow;
 class C_ASW_Pickup_Weapon;
 class CNewParticleEffect;
 class CASW_Melee_Attack;
+class C_BaseToggle;
 
 #define CASW_Remote_Turret C_ASW_Remote_Turret
 
@@ -325,6 +326,10 @@ public:
 	float m_flLaserSightLength;
 
 	CNetworkVar( bool, m_bAICrouch );		// if set, the AI will appear crouched when still
+
+	// elevator smoothing
+	EHANDLE m_hElevator;
+	float m_flElevatorOffset;
 
 	// melee
 	void PlayMeleeImpactEffects( CBaseEntity *pEntity, trace_t *tr );
