@@ -32,7 +32,6 @@
 #include "asw_marine_profile.h"
 #include "asw_weapon.h"
 #include "asw_marine_speech.h"
-//#include "asw_drone.h"
 #include "asw_pickup.h"
 #include "asw_pickup_weapon.h"
 #include "asw_gamerules.h"
@@ -3282,7 +3281,6 @@ void CASW_Marine::UpdateFacing()
 	}
 	else if ( IsCurSchedule( SCHED_ASW_MOVE_TO_ORDER_POS ) )		// face our order destination
 	{
-		Vector vecEnemyLKP = GetEnemyLKP();
 		float flAimYaw = CalcIdealYaw( m_vecMoveToOrderPos );
 		GetMotor()->SetIdealYawAndUpdate( flAimYaw );
 
@@ -3293,7 +3291,7 @@ void CASW_Marine::UpdateFacing()
 			AngleVectors( angAim, &vecAim );
 
 			NDebugOverlay::Line( GetAbsOrigin(), GetAbsOrigin() + vecAim * 50, 255, 255, 0, false, 0.1f );
-			NDebugOverlay::Line( GetAbsOrigin(), vecEnemyLKP, 255, 255, 255, false, 0.1f );
+			NDebugOverlay::Line( GetAbsOrigin(), m_vecMoveToOrderPos, 255, 255, 255, false, 0.1f );
 			Msg( "aim error = %f fAimYaw = %f\n", m_fMarineAimError, flAimYaw );
 		}
 	}
@@ -4038,6 +4036,7 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 		"		COND_WEAPON_SIGHT_OCCLUDED"
 		"		COND_LOST_ENEMY"
 		"       COND_ASW_NEW_ORDERS"
+		"       COND_ENEMY_ON_FIRE"
 	)
 
 	DEFINE_SCHEDULE
