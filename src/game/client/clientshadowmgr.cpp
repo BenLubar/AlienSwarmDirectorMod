@@ -1396,9 +1396,14 @@ int CVisibleShadowList::FindShadows( const CViewSetup *pView, int nLeafCount, Wo
 void CClientShadowMgr::CalculateRenderTargetsAndSizes( void )
 {
 	bool bTools = CommandLine()->CheckParm( "-tools" ) != NULL;
-
-	m_nDepthTextureResolution = atoi(CommandLine()->ParmValue("-sfm_shadowmapres", r_flashlightdepthres.GetString()));
+		
+	m_nDepthTextureResolution = r_flashlightdepthres.GetInt();
 	m_nDepthTextureResolutionHigh = r_flashlightdepthreshigh.GetInt();
+	if ( bTools )									// Higher resolution shadow maps in tools mode
+	{
+		char defaultRes[] = "2048";
+		m_nDepthTextureResolution = atoi( CommandLine()->ParmValue( "-sfm_shadowmapres", defaultRes ) );
+	}
 	m_nMaxDepthTextureShadows = bTools ? MAX_DEPTH_TEXTURE_SHADOWS_TOOLS : MAX_DEPTH_TEXTURE_SHADOWS;	// Just one shadow depth texture in games, more in tools
 }
 //-----------------------------------------------------------------------------
@@ -1570,7 +1575,7 @@ void CClientShadowMgr::InitRenderTargets()
 		int nNumShadows = bTools ? MAX_DEPTH_TEXTURE_SHADOWS_TOOLS : MAX_DEPTH_TEXTURE_SHADOWS;
 		m_nLowResStart = bTools ? MAX_DEPTH_TEXTURE_HIGHRES_SHADOWS_TOOLS : MAX_DEPTH_TEXTURE_HIGHRES_SHADOWS;
 
-		if ( m_nLowResStart >= nNumShadows )
+		if ( m_nLowResStart > nNumShadows )
 		{
 			// All shadow slots filled with high res
 			m_nLowResStart = 0;
@@ -1664,7 +1669,7 @@ void CClientShadowMgr::InitDepthTextureShadows()
 			depthTex.InitRenderTargetTexture( nTextureResolution, nTextureResolution, RT_SIZE_OFFSCREEN, dstFormat, MATERIAL_RT_DEPTH_NONE, false, strRTName );
 			depthTex.InitRenderTargetSurface( 1, 1, dstFormat, false );
 #else
-			depthTex.InitRenderTarget( nTextureResolution, nTextureResolution, RT_SIZE_NO_CHANGE, dstFormat, MATERIAL_RT_DEPTH_NONE, false, strRTName );
+			depthTex.InitRenderTarget( nTextureResolution, nTextureResolution, RT_SIZE_OFFSCREEN, dstFormat, MATERIAL_RT_DEPTH_NONE, false, strRTName );
 #endif
 
 			m_DepthTextureCache.AddToTail( depthTex );
