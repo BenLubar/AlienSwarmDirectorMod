@@ -5384,7 +5384,11 @@ void CClientShadowMgr::AdvanceFrame()
 //-----------------------------------------------------------------------------
 int CClientShadowMgr::BuildActiveShadowDepthList( const CViewSetup &viewSetup, int nMaxDepthShadows, ClientShadowHandle_t *pActiveDepthShadows, int &nNumHighRes )
 {
+#ifdef INFESTED_DLL
+	float fDist[ 1024 ];
+#else
 	float fDots[ 1024 ];
+#endif
 
 	nNumHighRes = 0;
 
@@ -5474,10 +5478,16 @@ int CClientShadowMgr::BuildActiveShadowDepthList( const CViewSetup &viewSetup, i
 			++nNumHighRes;
 		}
 
-		// Calculate the approximate distance to the nearest side
+#ifdef INFESTED_DLL
+		// Calculate the distance from the screen to the light
+		Vector vLightDirection = flashlightState.m_vecLightOrigin - viewSetup.origin;
+		fDist[ nActiveDepthShadowCount ] = vLightDirection.LengthSqr();
+#else
+		// Calculate the angle from the screen to the light
 		Vector vLightDirection = flashlightState.m_vecLightOrigin - viewSetup.origin;
 		VectorNormalize( vLightDirection );
 		fDots[ nActiveDepthShadowCount ] = vLightDirection.Dot( vViewForward );
+#endif
 
 		pActiveDepthShadows[ nActiveDepthShadowCount++ ] = i;
 	}
@@ -5487,12 +5497,22 @@ int CClientShadowMgr::BuildActiveShadowDepthList( const CViewSetup &viewSetup, i
 	{
 		for ( int j = 0; j < nActiveDepthShadowCount - i - 1; j++ )
 		{
+#ifdef INFESTED_DLL
+			if ( fDist[ j ] > fDist[ j + 1 ] )
+#define ARRAY_NAME fDist
+#else
 			if ( fDots[ j ] < fDots[ j + 1 ] )
+#define ARRAY_NAME fDots
+#endif
 			{
 				ClientShadowHandle_t nTemp = pActiveDepthShadows[ j ];
+				float fTemp = ARRAY_NAME[ j ];
 				pActiveDepthShadows[ j ] = pActiveDepthShadows[ j + 1 ];
+				ARRAY_NAME[ j ] = ARRAY_NAME[ j + 1 ];
 				pActiveDepthShadows[ j + 1 ] = nTemp;
+				ARRAY_NAME[ j + 1 ] = fTemp;
 			}
+#undef ARRAY_NAME
 		}
 	}
 
