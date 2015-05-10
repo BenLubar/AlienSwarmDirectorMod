@@ -63,6 +63,7 @@ ConVar asw_world_healthbar_class_icon( "asw_world_healthbar_class_icon", "0", FC
 
 ConVar asw_arrows_for_offscreen_teammates("asw_arrows_for_offscreen_teammates", "1", FCVAR_ARCHIVE, "Enables or Disables the arrows which point to teammates which are out of screen", true, 0, true, 1);
 ConVar asw_fast_reload_under_marine_scale("asw_fast_reload_under_marine_scale", "1", FCVAR_ARCHIVE, "Scales the original Fast Reload Bar", true, 1, true, 12);
+ConVar asw_fast_reload_under_marine_height_scale("asw_fast_reload_under_marine_height_scale", "0", FCVAR_ARCHIVE, "Scales the original Fast Reload Bar. 0 to use the same as asw_fast_reload_under_marine_scale", true, 0, true, 12);
 ConVar asw_ammo_under_marine("asw_ammo_under_marine", "0", FCVAR_ARCHIVE, "Enable the ammo bar under marines in 3D view.", true, 0, true, 1);
 ConVar asw_magazine_under_marine("asw_magazine_under_marine", "0", FCVAR_ARCHIVE, "Enable an ammo notification on low magazine count.", true, 0, true, 1);
 ConVar asw_magazine_under_marine_offscreen("asw_magazine_under_marine_offscreen", "0", FCVAR_ARCHIVE, "Enable an ammo notification if the marine is offscreen.", true, 0, true, 1);
@@ -1234,6 +1235,7 @@ bool CASWHud3DMarineNames::PaintReloadBar( C_ASW_Weapon *pWeapon, float xPos, fl
 	int t = GetHealthBarMaxHeight( false );
 	int w = GetHealthBarMaxWidth( false );
 	w *= asw_fast_reload_under_marine_scale.GetFloat();
+	t *= asw_fast_reload_under_marine_height_scale.GetFloat() < 1 ? asw_fast_reload_under_marine_scale.GetFloat() : asw_fast_reload_under_marine_height_scale.GetFloat();
 
 	int iGap = YRES( 2 );
 	int overall_width = w + iGap + class_icon_size;
