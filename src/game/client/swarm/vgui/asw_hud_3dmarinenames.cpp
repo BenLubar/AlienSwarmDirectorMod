@@ -53,7 +53,7 @@ extern ConVar asw_fast_reload_enabled;
 
 ConVar asw_voice_side_icon("asw_voice_side_icon", "0", FCVAR_CHEAT, "Set to 1 to use the voice indicators on the side of the screen instead of the ones next to the 3d player names");
 ConVar asw_marine_names("asw_marine_names", "1", FCVAR_NONE, "Whether to show the marine name");
-ConVar asw_player_names("asw_player_names", "1", FCVAR_NONE, "Whether to show player names under marines or not.  Set to 2 to show both player and marine name.");
+ConVar asw_player_names("asw_player_names", "1", FCVAR_ARCHIVE, "Whether to show player names under marines or not.  Set to 2 to show both player and marine name.", true, 0, true, 2);
 ConVar asw_marine_edge_names("asw_marine_edge_names", "1", FCVAR_NONE, "Prevent marine names from going off the edge of the screen");
 ConVar asw_world_healthbars("asw_world_healthbars", "1", FCVAR_NONE, "Shows health bars in the game world");
 ConVar asw_world_usingbars("asw_world_usingbars", "1", FCVAR_NONE, "Shows using bars in the game world");
