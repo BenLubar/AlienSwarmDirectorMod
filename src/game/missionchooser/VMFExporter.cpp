@@ -629,34 +629,44 @@ bool VMFExporter::ProcessInstance( KeyValues *pEntityKeys )
 		Q_snprintf( szKey, sizeof(szKey), "glob%d", i );
 		if ( flWeight > 0 )
 		{
-			char szGlob[MAX_PATH];
-			if ( !Q_stricmp( pEntityKeys->GetString( szKey ), "" ) )
-				szGlob[0] = '\0';
-			else
-				Q_snprintf( szGlob, MAX_PATH, "tilegen/instance/%s/%s", m_pRoom->m_iszLevelTheme.c_str(), pEntityKeys->GetString( szKey ) );
-			if ( Q_strstr( szGlob, "*" ) )
+			std::string iszGlob;
+			if (*pEntityKeys->GetString(szKey) != '\0')
 			{
-				bool bFoundAny = false;
+				iszGlob = "tilegen/instance/";
+				iszGlob += m_pRoom->m_iszLevelTheme;
+				iszGlob += '/';
+				iszGlob += pEntityKeys->GetString(szKey);
+			}
+			if (iszGlob.find('*') != std::string::npos)
+			{
+				int nCount = 0;
 				FileFindHandle_t ffh;
-				for ( const char *pszFilename = g_pFullFileSystem->FindFirstEx( szGlob, "GAME", &ffh ); pszFilename; pszFilename = g_pFullFileSystem->FindNext( ffh ) )
+				for (const char *pszFilename = g_pFullFileSystem->FindFirstEx(iszGlob.c_str(), "GAME", &ffh); pszFilename; pszFilename = g_pFullFileSystem->FindNext(ffh))
 				{
-					choices.AddToTail( std::make_pair( std::string( pszFilename ), flWeight ) );
-					flTotalWeight += flWeight;
-					bFoundAny = true;
+					choices.AddToTail(std::make_pair(iszGlob.substr(0, iszGlob.rfind('/') + 1) + std::string(pszFilename), flWeight));
+					nCount++;
 				}
-				g_pFullFileSystem->FindClose( ffh );
+				g_pFullFileSystem->FindClose(ffh);
 
-				if ( !bFoundAny )
+				if (!nCount)
 				{
-					Warning( "[TileGen] no results for instance glob '%s'\n", szGlob );
+					Warning("[TileGen] no results for instance glob '%s'\n", iszGlob.c_str());
 					return false;
 				}
+
+				// If we have, for example, lights_*.vmf at weight 1 with 4 matches and poster_of_gaben.vmf at weight 2 with
+				// 1 match (obviously, there is only one gaben), we want to have the poster be twice as common as the lights,
+				// not half as common.
+				for (int i = 1; i <= nCount; i++)
+				{
+					choices[choices.Count() - i].second /= (float) nCount;
+				}
 			}
 			else
 			{
-				choices.AddToTail( std::make_pair( std::string( szGlob ), flWeight ) );
-				flTotalWeight += flWeight;
+				choices.AddToTail(std::make_pair(iszGlob, flWeight));
 			}
+			flTotalWeight += flWeight;
 		}
 
 		pRemoveKey = pEntityKeys->FindKey(szKey);
@@ -673,12 +683,14 @@ bool VMFExporter::ProcessInstance( KeyValues *pEntityKeys )
 		flChoice -= choices[i].second;
 		if (flChoice < 0)
 		{
-			char szFile[MAX_PATH];
 			if (choices[i].first.empty())
-				szFile[0] = '\0';
+			{
+				pEntityKeys->SetString("file", "");
+			}
 			else
-				Q_snprintf( szFile, MAX_PATH, "../tilegen/instance/%s/%s", m_pRoom->m_iszLevelTheme.c_str(), choices[i].first.c_str() );
-			pEntityKeys->SetString( "file", szFile );
+			{
+				pEntityKeys->SetString("file", ("../" + choices[i].first).c_str());
+			}
 			choices.Purge();
 			return true;
 		}
