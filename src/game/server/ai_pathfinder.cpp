@@ -685,7 +685,7 @@ bool CAI_Pathfinder::IsLinkUsable(CAI_Link *pLink, int startID)
 	// --------------------------------------------------------------------------
 	if (pLink->m_LinkInfo & ( bits_LINK_OFF | bits_LINK_ASW_BASHABLE ) )
 	{
-		CAI_DynamicLink *pDynamicLink = pLink->m_pDynamicLink;
+		CAI_DynamicLink *pDynamicLink = pLink->m_hDynamicLink;
 
 		if ( !pDynamicLink  || pDynamicLink->m_strAllowUse == NULL_STRING )
 			return false;

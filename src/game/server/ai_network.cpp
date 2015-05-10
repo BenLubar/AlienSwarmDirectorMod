@@ -588,7 +588,7 @@ CAI_Link *CAI_Network::CreateLink( int srcID, int destID, CAI_DynamicLink *pDyna
 
 	pLink->m_iSrcID = srcID;
 	pLink->m_iDestID = destID;
-	pLink->m_pDynamicLink = pDynamicLink;
+	pLink->m_hDynamicLink = pDynamicLink;
 
 	pSrcNode->AddLink(pLink);
 	pDestNode->AddLink(pLink);

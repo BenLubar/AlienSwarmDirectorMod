@@ -496,7 +496,7 @@ void CAI_DynamicLink::SetLinkState(void)
 		return;
 	}
 
-	pLink->m_pDynamicLink = this;
+	pLink->m_hDynamicLink = this;
 	if (m_nLinkState == LINK_OFF)
 	{
 		pLink->m_LinkInfo |=  bits_LINK_OFF;

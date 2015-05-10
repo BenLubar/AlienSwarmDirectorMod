@@ -50,7 +50,7 @@ public:
 	float	m_timeStaleExpires;
 	int		m_nDangerCount;						// How many dangerous things are near this link?
 
-	CAI_DynamicLink *m_pDynamicLink;
+	CHandle<CAI_DynamicLink> m_hDynamicLink;
 	
 private:
 	friend class CAI_Network;
