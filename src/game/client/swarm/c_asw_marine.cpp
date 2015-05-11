@@ -608,21 +608,21 @@ bool C_ASW_Marine::ASWAnim_CanMove()
 
 const QAngle& C_ASW_Marine::GetRenderAngles()
 {
-	//if (ShouldPredict())
+	if ( IsRagdoll() )
 	{
-		if ( IsRagdoll() )
-		{
-			return vec3_angle;
-		}
-		else
-		{
-			return m_PlayerAnimState->GetRenderAngles();
-		}
+		return vec3_angle;
 	}
-	//else
-	//{
-		//return BaseClass::GetRenderAngles();
-	//}
+	else if ( m_bFaceMeleeYaw && GetCurrentMeleeAttack() )
+	{
+		static QAngle angAdjusted;
+		angAdjusted = m_PlayerAnimState->GetRenderAngles();
+		angAdjusted[YAW] = m_flMeleeYaw;
+		return angAdjusted;
+	}
+	else
+	{
+		return m_PlayerAnimState->GetRenderAngles();
+	}
 }
 
 C_ASW_Marine_Resource* C_ASW_Marine::GetMarineResource() 

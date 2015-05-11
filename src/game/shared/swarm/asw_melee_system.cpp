@@ -494,12 +494,6 @@ void CASW_Melee_System::OnJumpPressed( CASW_Marine *pMarine, CMoveData *pMoveDat
 		bool bFirstPerson = !pMarine->IsInhabited() || !pMarine->GetCommander() || pMarine->GetCommander()->m_iASWControls != 1;
 #endif
 		pMarine->m_flMeleeYaw = RAD2DEG(atan2(-pMoveData->m_flSideMove, pMoveData->m_flForwardMove)) + (bFirstPerson ? pMarine->ASWEyeAngles()[YAW] : ASWGameRules()->GetTopDownMovementAxis()[YAW]);
-#ifdef CLIENT_DLL
-		if (asw_controls.GetInt() == 2)
-		{
-			pMarine->m_flMeleeYaw -= asw_cam_marine_yaw_2.GetFloat();
-		}
-#endif
 	}
 	pMarine->m_bFaceMeleeYaw = true;
 
@@ -1265,11 +1259,6 @@ void CASW_Melee_System::CreateMove( float flInputSampleTime, CUserCmd *pCmd, CAS
 	// don't replace the move if our current melee attack lets us move about freely
 	if ( pMarine->m_iMeleeAllowMovement != MELEE_MOVEMENT_ANIMATION_ONLY )
 		return;
-
-	if ( pMarine->m_bFaceMeleeYaw )
-	{
-		pCmd->viewangles[ YAW ] = pMarine->m_flMeleeYaw;
-	}
 
 	if ( asw_melee_lock.GetBool() )
 	{
