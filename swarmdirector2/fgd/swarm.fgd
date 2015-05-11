@@ -4842,10 +4842,11 @@
 		10 : "asw_ranger"
 		11 : "asw_mortarbug"
 		12 : "asw_shaman"
-		13 : "asw_drone_redgiant"
-		14 : "asw_drone_ghost"
-		15 : "asw_drone_carrier"
-		16 : "asw_drone_summoner"
+		13 : "asw_drone_uber"
+		14 : "asw_drone_redgiant"
+		15 : "asw_drone_ghost"
+		16 : "asw_drone_carrier"
+		17 : "asw_drone_summoner"
 	]
 	
 	SpawnerState(choices) : "Spawner State" : 0 : "Spawner's initial state" =

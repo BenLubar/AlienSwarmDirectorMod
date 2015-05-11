@@ -79,6 +79,7 @@ ASW_Alien_Class_Entry g_Aliens[] =
 	ASW_Alien_Class_Entry( "asw_ranger", HULL_MEDIUMBIG ),
 	ASW_Alien_Class_Entry( "asw_mortarbug", HULL_WIDE_SHORT ),
 	ASW_Alien_Class_Entry( "asw_shaman", HULL_MEDIUM ),
+	ASW_Alien_Class_Entry( "asw_drone_uber", HULL_MEDIUMBIG ),
 	ASW_Alien_Class_Entry( "asw_drone_redgiant", HULL_MEDIUMBIG ),
 	ASW_Alien_Class_Entry( "asw_drone_ghost", HULL_MEDIUMBIG ),
 	ASW_Alien_Class_Entry( "asw_drone_carrier", HULL_MEDIUMBIG ),
@@ -811,11 +812,6 @@ bool CASW_Spawn_Manager::LineBlockedByGeometry( const Vector &vecSrc, const Vect
 
 bool CASW_Spawn_Manager::GetAlienHull( const char *szAlienClass, Hull_t &nHull )
 {
-	if (!Q_stricmp(szAlienClass, "asw_drone_uber"))
-	{
-		szAlienClass = "asw_drone";
-	}
-
 	int nCount = GetNumAlienClasses();
 	for ( int i = 0 ; i < nCount; i++ )
 	{
