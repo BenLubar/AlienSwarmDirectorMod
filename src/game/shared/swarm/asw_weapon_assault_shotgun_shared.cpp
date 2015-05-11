@@ -18,6 +18,7 @@
 #include "asw_marine_speech.h"
 #include "asw_fail_advice.h"
 #include "effect_dispatch_data.h"
+#include "asw_util_shared.h"
 #endif
 #include "asw_marine_skills.h"
 #include "asw_weapon_parse.h"
@@ -46,6 +47,7 @@ PRECACHE_WEAPON_REGISTER(asw_weapon_vindicator);
 #ifndef CLIENT_DLL
 extern ConVar asw_debug_marine_damage;
 ConVar asw_vindicator_grenade_velocity("asw_vindicator_grenade_velocity", "3.0", FCVAR_CHEAT, "Scale to the vindicator grenade initial velocity");
+extern ConVar asw_vindicator_grenade_gravity;
 
 //---------------------------------------------------------
 // Save/Restore
@@ -130,12 +132,9 @@ void CASW_Weapon_Assault_Shotgun::SecondaryAttack()
 		CASW_Lag_Compensation::RequestLagCompensation( pPlayer, pPlayer->GetCurrentUserCommand() );
 	}
 
-	// TODO: Fix for AI
-	vecThrow = pPlayer->GetAutoaimVectorForMarine(pMarine, GetAutoAimAmount(), GetVerticalAdjustOnlyAutoAimAmount());	// 45 degrees = 0.707106781187
+	vecThrow = UTIL_LaunchVector(vecSrc, pPlayer->GetCrosshairTracePos(), asw_vindicator_grenade_gravity.GetFloat()) * 8.0f * asw_vindicator_grenade_velocity.GetFloat();
 	QAngle angAiming = pPlayer->EyeAnglesWithCursorRoll();
-	float dist = tan(DEG2RAD(90 - angAiming.z)) * 50.0f;
 
-	VectorScale( vecThrow, dist * asw_vindicator_grenade_velocity.GetFloat(), vecThrow );
 	float fGrenadeDamage = MarineSkills()->GetSkillBasedValueByMarine(pMarine, ASW_MARINE_SKILL_GRENADES, ASW_MARINE_SUBSKILL_GRENADE_INCENDIARY_DMG);
 	float fGrenadeRadius = MarineSkills()->GetSkillBasedValueByMarine(pMarine, ASW_MARINE_SKILL_GRENADES, ASW_MARINE_SUBSKILL_GRENADE_RADIUS);
 	if (asw_debug_marine_damage.GetBool())
