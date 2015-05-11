@@ -106,7 +106,9 @@ private:
 };
 
 ConVar asw_damageindicator_hurt_flash_alpha("asw_damageindicator_hurt_flash_alpha", "0.12f", FCVAR_NONE, "The alpha of the screen flash when the player is at low health (0.0 - 1.0)");
-ConVar asw_damageindicator_scale("asw_damageindicator_scale", "0.9f", FCVAR_NONE, "Scales the HUD damage indicator");
+ConVar asw_damageindicator_scale("asw_damageindicator_scale", "0.9f", FCVAR_NONE, "Scales the HUD damage indicator (top down)");
+ConVar asw_damageindicator_scale_0("asw_damageindicator_scale_0", "2.5", FCVAR_NONE, "Scales the HUD damage indicator (first person)");
+ConVar asw_damageindicator_scale_2("asw_damageindicator_scale_2", "1.5", FCVAR_NONE, "Scales the HUD damage indicator (third person)");
 ConVar asw_damageindicator_alpha("asw_damageindicator_alpha", "0.05f", FCVAR_NONE, "Alpha of the HUD damage indicator");
 ConVar asw_damageindicator_slash_scale("asw_damageindicator_slash_scale", "0.25f", FCVAR_NONE, "Scales the slashes in the HUD damage indicator");
 ConVar asw_damageindicator_slash_radius("asw_damageindicator_slash_radius", "0.28f", FCVAR_NONE, "Scales the slashes in the HUD damage indicator");
@@ -114,7 +116,7 @@ ConVar asw_damageindicator_slash_alpha("asw_damageindicator_slash_alpha", "0.85f
 ConVar asw_damageindicator_bullets_alpha("asw_damageindicator_bullets_alpha", "0.05f", FCVAR_NONE, "Scales alpha of the bullets in the HUD damage indicator.");
 
 extern ConVar asw_cam_marine_yshift_static;
-
+extern ConVar asw_controls;
 
 DECLARE_HUDELEMENT( CHudDamageIndicator );
 DECLARE_HUD_MESSAGE( CHudDamageIndicator, Damage );
@@ -207,24 +209,36 @@ bool CHudDamageIndicator::ShouldDraw( void )
 //-----------------------------------------------------------------------------
 void CHudDamageIndicator::GetDamagePosition( const Vector &vecDelta, float flRadius, float *xpos, float *ypos, float *flRotation )
 {
-	// Player Data
-	Vector playerPosition = MainViewOrigin(0);
-	QAngle playerAngles = MainViewAngles(0);
+	int nSlot = GetSplitScreenPlayerSlot();
 
-	Vector forward, right, up(0,0,1);
-	AngleVectors (playerAngles, &forward, NULL, NULL );
-	forward.z = 0;
-	VectorNormalize(forward);
-	CrossProduct( up, forward, right );
+	// Player Data
+	Vector forward(0, 1, 0), right(1, 0, 0);
+
+	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
+	if (asw_controls.GetInt() != 1)
+	{
+		forward = MainViewForward(nSlot);
+		right = MainViewRight(nSlot);
+	}
+
 	float front = DotProduct(vecDelta, forward);
 	float side = DotProduct(vecDelta, right);
 	*xpos = flRadius * -side;
 	*ypos = flRadius * -front;
-	//+ asw_cam_marine_yshift_static.GetFloat()
 
 	// Get the rotation (yaw)
-	*flRotation = atan2(*xpos,*ypos) + M_PI;
+	*flRotation = atan2(*xpos, *ypos) + M_PI;
 	*flRotation *= 180 / M_PI;
+
+	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
+	if (asw_controls.GetInt() != 1)
+	{
+		int w, h;
+		GetHudSize(w, h);
+		*xpos += w / 2.0f;
+		*ypos += h / 2.0f;
+		return;
+	}
 
 	float yawRadians = -(*flRotation) * M_PI / 180.0f;
 	float ca = cos( yawRadians );
@@ -232,7 +246,7 @@ void CHudDamageIndicator::GetDamagePosition( const Vector &vecDelta, float flRad
 
 	///////
 	// find the position of this marine
-	C_ASW_Player *pPlayer = C_ASW_Player::GetLocalASWPlayer();
+	C_ASW_Player *pPlayer = C_ASW_Player::GetLocalASWPlayer(nSlot);
 	if ( !pPlayer )
 		return;
 
@@ -335,10 +349,25 @@ void CHudDamageIndicator::Paint()
 		// Scale size to the damage
 		int clampedDamage = clamp( m_vecDamages[i].iScale, 0, m_iMaximumDamage );
 
-		float fMinWidth = m_flMinimumWidth * asw_damageindicator_scale.GetFloat();
-		float fMaxWidth = m_flMaximumWidth * asw_damageindicator_scale.GetFloat();
-		float fMinHeight = m_flMinimumHeight * asw_damageindicator_scale.GetFloat();
-		float fMaxHeight = m_flMaximumHeight * asw_damageindicator_scale.GetFloat();
+		float flScale = asw_damageindicator_scale.GetFloat();
+		switch (asw_controls.GetInt())
+		{
+		case 0:
+			flScale = asw_damageindicator_scale_0.GetFloat();
+			break;
+		case 1:
+			break;
+		case 2:
+			flScale = asw_damageindicator_scale_2.GetFloat();
+			break;
+		default:
+			Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
+		}
+
+		float fMinWidth = m_flMinimumWidth * flScale;
+		float fMaxWidth = m_flMaximumWidth * flScale;
+		float fMinHeight = m_flMinimumHeight * flScale;
+		float fMaxHeight = m_flMaximumHeight * flScale;
 
 		// scale slashes
 		if ( m_vecDamages[i].material >= ASW_START_SLASH_MATERIAL && m_vecDamages[i].material <= ASW_NUM_GENERIC_MATERIAL )
