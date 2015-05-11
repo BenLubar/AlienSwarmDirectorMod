@@ -2327,9 +2327,6 @@
     <ClCompile Include="swarm\asw_campaign_fixes.cpp">
       <Filter>Source Files\Swarm</Filter>
     </ClCompile>
-    <ClCompile Include="swarm\asw_spawn_entity.cpp">
-      <Filter>Source Files\Swarm</Filter>
-    </ClCompile>
     <ClCompile Include="swarm\func_asw_fade.cpp">
       <Filter>Source Files\Swarm</Filter>
     </ClCompile>
@@ -4758,9 +4755,6 @@
     </ClInclude>
     <ClInclude Include="mod_player_performance_calculators.h">
       <Filter>Source Files\Mod</Filter>
-    </ClInclude>
-    <ClInclude Include="swarm\asw_spawn_entity.h">
-      <Filter>Source Files\Swarm</Filter>
     </ClInclude>
     <ClInclude Include="swarm\func_asw_fade.h">
       <Filter>Source Files\Swarm</Filter>
