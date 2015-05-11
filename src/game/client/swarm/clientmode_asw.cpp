@@ -646,7 +646,8 @@ void ClientModeASW::OverrideView( CViewSetup *pSetup )
 
 	pPlayer->OverrideView( pSetup );
 
-	if( ::input->CAM_IsThirdPerson() )
+	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
+	if (::input->CAM_IsThirdPerson() && asw_controls.GetInt() == 1)
 	{
 		int omx, omy;
 		ASWInput()->ASW_GetCameraLocation(pPlayer, pSetup->origin, pSetup->angles, omx, omy, true);

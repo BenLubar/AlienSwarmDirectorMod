@@ -392,7 +392,8 @@ Vector CASW_Player::EyePosition( )
 			return BaseClass::EyePosition();
 		}
 
-		bool bIsThirdPerson = ( ::input->CAM_IsThirdPerson() != 0 );
+		Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
+		bool bIsThirdPerson = asw_controls.GetInt() == 1;
 
 		Vector org = vec3_origin;
 		QAngle ang;
@@ -402,8 +403,6 @@ Vector CASW_Player::EyePosition( )
 			ang[YAW] = pMarine->EyeAngles()[YAW] - 90;
 			ang[ROLL] = 0;
 			AngleVectors( ang, &org );
-			//if (input->CAM_IsThirdPerson())
-				//org *= -asw_vehicle_cam_dist.GetFloat();
 			org += m_vecLastMarineOrigin;
 			org.z += asw_vehicle_cam_height.GetFloat();
 		}
@@ -872,7 +871,7 @@ const QAngle& CASW_Player::EyeAngles( )
 	// revert to hl2 camera
 #ifdef CLIENT_DLL
 	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
-	if (asw_controls.GetInt() != 1 && (engine->IsPlayingDemo() || (GetMarine() && GetMarine()->GetCurrentMeleeAttack()) || GetSpectatingMarine() || (ASWGameRules() && ASWGameRules()->GetMarineDeathCamInterp() > 0.0f)))
+	if ( asw_controls.GetInt() != 1 )
 #else
 	Assert(m_iASWControls >= 0 && m_iASWControls <= 2);
 	if ( m_iASWControls != 1 )

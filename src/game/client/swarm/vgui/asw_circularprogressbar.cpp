@@ -238,7 +238,8 @@ void ASWCircularProgressBar::Paint()
 
 	if ( m_bIsOnCursor )
 	{
-		if ( ::input->CAM_IsThirdPerson() )
+		Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
+		if (::input->CAM_IsThirdPerson() && asw_controls.GetInt() == 1)
 		{
 			ASWInput()->GetSimulatedFullscreenMousePos( &x, &y );
 		}

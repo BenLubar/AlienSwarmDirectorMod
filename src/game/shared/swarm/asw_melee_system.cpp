@@ -76,6 +76,7 @@ ConVar asw_marine_rolls( "asw_marine_rolls", "1", FCVAR_REPLICATED | FCVAR_CHEAT
 #ifdef CLIENT_DLL
 ConVar asw_melee_lock_distance( "asw_melee_lock_distance", "35", FCVAR_CHEAT, "Dist marine slides to when locked onto a melee target" );
 ConVar asw_melee_lock_slide_speed( "asw_melee_lock_slide_speed", "200", FCVAR_CHEAT, "Speed at which marine slides into place when target locked in melee" );
+extern ConVar asw_cam_marine_yaw_2;
 #endif
 extern ConVar asw_controls;
 
@@ -493,6 +494,12 @@ void CASW_Melee_System::OnJumpPressed( CASW_Marine *pMarine, CMoveData *pMoveDat
 		bool bFirstPerson = !pMarine->IsInhabited() || !pMarine->GetCommander() || pMarine->GetCommander()->m_iASWControls != 1;
 #endif
 		pMarine->m_flMeleeYaw = RAD2DEG(atan2(-pMoveData->m_flSideMove, pMoveData->m_flForwardMove)) + (bFirstPerson ? pMarine->ASWEyeAngles()[YAW] : ASWGameRules()->GetTopDownMovementAxis()[YAW]);
+#ifdef CLIENT_DLL
+		if (asw_controls.GetInt() == 2)
+		{
+			pMarine->m_flMeleeYaw -= asw_cam_marine_yaw_2.GetFloat();
+		}
+#endif
 	}
 	pMarine->m_bFaceMeleeYaw = true;
 
@@ -719,7 +726,7 @@ void CASW_Melee_System::StartMeleeAttack( CASW_Melee_Attack *pAttack, CASW_Marin
 	pMarine->m_vecMeleeStartPos = pMarine->GetAbsOrigin();
 	pMarine->m_bFaceMeleeYaw = false;
 	pMarine->m_flMeleeStartTime  = gpGlobals->curtime;
-	pMarine->m_flMeleeYaw = pMoveData ? pMoveData->m_vecViewAngles.y : pMarine->GetAbsAngles()[ YAW ];
+	pMarine->m_flMeleeYaw = pMoveData ? pMoveData->m_vecViewAngles.y : pMarine->ASWEyeAngles()[ YAW ];
 	pMarine->m_flMeleeLastCycle = 0;
 	pMarine->m_bMeleeCollisionDamage = false;
 	pMarine->m_bMeleeComboKeypressAllowed = false;

@@ -50,6 +50,7 @@ extern ConVar asw_draw_hud;
 extern ConVar asw_hud_alpha;
 extern ConVar asw_DebugAutoAim;
 extern ConVar asw_fast_reload_enabled;
+extern ConVar asw_controls;
 
 ConVar asw_voice_side_icon("asw_voice_side_icon", "0", FCVAR_CHEAT, "Set to 1 to use the voice indicators on the side of the screen instead of the ones next to the 3d player names");
 ConVar asw_marine_names("asw_marine_names", "1", FCVAR_NONE, "Whether to show the marine name");
@@ -568,7 +569,8 @@ void CASWHud3DMarineNames::PaintMarineLabel(int iMyMarineNum, C_ASW_Marine * RES
 	{
 		Vector offset;
 		AngleVectors(ang, &offset);
-		if (::input->CAM_IsThirdPerson())
+		Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
+		if (::input->CAM_IsThirdPerson() && asw_controls.GetInt() == 1)
 		{
 			offset *= ASWInput()->ASW_GetCameraDist();
 		}

@@ -44,6 +44,10 @@ ConVar asw_cam_marine_yshift_static( "asw_cam_marine_yshift_static", "75.0f", FC
 
 ConVar asw_cam_marine_shift_enable( "asw_cam_marine_shift_enable", "1", FCVAR_CHEAT, "Camera shifting enable/disable." );
 
+extern ConVar asw_controls;
+extern ConVar asw_cam_marine_pitch_2;
+extern ConVar asw_cam_marine_yaw_2;
+
 // Vehicle Camera ConVars.
 ConVar asw_vehicle_cam_height( "asw_vehicle_cam_height", "0", FCVAR_CHEAT );
 ConVar asw_vehicle_cam_pitch( "asw_vehicle_cam_pitch", "45", FCVAR_CHEAT );
@@ -277,12 +281,34 @@ void CASWInput::CAM_Think( void )
 		break;
 	}
 
-	if( !GetPerUser().m_fCameraInThirdPerson )
-		return;
-
-	GetPerUser().m_vecCameraOffset[ PITCH ] = ASW_GetCameraPitch();
-	GetPerUser().m_vecCameraOffset[ YAW ]   = ASW_GetCameraYaw();
-	GetPerUser().m_vecCameraOffset[ DIST ]  = 0;
+	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
+	if (asw_controls.GetInt() == 1)
+	{
+		GetPerUser().m_vecCameraOffset[PITCH] = ASW_GetCameraPitch();
+		GetPerUser().m_vecCameraOffset[YAW] = ASW_GetCameraYaw();
+		GetPerUser().m_vecCameraOffset[DIST] = 0;
+	}
+	else if (asw_controls.GetInt() == 2)
+	{
+		C_ASW_Player *pPlayer = C_ASW_Player::GetLocalASWPlayer();
+		Assert(pPlayer);
+		if (!pPlayer)
+		{
+			return;
+		}
+		C_ASW_Marine *pMarine = pPlayer->GetSpectatingMarine();
+		if (!pMarine)
+		{
+			pMarine = pPlayer->GetMarine();
+		}
+		if (!pMarine)
+		{
+			return;
+		}
+		GetPerUser().m_vecCameraOffset[PITCH] = pMarine->ASWEyeAngles()[PITCH] + asw_cam_marine_pitch_2.GetFloat();
+		GetPerUser().m_vecCameraOffset[YAW] = pMarine->ASWEyeAngles()[YAW] + asw_cam_marine_yaw_2.GetFloat();
+		GetPerUser().m_vecCameraOffset[DIST] = 0;
+	}
 }
 
 void CASWInput::CAM_ToThirdPerson(void)
@@ -404,7 +430,8 @@ void CASWInput::ASW_GetCameraLocation( C_ASW_Player *pPlayer, Vector &vecCameraL
 	// Get the current camera position.
 	vecCameraLocation = pPlayer->EyePosition();
 
-	if (CAM_IsThirdPerson())
+	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
+	if (::input->CAM_IsThirdPerson() && asw_controls.GetInt() == 1)
 	{
 		// Get the camera angles and calculate the camera view directions.
 		Vector vecCameraDirection;

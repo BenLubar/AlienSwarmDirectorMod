@@ -190,13 +190,13 @@ void ASW_Controls_Changed(IConVar *var, const char *pOldValue, float flOldValue)
 
 	Assert(ASWInput());
 
-	if (asw_controls.GetInt() == 1)
+	if (asw_controls.GetInt() == 0)
 	{
-		ASWInput()->CAM_ToThirdPerson();
+		ASWInput()->CAM_ToFirstPerson();
 	}
 	else
 	{
-		ASWInput()->CAM_ToFirstPerson();
+		ASWInput()->CAM_ToThirdPerson();
 	}
 
 	if (engine->IsInGame())
