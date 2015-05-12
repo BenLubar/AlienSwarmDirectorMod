@@ -1709,7 +1709,11 @@ void C_ASW_Player::AvoidMarines( CUserCmd *pCmd )
 
 	Vector currentdir;
 	Vector rightdir;
-	AngleVectors( ASW_MOVEMENT_AXIS, &currentdir, &rightdir, NULL );
+	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
+	if (asw_controls.GetInt() == 1)
+		AngleVectors(ASW_MOVEMENT_AXIS, &currentdir, &rightdir, NULL);
+	else
+		AngleVectors(pCmd->viewangles, &currentdir, &rightdir, NULL);
 
 	Vector vDirection = vecSeparationVelocity;
 	VectorNormalize( vDirection );
