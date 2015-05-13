@@ -71,7 +71,6 @@ public:
 	void DrawDebugGeometryOverlays();
 
 	Vector m_vecObjective;
-	bool m_bInMarker;
 
 protected:
 	CHandle<CASW_Marine> m_hSquad[MAX_SQUAD_SIZE];

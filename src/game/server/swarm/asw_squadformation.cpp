@@ -519,7 +519,6 @@ void CASW_SquadFormation::Reset()
 	m_vLastLeaderPos.Zero();
 	m_vLastLeaderVelocity.Zero();
 	m_vecObjective = vec3_invalid;
-	m_bInMarker = false;
 }
 
 //-----------------------------------------------------------------------------
@@ -932,7 +931,6 @@ void CASW_SquadFormation::UpdateGoalPosition()
 			}
 			if (flMinDist != -1)
 			{
-				m_bInMarker = bInMarker;
 				m_vecObjective = vecBest;
 				if (asw_debug_marine_ai.GetBool())
 				{
