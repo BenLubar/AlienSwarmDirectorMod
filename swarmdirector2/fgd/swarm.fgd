@@ -5794,7 +5794,7 @@
 	output OnComputerViewMail4(void) : "Fired whenever a marine reads the 4th mail in this computer."
 ]
 
-@PointClass base(Targetname) studio("models/aliens/egg/egg.mdl")= asw_egg : "Egg"
+@PointClass base(Targetname, Angles) studio("models/aliens/egg/egg.mdl")= asw_egg : "Egg"
 [
 	ParasiteClass(string) : "Parasite Class" : "asw_parasite"
 	FixedJumpDir(choices) : "Fixed Jump Direction" : 0 : "If set, our parasite will always jump out in the direction the egg is facing." =
