@@ -38,13 +38,17 @@ public:
 		const char *pszMap = STRING(gpGlobals->mapname);
 
 		// Fixes cargo elevator leaving without all the marines if at least 4 marines are already on the elevator.
-		if (!V_stricmp(pszMap, "asi-jac1-landingbay_02") || !V_stricmp(pszMap, "asi-jac1-landingbay_pract"))
+		// Fixes the train leaving without all the marines if at least 4 marines are already on the train.
+		FOR_EACH_VEC(IASW_Use_Area_List::AutoList(), i)
 		{
-			CASW_Door_Area *pMarinesPast = dynamic_cast<CASW_Door_Area *>(gEntList.FindEntityByName(NULL, "trigger_lift_marine_check"));
-			Assert(pMarinesPast);
-			if (pMarinesPast)
+			CASW_Door_Area *pArea = dynamic_cast<CASW_Door_Area *>(IASW_Use_Area_List::AutoList()[i]);
+			if (pArea)
 			{
-				pMarinesPast->m_nPlayersRequired = ASW_MAX_MARINE_RESOURCES;
+				Assert(pArea->m_nPlayersRequired == 1 || pArea->m_nPlayersRequired == 4 || pArea->m_nPlayersRequired == ASW_MAX_MARINE_RESOURCES);
+				if (pArea->m_nPlayersRequired > 1)
+				{
+					pArea->m_nPlayersRequired = ASW_MAX_MARINE_RESOURCES;
+				}
 			}
 		}
 
@@ -62,17 +66,6 @@ public:
 					Assert(pOutput->NumberOfElements() == 2);
 					pOutput->DeleteAllElements();
 				}
-			}
-		}
-
-		// Fixes the train leaving without all the marines if at least 4 marines are already on the train.
-		if (!V_stricmp(pszMap, "tft-spaceport"))
-		{
-			CASW_Door_Area *pMarinesPast = dynamic_cast<CASW_Door_Area *>(gEntList.FindEntityByName(NULL, "victory_train_area"));
-			Assert(pMarinesPast);
-			if (pMarinesPast)
-			{
-				pMarinesPast->m_nPlayersRequired = ASW_MAX_MARINE_RESOURCES;
 			}
 		}
 
