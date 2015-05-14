@@ -116,8 +116,6 @@ BEGIN_DATADESC( CASW_PropJeep )
 
 	DEFINE_INPUTFUNC( FIELD_VOID, "StartRemoveTauCannon", InputStartRemoveTauCannon ),
 	DEFINE_INPUTFUNC( FIELD_VOID, "FinishRemoveTauCannon", InputFinishRemoveTauCannon ),
-	
-	DEFINE_THINKFUNC( DestroyAndReplace ),
 END_DATADESC()
 
 IMPLEMENT_SERVERCLASS_ST( CASW_PropJeep, DT_ASW_PropJeep )
@@ -233,18 +231,6 @@ void CASW_PropJeep::Spawn( void )
 
 	// normal HL2 vehicles don't feel nice in a network game
 	//  so destroy ourselves and spawn the serverside component of our custom ASW client authorative vehicle system
-}
-
-void CASW_PropJeep::DestroyAndReplace()
-{
-	Msg("Replacing normal jeep with a dummy jeep\n");
-	Vector vecVehicle = GetAbsOrigin();
-	QAngle angVehicle = GetAbsAngles();
-	UTIL_Remove(this);
-	CASW_Dummy_Vehicle *pDummy = dynamic_cast<CASW_Dummy_Vehicle*>(CreateEntityByName("asw_dummy_vehicle"));
-	pDummy->SetAbsOrigin(vecVehicle);
-	pDummy->SetAbsAngles(angVehicle);
-	pDummy->Spawn();
 }
 
 //-----------------------------------------------------------------------------
@@ -646,18 +632,6 @@ void CASW_PropJeep::CreateRipple( const Vector &vecPosition )
 // Purpose: 
 //-----------------------------------------------------------------------------
 void CASW_PropJeep::Think(void)
-{
-	if (gpGlobals->maxClients > 1)
-	{
-		DestroyAndReplace();
-	}
-	else
-	{
-		ThinkTick();
-	}
-}
-
-void CASW_PropJeep::ThinkTick()
 {
 	m_VehiclePhysics.Think();
 

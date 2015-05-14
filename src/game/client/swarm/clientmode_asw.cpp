@@ -765,7 +765,7 @@ void ClientModeASW::LevelInit( const char *newmap )
 	else
 	{
 		Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
-		if (asw_controls.GetInt() == 1)
+		if (asw_controls.GetInt() != 0)
 			::input->CAM_ToThirdPerson();
 		else
 			::input->CAM_ToFirstPerson();

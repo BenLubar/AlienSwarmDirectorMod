@@ -125,7 +125,7 @@ void CASW_Player::DriveMarineMovement( CUserCmd *ucmd, IMoveHelper *moveHelper )
 
 	// process vehicle movement
 #ifdef GAME_DLL
-	if ( pMarine && pMarine->IsDriving() && gpGlobals->maxClients == 1)
+	if ( pMarine && pMarine->IsDriving())
 	{
 		IASW_Vehicle* pVehicle = pMarine->GetASWVehicle();
 		if (pVehicle)
@@ -141,6 +141,7 @@ void CASW_Player::DriveMarineMovement( CUserCmd *ucmd, IMoveHelper *moveHelper )
 		//pMarine->m_iLightLevel = ucmd->light_level;
 	//}
 #else
+	/*
 	if ( pMarine && gpGlobals->maxClients > 1)
 	{
 		IASW_Client_Vehicle* pVehicle = pMarine->GetClientsideVehicle();
@@ -177,6 +178,7 @@ void CASW_Player::DriveMarineMovement( CUserCmd *ucmd, IMoveHelper *moveHelper )
 			}
 		}
 	}
+	*/
 	
 #endif
 	
@@ -399,12 +401,35 @@ Vector CASW_Player::EyePosition( )
 		QAngle ang;
 		if ( pMarine && pMarine->IsInVehicle() )
 		{
-			ang[PITCH] = asw_vehicle_cam_pitch.GetFloat();
-			ang[YAW] = pMarine->EyeAngles()[YAW] - 90;
-			ang[ROLL] = 0;
-			AngleVectors( ang, &org );
-			org += m_vecLastMarineOrigin;
-			org.z += asw_vehicle_cam_height.GetFloat();
+			if (bIsThirdPerson)
+			{
+				ang[PITCH] = asw_vehicle_cam_pitch.GetFloat();
+				ang[YAW] = 90;
+				ang[ROLL] = 0;
+				AngleVectors( ang, &org );
+				org *= -asw_vehicle_cam_dist.GetFloat();
+				org += m_vecLastMarineOrigin;
+				org.z += asw_vehicle_cam_height.GetFloat();
+			}
+			else
+			{
+				if (asw_controls.GetInt() == 0)
+				{
+					org.Init();
+				}
+				else
+				{
+					ang[PITCH] = ASWInput()->GetPerUser().m_vecCameraOffset[PITCH];
+					ang[YAW] = ASWInput()->GetPerUser().m_vecCameraOffset[YAW];
+					ang[ROLL] = 0;
+					AngleVectors(ang, &org);
+					org *= -ASWInput()->GetPerUser().m_vecCameraOffset[2];
+				}
+				Vector vecVehicle;
+				pMarine->GetASWVehicle()->GetEntity()->GetAttachment(pMarine->GetASWVehicle()->GetEntity()->LookupAttachment("vehicle_driver_eyes"), vecVehicle);
+
+				org += vecVehicle;
+			}
 		}
 		else if ( pMarine && pMarine->IsControllingTurret() )
 		{
@@ -868,13 +893,15 @@ const QAngle& CASW_Player::EyeAngles( )
 	angAdjustedEyes = BaseClass::EyeAngles();
 #endif
 
+	CASW_Marine* pMarine = GetSpectatingMarine() ? GetSpectatingMarine() : GetMarine();
+
 	// revert to hl2 camera
 #ifdef CLIENT_DLL
 	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
-	if ( asw_controls.GetInt() != 1 )
+	if ( asw_controls.GetInt() != 1 || ( pMarine && pMarine->IsInVehicle() ) )
 #else
 	Assert(m_iASWControls >= 0 && m_iASWControls <= 2);
-	if ( m_iASWControls != 1 )
+	if ( m_iASWControls != 1 || ( pMarine && pMarine->IsInVehicle() ) )
 #endif
 	{
 		if ( !asw_allow_detach.GetBool() && GetSpectatingMarine() )
@@ -898,16 +925,15 @@ const QAngle& CASW_Player::EyeAngles( )
 	}
 
 #ifdef CLIENT_DLL
-	if ( asw_allow_detach.GetBool() && GetMarine() )
+	if ( asw_allow_detach.GetBool() && pMarine )
 	{
 		return m_angEyeAngles;
 	}
 #endif
 
-	if (GetMarine())
+	if (pMarine)
 	{
 		angAdjustedEyes.z = 0;
-		CASW_Marine* pMarine = GetMarine();
 
 		// if we're driving, return the angle
 		if (pMarine->IsInVehicle())

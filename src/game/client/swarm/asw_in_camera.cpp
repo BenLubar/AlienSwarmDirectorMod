@@ -7,6 +7,7 @@
 #include "asw_input.h"
 #include "missionchooser/iasw_random_missions.h"
 #include "holdout_resupply_frame.h"
+#include "iasw_client_vehicle.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -134,6 +135,10 @@ float CASWInput::ASW_GetCameraPitch( const float *pfDeathCamInterp /*= NULL*/ )
 		if ( fCameraVolumePitch != -1 )
 		{
 			flPitch = fCameraVolumePitch;
+		}
+		if (pPlayer->GetMarine()->IsInVehicle())
+		{
+			flPitch = asw_vehicle_cam_pitch.GetFloat();
 		}
 	}
 
@@ -321,7 +326,8 @@ void CASWInput::CAM_Think( void )
 		AngleVectors(angles, &forward);
 		Vector position = pMarine->EyePosition();
 		trace_t tr;
-		UTIL_TraceHull(position, position - forward * asw_cam_marine_dist_2.GetFloat(), Vector(-16, -16, -16), Vector(16, 16, 16), MASK_VISIBLE, pMarine, COLLISION_GROUP_NONE, &tr);
+		CTraceFilterSkipTwoEntities filter(pMarine, pMarine->IsInVehicle() ? pMarine->GetASWVehicle()->GetEntity() : NULL, COLLISION_GROUP_NONE);
+		UTIL_TraceHull(position, position - forward * asw_cam_marine_dist_2.GetFloat(), Vector(-16, -16, -16), Vector(16, 16, 16), MASK_VISIBLE, &filter, &tr);
 		float flDist = tr.fraction * asw_cam_marine_dist_2.GetFloat();
 		if (GetPerUser().m_vecCameraOffset[DIST] > flDist)
 		{

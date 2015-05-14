@@ -47,10 +47,9 @@ public:
 	virtual bool	IsVehicleBodyInWater() { return m_WaterData.m_bBodyInWater; }
 
 	// CBaseEntity
-	void			Think(void);
-	virtual void			ThinkTick();	// asw
-	void			Precache( void );
-	void			Spawn( void ); 
+	virtual void	Think(void);
+	virtual void	Precache( void );
+	virtual void	Spawn( void ); 
 
 	virtual void	CreateServerVehicle( void );
 	virtual Vector	BodyTarget( const Vector &posSrc, bool bNoisy = true );
@@ -72,8 +71,6 @@ public:
 	bool HeadlightIsOn( void ) { return m_bHeadlightIsOn; }
 	void HeadlightTurnOn( void ) { m_bHeadlightIsOn = true; }
 	void HeadlightTurnOff( void ) { m_bHeadlightIsOn = false; }
-
-	void DestroyAndReplace();	// asw
 
 	// implement our asw vehicle interface
 	virtual int ASWGetNumPassengers() { return 0; }		// todo: implement

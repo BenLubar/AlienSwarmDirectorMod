@@ -543,6 +543,11 @@ const Vector& C_ASW_Marine::GetRenderOrigin()
 		m_vecCustomRenderOrigin += vSmoothOffset;
 	}
 
+	if (IsInVehicle())
+	{
+		GetASWVehicle()->GetEntity()->GetAttachment(GetASWVehicle()->GetEntity()->LookupAttachment("vehicle_feet_passenger0"), m_vecCustomRenderOrigin);
+	}
+
 	if (m_hElevator.Get())
 	{
 		m_vecCustomRenderOrigin.z = m_hElevator->GetRenderOrigin().z + m_flElevatorOffset;

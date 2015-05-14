@@ -3590,7 +3590,9 @@ void CASW_Marine::StartDriving(IASW_Vehicle* pVehicle)
 	m_bIsInVehicle = true;
 	m_hASWVehicle = pEnt;
 
-	AddEffects( EF_NODRAW );
+	SetParent(pEnt, pEnt->GetBaseAnimating()->LookupAttachment("vehicle_feet_passenger0"));
+	SetLocalOrigin(vec3_origin);
+	SetLocalAngles(vec3_angle);
 	SetCollisionGroup( COLLISION_GROUP_IN_VEHICLE );
 	m_takedamage = DAMAGE_NO;
 }
@@ -3605,13 +3607,15 @@ void CASW_Marine::StopDriving(IASW_Vehicle* pVehicle)
 		return;
 
 	// try and place the marine outside the vehicle
-	Vector v = pEnt->GetAbsOrigin() - UTIL_YawToVector(pEnt->GetAbsAngles().y) * 50;
+	Vector v = pEnt->GetAbsOrigin() - UTIL_YawToVector(pEnt->GetAbsAngles().y) * 50 + Vector(0, 0, 4);
 	trace_t tr;
 	Ray_t ray;
 	ray.Init( v + Vector(0,0,1), v, CollisionProp()->OBBMins(), CollisionProp()->OBBMaxs() );
 	UTIL_TraceRay( ray, MASK_PLAYERSOLID, this, COLLISION_GROUP_PLAYER_MOVEMENT, &tr );
 	if ( tr.fraction < 1.0 )
 		return;	// blocked
+
+	SetParent(NULL);
 	SetAbsOrigin(v);
 
 	// todo: get weapon out again?
@@ -3623,9 +3627,6 @@ void CASW_Marine::StopDriving(IASW_Vehicle* pVehicle)
 	m_bIsInVehicle = false;
 	m_hASWVehicle = NULL;
 
-	
-
-	RemoveEffects( EF_NODRAW );
 	SetCollisionGroup( COLLISION_GROUP_PLAYER );
 	m_takedamage = DAMAGE_YES;
 }
