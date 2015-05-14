@@ -293,7 +293,7 @@ void CASWInput::CAM_Think( void )
 	{
 		GetPerUser().m_vecCameraOffset[PITCH] = ASW_GetCameraPitch();
 		GetPerUser().m_vecCameraOffset[YAW] = ASW_GetCameraYaw();
-		GetPerUser().m_vecCameraOffset[DIST] = 0;
+		GetPerUser().m_vecCameraOffset[DIST] = ASW_GetCameraDist();
 	}
 	else if (asw_controls.GetInt() == 2)
 	{
