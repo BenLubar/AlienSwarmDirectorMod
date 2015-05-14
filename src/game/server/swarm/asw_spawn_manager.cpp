@@ -479,24 +479,25 @@ bool CASW_Spawn_Manager::SpawnOneWanderer(CUtlVector<CAI_Node *> &candidateNodes
 
 		float flDistance = 0;
 		CASW_Marine *pMarine = UTIL_ASW_NearestMarine(pNode->GetPosition(nHull), flDistance);
-		if (!pMarine)
-			return false;
-
-		// check if there's a route from this node to the marine(s)
-		AI_Waypoint_t *pRoute = ASWPathUtils()->BuildRoute(pNode->GetPosition(nHull), pMarine->GetAbsOrigin(), (Hull_t) nHull, NULL, 100);
-		if (!pRoute)
+		if (pMarine)
 		{
-			if (asw_director_debug.GetBool())
+			// check if there's a route from this node to the marine(s)
+			AI_Waypoint_t *pRoute = ASWPathUtils()->BuildRoute(pNode->GetPosition(nHull), pMarine->GetAbsOrigin(), (Hull_t) nHull, NULL, 100);
+			if (!pRoute)
 			{
-				NDebugOverlay::Cross3D(pNode->GetOrigin(), 10.0f, 255, 128, 0, true, 20.0f);
+				if (asw_director_debug.GetBool())
+				{
+					NDebugOverlay::Cross3D(pNode->GetOrigin(), 10.0f, 255, 128, 0, true, 20.0f);
+				}
+				continue;
 			}
-			continue;
-		}
 
-		if (bNorth && UTIL_ASW_DoorBlockingRoute(pRoute, true))
-		{
+			bool bBlocked = bNorth && UTIL_ASW_DoorBlockingRoute(pRoute, true);
 			DeleteRoute(pRoute);
-			continue;
+			if (bBlocked)
+			{
+				continue;
+			}
 		}
 
 		Vector vecSpawnPos = pNode->GetPosition(nHull) + Vector(0, 0, nHull == HULL_TINY_CENTERED ? 128 : 32);
@@ -535,7 +536,6 @@ bool CASW_Spawn_Manager::SpawnOneWanderer(CUtlVector<CAI_Node *> &candidateNodes
 						pSpawnable->MoveAside();
 					}
 				}
-				DeleteRoute(pRoute);
 				return true;
 			}
 		}
@@ -546,7 +546,6 @@ bool CASW_Spawn_Manager::SpawnOneWanderer(CUtlVector<CAI_Node *> &candidateNodes
 				NDebugOverlay::Cross3D(vecSpawnPos, 25.0f, 255, 0, 0, true, 20.0f);
 			}
 		}
-		DeleteRoute(pRoute);
 	}
 	return false;
 }

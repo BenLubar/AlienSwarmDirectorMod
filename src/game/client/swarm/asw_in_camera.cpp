@@ -281,6 +281,11 @@ void CASWInput::CAM_Think( void )
 		break;
 	}
 
+	if (!engine->IsInGame())
+	{
+		return;
+	}
+
 	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
 	if (asw_controls.GetInt() == 1)
 	{
