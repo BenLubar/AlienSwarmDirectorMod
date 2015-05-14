@@ -45,8 +45,10 @@ ConVar asw_cam_marine_yshift_static( "asw_cam_marine_yshift_static", "75.0f", FC
 ConVar asw_cam_marine_shift_enable( "asw_cam_marine_shift_enable", "1", FCVAR_CHEAT, "Camera shifting enable/disable." );
 
 extern ConVar asw_controls;
-extern ConVar asw_cam_marine_pitch_2;
-extern ConVar asw_cam_marine_yaw_2;
+ConVar asw_cam_marine_dist_2("asw_cam_marine_dist_2", "80", FCVAR_CHEAT | FCVAR_REPLICATED, "offset of camera in asw_controls 2");
+ConVar asw_cam_marine_pitch_2("asw_cam_marine_pitch_2", "10", FCVAR_CHEAT | FCVAR_REPLICATED, "pitch offset of camera in asw_controls 2");
+ConVar asw_cam_marine_yaw_2("asw_cam_marine_yaw_2", "20", FCVAR_CHEAT | FCVAR_REPLICATED, "yaw offset of camera in asw_controls 2");
+ConVar asw_cam_marine_speed_2("asw_cam_marine_speed_2", "50", FCVAR_CHEAT | FCVAR_REPLICATED, "speed going back to full distance of camera in asw_controls 2");
 
 // Vehicle Camera ConVars.
 ConVar asw_vehicle_cam_height( "asw_vehicle_cam_height", "0", FCVAR_CHEAT );
@@ -310,9 +312,25 @@ void CASWInput::CAM_Think( void )
 		{
 			return;
 		}
-		GetPerUser().m_vecCameraOffset[PITCH] = pMarine->ASWEyeAngles()[PITCH] + asw_cam_marine_pitch_2.GetFloat();
-		GetPerUser().m_vecCameraOffset[YAW] = pMarine->ASWEyeAngles()[YAW] + asw_cam_marine_yaw_2.GetFloat();
-		GetPerUser().m_vecCameraOffset[DIST] = 0;
+		QAngle angles = pMarine->ASWEyeAngles();
+		angles[PITCH] += asw_cam_marine_pitch_2.GetFloat();
+		angles[YAW] += asw_cam_marine_yaw_2.GetFloat();
+		GetPerUser().m_vecCameraOffset[PITCH] = angles[PITCH];
+		GetPerUser().m_vecCameraOffset[YAW] = angles[YAW];
+		Vector forward;
+		AngleVectors(angles, &forward);
+		Vector position = pMarine->EyePosition();
+		trace_t tr;
+		UTIL_TraceHull(position, position - forward * asw_cam_marine_dist_2.GetFloat(), Vector(-16, -16, -16), Vector(16, 16, 16), MASK_VISIBLE, pMarine, COLLISION_GROUP_NONE, &tr);
+		float flDist = tr.fraction * asw_cam_marine_dist_2.GetFloat();
+		if (GetPerUser().m_vecCameraOffset[DIST] > flDist)
+		{
+			GetPerUser().m_vecCameraOffset[DIST] = flDist;
+		}
+		else
+		{
+			GetPerUser().m_vecCameraOffset[DIST] = MIN(GetPerUser().m_vecCameraOffset[DIST] + asw_cam_marine_speed_2.GetFloat() * gpGlobals->frametime, flDist);
+		}
 	}
 }
 

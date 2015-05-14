@@ -418,18 +418,11 @@ Vector CASW_Player::EyePosition( )
 				// Not doing the death cam!
 				Vector vCamOffset;
 
-				if ( bIsThirdPerson )
-				{
-					ang[PITCH] = ASWInput()->ASW_GetCameraPitch();
-					ang[YAW] = ASWInput()->ASW_GetCameraYaw();
-					ang[ROLL] = 0;
-					AngleVectors(ang, &vCamOffset);
-					vCamOffset *= -ASWInput()->ASW_GetCameraDist();
-				}
-				else
-				{
-					vCamOffset.Init();
-				}
+				ang[PITCH] = ASWInput()->GetPerUser().m_vecCameraOffset[PITCH];
+				ang[YAW] = ASWInput()->GetPerUser().m_vecCameraOffset[YAW];
+				ang[ROLL] = 0;
+				AngleVectors(ang, &vCamOffset);
+				vCamOffset *= -ASWInput()->GetPerUser().m_vecCameraOffset[2];
 
 				org = m_vecLastMarineOrigin + vCamOffset;
 			}

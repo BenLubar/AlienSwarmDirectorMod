@@ -326,6 +326,8 @@ protected:
 	PerUserInput_t &GetPerUser( int nSlot = -1 );
 	const PerUserInput_t &GetPerUser( int nSlot = -1 ) const;
 
+	friend class C_ASW_Player;
+
 	// Flag to restore systemparameters when exiting
 	bool		m_fRestoreSPI;
 	// Original mouse parameters

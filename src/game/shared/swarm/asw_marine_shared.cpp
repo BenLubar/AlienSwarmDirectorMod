@@ -70,9 +70,6 @@ ConVar asw_marine_speed_scale_hard("asw_marine_speed_scale_hard", "1.0", FCVAR_R
 ConVar asw_marine_speed_scale_insane("asw_marine_speed_scale_insane", "1.0", FCVAR_REPLICATED);
 ConVar asw_marine_box_collision("asw_marine_box_collision", "1", FCVAR_REPLICATED);
 ConVar asw_allow_hull_shots("asw_allow_hull_shots", "1", FCVAR_REPLICATED);
-ConVar asw_cam_marine_dist_2("asw_cam_marine_dist_2", "80", FCVAR_CHEAT | FCVAR_REPLICATED, "offset of camera in asw_controls 2");
-ConVar asw_cam_marine_pitch_2("asw_cam_marine_pitch_2", "10", FCVAR_CHEAT | FCVAR_REPLICATED, "pitch offset of camera in asw_controls 2");
-ConVar asw_cam_marine_yaw_2("asw_cam_marine_yaw_2", "20", FCVAR_CHEAT | FCVAR_REPLICATED, "yaw offset of camera in asw_controls 2");
 #ifdef GAME_DLL
 extern ConVar ai_show_hull_attacks;
 ConVar asw_melee_knockback_up_force( "asw_melee_knockback_up_force", "1.0", FCVAR_CHEAT );
@@ -253,21 +250,7 @@ Vector CASW_Marine::EyePosition()
 		break;
 
 	case 2:
-	{
-#ifdef CLIENT_DLL
-		Vector position = GetRenderOrigin() + GetViewOffset();
-#else
-		Vector position = GetAbsOrigin() + GetViewOffset();
-#endif
-		QAngle angles = ASWEyeAngles();
-		angles[PITCH] += asw_cam_marine_pitch_2.GetFloat();
-		angles[YAW] += asw_cam_marine_yaw_2.GetFloat();
-		Vector forward;
-		AngleVectors(angles, &forward);
-		trace_t tr;
-		UTIL_TraceHull(position - forward * 16, position - forward * asw_cam_marine_dist_2.GetFloat(), Vector(-16, -16, -16), Vector(16, 16, 16), MASK_VISIBLE, this, COLLISION_GROUP_NONE, &tr);
-		return tr.endpos;
-	}
+		break;
 
 	default:
 		Assert(iControls >= 0 && iControls <= 2);
