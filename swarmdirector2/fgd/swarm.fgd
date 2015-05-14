@@ -4802,6 +4802,7 @@
 	flammablesp(boolean) : "Alien can be set on fire" : 1
 	freezablesp(boolean) : "Alien can be frozen" : 1
 	teslablesp(boolean) : "Alien can be electrocuted" : 1
+	flinchessp(boolean) : "Alien flinches when hit" : 1
 	
 	output OnSpawned(string) : "Fires when an alien is spawned. The activator is the alien, and the string is the name of the alien." 
 	
