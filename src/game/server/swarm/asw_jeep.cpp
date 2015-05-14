@@ -159,7 +159,7 @@ CASW_PropJeep::CASW_PropJeep( void )
 
 	InitWaterData();
 
-	m_bUnableToFire = true;
+	m_bUnableToFire = false;
 	m_flAmmoCrateCloseTime = 0;
 }
 

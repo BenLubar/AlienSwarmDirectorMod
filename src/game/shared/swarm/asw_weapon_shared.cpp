@@ -306,7 +306,7 @@ void CASW_Weapon::ItemPostFrame( void )
 	bool bAttack1, bAttack2, bReload, bOldReload, bOldAttack1;
 	GetButtons(bAttack1, bAttack2, bReload, bOldReload, bOldAttack1 );
 
-	if ( pOwner->IsHacking() )
+	if ( pOwner->IsHacking() || pOwner->IsInVehicle() )
 	{
 		bThisActive = bAttack1 = bAttack2 = bReload = false;
 	}

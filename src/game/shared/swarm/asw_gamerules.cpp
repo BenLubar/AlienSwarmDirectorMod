@@ -290,6 +290,10 @@ ConVar	sk_max_asw_gl				( "sk_max_asw_gl","0", FCVAR_REPLICATED);
 // Sniper Rifle
 ConVar	sk_npc_dmg_asw_sniper			( "sk_npc_dmg_asw_sniper","0", FCVAR_REPLICATED);
 ConVar	sk_max_asw_sniper				( "sk_max_asw_sniper","0", FCVAR_REPLICATED);
+// Jeep
+ConVar	sk_plr_dmg_jeep			( "sk_plr_dmg_jeep","15", FCVAR_REPLICATED );
+ConVar	sk_npc_dmg_jeep			( "sk_npc_dmg_jeep","15", FCVAR_REPLICATED);
+ConVar	sk_max_jeep				( "sk_max_jeep","0", FCVAR_REPLICATED);
 
 
 ConVar asw_flare_autoaim_radius("asw_flare_autoaim_radius", "250", FCVAR_REPLICATED | FCVAR_CHEAT, "Radius of autoaim effect from flares");
@@ -534,6 +538,8 @@ CAmmoDef *GetAmmoDef()
 		def.AddAmmoType("ASW_GL",			DMG_BURN,					TRACER_NONE,	"sk_npc_dmg_asw_gl",			"sk_npc_dmg_asw_gl",			"sk_max_asw_gl",		BULLET_IMPULSE(200, 1225),	0 );
 		// Sniper Rifle
 		def.AddAmmoType("ASW_SNIPER",		DMG_BULLET,					TRACER_LINE_AND_WHIZ,	"sk_npc_dmg_asw_sniper",		"sk_npc_dmg_asw_sniper",			"sk_max_asw_sniper",		BULLET_IMPULSE(200, 1225),	0 );
+		// jeep cannon
+		def.AddAmmoType("GaussEnergy",		DMG_BULLET,					TRACER_LINE_AND_WHIZ,	"sk_plr_dmg_jeep",			"sk_npc_dmg_jeep",			"sk_max_jeep",			BULLET_IMPULSE(200, 1225),	0 );
 	}
 
 	return &def;

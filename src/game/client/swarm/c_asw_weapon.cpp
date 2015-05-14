@@ -676,7 +676,7 @@ bool C_ASW_Weapon::ShouldShowLaserPointer()
 	//if ( !pPlayer || !pMarine || !pPlayer->GetMarine() )
 	//	return false;
 
-	return ( pMarine && pMarine->GetActiveWeapon() == this ) && !pMarine->IsInVehicle();
+	return ( pMarine && pMarine->GetActiveWeapon() == this );
 
 	//return ( pPlayer == C_ASW_Player::GetLocalASWPlayer() && pPlayer->GetMarine() == pMarine 
 	//	&& pMarine->GetActiveWeapon() == this );
