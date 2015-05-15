@@ -74,6 +74,8 @@
 #include "asw_boomer_blob.h"
 #include "asw_weapon_healgrenade_shared.h"
 #include "asw_squadformation.h"
+#include "ai_route.h"
+#include "asw_marine_gamemovement.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -2889,18 +2891,27 @@ void CASW_Marine::RunTask( const Task_t *pTask )
 				return;
 			}
 
+			MoveType_t oldMoveType = GetMoveType();
+			SetMoveType(MOVETYPE_STEP);
 			CASW_MoveData *pMove = static_cast<CASW_MoveData *>(g_pMoveData);
 			pMove->m_bFirstRunOfFunctions = true;
-			pMove->SetAbsOrigin(GetAbsOrigin());
+			Vector vecPrevOrigin = GetAbsOrigin();
+			pMove->SetAbsOrigin(vecPrevOrigin);
 			pMove->m_vecVelocity = GetAbsVelocity();
 			pMove->m_vecAngles = GetAbsAngles();
 			pMove->m_iForcedAction = GetForcedActionRequest();
 			pMove->m_nButtons = 0;
 			pMove->m_nOldButtons = 0;
-			ASWMeleeSystem()->ProcessMovement(this, pMove);
+			pMove->m_flForwardMove = 1;
+			pMove->m_flSideMove = 0;
+			pMove->m_flClientMaxSpeed = MaxSpeed();
+			ASWGameMovement()->ProcessMovement(GetCommander(), this, pMove);
+			SetAbsVelocity(pMove->m_vecVelocity);
 			SetAbsOrigin(pMove->GetAbsOrigin());
-			SetAbsVelocity(vec3_origin);
+			SetAbsAngles(pMove->m_vecAngles);
+			PhysicsTouchTriggers(&vecPrevOrigin);
 			Assert(!GetForcedActionRequest());
+			SetMoveType(oldMoveType);
 		}
 		break;
 
@@ -3636,6 +3647,38 @@ void CASW_Marine::CheckForDisablingAICollision( CBaseEntity *pEntity )
 
 	PhysDisableEntityCollisions( this, pEntity );
 	SetPhysicsPropTarget( NULL );
+}
+
+bool CASW_Marine::OverrideMove(float flInterval)
+{
+	if (GetCurrentMeleeAttack() || (!IsCurSchedule(SCHED_ASW_FOLLOW_MOVE) && !IsCurSchedule(SCHED_ASW_LEAD) && !IsCurSchedule(SCHED_ASW_MOVE_TO_ORDER_POS)))
+	{
+		return false;
+	}
+	CAI_Path *pPath = GetNavigator()->GetPath();
+	if (!pPath)
+	{
+		return false;
+	}
+	AI_Waypoint_t *pWaypoint = pPath->GetCurWaypoint();
+	if (!pWaypoint)
+	{
+		return false;
+	}
+	Vector vecTarget = pWaypoint->GetPos();
+	if (vecTarget.z < GetAbsOrigin().z - StepHeight())
+	{
+		float flYaw = UTIL_VecToYaw(vecTarget - GetAbsOrigin());
+		if (GetActiveASWWeapon())
+		{
+			GetActiveASWWeapon()->OnStartedRoll();
+		}
+		ASWMeleeSystem()->StartMeleeAttack(ASWMeleeSystem()->GetMeleeAttackByID(CASW_Melee_System::s_nRollAttackID), this, NULL);
+		m_flMeleeYaw = flYaw;
+		m_bFaceMeleeYaw = true;
+		return true;
+	}
+	return false;
 }
 
 //-----------------------------------------------------------------------------

@@ -79,6 +79,8 @@ public:
 	void	SelectModelFromProfile();
 	void	SelectModel();
 
+	virtual bool OverrideMove(float flInterval);
+
 	CAI_Senses *CreateSenses();
 
 	void SetHeightLook( float flHeightLook );

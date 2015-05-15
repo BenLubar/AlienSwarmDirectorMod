@@ -1556,7 +1556,6 @@ public:
 			// don't try to jump up cliffs if we can't do that
 			if (!(m_bits & (bits_BUILD_JUMP | bits_BUILD_FLY)))
 			{
-				const float upPenalty = 9999999.0f;
 				const float downPenalty = 5.0f;
 
 				Vector v1, v2;
@@ -1564,7 +1563,7 @@ public:
 				fromArea->GetClosestPointOnArea(area->GetCenter(), &v2);
 
 				if (v1.z - v2.z > StepHeight) {
-					cost += upPenalty * (v1.z - v2.z);
+					return -1;
 				} else if (v2.z - v1.z > StepHeight) {
 					cost += downPenalty * (v2.z - v1.z);
 				}
@@ -1595,8 +1594,11 @@ AI_Waypoint_t *CAI_Pathfinder::BuildNavRoute(CNavArea *startArea, CNavArea *goal
 	{
 		goalArea->GetClosestPointOnArea(from, &closest);
 
-		// make sure we fit
-		closest += (goalArea->GetCenter() - closest).Normalized() * GetHullWidth() * 0.75f;
+		if (closest.z > waypoint->vecLocation.z - StepHeight)
+		{
+			// make sure we fit
+			closest += (goalArea->GetCenter() - closest).Normalized() * GetHullWidth() * 0.75f;
+		}
 
 		if (curNavType == NAV_FLY)
 			closest.z += GetHullHeight() + RandomFloat(0, 128);
@@ -1628,7 +1630,7 @@ AI_Waypoint_t *CAI_Pathfinder::BuildNavRoute(CNavArea *startArea, CNavArea *goal
 				nextWithHull += closestChild;
 				nextWithHull.z = goalArea->GetZ(nextWithHull);
 
-				AI_Waypoint_t *jumpway = new AI_Waypoint_t(nextWithHull, 0, curNavType == NAV_GROUND ? NAV_JUMP : curNavType, flags, NO_NODE);
+				AI_Waypoint_t *jumpway = new AI_Waypoint_t(nextWithHull, 0, curNavType, flags, NO_NODE);
 
 				jumpway->SetNext(newway);
 				newway->SetPrev(jumpway);
