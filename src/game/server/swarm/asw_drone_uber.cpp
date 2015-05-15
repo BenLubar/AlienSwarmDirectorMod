@@ -62,11 +62,9 @@ void CASW_Drone_Uber::SetHealthByDifficultyLevel()
 {
 	SetHealth(ASWGameRules()->ModifyAlienHealthBySkillLevel(asw_drone_uber_health.GetInt()));
 	SetMaxHealth(GetHealth());
-	//if (ASWGameRules()->GetSkillLevel() <= 1)	// on easy we use the bigger hitbox set
-		SetHitboxSet(0);
-	//else
-		//SetHitboxSet(2);
-	BaseClass::SetHealthByDifficultyLevel();
+	SetHitboxSet(0);
+	// Skip normal drone
+	BaseClass::BaseClass::SetHealthByDifficultyLevel();
 }
 
 float CASW_Drone_Uber::GetIdealSpeed() const
