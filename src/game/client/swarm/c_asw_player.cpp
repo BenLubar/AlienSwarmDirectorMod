@@ -181,6 +181,12 @@ ConVar asw_auto_reload("asw_auto_reload", "1", FCVAR_ARCHIVE, "Whether your mari
 ConVar asw_turret_fog_start("asw_turret_fog_start", "900", 0, "Fog start distance for turret view");
 ConVar asw_turret_fog_end("asw_turret_fog_end", "1200", 0, "Fog end distance for turret view");
 
+ConVar asw_fov_desired[] {
+	ConVar("fov_desired_0", "0", FCVAR_ARCHIVE, "fov_desired when setting asw_controls to 0", true, 0, true, 90),
+	ConVar("fov_desired_1", "0", FCVAR_ARCHIVE, "fov_desired when setting asw_controls to 1", true, 0, true, 90),
+	ConVar("fov_desired_2", "0", FCVAR_ARCHIVE, "fov_desired when setting asw_controls to 2", true, 0, true, 90),
+};
+
 void ASW_Controls_Changed(IConVar *var, const char *pOldValue, float flOldValue);
 ConVar asw_controls("asw_controls", "1", FCVAR_ARCHIVE, "Disable to get normal FPS controls (affects only you)", true, 0, true, 2, ASW_Controls_Changed);
 void ASW_Controls_Changed(IConVar *var, const char *pOldValue, float flOldValue)
@@ -197,6 +203,13 @@ void ASW_Controls_Changed(IConVar *var, const char *pOldValue, float flOldValue)
 	else
 	{
 		ASWInput()->CAM_ToThirdPerson();
+	}
+
+	Assert(asw_controls.GetInt() < NELEMS(asw_fov_desired));
+	float fov = asw_fov_desired[asw_controls.GetInt()].GetFloat();
+	if (fov >= 1)
+	{
+		engine->ClientCmd_Unrestricted(VarArgs("fov_desired %f\n", fov));
 	}
 
 	if (engine->IsInGame())
