@@ -963,6 +963,11 @@ CBaseEntity* CASW_Spawn_Manager::SpawnAlienAt(const char* szAlienClass, const Ve
 
 	if (pDef)
 	{
+		float iHealthBonus = pDef->GetInt("HealthBonus", 0);
+		if (iHealthBonus <= 0)
+		{
+			iHealthBonus = 0;
+		}
 		float flHealthScale = pDef->GetFloat("HealthScale", 1);
 		if (flHealthScale <= 0)
 		{
@@ -978,7 +983,7 @@ CBaseEntity* CASW_Spawn_Manager::SpawnAlienAt(const char* szAlienClass, const Ve
 		{
 			flSizeScale = 1;
 		}
-		pSpawnable->CustomSettings(flHealthScale, flSpeedScale, flSizeScale, pDef->GetBool("Flammable", true), pDef->GetBool("Freezable", true), pDef->GetBool("Teslable", true), pDef->GetBool("Flinches", true));
+		pSpawnable->CustomSettings(iHealthBonus, flHealthScale, flSpeedScale, flSizeScale, pDef->GetBool("Flammable", true), pDef->GetBool("Freezable", true), pDef->GetBool("Teslable", true), pDef->GetBool("Flinches", true));
 	}
 
 	DispatchSpawn( pEntity );	

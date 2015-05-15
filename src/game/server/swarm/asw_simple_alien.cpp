@@ -46,6 +46,15 @@ BEGIN_DATADESC( CASW_Simple_Alien )
 	DEFINE_FIELD(m_bAttacking, FIELD_BOOLEAN),
 	DEFINE_FIELD(m_bHoldoutAlien, FIELD_BOOLEAN),
 	DEFINE_FIELD(m_bDirectorAlien, FIELD_BOOLEAN),
+
+	DEFINE_KEYFIELD(m_iHealthBonus, FIELD_INTEGER, "healthbonus"),
+	DEFINE_KEYFIELD(m_flHealthScale, FIELD_FLOAT, "healthscale"),
+	DEFINE_KEYFIELD(m_flSpeedScale, FIELD_FLOAT, "speedscale"),
+	DEFINE_KEYFIELD(m_flSizeScale, FIELD_FLOAT, "sizescale"),
+	DEFINE_KEYFIELD(m_bFlammable, FIELD_BOOLEAN, "flammable"),
+	DEFINE_KEYFIELD(m_bFreezable, FIELD_BOOLEAN, "freezable"),
+	DEFINE_KEYFIELD(m_bTeslable, FIELD_BOOLEAN, "teslable"),
+	DEFINE_KEYFIELD(m_bFlinches, FIELD_BOOLEAN, "flinches"),
 END_DATADESC()
 
 IMPLEMENT_SERVERCLASS_ST(CASW_Simple_Alien, DT_ASW_Simple_Alien)
@@ -82,6 +91,14 @@ CASW_Simple_Alien::CASW_Simple_Alien()
 	m_bOnGround = false;
 	m_bHoldoutAlien = false;
 	m_bDirectorAlien = false;
+	m_iHealthBonus = 0;
+	m_flHealthScale = 1;
+	m_flSpeedScale = 1;
+	m_flSizeScale = 1;
+	m_bFlammable = true;
+	m_bFreezable = true;
+	m_bTeslable = true;
+	m_bFlinches = true;
 }
 
 CASW_Simple_Alien::~CASW_Simple_Alien()
@@ -111,9 +128,10 @@ void CASW_Simple_Alien::Spawn(void)
 	m_fArrivedTolerance = 30.0f;
 
 	// health
-	m_iHealth = ASWGameRules()->ModifyAlienHealthBySkillLevel(asw_drone_health.GetInt());
+	SetHealthByDifficultyLevel();
 
-	SetMaxHealth(m_iHealth);
+	SetModelScale(m_flSizeScale);
+
 	m_takedamage		= DAMAGE_YES;
 		
 	// state
@@ -1370,7 +1388,7 @@ void CASW_Simple_Alien::HandleAnimEvent( animevent_t *pEvent )
 
 void CASW_Simple_Alien::SetHealthByDifficultyLevel()
 {
-	int iHealth = ASWGameRules()->ModifyAlienHealthBySkillLevel(asw_drone_health.GetInt()) * m_flHealthScale;
+	int iHealth = ASWGameRules()->ModifyAlienHealthBySkillLevel(asw_drone_health.GetInt()) * m_flHealthScale + m_iHealthBonus;
 	SetMaxHealth(iHealth);
 	SetHealth(iHealth);
 }

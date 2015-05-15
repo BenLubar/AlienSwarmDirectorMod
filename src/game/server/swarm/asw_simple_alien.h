@@ -127,8 +127,9 @@ public:
 	virtual void ClearAlienOrders();
 	virtual void IgnoreMarines(bool bIgnoreMarines) { }
 
-	virtual void CustomSettings(float flHealthScale, float flSpeedScale, float flSizeScale, bool bFlammable, bool bFreezable, bool bTeslable, bool bFlinches)
+	virtual void CustomSettings(int iHealthBonus, float flHealthScale, float flSpeedScale, float flSizeScale, bool bFlammable, bool bFreezable, bool bTeslable, bool bFlinches)
 	{
+		m_iHealthBonus = iHealthBonus;
 		m_flHealthScale = flHealthScale;
 		m_flSpeedScale = flSpeedScale;
 		m_flSizeScale = flSizeScale;
@@ -144,6 +145,7 @@ public:
 	virtual bool IsFreezable() { return m_bFreezable; }
 	virtual bool IsTeslable() { return m_bTeslable; }
 	virtual bool IsFlincher() { return m_bFlinches; }
+	int m_iHealthBonus;
 	float m_flHealthScale;
 	float m_flSpeedScale;
 	float m_flSizeScale;

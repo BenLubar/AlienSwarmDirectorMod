@@ -144,6 +144,16 @@ BEGIN_DATADESC( CASW_Alien )
 	DEFINE_FIELD( m_vecLastPushAwayOrigin, FIELD_VECTOR ),
 	DEFINE_FIELD( m_vecLastPush, FIELD_VECTOR ),
 	DEFINE_FIELD( m_bPushed, FIELD_BOOLEAN ),
+
+	DEFINE_KEYFIELD(m_iHealthBonus, FIELD_INTEGER, "healthbonus"),
+	DEFINE_KEYFIELD(m_flHealthScale, FIELD_FLOAT, "healthscale"),
+	DEFINE_KEYFIELD(m_flSpeedScale, FIELD_FLOAT, "speedscale"),
+	DEFINE_KEYFIELD(m_flSizeScale, FIELD_FLOAT, "sizescale"),
+	DEFINE_KEYFIELD(m_bFlammable, FIELD_BOOLEAN, "flammable"),
+	DEFINE_KEYFIELD(m_bFreezable, FIELD_BOOLEAN, "freezable"),
+	DEFINE_KEYFIELD(m_bTeslable, FIELD_BOOLEAN, "teslable"),
+	DEFINE_KEYFIELD(m_bFlinches, FIELD_BOOLEAN, "flinches"),
+
 	DEFINE_FIELD( m_bHoldoutAlien, FIELD_BOOLEAN ),
 	DEFINE_FIELD( m_bDirectorAlien, FIELD_BOOLEAN ),
 END_DATADESC()
@@ -199,6 +209,7 @@ CASW_Alien::CASW_Alien( void ) :
 
 	m_nAlienCollisionGroup = ASW_COLLISION_GROUP_ALIEN;
 
+	m_iHealthBonus = 0;
 	m_flHealthScale = 1.0f;
 	m_flSpeedScale = 1.0f;
 	m_flSizeScale = 1.0f;
@@ -245,7 +256,9 @@ void CASW_Alien::Spawn()
 	Precache();
 	SetModel( m_pszAlienModelName );
 
-	CustomSettings(1.0f, 1.0f, 1.0f, true, true, true, true);
+	RescaleCustomSettings();
+	SetModelScale(m_flSizeScale);
+	SetHealthByDifficultyLevel();
 	SetHullSizeNormal();
 
 	// Base spawn.
@@ -2522,8 +2535,8 @@ bool CASW_Alien::MarineCanSee(int padding, float interval)
 void CASW_Alien::SetHealthByDifficultyLevel()
 {
 	// filled in by subclasses
-	SetMaxHealth(GetMaxHealth() * m_flHealthScale);
-	SetHealth(GetHealth() * m_flHealthScale);
+	SetMaxHealth(GetMaxHealth() * m_flHealthScale + m_iHealthBonus);
+	SetHealth(GetHealth() * m_flHealthScale + m_iHealthBonus);
 }
 
 void CASW_Alien::Ignite( float flFlameLifetime, bool bNPCOnly, float flSize, bool bCalledByLevelDesigner )

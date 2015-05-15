@@ -68,6 +68,7 @@ protected:
 	// Alien Swarm: SP spawner flags
 	float m_flLegacyHealthScale;
 	float m_flLegacySpeedScale;
+	int m_iHealthBonus;
 	float m_flHealthScale;
 	float m_flSpeedScale;
 	float m_flSizeScale;

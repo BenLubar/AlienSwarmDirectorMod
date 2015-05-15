@@ -35,7 +35,7 @@ public:
 	virtual bool IsHoldoutAlien() = 0;
 	virtual void SetDirectorAlien() = 0;				// this alien was spawned by the director
 	virtual bool IsDirectorAlien() = 0;
-	virtual void CustomSettings(float flHealthScale, float flSpeedScale, float flSizeScale, bool bFlammable, bool bFreezable, bool bTeslable, bool bFlinches) = 0;
+	virtual void CustomSettings(int iHealthBonus, float flHealthScale, float flSpeedScale, float flSizeScale, bool bFlammable, bool bFreezable, bool bTeslable, bool bFlinches) = 0;
 	virtual bool IsFlammable() = 0;
 	virtual bool IsFreezable() = 0;
 	virtual bool IsTeslable() = 0;

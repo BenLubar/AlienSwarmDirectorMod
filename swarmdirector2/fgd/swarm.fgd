@@ -86,6 +86,18 @@
 	output OnRappelTouchdown(void) : "Fires when done rappeling"
 ]
 
+@BaseClass = ASWAlien
+[
+	healthbonus(integer) : "Alien health bonus" : 0 : "Adds this amount to the alien's default health."
+	healthscale(float) : "Alien health scale" : 1 : "Multiplies the alien's default health by this amount."
+	speedscale(float) : "Alien speed scale" : 1 : "Multiplies the alien's default speed by this amount."
+	sizescale(float) : "Alien size scale" : 1 : "Multiplies the alien's default size by this amount."
+	flammable(boolean) : "Alien can be set on fire" : 1
+	freezable(boolean) : "Alien can be frozen" : 1
+	teslable(boolean) : "Alien can be electrocuted" : 1
+	flinches(boolean) : "Alien flinches when hit" : 1
+]
+
 @BaseClass = AlyxInteractable
 [
 	// Outputs
@@ -4796,6 +4808,7 @@
 	MinSkillLevel(integer) : "Min Skill Level" : 0 : "The minimum skill level for this spawner to function.  Skill levels are: 1=easy 2=normal 3=hard 4=insane 5=brutal"
 	MaxSkillLevel(integer) : "Max Skill Level" : 0 : "The maximum skill level for this spawner to function.  Skill levels are: 1=easy 2=normal 3=hard 4=insane 5=brutal"
 
+	healthbonussp(integer) : "Alien health bonus" : 0 : "Adds this amount to the alien's default health."
 	healthscalesp(float) : "Alien health scale" : 1 : "Multiplies the alien's default health by this amount."
 	speedscalesp(float) : "Alien speed scale" : 1 : "Multiplies the alien's default speed by this amount."
 	sizescalesp(float) : "Alien size scale" : 1 : "Multiplies the alien's default size by this amount."
@@ -4981,7 +4994,7 @@
 
 ]
 
-@NPCClass base(BaseNPC) studio("models/aliens/drone/drone.mdl") sphere() = asw_drone :
+@NPCClass base(BaseNPC, ASWAlien) studio("models/aliens/drone/drone.mdl") sphere() = asw_drone :
 	"A vicious killing machine with bladed limbs and sharp teeth, easily able to tear a man to pieces, even an armoured IAF marine."
 [
 	MoveClone(target_destination) : "Move Clone" : : "If set to an entity name, this alien will match movement with that entity."
@@ -5013,7 +5026,7 @@
 	output	OnReachedFightGoal(void) : "Fires when the drone reaches his specified fight-to location"
 ]
 
-@NPCClass base(BaseNPC) studio("models/aliens/drone/drone.mdl") sphere() = asw_drone_redgiant :
+@NPCClass base(BaseNPC, ASWAlien) studio("models/aliens/drone/drone.mdl") sphere() = asw_drone_redgiant :
 	"A large red drone with lots of health."
 [
 	MoveClone(target_destination) : "Move Clone" : : "If set to an entity name, this alien will match movement with that entity."
@@ -5042,7 +5055,7 @@
 	output	OnReachedFightGoal(void) : "Fires when the drone reaches his specified fight-to location"
 ]
 
-@NPCClass base(BaseNPC) studio("models/aliens/drone/drone.mdl") sphere() = asw_drone_ghost :
+@NPCClass base(BaseNPC, ASWAlien) studio("models/aliens/drone/drone.mdl") sphere() = asw_drone_ghost :
 	"A drone that is nearly invisible."
 [
 	MoveClone(target_destination) : "Move Clone" : : "If set to an entity name, this alien will match movement with that entity."
@@ -5071,7 +5084,7 @@
 	output	OnReachedFightGoal(void) : "Fires when the drone reaches his specified fight-to location"
 ]
 
-@NPCClass base(BaseNPC) studio("models/aliens/drone/drone.mdl") sphere() = asw_drone_carrier :
+@NPCClass base(BaseNPC, ASWAlien) studio("models/aliens/drone/drone.mdl") sphere() = asw_drone_carrier :
 	"A drone that carries a parasite on its back."
 [
 	MoveClone(target_destination) : "Move Clone" : : "If set to an entity name, this alien will match movement with that entity."
@@ -5100,7 +5113,7 @@
 	output	OnReachedFightGoal(void) : "Fires when the drone reaches his specified fight-to location"
 ]
 
-@NPCClass base(BaseNPC) studio("models/aliens/drone/drone.mdl") sphere() = asw_drone_summoner :
+@NPCClass base(BaseNPC, ASWAlien) studio("models/aliens/drone/drone.mdl") sphere() = asw_drone_summoner :
 	"A drone that summons a horde of drones when it enters combat for the first time."
 [
 	MoveClone(target_destination) : "Move Clone" : : "If set to an entity name, this alien will match movement with that entity."
@@ -5129,7 +5142,7 @@
 	output	OnReachedFightGoal(void) : "Fires when the drone reaches his specified fight-to location"
 ]
 
-@NPCClass base(BaseNPC) studio("models/aliens/drone/drone.mdl") sphere() = asw_drone_uber :
+@NPCClass base(BaseNPC, ASWAlien) studio("models/aliens/drone/drone.mdl") sphere() = asw_drone_uber :
 	"Larger, stronger version of the asw_drone"
 [
 	sleepstate(choices) : "Sleep State" : 1 : "Holds the NPC in stasis until specified condition. See also 'Wake Radius' and 'Wake Squad'." =
@@ -5158,7 +5171,7 @@
 	output	OnReachedFightGoal(void) : "Fires when the drone reaches his specified fight-to location"
 ]
 
-@NPCClass base(BaseNPC) studio("models/aliens/drone/drone.mdl") sphere() = asw_drone_jumper :
+@NPCClass base(BaseNPC, ASWAlien) studio("models/aliens/drone/drone.mdl") sphere() = asw_drone_jumper :
 	"A vicious killing machine with bladed limbs and sharp teeth, easily able to tear a man to pieces, even an armoured IAF marine.  This jumping variation can leap over large distances."
 [
 	sleepstate(choices) : "Sleep State" : 1 : "Holds the NPC in stasis until specified condition. See also 'Wake Radius' and 'Wake Squad'." =
@@ -5184,7 +5197,7 @@
 	output	OnReachedFightGoal(void) : "Fires when the drone reaches his specified fight-to location"
 ]
 
-@NPCClass base(BaseNPC) studio("models/aliens/parasite/parasite.mdl") sphere() = asw_parasite :
+@NPCClass base(BaseNPC, ASWAlien) studio("models/aliens/parasite/parasite.mdl") sphere() = asw_parasite :
 	"A lethal parasite Swarm alien, capable of burrowing through an IAF marine's armour and flesh.  Once safely inside the host's body, the parasite will quickly consume the internal organs and multiply at a fanstastic rate, with many more parasites bursting out of the victim shortly after."
 [
 	sleepstate(choices) : "Sleep State" : 1 : "Holds the NPC in stasis until specified condition. See also 'Wake Radius' and 'Wake Squad'." =
@@ -5213,7 +5226,7 @@
 	output	OnReachedFightGoal(void) : "Fires when the parasite reaches his specified fight-to location"
 ]
 
-@NPCClass base(BaseNPC) studio("models/aliens/shieldbug/shieldbug.mdl") sphere() = asw_shieldbug :
+@NPCClass base(BaseNPC, ASWAlien) studio("models/aliens/shieldbug/shieldbug.mdl") sphere() = asw_shieldbug :
 	"A large, heavily armoured Swarm alien."
 [
 	sleepstate(choices) : "Sleep State" : 1 : "Holds the NPC in stasis until specified condition. See also 'Wake Radius' and 'Wake Squad'." =
@@ -5241,7 +5254,7 @@
 	output	OnReachedFightGoal(void) : "Fires when the Shieldbug reaches his specified fight-to location"
 ]
 
-@NPCClass base(BaseNPC) studio("models/aliens/harvester/harvester.mdl") sphere() = asw_harvester :
+@NPCClass base(BaseNPC, ASWAlien) studio("models/aliens/harvester/harvester.mdl") sphere() = asw_harvester :
 	"Swarm Harvester"
 [
     sleepstate(choices) : "Sleep State" : 1 : "Holds the NPC in stasis until specified condition. See also 'Wake Radius' and 'Wake Squad'." =
@@ -5266,7 +5279,7 @@
 	input BreakWaitForScript(void) : "Wakes the alien up if his Wait For Script flag was set"
 ]
 
-@NPCClass base(BaseNPC) studio("models/aliens/mortar/mortar.mdl") sphere() = asw_mortarbug :
+@NPCClass base(BaseNPC, ASWAlien) studio("models/aliens/mortar/mortar.mdl") sphere() = asw_mortarbug :
 	"Swarm Mortarbug"
 [
     sleepstate(choices) : "Sleep State" : 1 : "Holds the NPC in stasis until specified condition. See also 'Wake Radius' and 'Wake Squad'." =
@@ -5291,7 +5304,7 @@
 	input BreakWaitForScript(void) : "Wakes the alien up if his Wait For Script flag was set"
 ]
 
-@NPCClass base(BaseNPC, Studiomodel) studio("models/swarm/Queen/queen.mdl") sphere() = asw_queen :
+@NPCClass base(BaseNPC, Studiomodel, ASWAlien) studio("models/swarm/Queen/queen.mdl") sphere() = asw_queen :
 	"Swarm Queen"
 [
     sleepstate(choices) : "Sleep State" : 1 : "Holds the NPC in stasis until specified condition. See also 'Wake Radius' and 'Wake Squad'." =
@@ -5322,7 +5335,7 @@
 	output	OnQueenKilled(void) : "Fired when the queen is killed."
 ]
 
-@NPCClass base(BaseNPC) studio("models/aliens/mortar3/mortar3.mdl") sphere() = asw_ranger :
+@NPCClass base(BaseNPC, ASWAlien) studio("models/aliens/mortar3/mortar3.mdl") sphere() = asw_ranger :
 	"Swarm Ranger"
 [
     sleepstate(choices) : "Sleep State" : 1 : "Holds the NPC in stasis until specified condition. See also 'Wake Radius' and 'Wake Squad'." =
@@ -5347,7 +5360,7 @@
 	input BreakWaitForScript(void) : "Wakes the alien up if his Wait For Script flag was set"
 ]
 
-@NPCClass base(BaseNPC) studio("models/aliens/boomer/boomer.mdl") sphere() = asw_boomer :
+@NPCClass base(BaseNPC, ASWAlien) studio("models/aliens/boomer/boomer.mdl") sphere() = asw_boomer :
 	"Swarm Boomer"
 [
     sleepstate(choices) : "Sleep State" : 1 : "Holds the NPC in stasis until specified condition. See also 'Wake Radius' and 'Wake Squad'." =
@@ -5966,7 +5979,7 @@
 	equipclass3(string) : "Equipment class 3" : "" : "Third equipment class that needs to be selected before mission can begin."
 ]
 
-@NPCClass base(BaseNPC) studio("models/aliens/buzzer/buzzer.mdl") = asw_buzzer : "Buzzer"
+@NPCClass base(BaseNPC, ASWAlien) studio("models/aliens/buzzer/buzzer.mdl") = asw_buzzer : "Buzzer"
 [
 	spawnflags(Flags) = 
 	[
@@ -6150,7 +6163,7 @@
 	input StopShake(void) : "Stop the shake."
 ]
 
-@NPCClass base(BaseNPC) studio("models/swarm/Grubs/Grub.mdl") sphere() = asw_grub :
+@NPCClass base(BaseNPC, ASWAlien) studio("models/swarm/Grubs/Grub.mdl") sphere() = asw_grub :
 	"A harmless Swarm grub, that crawls about looking icky."
 [
 	//sleepstate(choices) : "Sleep State" : 1 : "Holds the NPC in stasis until specified condition. See also 'Wake Radius' and 'Wake Squad'." =

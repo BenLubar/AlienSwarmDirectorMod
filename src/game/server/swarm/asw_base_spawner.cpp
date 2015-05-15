@@ -31,13 +31,14 @@ BEGIN_DATADESC( CASW_Base_Spawner )
 	DEFINE_KEYFIELD( m_iMaxSkillLevel,	FIELD_INTEGER,	"MaxSkillLevel" ),
 	DEFINE_KEYFIELD( m_flLegacyHealthScale, FIELD_FLOAT, "HealthScale" ),
 	DEFINE_KEYFIELD( m_flLegacySpeedScale, FIELD_FLOAT, "SpeedScale" ),
+	DEFINE_KEYFIELD( m_iHealthBonus, FIELD_INTEGER, "healthbonussp" ),
 	DEFINE_KEYFIELD( m_flHealthScale, FIELD_FLOAT, "healthscalesp" ),
 	DEFINE_KEYFIELD( m_flSpeedScale, FIELD_FLOAT, "speedscalesp" ),
 	DEFINE_KEYFIELD( m_flSizeScale, FIELD_FLOAT, "sizescalesp" ),
 	DEFINE_KEYFIELD( m_bFlammable, FIELD_BOOLEAN, "flammablesp" ),
-	DEFINE_KEYFIELD(m_bFreezable, FIELD_BOOLEAN, "freezablesp"),
-	DEFINE_KEYFIELD(m_bTeslable, FIELD_BOOLEAN, "teslablesp"),
-	DEFINE_KEYFIELD(m_bFlinches, FIELD_BOOLEAN, "flinchessp"),
+	DEFINE_KEYFIELD( m_bFreezable, FIELD_BOOLEAN, "freezablesp" ),
+	DEFINE_KEYFIELD( m_bTeslable, FIELD_BOOLEAN, "teslablesp" ),
+	DEFINE_KEYFIELD( m_bFlinches, FIELD_BOOLEAN, "flinchessp" ),
 
 	DEFINE_OUTPUT( m_OnSpawned,			"OnSpawned" ),
 
@@ -57,6 +58,7 @@ CASW_Base_Spawner::CASW_Base_Spawner()
 	m_bEnabled = true;
 	m_flLegacyHealthScale = 1.0f;
 	m_flLegacySpeedScale = 1.0f;
+	m_iHealthBonus = 0;
 	m_flHealthScale = 1.0f;
 	m_flSpeedScale = 1.0f;
 	m_flSizeScale = 1.0f;
@@ -321,7 +323,7 @@ IASW_Spawnable_NPC* CASW_Base_Spawner::SpawnAlien( const char *szAlienClassName,
 	// give our aliens the orders
 	pSpawnable->SetAlienOrders( m_AlienOrders, vec3_origin, GetOrderTarget() );
 
-	pSpawnable->CustomSettings(m_flHealthScale * m_flLegacyHealthScale, m_flSpeedScale * m_flLegacySpeedScale, m_flSizeScale, m_bFlammable, m_bFreezable, m_bTeslable, m_bFlinches);
+	pSpawnable->CustomSettings(m_iHealthBonus, m_flHealthScale * m_flLegacyHealthScale, m_flSpeedScale * m_flLegacySpeedScale, m_flSizeScale, m_bFlammable, m_bFreezable, m_bTeslable, m_bFlinches);
 
 	m_OnSpawned.FireOutput(pEntity, this);
 

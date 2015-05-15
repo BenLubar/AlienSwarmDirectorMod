@@ -200,8 +200,18 @@ BEGIN_DATADESC( CASW_Buzzer )
 	DEFINE_FIELD(m_fHurtSlowMoveTime, FIELD_TIME),
 	DEFINE_FIELD(m_flElectroStunSlowMoveTime, FIELD_TIME),
 	DEFINE_FIELD(m_bElectroStunned, FIELD_BOOLEAN),
+
 	DEFINE_FIELD(m_bHoldoutAlien, FIELD_BOOLEAN),
 	DEFINE_FIELD(m_bDirectorAlien, FIELD_BOOLEAN),
+
+	DEFINE_KEYFIELD(m_iHealthBonus, FIELD_INTEGER, "healthbonus"),
+	DEFINE_KEYFIELD(m_flHealthScale, FIELD_FLOAT, "healthscale"),
+	DEFINE_KEYFIELD(m_flSpeedScale, FIELD_FLOAT, "speedscale"),
+	DEFINE_KEYFIELD(m_flSizeScale, FIELD_FLOAT, "sizescale"),
+	DEFINE_KEYFIELD(m_bFlammable, FIELD_BOOLEAN, "flammable"),
+	DEFINE_KEYFIELD(m_bFreezable, FIELD_BOOLEAN, "freezable"),
+	DEFINE_KEYFIELD(m_bTeslable, FIELD_BOOLEAN, "teslable"),
+	DEFINE_KEYFIELD(m_bFlinches, FIELD_BOOLEAN, "flinches"),
 
 	// Function Pointers
 	DEFINE_INPUTFUNC( FIELD_VOID,	"DisableSwarm", InputDisableSwarm ),
@@ -235,6 +245,15 @@ CASW_Buzzer::CASW_Buzzer()
 	m_fNextPainSound = 0;
 	m_bHoldoutAlien = false;
 	m_flLastDamageTime = 0;
+
+	m_iHealthBonus = 0;
+	m_flHealthScale = 1;
+	m_flSpeedScale = 1;
+	m_flSizeScale = 1;
+	m_bFlammable = true;
+	m_bFreezable = true;
+	m_bTeslable = true;
+	m_bFlinches = true;
 }
 
 CASW_Buzzer::~CASW_Buzzer()
@@ -2140,6 +2159,7 @@ void CASW_Buzzer::Spawn(void)
 	
 	SetMoveType( MOVETYPE_VPHYSICS );
 
+	SetModelScale(m_flSizeScale);
 	SetHealthByDifficultyLevel();
 	SetViewOffset( Vector(0, 0, 10) );		// Position of the eyes relative to NPC's origin.
 	m_flFieldOfView		= VIEW_FIELD_FULL;
@@ -3207,7 +3227,7 @@ void CASW_Buzzer::MoanSound( envelopePoint_t *pEnvelope, int iEnvelopeSize )
 
 void CASW_Buzzer::SetHealthByDifficultyLevel()
 {	
-	int iHealth = ASWGameRules()->ModifyAlienHealthBySkillLevel(sk_asw_buzzer_health.GetFloat()) * m_flHealthScale;
+	int iHealth = ASWGameRules()->ModifyAlienHealthBySkillLevel(sk_asw_buzzer_health.GetFloat()) * m_flHealthScale + m_iHealthBonus;
 	SetMaxHealth(iHealth);
 	SetHealth(iHealth);
 }
