@@ -72,6 +72,12 @@ bool CAI_ASW_CombatStunBehavior::CanSelectSchedule()
 		return false;
 	}
 
+	CASW_Alien *pNPC = assert_cast<CASW_Alien *>( GetOuter() );
+	if ( pNPC && !pNPC->m_bFlinches )
+	{
+		return false;
+	}
+
 	if ( !HasCondition( COND_BEGIN_COMBAT_STUN ) )
 	{
 		return false;

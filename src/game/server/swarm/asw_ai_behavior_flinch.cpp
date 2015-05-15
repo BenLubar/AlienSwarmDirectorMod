@@ -96,7 +96,11 @@ bool CAI_ASW_FlinchBehavior::CanSelectSchedule()
 {
 	if ( !GetOuter()->IsInterruptable() )
 		return false;
-	
+
+	CASW_Alien *pNPC = assert_cast<CASW_Alien *>( GetOuter() );
+	if ( pNPC && !pNPC->m_bFlinches )
+		return false;
+
 	//if ( gpGlobals->curtime < m_flNextFlinchTime )
 		//return false;
 

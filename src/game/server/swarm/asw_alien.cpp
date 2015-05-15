@@ -2299,6 +2299,12 @@ void CASW_Alien::GatherConditions()
 		ClearCondition(COND_RECEIVED_ORDERS);
 	}
 
+	if (!m_bFlinches)
+	{
+		ClearCondition(COND_HEAVY_DAMAGE);
+		ClearCondition(COND_LIGHT_DAMAGE);
+	}
+
 	if (HasCondition(COND_NEW_ENEMY)
 		&& m_AlienOrders != AOT_MoveToIgnoringMarines)	// if we're not ignoring marines, finish our orders once we spot an enemy
 	{
