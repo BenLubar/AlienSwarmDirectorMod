@@ -18,6 +18,11 @@
 
 extern ConVar sv_force_transmit_ents;
 
+#define STR_0(x) #x
+#define STR(x) STR_0(x)
+
+ConVar mm_max_players("mm_max_players", STR(ASW_MAX_MARINE_RESOURCES), FCVAR_REPLICATED | FCVAR_CHEAT, "Max players for matchmaking system. Mods that support more players can increase the default value here.");
+
 // -------------------------------------------------------------------------------------------- //
 // Mod-specific CServerGameClients implementation.
 // -------------------------------------------------------------------------------------------- //
@@ -84,7 +89,7 @@ void CServerGameDLL::ApplyGameSettings( KeyValues *pKV )
 		{
 			// We are already reserved, but we still need to let the engine
 			// baseserver know how many human slots to allocate
-			pKV->SetInt( "members/numSlots", g_bOfflineGame ? 1 : ASW_MAX_MARINE_RESOURCES  );
+			pKV->SetInt( "members/numSlots", g_bOfflineGame ? 1 : mm_max_players.GetInt() );
 			return;
 		}
 
