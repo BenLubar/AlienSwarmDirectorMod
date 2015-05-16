@@ -2906,7 +2906,7 @@ void CASW_Marine::RunTask( const Task_t *pTask )
 			pMove->m_flSideMove = 0;
 			pMove->m_flClientMaxSpeed = MaxSpeed();
 			ASWGameMovement()->ProcessMovement(GetCommander(), this, pMove);
-			SetAbsVelocity(pMove->m_vecVelocity);
+			SetAbsVelocity(pMove->m_vecVelocity * 0.1f);
 			SetAbsOrigin(pMove->GetAbsOrigin());
 			SetAbsAngles(pMove->m_vecAngles);
 			PhysicsTouchTriggers(&vecPrevOrigin);
@@ -3666,7 +3666,7 @@ bool CASW_Marine::OverrideMove(float flInterval)
 		return false;
 	}
 	Vector vecTarget = pWaypoint->GetPos();
-	if (vecTarget.z < GetAbsOrigin().z - StepHeight())
+	if (vecTarget.z < GetAbsOrigin().z - StepHeight() && vecTarget.AsVector2D().DistToSqr(GetAbsOrigin().AsVector2D()) < Square(1.5f * GetHullWidth()))
 	{
 		float flYaw = UTIL_VecToYaw(vecTarget - GetAbsOrigin());
 		if (GetActiveASWWeapon())
