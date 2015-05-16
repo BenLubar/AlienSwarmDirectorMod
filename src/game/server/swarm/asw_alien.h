@@ -233,6 +233,7 @@ public:
 		m_bFreezable = bFreezable;
 		m_bTeslable = bTeslable;
 		m_bFlinches = bFlinches;
+		m_bScaled = true;
 
 		RescaleCustomSettings();
 		SetModelScale(m_flSizeScale);
@@ -251,6 +252,7 @@ public:
 	bool m_bFreezable;
 	bool m_bTeslable;
 	bool m_bFlinches;
+	bool m_bScaled;
 
 	AlienOrder_t m_AlienOrders;
 	Vector m_vecAlienOrderSpot;

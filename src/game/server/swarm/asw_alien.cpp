@@ -153,6 +153,7 @@ BEGIN_DATADESC( CASW_Alien )
 	DEFINE_KEYFIELD(m_bFreezable, FIELD_BOOLEAN, "freezable"),
 	DEFINE_KEYFIELD(m_bTeslable, FIELD_BOOLEAN, "teslable"),
 	DEFINE_KEYFIELD(m_bFlinches, FIELD_BOOLEAN, "flinches"),
+	DEFINE_FIELD(m_bScaled, FIELD_BOOLEAN),
 
 	DEFINE_FIELD( m_bHoldoutAlien, FIELD_BOOLEAN ),
 	DEFINE_FIELD( m_bDirectorAlien, FIELD_BOOLEAN ),
@@ -217,6 +218,7 @@ CASW_Alien::CASW_Alien( void ) :
 	m_bFreezable = true;
 	m_bTeslable = true;
 	m_bFlinches = true;
+	m_bScaled = false;
 
 	meleeAttack1.Init( 0.0f, 64.0f, 0.7f, false );
 	meleeAttack2.Init( 0.0f, 64.0f, 0.7f, false );
@@ -256,7 +258,11 @@ void CASW_Alien::Spawn()
 	Precache();
 	SetModel( m_pszAlienModelName );
 
-	RescaleCustomSettings();
+	if (!m_bScaled)
+	{
+		m_bScaled = true;
+		RescaleCustomSettings();
+	}
 	SetModelScale(m_flSizeScale);
 	SetHealthByDifficultyLevel();
 	SetHullSizeNormal();
