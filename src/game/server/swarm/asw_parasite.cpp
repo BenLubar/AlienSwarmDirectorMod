@@ -771,6 +771,7 @@ void CASW_Parasite::InfestMarine(CASW_Marine* pMarine)
 			}
 		}
 		
+		m_takedamage = DAMAGE_NO;
 		AddFlag( FL_NOTARGET );
 		SetThink( &CASW_Parasite::InfestThink );
 		SetTouch( NULL );
