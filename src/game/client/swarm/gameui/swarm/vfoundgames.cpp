@@ -1684,7 +1684,7 @@ void FoundGames::AddServersToList()
 		// On X360 check against our registered missions
 		KeyValues *pMissionMapInfo = NULL; pMissionMapInfo;
 
-		const char *szModDir = pGameDetails->GetString( "game/dir", "swarm" );
+		const char *szModDir = pGameDetails->GetString( "game/dir", "unknown" );
 		if ( Q_stricmp( szModDir, COM_GetModDirectory() ) )
 		{
 			Q_snprintf( fi.mchOtherTitle, sizeof( fi.mchOtherTitle ), szModDir );
