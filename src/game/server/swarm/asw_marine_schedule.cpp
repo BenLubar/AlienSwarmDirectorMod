@@ -76,6 +76,7 @@
 #include "asw_squadformation.h"
 #include "ai_route.h"
 #include "asw_marine_gamemovement.h"
+#include "ai_moveprobe.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -3655,6 +3656,7 @@ bool CASW_Marine::OverrideMove(float flInterval)
 	{
 		return false;
 	}
+	Assert(GetNavigator());
 	CAI_Path *pPath = GetNavigator()->GetPath();
 	if (!pPath)
 	{
@@ -3665,10 +3667,27 @@ bool CASW_Marine::OverrideMove(float flInterval)
 	{
 		return false;
 	}
-	Vector vecTarget = pWaypoint->GetPos();
-	if (vecTarget.z < GetAbsOrigin().z - StepHeight() && vecTarget.AsVector2D().DistToSqr(GetAbsOrigin().AsVector2D()) < Square(1.5f * GetHullWidth()))
+	const Vector &vecTarget = pWaypoint->GetPos();
+	if (vecTarget.z < GetAbsOrigin().z - StepHeight())
 	{
-		float flYaw = UTIL_VecToYaw(vecTarget - GetAbsOrigin());
+		Vector vecDir = vecTarget - GetAbsOrigin();
+		vecDir.z = 0;
+		vecDir.NormalizeInPlace();
+		vecDir *= GetMotor()->GetCurSpeed();
+		vecDir *= flInterval * 2;
+		Vector vecEnd = vecDir + GetAbsOrigin();
+		Assert(GetMoveProbe());
+		if (GetMoveProbe()->TestGroundMove(GetAbsOrigin(), vecEnd, GetAITraceMask(), 0, NULL))
+		{
+			// Don't roll down stairs or slopes.
+			return false;
+		}
+		if (!GetMoveProbe()->TestGroundMove(GetAbsOrigin(), vecEnd, GetAITraceMask(), AITGM_IGNORE_FLOOR, NULL))
+		{
+			// Don't roll into walls.
+			return false;
+		}
+		float flYaw = UTIL_VecToYaw(vecDir);
 		if (GetActiveASWWeapon())
 		{
 			GetActiveASWWeapon()->OnStartedRoll();
