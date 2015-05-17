@@ -183,7 +183,7 @@ ConVar asw_turret_fog_end("asw_turret_fog_end", "1200", 0, "Fog end distance for
 
 ConVar asw_fov_desired[] {
 	ConVar("fov_desired_0", "0", FCVAR_ARCHIVE, "fov_desired when setting asw_controls to 0", true, 0, true, 90),
-	ConVar("fov_desired_1", "0", FCVAR_ARCHIVE, "fov_desired when setting asw_controls to 1", true, 0, true, 90),
+	ConVar("fov_desired_1", "75", FCVAR_ARCHIVE, "fov_desired when setting asw_controls to 1", true, 0, true, 90),
 	ConVar("fov_desired_2", "0", FCVAR_ARCHIVE, "fov_desired when setting asw_controls to 2", true, 0, true, 90),
 };
 
