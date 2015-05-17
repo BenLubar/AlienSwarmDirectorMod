@@ -117,6 +117,7 @@ public:
 	bool m_bBuiltMapList;
 	bool m_bBuiltCampaignList;
 	bool m_bBuiltSavedCampaignList;
+	bool m_bUpdatedAudioCache;
 
 	bool m_bBuildingMapList;
 	bool m_bBuildingCampaignList;

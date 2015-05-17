@@ -192,6 +192,7 @@ CON_COMMAND(asw_mission_reload, "Clear the mission chooser's mission list and re
 	g_LocalMissionSource.m_bBuildingCampaignList = false;
 	g_LocalMissionSource.m_bBuiltCampaignList = false;
 	g_LocalMissionSource.m_bBuildingMapList = false;
+	g_LocalMissionSource.m_bUpdatedAudioCache = false;
 	g_LocalMissionSource.m_bBuiltMapList = false;
 	g_LocalMissionSource.m_bBuildingSavedCampaignList = false;
 	g_LocalMissionSource.m_bBuiltSavedCampaignList = false;

@@ -6,9 +6,12 @@
 #include "filesystem.h"
 #include "convar.h"
 #include "asw_system.h"
+#include "cdll_int.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
+
+extern IVEngineClient *engine;
 
 static FileFindHandle_t	g_hmapfind = FILESYSTEM_INVALID_FIND_HANDLE;
 static FileFindHandle_t	g_hcampaignfind = FILESYSTEM_INVALID_FIND_HANDLE;
@@ -72,6 +75,7 @@ CASW_Mission_Chooser_Source_Local::CASW_Mission_Chooser_Source_Local()
 	m_bBuiltMapList = false;
 	m_bBuiltCampaignList = false;
 	m_bBuiltSavedCampaignList = false;
+	m_bUpdatedAudioCache = false;
 
 	m_bBuildingMapList = false;
 	m_bBuildingCampaignList = false;
@@ -249,16 +253,18 @@ void CASW_Mission_Chooser_Source_Local::IdleThink()
 		{
 			BuildMapList();
 		}
-		else
+		else if (!m_bBuiltCampaignList)
 		{
-			if (!m_bBuiltCampaignList)
-			{
-				BuildCampaignList();
-			}
-			else if (!m_bBuiltSavedCampaignList)
-			{
-				BuildSavedCampaignList();
-			}
+			BuildCampaignList();
+		}
+		else if (!m_bBuiltSavedCampaignList)
+		{
+			BuildSavedCampaignList();
+		}
+		else if (!m_bUpdatedAudioCache)
+		{
+			m_bUpdatedAudioCache = true;
+			engine->ClientCmd_Unrestricted("snd_updateaudiocache\n");
 		}
 	}
 	Think();
