@@ -31,6 +31,15 @@ public:
 		m_NavMeshCRCs["research7"]             = 0x5f2f7ee8;
 		m_NavMeshCRCs["miningcamp"]            = 0x7fcf5fde;
 		m_NavMeshCRCs["themines2"]             = 0x4174db11;
+
+		m_NavMeshCRCs["extermination01port"]      = 0xb1220b66;
+		m_NavMeshCRCs["extermination02road"]      = 0xf5a48338;
+		m_NavMeshCRCs["extermination03arctic"]    = 0x2d50a7f5;
+		m_NavMeshCRCs["extermination04area9800"]  = 0x3e2413d1;
+		m_NavMeshCRCs["extermination05catwalks"]  = 0x9fb341c3;
+		m_NavMeshCRCs["extermination06yanaurus"]  = 0x353c2df5;
+		m_NavMeshCRCs["extermination08comcenter"] = 0x2f91cdb6;
+		m_NavMeshCRCs["extermination09hospital"]  = 0xc85a49be;
 	}
 
 	virtual void LevelInitPostEntity()
