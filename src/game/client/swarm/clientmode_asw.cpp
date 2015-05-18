@@ -499,6 +499,14 @@ void ClientModeASW::Init()
 {
 	BaseClass::Init();
 
+	ConVar *r_novis = g_pCVar->FindVar("r_novis");
+	Assert(r_novis);
+	if (r_novis)
+	{
+		r_novis->RemoveFlags(FCVAR_CHEAT);
+		r_novis->SetValue(true);
+	}
+
 	gameeventmanager->AddListener( this, "asw_mission_restart", false );
 	gameeventmanager->AddListener( this, "game_newmap", false );
 	HOOK_MESSAGE( ASWBlur );
