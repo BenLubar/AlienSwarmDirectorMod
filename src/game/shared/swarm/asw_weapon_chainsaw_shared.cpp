@@ -99,6 +99,7 @@ CASW_Weapon_Chainsaw::CASW_Weapon_Chainsaw( void )
 #ifdef GAME_DLL
 	m_fLastForcedFireTime = 0;	// last time we forced an AI marine to push its fire button
 #endif
+	m_fMaxRange1 = ASW_CHAINSAW_RANGE;
 }
 
 CASW_Weapon_Chainsaw::~CASW_Weapon_Chainsaw()

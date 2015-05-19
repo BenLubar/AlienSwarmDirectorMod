@@ -1026,6 +1026,7 @@ void CASW_Marine::GatherConditions()
 	ClearCondition( COND_COMPLETELY_OUT_OF_AMMO );
 	ClearCondition( COND_ENEMY_ON_FIRE );
 	ClearCondition( COND_ASW_TOO_FAR_FROM_SQUAD );
+	ClearCondition( COND_ENEMY_OUT_OF_WEAPON_RANGE );
 
 	if ( GetEnemy() && GetEnemy()->GetBaseAnimating() && GetEnemy()->GetBaseAnimating()->IsOnFire() )
 	{
@@ -1037,7 +1038,7 @@ void CASW_Marine::GatherConditions()
 
 	bool bClearTargets = false;
 
-	if( GetCurSchedule()->GetId() == GetGlobalScheduleId( SCHED_MELEE_ATTACK_PROP1 ) )
+	if( IsCurSchedule( SCHED_MELEE_ATTACK_PROP1 ) )
 	{
 		if( !GetPhysicsPropTarget() || GetPhysicsPropTarget()->GetHealth() <= 0 )
 		{
@@ -1073,6 +1074,15 @@ void CASW_Marine::GatherConditions()
 	if ( IsOutOfAmmo() )
 	{
 		SetCondition( COND_COMPLETELY_OUT_OF_AMMO );
+	}
+
+	if ( GetEnemy() && GetActiveASWWeapon() )
+	{
+		if ( GetEnemyLKP().DistToSqr( Weapon_ShootPosition() ) > Square( GetActiveASWWeapon()->m_fMaxRange1 ) ||
+			GetEnemyLKP().DistToSqr( Weapon_ShootPosition() ) < Square( GetActiveASWWeapon()->m_fMinRange1 ) )
+		{
+			SetCondition( COND_ENEMY_OUT_OF_WEAPON_RANGE );
+		}
 	}
 
 	const float flTooFar = Square(asw_marine_too_far_from_squad.GetFloat());
@@ -2450,7 +2460,7 @@ void CASW_Marine::RunTask( const Task_t *pTask )
 	// check for firing on the move, if our enemy is in range, with LOS and we're facing him
 	if (GetASWOrders() == ASW_ORDER_MOVE_TO || GetASWOrders() == ASW_ORDER_FOLLOW)
 	{
-		bool bMelee = GetCurSchedule()->GetId() == GetGlobalScheduleId( SCHED_MELEE_ATTACK_PROP1 );
+		bool bMelee = IsCurSchedule( SCHED_MELEE_ATTACK_PROP1 );
 
 		if( !GetEnemy() )
 		{
@@ -2938,7 +2948,22 @@ void CASW_Marine::CheckForAIWeaponSwitch()
 
 	CASW_Weapon *pWeapon = GetActiveASWWeapon();
 	if ( pWeapon && pWeapon->IsOffensiveWeapon() && pWeapon->HasPrimaryAmmo() )
+	{
+		if ( !GetAlienGooTarget() && GetEnemy() && GetEnemyLKP().DistToSqr( Weapon_ShootPosition() ) > Square( pWeapon->m_fMaxRange1 ) )
+		{
+			// check if we have a different weapon that has a longer range
+			for ( int i = 0; i < ASW_NUM_INVENTORY_SLOTS; i++ )
+			{
+				CASW_Weapon *pOtherWeapon = GetASWWeapon( i );
+				if ( pOtherWeapon != pWeapon && pOtherWeapon && pOtherWeapon->IsOffensiveWeapon() && pOtherWeapon->HasPrimaryAmmo() && GetEnemyLKP().DistToSqr( Weapon_ShootPosition() ) <= Square( pOtherWeapon->m_fMaxRange1 ) )
+				{
+					Weapon_Switch( pOtherWeapon );
+					return;
+				}
+			}
+		}
 		return;
+	}
 
 	// see if any of our other inventory items are valid weapons
 	for ( int i = 0; i < ASW_NUM_INVENTORY_SLOTS; i++ )
@@ -3714,6 +3739,7 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 	DECLARE_CONDITION( COND_COMPLETELY_OUT_OF_AMMO )
 	DECLARE_CONDITION( COND_ENEMY_ON_FIRE )
 	DECLARE_CONDITION( COND_ASW_TOO_FAR_FROM_SQUAD )
+	DECLARE_CONDITION( COND_ENEMY_OUT_OF_WEAPON_RANGE )
 
 	DECLARE_TASK( TASK_ASW_FACE_HOLDING_YAW )
 	DECLARE_TASK( TASK_ASW_FACE_USING_ITEM )
@@ -4099,6 +4125,7 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 		"		COND_LOST_ENEMY"
 		"       COND_ASW_NEW_ORDERS"
 		"       COND_ENEMY_ON_FIRE"
+		"		COND_ENEMY_OUT_OF_WEAPON_RANGE"
 	)
 
 	DEFINE_SCHEDULE

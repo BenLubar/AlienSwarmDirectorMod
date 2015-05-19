@@ -71,10 +71,10 @@ END_DATADESC()
 CASW_Weapon_Flamer::CASW_Weapon_Flamer()
 {
 	m_fMinRange1	= 0;
-	m_fMaxRange1	= 320;
+	m_fMaxRange1	= 160;
 
-	m_fMinRange2	= 256;
-	m_fMaxRange2	= 1024;
+	m_fMinRange2	= 0;
+	m_fMaxRange2	= 160;
 
 	m_flLastFireTime = 0;
 	m_bBulletMod = false;

@@ -83,7 +83,7 @@ bool CASW_Marine::Weapon_Switch( CBaseCombatWeapon *pWeapon, int viewmodelindex 
 		return false;
 
 	// check we're actually carrying this weapon in one of our 3 marine slots
-	if (GetASWWeapon(0)!= pWeapon && GetASWWeapon(1) != pWeapon && GetASWWeapon(2) != pWeapon)
+	if (GetASWWeapon(0) != pWeapon && GetASWWeapon(1) != pWeapon && GetASWWeapon(2) != pWeapon)
 		return false;
 
 	if (BaseClass::Weapon_Switch( pWeapon, viewmodelindex ))
@@ -102,6 +102,7 @@ bool CASW_Marine::Weapon_Switch( CBaseCombatWeapon *pWeapon, int viewmodelindex 
 
 #ifndef CLIENT_DLL
 		CheckAndRequestAmmo();
+		ClearSchedule("weapon swap");
 #endif
 
 		return true;
