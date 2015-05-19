@@ -2470,6 +2470,10 @@ void CASW_Drone_Advanced::RescaleCustomSettings()
 		m_flSizeScale *= 1.5f;
 		m_flSpeedScale *= 1.3f;
 		m_flHealthScale *= asw_skill.GetInt() * 2.5f + 2.5f;
+		m_bFlammable = false;
+		m_bFreezable = false;
+		m_bTeslable = false;
+		m_bFlinches = false;
 	}
 	else if (ClassMatches("asw_drone_summoner"))
 	{
