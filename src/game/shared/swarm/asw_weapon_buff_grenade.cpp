@@ -22,7 +22,6 @@
 #include "tier0/memdbgon.h"
 
 #define ASW_FLARES_FASTEST_REFIRE_TIME		0.1f
-extern ConVar asw_energy_weapons;
 
 IMPLEMENT_NETWORKCLASS_ALIASED( ASW_Weapon_Buff_Grenade, DT_ASW_Weapon_Buff_Grenade )
 

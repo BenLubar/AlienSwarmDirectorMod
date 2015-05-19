@@ -46,7 +46,6 @@ PRECACHE_WEAPON_REGISTER( asw_weapon_freeze_grenades );
 
 #ifndef CLIENT_DLL
 extern ConVar asw_debug_marine_damage;
-extern ConVar asw_energy_weapons;
 
 //---------------------------------------------------------
 // Save/Restore

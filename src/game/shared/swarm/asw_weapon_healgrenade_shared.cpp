@@ -68,7 +68,6 @@ END_SEND_TABLE()
 
 
 ConVar asw_healgrenade_gravity( "asw_healgrenade_gravity", "1000", FCVAR_CHEAT, "Gravity of healgrenades" );
-extern ConVar asw_energy_weapons;
 
 CASW_HealGrenade_Projectile::CASW_HealGrenade_Projectile()
 {
@@ -321,9 +320,6 @@ void CASW_Weapon_HealGrenade::PrimaryAttack( void )
 		return;
 
 	CASW_Marine *pMarine = GetMarine();
-#ifndef CLIENT_DLL
-	bool bThisActive = (pMarine && pMarine->GetActiveWeapon() == this);
-#endif
 
 	if ( !pMarine )
 		return;
@@ -375,16 +371,7 @@ void CASW_Weapon_HealGrenade::PrimaryAttack( void )
 
 		pMarine->GetMarineSpeech()->Chatter( CHATTER_MEDS_NONE );
 
-		if (!asw_energy_weapons.GetBool())
-		{
-			if (pMarine)
-			{
-				pMarine->Weapon_Detach(this);
-				if (bThisActive)
-					pMarine->SwitchToNextBestWeapon(NULL);
-			}
-			Kill();
-		}
+		DestroyIfEmpty(true);
 
 		return;
 	}

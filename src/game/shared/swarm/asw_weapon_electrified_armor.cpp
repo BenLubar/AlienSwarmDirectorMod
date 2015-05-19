@@ -35,8 +35,6 @@ END_PREDICTION_DATA()
 LINK_ENTITY_TO_CLASS( asw_weapon_electrified_armor, CASW_Weapon_Electrified_Armor );
 PRECACHE_WEAPON_REGISTER( asw_weapon_electrified_armor );
 
-extern ConVar asw_energy_weapons;
-
 #ifndef CLIENT_DLL
 
 ConVar asw_electrified_armor_duration( "asw_electrified_armor_duration", "12.0f", FCVAR_CHEAT, "Duration of electrified armor when activated" );
@@ -116,19 +114,9 @@ void CASW_Weapon_Electrified_Armor::PrimaryAttack( void )
 
 	m_flNextPrimaryAttack = gpGlobals->curtime + 4.0f;
 
-	if (!m_iClip1 && pMarine->GetAmmoCount(m_iPrimaryAmmoType) <= 0 && !asw_energy_weapons.GetBool())
-	{
-		// weapon is lost when all stims are gone
 #ifndef CLIENT_DLL
-		if (pMarine)
-		{
-			pMarine->Weapon_Detach(this);
-			if (bThisActive)
-				pMarine->SwitchToNextBestWeapon(NULL);
-		}
-		Kill();
+	DestroyIfEmpty(true);
 #endif
-	}
 }
 
 void CASW_Weapon_Electrified_Armor::Precache()

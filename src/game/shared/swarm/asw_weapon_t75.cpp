@@ -21,7 +21,6 @@
 #include "tier0/memdbgon.h"
 
 #define ASW_FLARES_FASTEST_REFIRE_TIME		0.1f
-extern ConVar asw_energy_weapons;
 
 IMPLEMENT_NETWORKCLASS_ALIASED( ASW_Weapon_T75, DT_ASW_Weapon_T75 )
 
@@ -99,25 +98,13 @@ void CASW_Weapon_T75::PrimaryAttack( void )
 		return;
 
 	CASW_Marine *pMarine = GetMarine();
-#ifndef CLIENT_DLL
-	bool bThisActive = (pMarine && pMarine->GetActiveWeapon() == this);
-#endif
 
 	// weapon is lost when all charges are gone
 	if ( UsesClipsForAmmo1() && !m_iClip1 ) 
 	{
 		//Reload();
 #ifndef CLIENT_DLL
-		if (asw_energy_weapons.GetBool())
-		{
-			if (pMarine)
-			{
-				pMarine->Weapon_Detach(this);
-				if (bThisActive)
-					pMarine->SwitchToNextBestWeapon(NULL);
-			}
-			Kill();
-		}
+		DestroyIfEmpty(true);
 #endif
 		return;
 	}

@@ -45,7 +45,6 @@ static const float SQRT3 = 1.732050807569; // for computing max extents inside a
 
 extern ConVar asw_laser_sight;
 extern ConVar asw_marine_special_heal_chatter_chance;
-extern ConVar asw_energy_weapons;
 
 IMPLEMENT_NETWORKCLASS_ALIASED( ASW_Weapon_Heal_Gun, DT_ASW_Weapon_Heal_Gun );
 
@@ -557,18 +556,7 @@ void CASW_Weapon_Heal_Gun::HealEntity( void )
 
 		pMarine->GetMarineSpeech()->Chatter( CHATTER_MEDS_NONE );
 
-		if ( !asw_energy_weapons.GetBool() )
-		{
-			if ( pMarine )
-			{
-				pMarine->Weapon_Detach(this);
-				if ( pMarine->GetActiveWeapon() == this )
-				{
-					pMarine->SwitchToNextBestWeapon( NULL );
-				}
-			}
-			Kill();
-		}
+		DestroyIfEmpty(true);
 
 		pMarine->GetMarineSpeech()->Chatter( CHATTER_MEDS_NONE );
 		bSkipChatter = true;

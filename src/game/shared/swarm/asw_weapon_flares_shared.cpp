@@ -54,7 +54,6 @@ ConVar asw_flare_throw_speed("asw_flare_throw_speed", "50.0f", FCVAR_CHEAT, "Vel
 ConVar asw_flare_launch_delay("asw_flare_launch_delay", "0.15f", FCVAR_REPLICATED, "Delay before flares are thrown");
 ConVar asw_flare_refire_time("asw_flare_refire_time", "0.1f", FCVAR_REPLICATED, "Time between starting a new flare throw");
 #define ASW_FLARES_FASTEST_REFIRE_TIME		asw_flare_refire_time.GetFloat()
-extern ConVar asw_energy_weapons;
 
 CASW_Weapon_Flares::CASW_Weapon_Flares()
 {

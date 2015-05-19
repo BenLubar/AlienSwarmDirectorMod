@@ -21,7 +21,6 @@
 #include "tier0/memdbgon.h"
 
 #define ASW_FLARES_FASTEST_REFIRE_TIME		0.1f
-extern ConVar asw_energy_weapons;
 
 IMPLEMENT_NETWORKCLASS_ALIASED( ASW_Weapon_Tesla_Trap, DT_ASW_Weapon_Tesla_Trap )
 
@@ -101,26 +100,10 @@ void CASW_Weapon_Tesla_Trap::PrimaryAttack( void )
 		return;
 
 	CASW_Marine *pMarine = GetMarine();
-#ifndef CLIENT_DLL
-	bool bThisActive = (pMarine && pMarine->GetActiveWeapon() == this);
-#endif
 
 	// mine weapon is lost when all mines are gone
 	if ( UsesClipsForAmmo1() && !m_iClip1 ) 
 	{
-		//Reload();
-#ifndef CLIENT_DLL
-		if (!asw_energy_weapons.GetBool())
-		{
-			if (pMarine)
-			{
-				pMarine->Weapon_Detach(this);
-				if (bThisActive)
-					pMarine->SwitchToNextBestWeapon(NULL);
-			}
-			Kill();
-		}
-#endif
 		return;
 	}
 
