@@ -7,6 +7,7 @@
 #include "asw_marine_profile.h"
 #include "asw_weapon_parse.h"
 #include "util_shared.h"
+#include "asw_holdout_mode.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -299,7 +300,7 @@ bool CASW_Weapon::WeaponLOSCondition( const Vector &ownerPos, const Vector &targ
 
 bool CASW_Weapon::DestroyIfEmpty( bool bDestroyWhenActive, bool bCheckSecondaryAmmo )
 {
-	if (asw_energy_weapons.GetBool())
+	if (asw_energy_weapons.GetBool() || ASWHoldoutMode())
 		return false;
 
 	CASW_Marine *pMarine = GetMarine();
