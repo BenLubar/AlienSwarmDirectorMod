@@ -65,7 +65,7 @@ ConVar asw_marine_ambient("asw_marine_ambient", "0.02", FCVAR_CHEAT, "Ambient li
 ConVar asw_marine_lightscale("asw_marine_lightscale", "4.0", FCVAR_CHEAT, "Light scale on the marine");
 ConVar asw_flashlight_marine_ambient("asw_flashlight_marine_ambient", "0.1", FCVAR_CHEAT, "Ambient light of the marine with flashlight on");
 ConVar asw_flashlight_marine_lightscale("asw_flashlight_marine_lightscale", "1.0", FCVAR_CHEAT, "Light scale on the marine with flashlight on");
-ConVar asw_left_hand_ik("asw_left_hand_ik", "0", FCVAR_CHEAT, "IK the marine's left hand to his weapon");
+ConVar asw_left_hand_ik("asw_left_hand_ik", "0", FCVAR_ARCHIVE, "IK the marine's left hand to his weapon");
 ConVar asw_marine_shoulderlight("asw_marine_shoulderlight", "2", 0, "Should marines have a shoulder light effect on them.");
 ConVar asw_hide_local_marine("asw_hide_local_marine", "0", FCVAR_CHEAT, "If enabled, your current marine will be invisible");
 ConVar asw_override_footstep_volume( "asw_override_footstep_volume", "0", FCVAR_CHEAT, "Overrides footstep volume instead of it being surface dependent" );
