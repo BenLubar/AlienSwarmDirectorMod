@@ -33,7 +33,6 @@ private:
 	float m_flCurrentTravelSpeed;
 	float m_flClientPoseParameter[MAXSTUDIOPOSEPARAM];
 	bool m_bWasJumping;
-	bool m_bDidSummonRoar;
 };
 
 #endif /* _INLCUDE_C_ASW_DRONE_ADVANCED_H */

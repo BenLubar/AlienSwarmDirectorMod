@@ -67,7 +67,6 @@ C_ASW_Drone_Advanced::C_ASW_Drone_Advanced()
 	m_flCurrentTravelYaw = -1;
 	m_flCurrentTravelSpeed = 0;
 	m_bWasJumping = false;
-	m_bDidSummonRoar = false;
 
 	for (int i=0;i<MAXSTUDIOPOSEPARAM;i++)
 	{
@@ -353,9 +352,8 @@ void C_ASW_Drone_Advanced::FireEvent(const Vector& origin, const QAngle& angles,
 	{
 	case AE_CL_PLAYSOUND:
 		{
-			if (m_bIsSummoner && !m_bDidSummonRoar && FStrEq(options, "ASW_Drone.Roar"))
+			if (m_bIsSummoner && FStrEq(options, "ASW_Drone.Roar"))
 			{
-				m_bDidSummonRoar = true;
 				options = "ASW_Drone.SummonRoar";
 			}
 			BaseClass::FireEvent(origin, angles, event, options);
