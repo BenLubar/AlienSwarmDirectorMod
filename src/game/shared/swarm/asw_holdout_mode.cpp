@@ -414,9 +414,9 @@ int CASW_Holdout_Mode::SpawnAliens( int nQuantity, CASW_Holdout_Wave_Entry *pEnt
 	return nSpawned;
 }
 
-ConVar asw_holdout_announce_time( "asw_holdout_announce_time", "5.0f", FCVAR_CHEAT, "How many seconds between announcing a wave and actually starting a wave.");
-ConVar asw_holdout_wave_score_time( "asw_holdout_wave_score_time", "5.0f", FCVAR_CHEAT, "How many seconds to show the end wave scores for.");
-ConVar asw_holdout_resupply_time( "asw_holdout_resupply_time", "20.0f", FCVAR_CHEAT, "How many seconds marines have to pick new weapons in the resupply stage.");
+ConVar asw_holdout_announce_time( "asw_holdout_announce_time", "5", FCVAR_CHEAT, "How many seconds between announcing a wave and actually starting a wave.");
+ConVar asw_holdout_wave_score_time( "asw_holdout_wave_score_time", "5", FCVAR_CHEAT, "How many seconds to show the end wave scores for.");
+ConVar asw_holdout_resupply_time( "asw_holdout_resupply_time", "5", FCVAR_CHEAT, "How many seconds marines have to pick new weapons in the resupply stage.");
 
 void CASW_Holdout_Mode::ChangeHoldoutState( ASW_Holdout_State_t nNewState )
 {
