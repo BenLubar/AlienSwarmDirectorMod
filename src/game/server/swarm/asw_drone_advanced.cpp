@@ -139,7 +139,7 @@ CASW_Drone_Advanced::CASW_Drone_Advanced( void )
 	m_iDeadBodyGroup = 2;
 	//m_debugOverlays |= (OVERLAY_TEXT_BIT | OVERLAY_BBOX_BIT); 
 
-	m_bAllowSummonRoar = false;
+	m_flNextSummonRoar = 0;
 	m_hMutationHelper = NULL;
 }
 
@@ -175,7 +175,7 @@ BEGIN_DATADESC( CASW_Drone_Advanced )
 	DEFINE_FIELD( m_vecEnemyStandoffPosition, FIELD_VECTOR ),
 	DEFINE_FIELD( m_bHasAttacked, FIELD_BOOLEAN ),
 	DEFINE_FIELD( m_hMutationHelper, FIELD_EHANDLE ),
-	DEFINE_FIELD( m_bAllowSummonRoar, FIELD_BOOLEAN ),
+	DEFINE_FIELD( m_flNextSummonRoar, FIELD_FLOAT ),
 	DEFINE_FIELD( m_bIsSummoner, FIELD_BOOLEAN ),
 END_DATADESC()
 
@@ -273,7 +273,7 @@ void CASW_Drone_Advanced::Spawn( void )
 			}
 			
 			m_bIsSummoner = true;
-			m_bAllowSummonRoar = true;
+			m_flNextSummonRoar = 0;
 		}
 	}	
 
@@ -1572,9 +1572,9 @@ int CASW_Drone_Advanced::SelectSchedule( void )
 		SetDistSwarmSense(1200.0f);
 	}
 
-	if (m_bAllowSummonRoar && ASWGameRules() && GetEnemy())
+	if (m_bIsSummoner.Get() && m_flNextSummonRoar < gpGlobals->curtime && ASWGameRules() && GetEnemy())
 	{
-		m_bAllowSummonRoar = false;
+		m_flNextSummonRoar = gpGlobals->curtime + 8.0f;
 		for (int i = RandomInt(0, 5) + ASWGameRules()->GetMissionDifficulty(); i > 0; i--)
 		{
 			Vector position = GetAbsOrigin() + Vector(RandomFloat(-384, 384), RandomFloat(-384, 384), 32);

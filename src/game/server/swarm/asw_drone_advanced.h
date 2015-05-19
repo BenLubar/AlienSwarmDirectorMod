@@ -142,7 +142,7 @@ private:
 	float				 m_flDoorBashYaw;
 	bool				m_bJumper;	// can this drone jump?
 	EHANDLE m_hMutationHelper;
-	bool m_bAllowSummonRoar;
+	float m_flNextSummonRoar;
 	
 	CSimTimer 		 m_DurationDoorBash;
 	bool m_bDoneAlienCloseChatter;	// has this alien made a marine shout out in fear yet?
