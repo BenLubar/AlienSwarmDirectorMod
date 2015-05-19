@@ -111,7 +111,7 @@ USER_MESSAGE_REGISTER( ASWShowHoldoutWaveEnd );
 
 void __MsgFunc_ASWShowHoldoutResupply( bf_read &msg )
 {
-	new Holdout_Resupply_Frame( GetClientMode()->GetViewport(), "ResupplyFrame" );
+	//new Holdout_Resupply_Frame( GetClientMode()->GetViewport(), "ResupplyFrame" );
 }
 USER_MESSAGE_REGISTER( ASWShowHoldoutResupply );
 
