@@ -20,6 +20,7 @@
 #include "asw_gamerules.h"
 #include "ai_pathfinder.h"
 #include "ai_waypoint.h"
+#include "asw_holdout_mode.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -768,6 +769,32 @@ void CASW_SquadFormation::UpdateGoalPosition()
 	Assert(Leader());
 	if (!Leader())
 	{
+		return;
+	}
+
+
+	if (ASWHoldoutMode())
+	{
+		m_vecObjective = vec3_invalid;
+		float flMinDist = FLT_MAX;
+		for (int i = 0; i < ASWSpawnManager()->GetNumAlienClasses(); i++)
+		{
+			string_t iszAlien = ASWSpawnManager()->GetAlienClass(i)->m_iszAlienClass;
+			CBaseEntity *pEnt = NULL;
+			while ((pEnt = gEntList.FindEntityByClassnameFast(pEnt, iszAlien)))
+			{
+				if (dynamic_cast<IASW_Spawnable_NPC *>(pEnt)->IsHoldoutAlien() && pEnt->IsAlive())
+				{
+					const Vector &vecOrigin = pEnt->GetAbsOrigin();
+					float flDist = vecOrigin.DistToSqr(Leader()->GetAbsOrigin());
+					if (flDist < flMinDist)
+					{
+						m_vecObjective = vecOrigin;
+						flMinDist = flDist;
+					}
+				}
+			}
+		}
 		return;
 	}
 
