@@ -66,6 +66,7 @@ protected:
 
 #ifndef CLIENT_DLL
 	int m_nSentryAmmo;
+	friend class CASW_Holdout_Mode;
 #else
 	float m_flNextDeployCheckThink;
 	bool m_bDisplayActive;

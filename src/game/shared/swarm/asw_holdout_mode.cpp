@@ -16,6 +16,8 @@
 #include "asw_buzzer.h"
 #include "entityinput.h"
 #include "entityoutput.h"
+#include "asw_weapon_sentry_shared.h"
+#include "asw_sentry_base.h"
 #endif
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -597,8 +599,21 @@ void CASW_Holdout_Mode::RefillMarineAmmo()
 				// give the marine a load of ammo of that type
 				pMarine->GiveAmmo(10000, pWeapon->GetPrimaryAmmoType());
 				pMarine->GiveAmmo(10000, pWeapon->GetSecondaryAmmoType());
+
+				// refill the sentry inside the box
+				CASW_Weapon_Sentry *pSentry = dynamic_cast<CASW_Weapon_Sentry *>(pWeapon);
+				if (pSentry)
+				{
+					pSentry->SetSentryAmmo(CASW_Sentry_Base::GetBaseAmmoForGunType(static_cast<CASW_Sentry_Base::GunType_t>(pSentry->m_iSentryMunitionType)));
+				}
 			}
 		}
+	}
+
+	CASW_Sentry_Base *pSentry = NULL;
+	while ((pSentry = assert_cast<CASW_Sentry_Base *>(gEntList.FindEntityByClassname(pSentry, "asw_sentry_base"))))
+	{
+		pSentry->SetAmmo(CASW_Sentry_Base::GetBaseAmmoForGunType(pSentry->GetGunType()));
 	}
 }
 
