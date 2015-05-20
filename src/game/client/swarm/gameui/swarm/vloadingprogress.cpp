@@ -35,6 +35,7 @@ LoadingProgress::LoadingProgress(Panel *parent, const char *panelName, LoadingWi
 	m_LoadingWindowType( eLoadingType )
 {
 	memset( m_szGameMode, 0, sizeof( m_szGameMode ) );
+	memset( m_szLevelName, 0, sizeof( m_szLevelName ) );
 
 	if ( IsPC() && eLoadingType == LWT_LOADINGPLAQUE )
 	{
@@ -473,8 +474,9 @@ void LoadingProgress::SetupControlStates()
 	m_flLastEngineTime = Plat_FloatTime() + 0.2f;
 }
 
-void LoadingProgress::SetPosterData( KeyValues *pMissionInfo, KeyValues *pChapterInfo, const char **pPlayerNames, unsigned int botFlags, const char *pszGameMode )
+void LoadingProgress::SetPosterData( const char *pszLevelName, KeyValues *pMissionInfo, KeyValues *pChapterInfo, const char **pPlayerNames, unsigned int botFlags, const char *pszGameMode )
 {
+	V_strncpy( m_szLevelName, pszLevelName, sizeof( m_szLevelName ) );
 	m_botFlags = botFlags;
 	m_pMissionInfo = pMissionInfo;
 	m_pChapterInfo = pChapterInfo;
@@ -584,6 +586,31 @@ void LoadingProgress::SetupPoster( void )
 
 		// if the image was cached this will just hook it up, otherwise it will load it
 		pPoster->SetImage( pszPosterImage );
+
+		IMaterial *pMat = materials->FindMaterial(CFmtStr("console/%s", m_szLevelName), TEXTURE_GROUP_VGUI, false);
+		if (!IsErrorMaterial(pMat))
+		{
+			pPoster->SetImage(CFmtStr("../console/%s", m_szLevelName));
+		}
+		if (pMat)
+		{
+			pMat->Release();
+		}
+		int wide, tall;
+		surface()->GetScreenSize(wide, tall);
+		if (wide > tall * 5 / 3)
+		{
+			IMaterial *pMatWide = materials->FindMaterial(CFmtStr("console/%s_widescreen", m_szLevelName), TEXTURE_GROUP_VGUI, false);
+			if (!IsErrorMaterial(pMatWide))
+			{
+				pPoster->SetImage(CFmtStr("../console/%s_widescreen", m_szLevelName));
+			}
+			if (pMatWide)
+			{
+				pMatWide->Release();
+			}
+		}
+
 		if ( pPoster->GetImage() )
 		{
 			bNamesVisible = true;

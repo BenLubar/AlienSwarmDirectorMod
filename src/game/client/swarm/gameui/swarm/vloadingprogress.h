@@ -48,7 +48,7 @@ public:
 	LoadingType			GetLoadingType();
 
 	bool				ShouldShowPosterForLevel( KeyValues *pMissionInfo, KeyValues *pChapterInfo );
-	void				SetPosterData( KeyValues *pMissionInfo, KeyValues *pChapterInfo, const char **pPlayerNames, unsigned int botFlags, const char *pszGameMode );
+	void				SetPosterData( const char *pszLevelName, KeyValues *pMissionInfo, KeyValues *pChapterInfo, const char **pPlayerNames, unsigned int botFlags, const char *pszGameMode );
 
 	bool				IsDrawingProgressBar( void ) { return m_bDrawProgress; }
 
@@ -96,6 +96,7 @@ private:
 	float				m_flLastEngineTime;
 
 	char				m_szGameMode[MAX_PATH];
+	char				m_szLevelName[MAX_PATH];
 
 	CLoadingTipPanel			*m_pTipPanel;
 };

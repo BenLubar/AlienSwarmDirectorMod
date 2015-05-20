@@ -1318,7 +1318,7 @@ void CBaseModPanel::OnLevelLoadingStarted( char const *levelName, bool bShowProg
 				}
 			}
 		}
-		pLoadingProgress->SetPosterData( pMissionInfo, pChapterInfo, pPlayerNames, botFlags, chGameMode );
+		pLoadingProgress->SetPosterData( levelName, pMissionInfo, pChapterInfo, pPlayerNames, botFlags, chGameMode );
 	}
 	else if ( GameUI().IsInLevel() && !GameUI().IsInBackgroundLevel() )
 	{
