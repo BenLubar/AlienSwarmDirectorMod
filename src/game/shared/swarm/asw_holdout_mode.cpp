@@ -553,17 +553,7 @@ void CASW_Holdout_Mode::OnAlienKilled( CBaseEntity *pAlien, const CTakeDamageInf
 	if ( !pAlien )
 		return;
 
-	IASW_Spawnable_NPC *pSpawnable = NULL;
-	if ( IsAlienClass( pAlien->Classify() ) )
-	{
-		CASW_Alien *pAlienNPC = static_cast<CASW_Alien*>( pAlien );
-		pSpawnable = pAlienNPC;
-	}
-	else if ( pAlien->Classify() == CLASS_ASW_BUZZER )
-	{
-		CASW_Buzzer *pBuzzer = static_cast<CASW_Buzzer*>( pAlien );
-		pSpawnable = pBuzzer;
-	}
+	IASW_Spawnable_NPC *pSpawnable = dynamic_cast<IASW_Spawnable_NPC *>(pAlien);
 	if ( !pSpawnable || !pSpawnable->IsHoldoutAlien() )
 		return;
 		
@@ -590,7 +580,7 @@ void CASW_Holdout_Mode::RefillMarineAmmo()
 		if (pGameResource->GetMarineResource(i) != NULL && pGameResource->GetMarineResource(i)->GetMarineEntity())
 		{
 			CASW_Marine *pMarine = pGameResource->GetMarineResource(i)->GetMarineEntity();
-			for (int k=0;k<3;k++)
+			for (int k = 0; k < ASW_MAX_EQUIP_SLOTS; k++)
 			{
 				CASW_Weapon *pWeapon = pMarine->GetASWWeapon(k);
 				if (!pWeapon)
