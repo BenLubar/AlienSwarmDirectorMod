@@ -501,7 +501,11 @@ void CASW_Holdout_Mode::ChangeHoldoutState( ASW_Holdout_State_t nNewState )
 			{
 				if ( GetCurrentWave() < m_Waves.Count() - 1 )
 				{
-					if ( m_nUnlockedResupply > 0 )
+					if ( m_Waves[GetCurrentWave()]->WaveHasResupply() )
+					{
+						// free resupply
+					}
+					else if ( m_nUnlockedResupply > 0 )
 					{
 						m_nUnlockedResupply -= 1;
 					}
