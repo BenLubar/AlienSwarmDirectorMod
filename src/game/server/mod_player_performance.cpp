@@ -200,7 +200,8 @@ void CMOD_Player_Performance::PrintDebug()
 }
 
 void CMOD_Player_Performance::WriteToHUD(const char* messagename, int rating)
-{	
+{
+#if 0
 	for ( int i=0;i<ASWGameResource()->GetMaxMarineResources();i++ )
 	{
 		CASW_Marine_Resource *pMR = ASWGameResource()->GetMarineResource(i);
@@ -217,4 +218,5 @@ void CMOD_Player_Performance::WriteToHUD(const char* messagename, int rating)
 			MessageEnd();			
 		}	
 	}
+#endif
 }
