@@ -8,6 +8,7 @@
 #include "ai_link.h"
 #include <filesystem.h>
 #include "nav_mesh.h"
+#include "asw_door.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -137,6 +138,17 @@ public:
 				{
 					pOutput->ParseEventAction("asw_tech_marine_req,DisableTechMarineReq,,0,1");
 				}
+			}
+		}
+
+		// Fixes a door in Area9800 closing automatically but not opening automatically.
+		if (!V_stricmp(pszMap, "area9800_lz"))
+		{
+			CASW_Door *pDoor = dynamic_cast<CASW_Door *>(gEntList.FindEntityByName(NULL, "door2"));
+			Assert(pDoor);
+			if (pDoor)
+			{
+				pDoor->KeyValue("returndelay", "-1");
 			}
 		}
 
