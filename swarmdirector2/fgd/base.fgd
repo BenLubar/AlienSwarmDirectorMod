@@ -6879,3 +6879,9 @@
 	"A brush entity that prevents detail sprites from being placed inside its volume."
 [
 ]
+
+@PointClass = env_detail_controller : "An entity that lets you control the fade distance settings for detail props."
+[
+	fademindist(float) : "Start Fade Distance" : 400 : "Distance at which the prop starts to fade."
+	fademaxdist(float) : "End Fade Distance" : 1200 : "Maximum distance at which the prop is visible."
+]
