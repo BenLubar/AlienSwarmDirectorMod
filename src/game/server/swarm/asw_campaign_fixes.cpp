@@ -9,6 +9,7 @@
 #include <filesystem.h>
 #include "nav_mesh.h"
 #include "asw_door.h"
+#include "asw_spawner.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -149,6 +150,17 @@ public:
 			if (pDoor)
 			{
 				pDoor->KeyValue("returndelay", "-1");
+			}
+		}
+
+		// Fixes the shamans having more than an order of magnitude more health than on vanilla Alien Swarm.
+		if (!V_stricmp(pszMap, "as_sci2_sewer"))
+		{
+			CASW_Spawner *pSpawner = NULL;
+			while ((pSpawner = dynamic_cast<CASW_Spawner *>(gEntList.FindEntityByName(pSpawner, "Shamans_boss"))) != NULL)
+			{
+				Assert(pSpawner->m_flLegacyHealthScale == 20);
+				pSpawner->m_flLegacyHealthScale = 1;
 			}
 		}
 
