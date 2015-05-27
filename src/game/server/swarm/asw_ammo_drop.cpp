@@ -194,39 +194,43 @@ int CASW_Ammo_Drop::GetAmmoUnitCost( int iAmmoType )
 
 CASW_Weapon* CASW_Ammo_Drop::GetAmmoUseUnits( CASW_Marine *pMarine )
 {
-	if ( pMarine )
+	if ( !pMarine )
 	{
-		CASW_Weapon *pWeapon = pMarine->GetActiveASWWeapon();
-		if ( !pWeapon || pWeapon->Classify() == CLASS_ASW_AMMO_SATCHEL )
+		return NULL;
+	}
+
+	CASW_Weapon *pWeapon = pMarine->GetActiveASWWeapon();
+	if ( pWeapon && pWeapon->UsesClipsForAmmo1() )
+	{
+		int iAmmoType = pWeapon->GetPrimaryAmmoType();
+		int iGuns = pMarine->GetNumberOfWeaponsUsingAmmo( iAmmoType );
+		int iMaxAmmoCount = GetAmmoDef()->MaxCarry( iAmmoType, pMarine ) * iGuns;
+		int iBullets = pMarine->GetAmmoCount( iAmmoType );
+		int iAmmoCost = CASW_Ammo_Drop_Shared::GetAmmoUnitCost( iAmmoType );
+
+		if ( iBullets < iMaxAmmoCount && m_iAmmoUnitsRemaining >= iAmmoCost )
 		{
-			//pWeapon
-			CASW_Weapon *pOtherWeapon = pMarine->GetASWWeapon( 0 );
-			if ( pOtherWeapon && pOtherWeapon->Classify() != CLASS_ASW_AMMO_SATCHEL )
-			{
-				pWeapon = pOtherWeapon;
-			}
-			else
-			{
-				pOtherWeapon = pMarine->GetASWWeapon( 1 );
-				if ( pOtherWeapon && pOtherWeapon->Classify() != CLASS_ASW_AMMO_SATCHEL )
-				{
-					pWeapon = pOtherWeapon;
-				}
-			}
+			return pWeapon;
 		}
-
-		if ( pWeapon && pWeapon->IsOffensiveWeapon() )
+		else if ( pMarine->IsInhabited() )
 		{
-			if ( pWeapon->Classify() == CLASS_ASW_CHAINSAW )
-				return NULL;
+			// Don't confuse players with a different weapon getting ammo, but bots want to know which weapon they should use.
+			return NULL;
+		}
+	}
 
+	for ( int i = 0; i < ASW_MAX_EQUIP_SLOTS; i++ )
+	{
+		pWeapon = pMarine->GetASWWeapon( i );
+		if ( pWeapon && pWeapon->UsesClipsForAmmo1() )
+		{
 			int iAmmoType = pWeapon->GetPrimaryAmmoType();
 			int iGuns = pMarine->GetNumberOfWeaponsUsingAmmo( iAmmoType );
 			int iMaxAmmoCount = GetAmmoDef()->MaxCarry( iAmmoType, pMarine ) * iGuns;
 			int iBullets = pMarine->GetAmmoCount( iAmmoType );
 			int iAmmoCost = CASW_Ammo_Drop_Shared::GetAmmoUnitCost( iAmmoType );
 
-			if ( ( iBullets < iMaxAmmoCount ) && ( m_iAmmoUnitsRemaining >= iAmmoCost ) )
+			if ( iBullets < iMaxAmmoCount && m_iAmmoUnitsRemaining >= iAmmoCost )
 			{
 				return pWeapon;
 			}
@@ -235,28 +239,22 @@ CASW_Weapon* CASW_Ammo_Drop::GetAmmoUseUnits( CASW_Marine *pMarine )
 
 	return NULL;
 }
+
 int CASW_Ammo_Drop::GetWeaponAmmoInUnits( CASW_Marine *pMarine )
 {
-	if ( pMarine )
+	CASW_Weapon *pWeapon = GetAmmoUseUnits( pMarine );
+	if ( pWeapon )
 	{
-		CASW_Weapon *pWeapon = pMarine->GetActiveASWWeapon();
+		int iAmmoType = pWeapon->GetPrimaryAmmoType();
+		int iClipsRemaining = pMarine->GetAmmoCount( iAmmoType ) / pWeapon->GetMaxClip1();
+		int iAmmoCost = GetAmmoUnitCost( iAmmoType );
 
-		if ( pWeapon && pWeapon->IsOffensiveWeapon() && ( pWeapon->GetMaxClip1() > 0 ) )
-		{
-			int iAmmoType = pWeapon->GetPrimaryAmmoType();
-			//int iGuns = pMarine->GetNumberOfWeaponsUsingAmmo( iAmmoType );
-			int iClipsRemaining = pMarine->GetAmmoCount( iAmmoType ) / pWeapon->GetMaxClip1();
-			int iAmmoCost = GetAmmoUnitCost( iAmmoType );
-
-			return iClipsRemaining * iAmmoCost;
-		}
-		else
-		{
-			return AMMO_UNITS_MAX;	// no need for ammo if no offensive weapon
-		}
+		return iClipsRemaining * iAmmoCost;
 	}
-
-	return AMMO_UNITS_MAX;	// no need for ammo if no marine
+	else
+	{
+		return AMMO_UNITS_MAX; // no need for ammo if no offensive weapon
+	}
 }
 
 // does first marine need ammo more than second? this allows us to compare regardless of weapon
