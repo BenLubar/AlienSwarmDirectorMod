@@ -311,10 +311,10 @@ bool CASW_Weapon::DestroyIfEmpty( bool bDestroyWhenActive, bool bCheckSecondaryA
 	if ( bActive && !bDestroyWhenActive )
 		return false;
 
-	if ( bCheckSecondaryAmmo && (m_iClip2 || pMarine->GetAmmoCount(m_iSecondaryAmmoType) > 0) )
+	if ( bCheckSecondaryAmmo && ( m_iClip2 || ( UsesClipsForAmmo2() && pMarine->GetAmmoCount( m_iSecondaryAmmoType ) > 0 ) ) )
 		return false;
 
-	if ( !m_iClip1 && pMarine->GetAmmoCount(m_iPrimaryAmmoType) <= 0)
+	if ( !m_iClip1 && ( !UsesClipsForAmmo1() || pMarine->GetAmmoCount( m_iPrimaryAmmoType ) <= 0 ) )
 	{
 #ifndef CLIENT_DLL
 		if (pMarine)
