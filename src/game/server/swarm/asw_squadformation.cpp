@@ -869,7 +869,7 @@ void CASW_SquadFormation::UpdateGoalPosition()
 							fabs(pMarker->GetAbsOrigin().y - Leader()->GetAbsOrigin().y) <= (pMarker->GetMapHeight() / 2.0f);
 					}
 				}
-				else if (iPriority <= 2)
+				else if (pMarker->GetObjective() == pObj && iPriority <= 2)
 				{
 					Vector vecMarker = pMarker->GetAbsOrigin();
 					vecMarker.x += RandomInt(-pMarker->GetMapWidth() / 2, pMarker->GetMapWidth() / 2);
