@@ -22,6 +22,7 @@
 #include "ai_waypoint.h"
 #include "ai_network.h"
 #include "asw_holdout_mode.h"
+#include "asw_use_area.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -633,82 +634,105 @@ void CASW_SquadFormation::FindFollowHintNodes()
 		}
 		else
 		{
-			// remove hints that are in front of the leader's overall direction of movement
-			// TODO: turn this into a hint filter
-			for ( int i = nCount - 1; i >= 0; i-- )
+			// If the leader is in a door trigger that has a marine count requirement (such as Cargo Elevator), remove the hints outside of the trigger.
+			bool bInArea = false;
+			FOR_EACH_VEC( IASW_Use_Area_List::AutoList(), i )
 			{
-				Vector vecDir = ( hints[ i ]->GetAbsOrigin() - pLeader->GetAbsOrigin() );
-				float flYaw = UTIL_VecToYaw( vecDir );
-				flYaw = AngleDiff( flYaw, flMovementYaw );
-				bool bRemoveNode = false;
-
-				// remove hints that are in front of the leader's overall direction of movement,
-				if ( flYaw < 85.0f && flYaw > -85.0f && vecDir.LengthSqr() > Square( asw_follow_hint_min_range.GetFloat() ) )
+				CASW_Use_Area *pArea = assert_cast<CASW_Use_Area *>( IASW_Use_Area_List::AutoList()[i] );
+				if ( pArea && pArea->m_nPlayersRequired > 1 && pArea->IsTouching( Leader() ) && pArea->CollisionProp() )
 				{
-					bRemoveNode = true;
-				}
-
-				// unless we need to use them to get the AI to flank a shieldbug
-				if( pClosestShieldbug )
-				{
-					bRemoveNode = true;
-					// if any of the marines are close, don't delete nodes behind the shieldbug
-					float flShieldbugDistSqr = hints[ i ]->GetAbsOrigin().DistToSqr( pClosestShieldbug->GetAbsOrigin() );
-					if( flShieldbugDistSqr < k_flShieldbugScanRangeSqr )
+					bInArea = true;
+					for ( int i = nCount - 1; i >= 0; i-- )
 					{
-						// preserve the node if it's behind the shieldbug
-						Vector vecShieldBugToNode, vecShieldbugFacing;
-
-						vecShieldBugToNode = hints[ i ]->GetAbsOrigin() - pClosestShieldbug->GetAbsOrigin();
-						QAngle angFacing = pClosestShieldbug->GetAbsAngles();
-						AngleVectors( angFacing, &vecShieldbugFacing );
-						vecShieldbugFacing.z = 0;
-						vecShieldBugToNode.z = 0;
-
-						VectorNormalize( vecShieldbugFacing );
-						VectorNormalize( vecShieldBugToNode );
-
-						float flForwardDot = vecShieldbugFacing.Dot( vecShieldBugToNode );
-						if( flForwardDot < 0.5f )	// if node is 60 degrees or more away from shieldbug's facing...
+						if ( !pArea->CollisionProp()->IsPointInBounds( hints[i]->GetAbsOrigin() ) )
 						{
-							float flDistSqr = hints[ i ]->GetAbsOrigin().DistToSqr( pMarine->GetAbsOrigin() );
-							bool bHasLOS = pMarine->TestShootPosition( pMarine->GetAbsOrigin(), hints[ i ]->GetAbsOrigin() );
+							hints.Remove( i );
+							nCount--;
+						}
+					}
+					break;
+				}
+			}
 
-							// if closer than the previous closest node, and the current node isn't taken, reserve it
-							if( flDistSqr < flClosestFlankingNodeDistSqr && bHasLOS )
+			if ( !bInArea )
+			{
+				// remove hints that are in front of the leader's overall direction of movement
+				// TODO: turn this into a hint filter
+				for ( int i = nCount - 1; i >= 0; i-- )
+				{
+					Vector vecDir = ( hints[ i ]->GetAbsOrigin() - pLeader->GetAbsOrigin() );
+					float flYaw = UTIL_VecToYaw( vecDir );
+					flYaw = AngleDiff( flYaw, flMovementYaw );
+					bool bRemoveNode = false;
+
+					// remove hints that are in front of the leader's overall direction of movement,
+					if ( flYaw < 85.0f && flYaw > -85.0f && vecDir.LengthSqr() > Square( asw_follow_hint_min_range.GetFloat() ) )
+					{
+						bRemoveNode = true;
+					}
+
+					// unless we need to use them to get the AI to flank a shieldbug
+					if( pClosestShieldbug )
+					{
+						bRemoveNode = true;
+						// if any of the marines are close, don't delete nodes behind the shieldbug
+						float flShieldbugDistSqr = hints[ i ]->GetAbsOrigin().DistToSqr( pClosestShieldbug->GetAbsOrigin() );
+						if( flShieldbugDistSqr < k_flShieldbugScanRangeSqr )
+						{
+							// preserve the node if it's behind the shieldbug
+							Vector vecShieldBugToNode, vecShieldbugFacing;
+
+							vecShieldBugToNode = hints[ i ]->GetAbsOrigin() - pClosestShieldbug->GetAbsOrigin();
+							QAngle angFacing = pClosestShieldbug->GetAbsAngles();
+							AngleVectors( angFacing, &vecShieldbugFacing );
+							vecShieldbugFacing.z = 0;
+							vecShieldBugToNode.z = 0;
+
+							VectorNormalize( vecShieldbugFacing );
+							VectorNormalize( vecShieldBugToNode );
+
+							float flForwardDot = vecShieldbugFacing.Dot( vecShieldBugToNode );
+							if( flForwardDot < 0.5f )	// if node is 60 degrees or more away from shieldbug's facing...
 							{
-								bool flNodeTaken = false;
-								for( unsigned iSlot = 0; iSlot < MAX_SQUAD_SIZE; iSlot++ )
-								{
-									if ( iSlot != slotnum && hints[ i ]->m_nHintIndex == m_nMarineHintIndex[ iSlot ] )
-									{
-										flNodeTaken = true;
-										break;
-									}
-								}
+								float flDistSqr = hints[ i ]->GetAbsOrigin().DistToSqr( pMarine->GetAbsOrigin() );
+								bool bHasLOS = pMarine->TestShootPosition( pMarine->GetAbsOrigin(), hints[ i ]->GetAbsOrigin() );
 
-								if( !flNodeTaken )
+								// if closer than the previous closest node, and the current node isn't taken, reserve it
+								if( flDistSqr < flClosestFlankingNodeDistSqr && bHasLOS )
 								{
-									iClosestFlankingNode = hints[ i ]->m_nHintIndex;
-									flClosestFlankingNodeDistSqr = flDistSqr;
-									bRemoveNode = false;
+									bool flNodeTaken = false;
+									for( unsigned iSlot = 0; iSlot < MAX_SQUAD_SIZE; iSlot++ )
+									{
+										if ( iSlot != slotnum && hints[ i ]->m_nHintIndex == m_nMarineHintIndex[ iSlot ] )
+										{
+											flNodeTaken = true;
+											break;
+										}
+									}
+
+									if( !flNodeTaken )
+									{
+										iClosestFlankingNode = hints[ i ]->m_nHintIndex;
+										flClosestFlankingNodeDistSqr = flDistSqr;
+										bRemoveNode = false;
+									}
 								}
 							}
 						}
 					}
-				}
 
-				// if zdiff is too great, remove
-				float flZDiff = fabs( hints[ i ]->GetAbsOrigin().z - pLeader->GetAbsOrigin().z );
-				if ( flZDiff > asw_follow_hint_max_z_dist.GetFloat() )
-				{
-					bRemoveNode = true;
-				}
+					// if zdiff is too great, remove
+					float flZDiff = fabs( hints[ i ]->GetAbsOrigin().z - pLeader->GetAbsOrigin().z );
+					if ( flZDiff > asw_follow_hint_max_z_dist.GetFloat() )
+					{
+						bRemoveNode = true;
+					}
 
-				if( bRemoveNode )
-				{
-					hints.Remove( i );
-					nCount--;
+					if( bRemoveNode )
+					{
+						hints.Remove( i );
+						nCount--;
+					}
 				}
 			}
 		}
