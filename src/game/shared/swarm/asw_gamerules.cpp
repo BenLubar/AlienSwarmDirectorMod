@@ -6475,31 +6475,6 @@ bool CAlienSwarm::MarineCanPickupPowerup(CASW_Marine *pMarine, CASW_Powerup *pPo
 	return true;
 }
 
-bool CAlienSwarm::MarineHasRoomInAmmoBag(CASW_Marine *pMarine, int iAmmoIndex)
-{
-	if (!pMarine)
-		return false;
-
-	if ( iAmmoIndex < 0 || iAmmoIndex >= MAX_AMMO_SLOTS )
-		return false;
-
-	CASW_Weapon_Ammo_Bag *pBag = dynamic_cast<CASW_Weapon_Ammo_Bag*>(pMarine->GetWeapon(0));
-	if (pBag)
-	{
-		if (pBag->HasRoomForAmmo(iAmmoIndex))
-			return true;
-	}
-
-	pBag = dynamic_cast<CASW_Weapon_Ammo_Bag*>(pMarine->GetWeapon(1));
-	if (pBag)
-	{
-		if (pBag->HasRoomForAmmo(iAmmoIndex))
-			return true;
-	}
-
-	return false;
-}
-
 #ifdef GAME_DLL
 void CheatsChangeCallback( IConVar *pConVar, const char *pOldString, float flOldValue )
 {

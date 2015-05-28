@@ -405,7 +405,6 @@ public:
 	bool MarineCanPickupAmmo(CASW_Marine *pMarine, CASW_Ammo *pAmmo);
 	bool MarineCanPickupPowerup(CASW_Marine *pMarine, CASW_Powerup *pPowerup);
 	const char* GetPickupDenial() { return m_szPickupDenial; }
-	virtual bool MarineHasRoomInAmmoBag(CASW_Marine *pMarine, int iAmmoIndex);
 
 	// game state
 	virtual int	GetGameState() { return m_iGameState; }

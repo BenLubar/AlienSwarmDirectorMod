@@ -1026,39 +1026,6 @@ void asw_gimme_ammo_f(void)
 
 static ConCommand asw_gimme_ammo("asw_gimme_ammo", asw_gimme_ammo_f, "Refills all marine ammo", FCVAR_CHEAT);
 
-void asw_drop_ammo_f(const CCommand &args)
-{
-	CASW_Player *pPlayer = ToASW_Player(UTIL_GetCommandClient());
-	if (!pPlayer)
-		return;
-	
-	CASW_Marine *pMarine = pPlayer->GetMarine();
-	if (!pMarine)
-		return;
-
-	int iBagSlot = atoi(args[1]);
-
-	CASW_Weapon_Ammo_Bag *pBag = dynamic_cast<CASW_Weapon_Ammo_Bag*>(pMarine->GetWeapon(0));
-	if (pBag)
-	{
-		if (pBag->DropAmmoPickup(iBagSlot))
-		{
-			return;
-		}
-	}
-
-	pBag = dynamic_cast<CASW_Weapon_Ammo_Bag*>(pMarine->GetWeapon(1));
-	if (pBag)
-	{
-		if (pBag->DropAmmoPickup(iBagSlot))
-		{
-			return;
-		}
-	}
-}
-
-static ConCommand asw_drop_ammo("asw_drop_ammo", asw_drop_ammo_f, "Drops ammo from an ammo bag", 0);
-
 void asw_conversation_f(const CCommand &args)
 {
 	CASW_Player *pPlayer = ToASW_Player(UTIL_GetCommandClient());

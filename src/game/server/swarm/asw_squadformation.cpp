@@ -781,7 +781,7 @@ void CASW_SquadFormation::UpdateGoalPosition()
 		{
 			string_t iszAlien = ASWSpawnManager()->GetAlienClass(i)->m_iszAlienClass;
 			CBaseEntity *pEnt = NULL;
-			while ((pEnt = gEntList.FindEntityByClassnameFast(pEnt, iszAlien)))
+			while ((pEnt = gEntList.FindEntityByClassnameFast(pEnt, iszAlien)) != NULL)
 			{
 				if (dynamic_cast<IASW_Spawnable_NPC *>(pEnt)->IsHoldoutAlien() && pEnt->IsAlive())
 				{

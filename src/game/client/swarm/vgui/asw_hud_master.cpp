@@ -22,8 +22,8 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-extern ConVar asw_draw_hud;
-extern ConVar asw_hud_alpha;
+ConVar asw_draw_hud("asw_draw_hud", "1", 0, "Draw the HUD or not");
+ConVar asw_hud_alpha("asw_hud_alpha", "192", 0, "Alpha of the black parts of the HUD (0->255)");
 
 using namespace vgui;
 

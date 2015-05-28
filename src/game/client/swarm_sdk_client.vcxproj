@@ -1602,7 +1602,6 @@ exit 1
     <ClCompile Include="swarm\vgui\asw_circularprogressbar.cpp" />
     <ClCompile Include="swarm\vgui\asw_difficulty_chooser.cpp" />
     <ClCompile Include="swarm\vgui\asw_hud_3dmarinenames.cpp" />
-    <ClCompile Include="swarm\vgui\asw_hud_ammo.cpp" />
     <ClCompile Include="swarm\vgui\asw_hud_chat.cpp" />
     <ClCompile Include="swarm\vgui\asw_hud_crosshair.cpp" />
     <ClCompile Include="swarm\vgui\asw_hud_damageindicator.cpp" />
@@ -1632,7 +1631,6 @@ exit 1
     <ClCompile Include="swarm\vgui\asw_mission_chooser_list.cpp" />
     <ClCompile Include="swarm\vgui\asw_model_panel.cpp" />
     <ClCompile Include="swarm\vgui\asw_scalable_text.cpp" />
-    <ClCompile Include="swarm\vgui\asw_vgui_ammo_list.cpp" />
     <ClCompile Include="swarm\vgui\asw_vgui_computer_camera.cpp" />
     <ClCompile Include="swarm\vgui\asw_vgui_computer_download_docs.cpp" />
     <ClCompile Include="swarm\vgui\asw_vgui_computer_frame.cpp" />
@@ -1654,7 +1652,6 @@ exit 1
     <ClCompile Include="swarm\vgui\asw_vgui_info_message.cpp" />
     <ClCompile Include="swarm\vgui\asw_vgui_ingame_panel.cpp" />
     <ClCompile Include="swarm\vgui\asw_vgui_manipulator.cpp" />
-    <ClCompile Include="swarm\vgui\asw_vgui_marine_ammo_report.cpp" />
     <ClCompile Include="swarm\vgui\asw_vgui_music_importer.cpp" />
     <ClCompile Include="swarm\vgui\asw_vgui_queen_health.cpp" />
     <ClCompile Include="swarm\vgui\asw_vgui_skip_intro.cpp" />
@@ -2137,7 +2134,6 @@ exit 1
     <ClInclude Include="swarm\vgui\asw_mission_chooser_list.h" />
     <ClInclude Include="swarm\vgui\asw_model_panel.h" />
     <ClInclude Include="swarm\vgui\asw_scalable_text.h" />
-    <ClInclude Include="swarm\vgui\asw_vgui_ammo_list.h" />
     <ClInclude Include="swarm\vgui\asw_vgui_computer_camera.h" />
     <ClInclude Include="swarm\vgui\asw_vgui_computer_download_docs.h" />
     <ClInclude Include="swarm\vgui\asw_vgui_computer_frame.h" />
@@ -2159,7 +2155,6 @@ exit 1
     <ClInclude Include="swarm\vgui\asw_vgui_info_message.h" />
     <ClInclude Include="swarm\vgui\asw_vgui_ingame_panel.h" />
     <ClInclude Include="swarm\vgui\asw_vgui_manipulator.h" />
-    <ClInclude Include="swarm\vgui\asw_vgui_marine_ammo_report.h" />
     <ClInclude Include="swarm\vgui\asw_vgui_music_importer.h" />
     <ClInclude Include="swarm\vgui\asw_vgui_queen_health.h" />
     <ClInclude Include="swarm\vgui\asw_vgui_skip_intro.h" />

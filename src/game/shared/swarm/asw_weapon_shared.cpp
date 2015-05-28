@@ -655,12 +655,7 @@ void CASW_Weapon::PrimaryAttack( void )
 		CASW_Marine *pMarine = GetMarine();
 		if (pMarine && m_iClip1 <= 0 && pMarine->GetAmmoCount(m_iPrimaryAmmoType) <= 0 )
 		{
-			// check he doesn't have ammo in an ammo bay
-			CASW_Weapon_Ammo_Bag* pAmmoBag = dynamic_cast<CASW_Weapon_Ammo_Bag*>(pMarine->GetASWWeapon(0));
-			if (!pAmmoBag)
-				pAmmoBag = dynamic_cast<CASW_Weapon_Ammo_Bag*>(pMarine->GetASWWeapon(1));
-			if (!pAmmoBag || !pAmmoBag->CanGiveAmmoToWeapon(this))
-				pMarine->OnWeaponOutOfAmmo(true);
+			pMarine->OnWeaponOutOfAmmo(true);
 		}
 #endif
 	}
@@ -782,31 +777,6 @@ bool CASW_Weapon::ASWReload( int iClipSize1, int iClipSize2, int iActivity )
 		{
 			bReload = true;
 		}
-		else
-		{
-			// check if we have an ammo bag we can take a clip from instead
-			CASW_Weapon_Ammo_Bag* pAmmoBag = dynamic_cast<CASW_Weapon_Ammo_Bag*>( pMarine->GetASWWeapon( 0 ) );
-			if ( !pAmmoBag )
-			{
-				pAmmoBag = dynamic_cast<CASW_Weapon_Ammo_Bag*>( pMarine->GetASWWeapon( 1 ) );
-			}
-
-			if ( pAmmoBag && pAmmoBag->CanGiveAmmoToWeapon( this ) )
-			{
-#ifdef CLIENT_DLL
-				bReload = true;
-#else
-				pAmmoBag->GiveClipTo(pMarine, m_iPrimaryAmmoType, true);
-
-				// now we've given a clip, check if we can reload
-				primary	= MIN(iClipSize1 - m_iClip1, pMarine->GetAmmoCount(m_iPrimaryAmmoType));
-				if ( primary != 0 )
-				{
-					bReload = true;
-				}
-#endif
-			}
-		}
 	}
 
 	if ( UsesClipsForAmmo2() )
@@ -838,15 +808,6 @@ bool CASW_Weapon::ASWReload( int iClipSize1, int iClipSize2, int iActivity )
 			int nClipSize = GetMaxClip1();
 
 			int nClips = pMarine->GetAmmoCount( m_iPrimaryAmmoType ) / nClipSize;
-			CASW_Weapon_Ammo_Bag *pAmmoBag = dynamic_cast< CASW_Weapon_Ammo_Bag* >( pMarine->GetASWWeapon( 0 ) );
-			if ( !pAmmoBag )
-			{
-				pAmmoBag = dynamic_cast< CASW_Weapon_Ammo_Bag* >( pMarine->GetASWWeapon( 1 ) );
-			}
-			if ( pAmmoBag && this != pAmmoBag )
-			{
-				nClips += pAmmoBag->NumClipsForWeapon( this );					
-			}
 
 			event->SetInt( "userid", ( pPlayer ? pPlayer->GetUserID() : 0 ) );
 			event->SetInt( "marine", pMarine->entindex() );

@@ -88,13 +88,7 @@ public:
 	DECLARE_DATADESC();
 
 	CASW_Pickup_Weapon_Ammo_Bag();
-	virtual void Precache( void );
 	virtual void Spawn( void );
-	virtual const char* GetWeaponClass() { return "asw_weapon_ammo_bag"; }
-	virtual void InitFrom(CASW_Marine* pMarine, CASW_Weapon* pWeapon);
-	virtual void InitWeapon(CASW_Marine* pMarine, CASW_Weapon* pWeapon);
-
-	int m_iAmmoCount[ASW_AMMO_BAG_SLOTS];
 };
 
 class CASW_Pickup_Weapon_Ammo_Satchel : public CASW_Pickup_Weapon

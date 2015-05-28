@@ -353,10 +353,8 @@ public:
 		TASK_ASW_RAPPEL,
 		TASK_ASW_HIT_GROUND,
 		TASK_ASW_ORDER_TO_DEPLOY_SPOT,
-		TASK_ASW_GET_PATH_TO_GIVE_AMMO,
-		TASK_ASW_MOVE_TO_GIVE_AMMO,
-		TASK_ASW_SWAP_TO_AMMO_BAG,
-		TASK_ASW_GIVE_AMMO_TO_MARINE,
+		TASK_ASW_SWAP_TO_AMMO_SATCHEL,
+		TASK_ASW_DROP_AMMO,
 		TASK_ASW_GET_PATH_TO_HEAL,
 		TASK_ASW_MOVE_TO_HEAL,
 		TASK_ASW_SWAP_TO_HEAL_GUN,
@@ -508,7 +506,6 @@ public:
 	// ammo
 	bool CarryingAGunThatUsesAmmo( int iAmmoIndex);
 	virtual int	GiveAmmo( int iCount, int iAmmoIndex, bool bSuppressSound = false );
-	virtual int	GiveAmmoToAmmoBag( int iCount, int iAmmoIndex, bool bSuppressSound = false );
 	void Weapon_Equip( CBaseCombatWeapon *pWeapon );
 	void Weapon_Equip_In_Index( CBaseCombatWeapon *pWeapon, int index );	// like weapon_equip, but tries to put the weapon in the specific index
 	void Weapon_Equip_Post( CBaseCombatWeapon *pWeapon);
@@ -527,11 +524,8 @@ public:
 	void CheckAndRequestAmmo();
 	bool IsOutOfAmmo();
 	virtual void OnWeaponOutOfAmmo(bool bChatter);
-
-	// ammo bag/give ammo
-	bool CanGiveAmmoTo( CASW_Marine* pMarine );
-	int SelectGiveAmmoSchedule( void );
-	CHandle<CASW_Marine> m_hGiveAmmoTarget;
+	int SelectGiveAmmoSchedule();
+	bool HasAmmoSatchel();
 
 	CHandle<CASW_Marine> m_hHealTarget;
 	CASW_Weapon *CanHeal() const;

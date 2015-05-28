@@ -61,7 +61,7 @@
 #include "asw_weapon_flashlight_shared.h"
 #include "beam_shared.h"
 #include "iasw_server_usable_entity.h"
-#include "asw_weapon_ammo_bag_shared.h"
+#include "asw_weapon_ammo_satchel_shared.h"
 #include "datacache/imdlcache.h"
 #include "asw_weapon_autogun_shared.h"
 #include "asw_burning.h"
@@ -864,7 +864,6 @@ bool CASW_Marine::IsCurTaskContinuousMove()
 	switch( pTask->iTask )
 	{
 	case TASK_ASW_WAIT_FOR_FOLLOW_MOVEMENT:
-	case TASK_ASW_MOVE_TO_GIVE_AMMO:
 		return true;
 		break;
 
@@ -2270,70 +2269,16 @@ int CASW_Marine::GiveAmmo( int iCount, int iAmmoIndex, bool bSuppressSound)
 	return iAdd;
 }
 
-int CASW_Marine::GiveAmmoToAmmoBag( int iCount, int iAmmoIndex, bool bSuppressSound)
+bool CASW_Marine::CarryingAGunThatUsesAmmo( int iAmmoIndex )
 {
-	if (iCount <= 0)
-		return 0;
-
-	//if ( !g_pGameRules->CanHaveAmmo( this, iAmmoIndex ) )
-	//{
-		// game rules say I can't have any more of this ammo type.
-//		return 0;
-	//}
-
-	if ( iAmmoIndex < 0 || iAmmoIndex >= MAX_AMMO_SLOTS )
-		return 0;
-
-	CASW_Weapon_Ammo_Bag *pBag = dynamic_cast<CASW_Weapon_Ammo_Bag*>(GetWeapon(0));
-	if (!pBag || !pBag->HasRoomForAmmo(iAmmoIndex))
+	for ( int i = 0; i < ASW_MAX_EQUIP_SLOTS; i++ )
 	{
-		pBag = dynamic_cast<CASW_Weapon_Ammo_Bag*>(GetWeapon(1));
-		if (!pBag || !pBag->HasRoomForAmmo(iAmmoIndex))
-			return 0;
-	}
-
-	// Ammo pickup sound
-	if ( !bSuppressSound )
-	{
-		EmitSound( "BaseCombatCharacter.AmmoPickup" );
-	}
-
-	int iAdd = pBag->AddAmmo(iCount, iAmmoIndex);
-
-	return iAdd;
-}
-
-bool CASW_Marine::CanGiveAmmoTo( CASW_Marine* pMarine )
-{
-	// iterate over my weapons to find ammo bag(s)
-	for ( int iWeapon = 0; iWeapon < ASW_NUM_INVENTORY_SLOTS; iWeapon++ )
-	{
-		CASW_Weapon_Ammo_Bag *pAmmoBag = dynamic_cast<CASW_Weapon_Ammo_Bag*>( GetASWWeapon( iWeapon ) );
-		if (pAmmoBag)
-		{
-			// see if the ammo bag can give ammo for any weapons the recipient has
-			for ( int iRecipientWeapon = 0; iRecipientWeapon < ASW_NUM_INVENTORY_SLOTS; iRecipientWeapon++ )
-			{
-				CASW_Weapon *pRecipientWeapon = pMarine->GetASWWeapon( iRecipientWeapon );
-				if (pAmmoBag->CanGiveAmmoToWeapon(pRecipientWeapon))
-					return true;
-			}
-		}
-	}
-
-	return false;
-}
-
-bool CASW_Marine::CarryingAGunThatUsesAmmo( int iAmmoIndex)
-{
-	int n = WeaponCount();
-	for (int i=0;i<n;i++)
-	{
-		CBaseCombatWeapon* pWeapon = GetWeapon(i);
-		if (!pWeapon)
+		CASW_Weapon *pWeapon = GetASWWeapon( i );
+		if ( !pWeapon )
 			continue;
-		if (pWeapon->GetPrimaryAmmoType() == iAmmoIndex
-			|| pWeapon->GetSecondaryAmmoType() == iAmmoIndex)
+		if ( pWeapon->UsesClipsForAmmo1() && pWeapon->GetPrimaryAmmoType() == iAmmoIndex )
+			return true;
+		if ( pWeapon->UsesClipsForAmmo2() && pWeapon->GetSecondaryAmmoType() == iAmmoIndex )
 			return true;
 	}
 	return false;
@@ -4346,13 +4291,13 @@ void CASW_Marine::CheckAndRequestAmmo()
 	m_fLastAmmoCheckTime = gpGlobals->curtime;
 
 	bool bAllWeaponsOutOfAmmo = true;
-	CASW_Marine *pClosestAmmoBagSquadmate = NULL;
-	CASW_Marine *pActiveWpnAmmoBagSquadmate = NULL;	// send high-priority message to player that can resupply active
+	CASW_Marine *pClosestAmmoSatchelSquadmate = NULL;
+	CASW_Marine *pActiveWpnAmmoSatchelSquadmate = NULL;	// send high-priority message to player that can resupply active
 	for ( int iWeapon = 0; iWeapon < ASW_NUM_INVENTORY_SLOTS; iWeapon++ )
 	{
 		CASW_Weapon *pWeapon = GetASWWeapon(iWeapon);
 
-		if ( !pWeapon || !pWeapon->IsOffensiveWeapon() )
+		if ( !pWeapon || !pWeapon->UsesClipsForAmmo1() )
 			continue;
 
 		bool bWeaponHasAmmo = ( pWeapon->Clip1() > 0 || GetAmmoCount ( pWeapon->GetPrimaryAmmoType() ) > 0 );
@@ -4371,50 +4316,46 @@ void CASW_Marine::CheckAndRequestAmmo()
 			continue;
 		}
 
-		float fClosestAmmoBagDistSqr = FLT_MAX;
+		float fClosestAmmoSatchelDistSqr = FLT_MAX;
 
 		// find the closest marine who can resupply this weapon
-		CASW_Game_Resource *pGameResource = ASWGameResource();
-		for ( int i=0; i<pGameResource->GetMaxMarineResources(); i++ )
+		CASW_SquadFormation *pSquad = GetSquadFormation();
+		for ( int i = 0; i < CASW_SquadFormation::MAX_SQUAD_SIZE; i++ )
 		{
-			CASW_Marine_Resource *pMarineResource = pGameResource->GetMarineResource(i);
-			if ( !pMarineResource )
-				continue;
-
-			CASW_Marine *pSquadmate = pMarineResource->GetMarineEntity();
+			CASW_Marine *pSquadmate = pSquad->Squaddie( i );
 			if ( !pSquadmate || ( pSquadmate == this ) )
 				continue;
 
-			if ( pSquadmate->CanGiveAmmoTo( this ) )
+			if ( pSquadmate->HasAmmoSatchel() )
 			{
-				float fAmmoBagDistSqr = pSquadmate->GetAbsOrigin().DistToSqr( GetAbsOrigin() );
-				if ( fAmmoBagDistSqr < fClosestAmmoBagDistSqr )
+				float fAmmoSatchelDistSqr = pSquadmate->GetAbsOrigin().DistToSqr( GetAbsOrigin() );
+				if ( fAmmoSatchelDistSqr < fClosestAmmoSatchelDistSqr )
 				{
-					fClosestAmmoBagDistSqr = fAmmoBagDistSqr;
-					pClosestAmmoBagSquadmate = pSquadmate;	// need to save for later use
+					fClosestAmmoSatchelDistSqr = fAmmoSatchelDistSqr;
+					pClosestAmmoSatchelSquadmate = pSquadmate;	// need to save for later use
 				}
 			}
 		}
 
-		if ( pClosestAmmoBagSquadmate )
+		if ( pClosestAmmoSatchelSquadmate )
 		{
 			// if player controlled, we NEED ammo rather than simply wanting it
-			pClosestAmmoBagSquadmate->SetCondition( IsInhabited() ? COND_SQUADMATE_NEEDS_AMMO : COND_SQUADMATE_WANTS_AMMO );
+			pClosestAmmoSatchelSquadmate->SetCondition( IsInhabited() ? COND_SQUADMATE_NEEDS_AMMO : COND_SQUADMATE_WANTS_AMMO );
 
 			if ( bActiveWeapon )
-				pActiveWpnAmmoBagSquadmate = pClosestAmmoBagSquadmate;
+				pActiveWpnAmmoSatchelSquadmate = pClosestAmmoSatchelSquadmate;
 		}
 	}
 
-	if ( pActiveWpnAmmoBagSquadmate )
+	if ( pActiveWpnAmmoSatchelSquadmate )
 	{
 		// if anyone can resupply our active weapon, they get the higher priority NEED condition
-		pActiveWpnAmmoBagSquadmate->SetCondition( COND_SQUADMATE_NEEDS_AMMO );
+		pActiveWpnAmmoSatchelSquadmate->SetCondition( COND_SQUADMATE_NEEDS_AMMO );
 	}
-	else if ( pClosestAmmoBagSquadmate && bAllWeaponsOutOfAmmo )
+	else if ( pClosestAmmoSatchelSquadmate && bAllWeaponsOutOfAmmo )
 	{
 		// otherwise, if we're all out of ammo, send a higher priority NEED request
-		pClosestAmmoBagSquadmate->SetCondition( COND_SQUADMATE_NEEDS_AMMO );
+		pClosestAmmoSatchelSquadmate->SetCondition( COND_SQUADMATE_NEEDS_AMMO );
 	}
 }
 
@@ -4954,4 +4895,21 @@ void CASW_Marine::EnergyThink()
 CASW_SquadFormation *CASW_Marine::GetSquadFormation()
 {
 	return m_hSquadFormation.Get();
+}
+
+bool CASW_Marine::HasAmmoSatchel()
+{
+	for ( int i = 0; i < ASW_MAX_EQUIP_SLOTS; i++ )
+	{
+		CASW_Weapon *pWeapon = GetASWWeapon( i );
+		if ( pWeapon && pWeapon->Classify() == CLASS_ASW_AMMO_SATCHEL )
+		{
+			CASW_Weapon_Ammo_Satchel *pSatchel = assert_cast<CASW_Weapon_Ammo_Satchel *>( pWeapon );
+			if ( pSatchel->Clip1() )
+			{
+				return true;
+			}
+		}
+	}
+	return false;
 }

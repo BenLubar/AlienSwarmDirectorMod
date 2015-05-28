@@ -43,7 +43,7 @@
 #include "asw_button_area.h"
 #include "asw_equipment_list.h"
 #include "asw_weapon_parse.h"
-#include "asw_weapon_ammo_bag_shared.h"
+#include "asw_weapon_ammo_satchel_shared.h"
 #include "asw_fx_shared.h"
 #include "asw_parasite.h"
 #include "shareddefs.h"
@@ -77,6 +77,8 @@
 #include "ai_route.h"
 #include "asw_marine_gamemovement.h"
 #include "ai_moveprobe.h"
+#include "asw_ammo_drop.h"
+#include "asw_ammo_drop_shared.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -1112,28 +1114,51 @@ void CASW_Marine::BuildScheduleTestBits()
 
 int CASW_Marine::SelectGiveAmmoSchedule()
 {
-	// iterate over all teammates, looking for most needy target for ammo
-	CASW_Game_Resource *pGameResource = ASWGameResource();
-	for ( int i=0; i<pGameResource->GetMaxMarineResources(); i++ )
+	CASW_SquadFormation *pSquad = GetSquadFormation();
+	if ( !pSquad )
 	{
-		CASW_Marine_Resource* pMarineResource = pGameResource->GetMarineResource(i);
-		if ( !pMarineResource )
-			continue;
+		return -1;
+	}
 
-		CASW_Marine* pMarine = pMarineResource->GetMarineEntity();
-		if ( !pMarine || ( pMarine == this ) )
-			continue;
-
-		// see if the current marine can use ammo I have
-		if ( CanGiveAmmoTo( pMarine ) )
+	int iNeeded = 0;
+	for ( int i = 0; i < CASW_SquadFormation::MAX_SQUAD_SIZE; i++ )
+	{
+		CASW_Marine *pMarine = pSquad->Squaddie( i );
+		if ( !pMarine )
 		{
-			// $TODO: find most appropriate give ammo target a la AmmoNeed_t
-			m_hGiveAmmoTarget = pMarine;
-			return SCHED_ASW_GIVE_AMMO;
+			continue;
+		}
+
+		for ( int j = 0; j < ASW_MAX_EQUIP_SLOTS; j++ )
+		{
+			CASW_Weapon *pWeapon = pMarine->GetASWWeapon( j );
+			if ( !pWeapon || pWeapon->UsesClipsForAmmo1() )
+			{
+				continue;
+			}
+
+			int iAmmoType = pWeapon->GetPrimaryAmmoType();
+			int iGuns = pMarine->GetNumberOfWeaponsUsingAmmo( iAmmoType );
+			int iMaxAmmoCount = GetAmmoDef()->MaxCarry( iAmmoType, pMarine ) * iGuns;
+			int iBullets = pMarine->GetAmmoCount( iAmmoType );
+			int iAmmoCost = CASW_Ammo_Drop_Shared::GetAmmoUnitCost( iAmmoType );
+
+			iNeeded += iAmmoCost * ( iMaxAmmoCount - iBullets ) / pWeapon->GetMaxClip1();
 		}
 	}
 
-	m_hGiveAmmoTarget = NULL;
+	int iHave = 0;
+	FOR_EACH_VEC( IAmmoDropAutoList::AutoList(), i )
+	{
+		CASW_Ammo_Drop *pDrop = assert_cast<CASW_Ammo_Drop *>( IAmmoDropAutoList::AutoList()[i] );
+		pDrop;
+	}
+
+	if ( iNeeded < iHave + DEFAULT_AMMO_DROP_UNITS )
+	{
+		return SCHED_ASW_GIVE_AMMO;
+	}
+
 	return -1;
 }
 
@@ -2148,29 +2173,15 @@ void CASW_Marine::StartTask(const Task_t *pTask)
 		TaskComplete();
 		break;
 
-	case TASK_ASW_GET_PATH_TO_GIVE_AMMO:
-		if (!m_hGiveAmmoTarget)
-		{
-			TaskComplete();
-		}
-		break;
-
-	case TASK_ASW_MOVE_TO_GIVE_AMMO:
-		if (!m_hGiveAmmoTarget)
-		{
-			TaskComplete();
-		}
-		break;
-
-	case TASK_ASW_SWAP_TO_AMMO_BAG:
+	case TASK_ASW_SWAP_TO_AMMO_SATCHEL:
 		{
 			CASW_Weapon *pWeapon = GetActiveASWWeapon();
-			if ( !pWeapon || pWeapon->Classify() != CLASS_ASW_AMMO_BAG )
+			if ( !pWeapon || pWeapon->Classify() != CLASS_ASW_AMMO_SATCHEL )
 			{
 				for ( int iWeapon = 0; iWeapon < ASW_NUM_INVENTORY_SLOTS; iWeapon++ )
 				{
 					CASW_Weapon *pWeapon = GetASWWeapon( iWeapon );
-					if ( pWeapon && pWeapon->Classify() == CLASS_ASW_AMMO_BAG )
+					if ( pWeapon && pWeapon->Classify() == CLASS_ASW_AMMO_SATCHEL )
 					{
 						Weapon_Switch( pWeapon );
 						break;
@@ -2181,17 +2192,16 @@ void CASW_Marine::StartTask(const Task_t *pTask)
 		}
 		break;
 
-	case TASK_ASW_GIVE_AMMO_TO_MARINE:
-		if (m_hGiveAmmoTarget)
+	case TASK_ASW_DROP_AMMO:
 		{
 			CASW_Weapon *pWeapon = GetActiveASWWeapon();
-			if ( pWeapon && pWeapon->Classify() == CLASS_ASW_AMMO_BAG )
+			if ( pWeapon && pWeapon->Classify() == CLASS_ASW_AMMO_SATCHEL )
 			{
-				CASW_Weapon_Ammo_Bag *pAmmoBag = dynamic_cast<CASW_Weapon_Ammo_Bag*>(pWeapon);
-				pAmmoBag->ThrowAmmo();
+				CASW_Weapon_Ammo_Satchel *pAmmoSatchel = dynamic_cast<CASW_Weapon_Ammo_Satchel *>(pWeapon);
+				pAmmoSatchel->DeployAmmoDrop();
 			}
+			TaskComplete();
 		}
-		TaskComplete();
 		break;
 
 	case TASK_MELEE_ATTACK1:
@@ -2708,58 +2718,6 @@ void CASW_Marine::RunTask( const Task_t *pTask )
 
 				TaskComplete();
 			}
-		}
-		break;
-	case TASK_ASW_GET_PATH_TO_GIVE_AMMO:
-		{
-			if(m_hGiveAmmoTarget)
-			{
-				AI_NavGoal_t goal( m_hGiveAmmoTarget->GetAbsOrigin(), ACT_RUN, CASW_Weapon_Ammo_Bag::GetAIMaxAmmoGiveDistance() );
-				GetNavigator()->SetGoal( goal );
-			}
-			TaskComplete();
-		}
-		break;
-	case TASK_ASW_MOVE_TO_GIVE_AMMO:
-		// if target is still valid, move to target
-		if( m_hGiveAmmoTarget)
-		{
-			UpdateFacing();
-			bool bTimeExpired = ( pTask->flTaskData != 0 && pTask->flTaskData < gpGlobals->curtime - GetTimeTaskStarted() );
-			bool bArrived = ( ( GetNavigator()->GetGoalPos() - GetAbsOrigin() ).LengthSqr() < Square( CASW_Weapon_Ammo_Bag::GetAIMaxAmmoGiveDistance() ) );
-			if ( bTimeExpired || GetNavigator()->GetGoalType() == GOALTYPE_NONE || bArrived )
-			{
-				TaskComplete();
-				GetNavigator()->StopMoving();
-			}
-			else if (!GetNavigator()->IsGoalActive())
-			{
-				SetIdealActivity( GetStoppedActivity() );
-			}
-			else
-			{
-				// Check validity of goal type
-				ValidateNavGoal();
-
-				// see if target marine has moved far enough that we need to adjust path
-				const Vector &vecCurrentPos = m_hGiveAmmoTarget->GetAbsOrigin();
-				if ( ( GetNavigator()->GetGoalPos() - vecCurrentPos ).LengthSqr() > Square( CASW_Weapon_Ammo_Bag::GetAIMaxAmmoGiveDistance() ) )
-				{
-					if ( GetNavigator()->GetNavType() != NAV_JUMP )
-					{
-						if ( !GetNavigator()->UpdateGoalPos( vecCurrentPos ) )
-						{
-							TaskFail( FAIL_NO_ROUTE );
-						}
-					}
-				}
-			}
-		}
-		else
-		// otherwise, the move task is complete (either we've arrived or the target is invalid)
-		{
-			m_hGiveAmmoTarget = NULL;
-			TaskComplete();
 		}
 		break;
 
@@ -3757,10 +3715,8 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 	DECLARE_TASK( TASK_ASW_RAPPEL )
 	DECLARE_TASK( TASK_ASW_HIT_GROUND )	
 	DECLARE_TASK( TASK_ASW_ORDER_TO_DEPLOY_SPOT )
-	DECLARE_TASK( TASK_ASW_GET_PATH_TO_GIVE_AMMO )
-	DECLARE_TASK( TASK_ASW_MOVE_TO_GIVE_AMMO )
-	DECLARE_TASK( TASK_ASW_SWAP_TO_AMMO_BAG )
-	DECLARE_TASK( TASK_ASW_GIVE_AMMO_TO_MARINE )
+	DECLARE_TASK( TASK_ASW_SWAP_TO_AMMO_SATCHEL )
+	DECLARE_TASK( TASK_ASW_DROP_AMMO )
 	DECLARE_TASK( TASK_ASW_GET_PATH_TO_HEAL )
 	DECLARE_TASK( TASK_ASW_MOVE_TO_HEAL )
 	DECLARE_TASK( TASK_ASW_SWAP_TO_HEAL_GUN )
@@ -4406,10 +4362,8 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 		SCHED_ASW_GIVE_AMMO,
 
 		"	Tasks"
-		"		TASK_ASW_GET_PATH_TO_GIVE_AMMO		0"
-		"		TASK_ASW_MOVE_TO_GIVE_AMMO			0"
-		"		TASK_ASW_SWAP_TO_AMMO_BAG			0"
-		"		TASK_ASW_GIVE_AMMO_TO_MARINE		0"
+		"		TASK_ASW_SWAP_TO_AMMO_SATCHEL			0"
+		"		TASK_ASW_DROP_AMMO			0"
 		""
 		"	Interrupts"
 		""

@@ -27,8 +27,6 @@ int ASW_GiveAmmo( CASW_Marine *pMarine, float flCount, const char *pszAmmoName, 
 	}
 
 	int amount = pMarine->GiveAmmo( flCount, iAmmoType, bSuppressSound );
-	if ( amount == 0 )
-		amount = pMarine->GiveAmmoToAmmoBag( flCount, iAmmoType, bSuppressSound );
 
 	if ( amount > 0 )
 	{

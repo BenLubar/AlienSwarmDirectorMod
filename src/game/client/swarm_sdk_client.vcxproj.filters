@@ -2072,9 +2072,6 @@
     <ClCompile Include="swarm\vgui\asw_hud_3dmarinenames.cpp">
       <Filter>Source Files\Swarm\Shared\vgui</Filter>
     </ClCompile>
-    <ClCompile Include="swarm\vgui\asw_hud_ammo.cpp">
-      <Filter>Source Files\Swarm\Shared\vgui</Filter>
-    </ClCompile>
     <ClCompile Include="swarm\vgui\asw_hud_chat.cpp">
       <Filter>Source Files\Swarm\Shared\vgui</Filter>
     </ClCompile>
@@ -2162,9 +2159,6 @@
     <ClCompile Include="swarm\vgui\asw_scalable_text.cpp">
       <Filter>Source Files\Swarm\Shared\vgui</Filter>
     </ClCompile>
-    <ClCompile Include="swarm\vgui\asw_vgui_ammo_list.cpp">
-      <Filter>Source Files\Swarm\Shared\vgui</Filter>
-    </ClCompile>
     <ClCompile Include="swarm\vgui\asw_vgui_computer_camera.cpp">
       <Filter>Source Files\Swarm\Shared\vgui</Filter>
     </ClCompile>
@@ -2226,9 +2220,6 @@
       <Filter>Source Files\Swarm\Shared\vgui</Filter>
     </ClCompile>
     <ClCompile Include="swarm\vgui\asw_vgui_manipulator.cpp">
-      <Filter>Source Files\Swarm\Shared\vgui</Filter>
-    </ClCompile>
-    <ClCompile Include="swarm\vgui\asw_vgui_marine_ammo_report.cpp">
       <Filter>Source Files\Swarm\Shared\vgui</Filter>
     </ClCompile>
     <ClCompile Include="swarm\vgui\asw_vgui_music_importer.cpp">
@@ -3679,9 +3670,6 @@
     <ClInclude Include="swarm\vgui\asw_scalable_text.h">
       <Filter>Source Files\Swarm\Shared\vgui</Filter>
     </ClInclude>
-    <ClInclude Include="swarm\vgui\asw_vgui_ammo_list.h">
-      <Filter>Source Files\Swarm\Shared\vgui</Filter>
-    </ClInclude>
     <ClInclude Include="swarm\vgui\asw_vgui_computer_camera.h">
       <Filter>Source Files\Swarm\Shared\vgui</Filter>
     </ClInclude>
@@ -3743,9 +3731,6 @@
       <Filter>Source Files\Swarm\Shared\vgui</Filter>
     </ClInclude>
     <ClInclude Include="swarm\vgui\asw_vgui_manipulator.h">
-      <Filter>Source Files\Swarm\Shared\vgui</Filter>
-    </ClInclude>
-    <ClInclude Include="swarm\vgui\asw_vgui_marine_ammo_report.h">
       <Filter>Source Files\Swarm\Shared\vgui</Filter>
     </ClInclude>
     <ClInclude Include="swarm\vgui\asw_vgui_music_importer.h">

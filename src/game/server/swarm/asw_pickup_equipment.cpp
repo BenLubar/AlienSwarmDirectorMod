@@ -178,67 +178,14 @@ END_DATADESC()
 
 CASW_Pickup_Weapon_Ammo_Bag::CASW_Pickup_Weapon_Ammo_Bag()
 {
-	m_iAmmoCount[CASW_Weapon_Ammo_Bag::ASW_BAG_SLOT_RIFLE]=5;
-	m_iAmmoCount[CASW_Weapon_Ammo_Bag::ASW_BAG_SLOT_AUTOGUN]=1;
-	m_iAmmoCount[CASW_Weapon_Ammo_Bag::ASW_BAG_SLOT_SHOTGUN]=10;
-	m_iAmmoCount[CASW_Weapon_Ammo_Bag::ASW_BAG_SLOT_ASSAULT_SHOTGUN]=5;
-	m_iAmmoCount[CASW_Weapon_Ammo_Bag::ASW_BAG_SLOT_FLAMER]=5;
-	//m_iAmmoCount[CASW_Weapon_Ammo_Bag::ASW_BAG_SLOT_RAILGUN]=5;
-	m_iAmmoCount[CASW_Weapon_Ammo_Bag::ASW_BAG_SLOT_PDW]=5;
-	m_iAmmoCount[CASW_Weapon_Ammo_Bag::ASW_BAG_SLOT_PISTOL]=5;
 }
 
 void CASW_Pickup_Weapon_Ammo_Bag::Spawn( void )
-{ 	
-	Precache( );
-	SetModel( "models/items/ItemBox/ItemBoxLarge.mdl");
-	m_nSkin = 0;
-	BaseClass::Spawn( );
-}
-
-void CASW_Pickup_Weapon_Ammo_Bag::Precache( void )
 {
-	PrecacheModel ("models/items/ItemBox/ItemBoxLarge.mdl");
-}
+	BaseClass::Spawn();
 
-void CASW_Pickup_Weapon_Ammo_Bag::InitFrom(CASW_Marine* pMarine, CASW_Weapon* pWeapon)
-{
-	CASW_Weapon_Ammo_Bag *pBag = dynamic_cast<CASW_Weapon_Ammo_Bag*>(pWeapon);
-	if (!pBag)
-		return;
-	
-	// fill in the properties of the pickup
-	m_iBulletsInGun = 0;
-	m_iClips = 0;
-	m_iSecondary = 0;
-
-	for (int i=0;i<ASW_AMMO_BAG_SLOTS;i++)
-	{
-		m_iAmmoCount[i] = pBag->m_AmmoCount[i];
-		pBag->m_AmmoCount.Set(i, 0);
-	}
-}
-
-void CASW_Pickup_Weapon_Ammo_Bag::InitWeapon(CASW_Marine* pMarine, CASW_Weapon* pWeapon)
-{
-	if (!pMarine || !pWeapon)
-		return;
-	CASW_Weapon_Ammo_Bag *pBag = dynamic_cast<CASW_Weapon_Ammo_Bag*>(pWeapon);
-	if (!pBag)
-		return;
-
-	// ammo bag doesn't have normal ammo
-	pWeapon->SetClip1( 0 );
-	pWeapon->SetClip2( 0 );
-
-	// equip the weapon
-	pMarine->Weapon_Equip_In_Index( pWeapon, pMarine->GetWeaponPositionForPickup(GetWeaponClass()) );
-	
-	for (int i=0;i<ASW_AMMO_BAG_SLOTS;i++)
-	{
-		pBag->m_AmmoCount.Set(i, m_iAmmoCount[i]);
-		m_iAmmoCount[i] = 0;
-	}
+	SetThink(&CASW_Weapon_Ammo_Bag::SUB_Remove);
+	SetNextThink(gpGlobals->curtime);
 }
 
 LINK_ENTITY_TO_CLASS(asw_pickup_ammo_bag, CASW_Pickup_Weapon_Ammo_Bag);

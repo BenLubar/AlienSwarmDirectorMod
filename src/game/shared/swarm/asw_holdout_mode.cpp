@@ -616,7 +616,7 @@ void CASW_Holdout_Mode::RefillMarineAmmo()
 	}
 
 	CASW_Sentry_Base *pSentry = NULL;
-	while ((pSentry = assert_cast<CASW_Sentry_Base *>(gEntList.FindEntityByClassname(pSentry, "asw_sentry_base"))))
+	while ((pSentry = assert_cast<CASW_Sentry_Base *>(gEntList.FindEntityByClassname(pSentry, "asw_sentry_base"))) != NULL)
 	{
 		pSentry->SetAmmo(CASW_Sentry_Base::GetBaseAmmoForGunType(pSentry->GetGunType()));
 	}

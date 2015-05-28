@@ -481,12 +481,7 @@ void CASW_Weapon_Tesla_Gun::Fire( const Vector &vecOrigSrc, const Vector &vecDir
 #ifdef GAME_DLL
 	if (pMarine && m_iClip1 <= 0 && pMarine->GetAmmoCount(m_iPrimaryAmmoType) <= 0 )
 	{
-		// check he doesn't have ammo in an ammo bay
-		CASW_Weapon_Ammo_Bag* pAmmoBag = dynamic_cast<CASW_Weapon_Ammo_Bag*>(pMarine->GetASWWeapon(0));
-		if (!pAmmoBag)
-			pAmmoBag = dynamic_cast<CASW_Weapon_Ammo_Bag*>(pMarine->GetASWWeapon(1));
-		if (!pAmmoBag || !pAmmoBag->CanGiveAmmoToWeapon(this))
-			pMarine->OnWeaponOutOfAmmo(true);
+		pMarine->OnWeaponOutOfAmmo(true);
 	}
 #endif
 

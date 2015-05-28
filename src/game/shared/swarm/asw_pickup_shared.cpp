@@ -29,13 +29,7 @@ bool CASW_Ammo::AllowedToPickup(CASW_Marine *pMarine)
 	if (!pMarine)
 		return false;
 
-	if (!ASWGameRules()->MarineCanPickupAmmo(pMarine, this))
-	{
-		if (!ASWGameRules()->MarineHasRoomInAmmoBag(pMarine, m_iAmmoIndex))
-			return false;
-	}
-
-	return true;
+	return ASWGameRules()->MarineCanPickupAmmo(pMarine, this);
 }
 
 bool CASW_Pickup_Weapon::AllowedToPickup(CASW_Marine *pMarine)
