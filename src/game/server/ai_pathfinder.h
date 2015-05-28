@@ -81,7 +81,7 @@ public:
 	// --------------------------------
 
 	void SetIgnoreBadLinks()		{ m_bIgnoreStaleLinks = true; } // lasts only for the next pathfind
-	void SetIgnoreDisabledLinks()	{ SetIgnoreBadLinks(); m_bIgnoreDisabledLinks = true; }
+	void SetIgnoreDisabledLinks()	{ m_bIgnoreDisabledLinks = true; } // lasts only for the next pathfind
 
 	// --------------------------------
 	

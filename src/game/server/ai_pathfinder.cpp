@@ -1992,7 +1992,7 @@ public:
 			for ( int i = 0; i < pNode->NumLinks(); i++ )
 			{
 				CAI_Link *pLink = pNode->GetLinkByIndex( i );
-				if ( pLink->m_LinkInfo & ( bits_LINK_STALE_SUGGESTED | ( bits_LINK_OFF | bits_LINK_ASW_BASHABLE ) ) )
+				if ( pLink->m_LinkInfo & ( bits_LINK_STALE_SUGGESTED | ( m_pPathfinder->m_bIgnoreDisabledLinks ? 0 : ( bits_LINK_OFF | bits_LINK_ASW_BASHABLE ) ) ) )
 				{
 					nStaleLinks++;
 				}

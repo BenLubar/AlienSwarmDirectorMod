@@ -502,12 +502,34 @@ int CASW_Marine::SelectSchedule()
 			}
 		}
 
-		if (GetSquadFormation()->m_vecObjective != vec3_invalid && NeedToFollowMove(true))
+		CASW_SquadFormation *pSquad = GetSquadFormation();
+		if ( pSquad->m_vecObjective != vec3_invalid )
 		{
-			return SCHED_ASW_LEAD;
-		}
+			if ( NeedToFollowMove(true) )
+			{
+				return SCHED_ASW_LEAD;
+			}
 
-		Assert(!"Leader not leading");
+			if ( !GetEnemy() )
+			{
+				for ( int i = CASW_SquadFormation::FIRST_SQUAD_FOLLOWER; i < CASW_SquadFormation::MAX_SQUAD_SIZE; i++ )
+				{
+					CASW_Marine *pSquaddie = pSquad->Squaddie( i );
+					if ( pSquaddie && pSquaddie->GetEnemy() && pSquaddie->GetEnemy()->Classify() == CLASS_ASW_EXPLOSIVE_BARREL )
+					{
+						SetEnemy( pSquaddie->GetEnemy() );
+						break;
+					}
+				}
+			}
+
+			if ( GetEnemy() && GetEnemy()->Classify() == CLASS_ASW_EXPLOSIVE_BARREL )
+			{
+				return SCHED_ESTABLISH_LINE_OF_FIRE;
+			}
+
+			Assert(!"Leader not leading");
+		}
 	}
 
 	//Msg("Marine's select schedule returning SCHED_ASW_HOLD_POSITION\n");
