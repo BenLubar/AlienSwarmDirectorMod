@@ -983,7 +983,10 @@ void CASW_SquadFormation::UpdateGoalPosition()
 						pCur = pCur->GetNext();
 					}
 					Assert( pCur );
-					vecBest = pCur->GetPos();
+					if ( pCur && pCur->GetNext() )
+					{
+						vecBest = pCur->GetPos();
+					}
 					DeleteAll( pRoute );
 				}
 				m_vecObjective = vecBest;
