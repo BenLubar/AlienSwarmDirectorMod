@@ -4297,7 +4297,7 @@ void CASW_Marine::CheckAndRequestAmmo()
 	{
 		CASW_Weapon *pWeapon = GetASWWeapon(iWeapon);
 
-		if ( !pWeapon || !pWeapon->UsesClipsForAmmo1() )
+		if ( !pWeapon || !pWeapon->IsOffensiveWeapon() || pWeapon->Classify() == CLASS_ASW_CHAINSAW )
 			continue;
 
 		bool bWeaponHasAmmo = ( pWeapon->Clip1() > 0 || GetAmmoCount ( pWeapon->GetPrimaryAmmoType() ) > 0 );
@@ -4310,8 +4310,8 @@ void CASW_Marine::CheckAndRequestAmmo()
 			bAllWeaponsOutOfAmmo = false;
 		}
 
-		// if we have some ammo, only request it if marine is player controlled, the weapon is active, and we're low on ammo
-		if ( bWeaponHasAmmo && ( !IsInhabited() || !bActiveWeapon || !bWeaponLowOnAmmo ) )
+		// if we have some ammo, only request it if the weapon is active and we're low on ammo
+		if ( bWeaponHasAmmo && ( !bActiveWeapon || !bWeaponLowOnAmmo ) )
 		{
 			continue;
 		}

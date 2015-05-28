@@ -523,6 +523,11 @@ int CASW_Marine::SelectSchedule()
 				}
 			}
 
+			if ( !GetEnemy() )
+			{
+				SetEnemy( gEntList.FindEntityByClassnameNearest( "asw_explosive_barrel", GetAbsOrigin(), 1024.0f ) );
+			}
+
 			if ( GetEnemy() && GetEnemy()->Classify() == CLASS_ASW_EXPLOSIVE_BARREL )
 			{
 				return SCHED_ESTABLISH_LINE_OF_FIRE;
@@ -645,17 +650,17 @@ void CASW_Marine::TaskFail( AI_TaskFailureCode_t code )
 			float flClosestDist = FLT_MAX;
 
 			// check for a button to push nearby
-			for (int i = 0; i < IASW_Use_Area_List::AutoList().Count(); i++)
+			FOR_EACH_VEC( IASW_Use_Area_List::AutoList(), i )
 			{
-				CASW_Use_Area *pArea = static_cast<CASW_Use_Area*>(IASW_Use_Area_List::AutoList()[i]);
-				if (pArea->Classify() == CLASS_ASW_BUTTON_PANEL)
+				CASW_Use_Area *pArea = assert_cast<CASW_Use_Area*>( IASW_Use_Area_List::AutoList()[i] );
+				if ( pArea->Classify() == CLASS_ASW_BUTTON_PANEL )
 				{
-					CASW_Button_Area *pButton = assert_cast<CASW_Button_Area*>(pArea);
-					if (pButton->IsLocked() || !pButton->HasPower() || !pButton->m_bUseAreaEnabled.Get())
+					CASW_Button_Area *pButton = assert_cast<CASW_Button_Area*>( pArea );
+					if ( pButton->IsLocked() || !pButton->HasPower() || !pButton->m_bUseAreaEnabled.Get() )
 						continue;
 
 					float flDist = GetAbsOrigin().DistTo(pArea->WorldSpaceCenter());
-					if (flDist < flClosestDist && flDist < AUTO_HACK_DIST)
+					if ( flDist < flClosestDist && flDist < AUTO_HACK_DIST )
 					{
 						flClosestDist = flDist;
 						pClosestArea = pArea;
@@ -744,6 +749,22 @@ int CASW_Marine::SelectHackingSchedule()
 
 	if ( m_hAreaToUse.Get() )
 	{
+		FOR_EACH_VEC( IASW_Use_Area_List::AutoList(), i )
+		{
+			CASW_Use_Area *pArea = assert_cast<CASW_Use_Area *>( IASW_Use_Area_List::AutoList()[i] );
+			if ( pArea->m_nPlayersRequired > 1 && pArea->IsTouching( this ) )
+			{
+				// Don't push the button before everyone is in place for Cargo Elevator.
+				CASW_SquadFormation *pSquad = GetSquadFormation();
+				for ( int j = 0; j < CASW_SquadFormation::MAX_SQUAD_SIZE; j++ )
+				{
+					if ( pSquad->Squaddie( j ) && !pArea->IsTouching( pSquad->Squaddie( j ) ) )
+					{
+						return -1;
+					}
+				}
+			}
+		}
 		CASW_Button_Area *pButton = dynamic_cast<CASW_Button_Area *>(m_hAreaToUse.Get());
 		CASW_Computer_Area *pComputer = dynamic_cast<CASW_Computer_Area *>(m_hAreaToUse.Get());
 		if ( pButton && ( pButton->m_bIsInUse.Get() || !pButton->m_bUseAreaEnabled.Get() ) )
@@ -883,7 +904,7 @@ int CASW_Marine::SelectTakeAmmoSchedule()
 			for ( int m = 0; m < ASWGameResource()->GetMaxMarineResources(); m++ )
 			{
 				CASW_Marine_Resource *pMR = ASWGameResource()->GetMarineResource( m );
-				if ( !pMR || pMR == GetMarineResource() || !pMR->IsInhabited() || !pMR->GetMarineEntity() )
+				if ( !pMR || pMR == GetMarineResource() || !pMR->GetMarineEntity() )
 					continue;
 
 				if ( !pAmmo->AllowedToPickup( pMR->GetMarineEntity() ) )
@@ -921,26 +942,29 @@ int CASW_Marine::SelectTakeAmmoSchedule()
 
 				if( !pAmmoDrop->AllowedToPickup( this ) )
 					continue;
-	
-				bool bHumanNeedsAmmo = false;
-				for( int j = 0; j < ASWGameResource()->GetMaxMarineResources(); j++)
+
+				CASW_SquadFormation *pSquad = GetSquadFormation();
+				bool bSomeoneElseNeedsAmmo = false;
+				for( int j = 0; j < CASW_SquadFormation::MAX_SQUAD_SIZE; j++)
 				{
-					CASW_Marine_Resource *pMR = ASWGameResource()->GetMarineResource( j );
-					if( !pMR || pMR == GetMarineResource() || !pMR->IsInhabited() || !pMR->GetMarineEntity() )
+					CASW_Marine *pMarine = pSquad ? pSquad->Squaddie( j ) : NULL;
+					if( !pMarine || pMarine == this )
 						continue;
 
-					if( !pAmmoDrop->AllowedToPickup( pMR->GetMarineEntity() ) )
+					if( !pAmmoDrop->AllowedToPickup( pMarine ) )
 						continue;
 
-					if ( !pAmmoDrop->NeedsAmmoMoreThan( this, pMR->GetMarineEntity() ) )
+					if ( pAmmoDrop->NeedsAmmoMoreThan( pMarine, this ) )
 					{
-						bHumanNeedsAmmo = true;
+						bSomeoneElseNeedsAmmo = true;
 						break;
 					}
 				}
 
-				if( bHumanNeedsAmmo )
+				if( bSomeoneElseNeedsAmmo )
 					continue;
+
+				Weapon_Switch( pAmmoDrop->GetAmmoUseUnits( this ) );
 
 				m_hTakeAmmoDrop = pAmmoDrop;
 				break;
@@ -1113,7 +1137,7 @@ int CASW_Marine::SelectGiveAmmoSchedule()
 		for ( int j = 0; j < ASW_MAX_EQUIP_SLOTS; j++ )
 		{
 			CASW_Weapon *pWeapon = pMarine->GetASWWeapon( j );
-			if ( !pWeapon || pWeapon->UsesClipsForAmmo1() )
+			if ( !pWeapon || !pWeapon->IsOffensiveWeapon() || pWeapon->Classify() == CLASS_ASW_CHAINSAW )
 			{
 				continue;
 			}
@@ -1132,10 +1156,14 @@ int CASW_Marine::SelectGiveAmmoSchedule()
 	FOR_EACH_VEC( IAmmoDropAutoList::AutoList(), i )
 	{
 		CASW_Ammo_Drop *pDrop = assert_cast<CASW_Ammo_Drop *>( IAmmoDropAutoList::AutoList()[i] );
-		pDrop;
+		// Only count ammo that was not placed by the level designer.
+		if ( pDrop->GetDeployer() )
+		{
+			iHave += pDrop->m_iAmmoUnitsRemaining;
+		}
 	}
 
-	if ( iNeeded < iHave + DEFAULT_AMMO_DROP_UNITS )
+	if ( iNeeded >= iHave + DEFAULT_AMMO_DROP_UNITS )
 	{
 		return SCHED_ASW_GIVE_AMMO;
 	}
@@ -3271,6 +3299,22 @@ void CASW_Marine::UpdateFacing()
 			Msg( "aim error = %f fAimYaw = %f\n", m_fMarineAimError, flAimYaw );
 		}
 	}
+	else if ( IsCurSchedule( SCHED_ASW_LEAD ) )
+	{
+		float flAimYaw = CalcIdealYaw( GetNavigator()->GetGoalPos() );
+		GetMotor()->SetIdealYawAndUpdate( flAimYaw );
+
+		if ( asw_debug_marine_aim.GetBool() )
+		{
+			Vector vecAim;
+			QAngle angAim = QAngle( 0, flAimYaw, 0 );
+			AngleVectors( angAim, &vecAim );
+
+			NDebugOverlay::Line( GetAbsOrigin(), GetAbsOrigin() + vecAim * 50, 255, 255, 0, false, 0.1f );
+			NDebugOverlay::Line( GetAbsOrigin(), m_vecMoveToOrderPos, 255, 255, 255, false, 0.1f );
+			Msg( "aim error = %f fAimYaw = %f\n", m_fMarineAimError, flAimYaw );
+		}
+	}
 	else if ( GetASWOrders() == ASW_ORDER_FOLLOW )
 	{
 		float flAimYaw = GetSquadFormation()->GetYaw( GetSquadFormation()->Find(this) );
@@ -3516,20 +3560,21 @@ void CASW_Marine::UpdateCombatStatus()
 {
 	const float flCombatEnemyDist = 512.0f;
 	const float flNearbyMarineDist = 768.0f;
-	CASW_Game_Resource *pGameResource = ASWGameResource();
 
-	if ( !IsInhabited() && GetEnemy() && GetEnemy()->GetAbsOrigin().DistTo( GetAbsOrigin() ) < flCombatEnemyDist )
+	CASW_SquadFormation *pSquad = GetSquadFormation();
+
+	if ( !IsInhabited() && GetEnemy() && GetEnemy() != GetPhysicsPropTarget() && GetEnemy()->GetAbsOrigin().DistTo( GetAbsOrigin() ) < flCombatEnemyDist )
 	{
 		m_flLastSquadEnemyTime = gpGlobals->curtime;
 	}
-	else
+	else if ( pSquad )
 	{
 		// check nearby squad mates
-		for ( int i = 0; i < pGameResource->GetMaxMarineResources(); i++ )
+		for ( int i = 0; i < CASW_SquadFormation::MAX_SQUAD_SIZE; i++ )
 		{
-			CASW_Marine_Resource *pMR = pGameResource->GetMarineResource(i);
-			CASW_Marine *pOtherMarine = pMR ? pMR->GetMarineEntity() : NULL;
+			CASW_Marine *pOtherMarine = pSquad->Squaddie( i );
 			if ( pOtherMarine && pOtherMarine != this && !pOtherMarine->IsInhabited() && pOtherMarine->GetEnemy()
+					&& pOtherMarine->GetEnemy() != pOtherMarine->GetPhysicsPropTarget()
 					&& pOtherMarine->GetAbsOrigin().DistTo( GetAbsOrigin() ) < flNearbyMarineDist
 					&& pOtherMarine->GetEnemy()->GetAbsOrigin().DistTo( pOtherMarine->GetAbsOrigin() ) < flCombatEnemyDist )
 			{
@@ -3541,13 +3586,15 @@ void CASW_Marine::UpdateCombatStatus()
 
 	m_flLastSquadShotAlienTime = 0.0f;
 
-	for ( int i = 0; i < pGameResource->GetMaxMarineResources(); i++ )
+	if ( pSquad )
 	{
-		CASW_Marine_Resource *pMR = pGameResource->GetMarineResource(i);
-		CASW_Marine *pOtherMarine = pMR ? pMR->GetMarineEntity() : NULL;
-		if ( pOtherMarine != this && pOtherMarine && pOtherMarine->GetAbsOrigin().DistTo( GetAbsOrigin() ) < flNearbyMarineDist )
+		for ( int i = 0; i < CASW_SquadFormation::MAX_SQUAD_SIZE; i++ )
 		{
-			m_flLastSquadShotAlienTime = MAX( m_flLastSquadShotAlienTime, pOtherMarine->m_flLastHurtAlienTime );
+			CASW_Marine *pOtherMarine = pSquad->Squaddie( i );
+			if ( pOtherMarine != this && pOtherMarine && pOtherMarine->GetAbsOrigin().DistTo( GetAbsOrigin() ) < flNearbyMarineDist )
+			{
+				m_flLastSquadShotAlienTime = MAX( m_flLastSquadShotAlienTime, pOtherMarine->m_flLastHurtAlienTime );
+			}
 		}
 	}
 
@@ -3564,7 +3611,7 @@ bool CASW_Marine::IsInCombat()
 	if ( asw_marine_force_combat_status.GetBool() )
 		return true;
 
-	const float flCombatTime = 10.0f;
+	const float flCombatTime = 4.0f;
 	return ( ( m_flLastSquadEnemyTime != 0.0f && m_flLastSquadEnemyTime > gpGlobals->curtime - flCombatTime ) ||
 				( m_flLastSquadShotAlienTime != 0.0f && m_flLastSquadShotAlienTime > gpGlobals->curtime - flCombatTime ) );
 }
@@ -4215,8 +4262,6 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 		"	Interrupts"
 		"		COND_ASW_NEW_ORDERS"
 		"		COND_ASW_TOO_FAR_FROM_SQUAD"
-		"		COND_NEW_ENEMY"
-		"		COND_SEE_ENEMY"
 		"		COND_CAN_RANGE_ATTACK1"
 		"		COND_CAN_RANGE_ATTACK2"
 	)

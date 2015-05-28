@@ -284,7 +284,7 @@ void CASW_SquadFormation::UpdateFollowPositions()
 	angLeaderFacing[PITCH] = 0;
 	matrix3x4_t matLeaderFacing;
 	Vector vProjectedLeaderPos = GetLeaderPosition();
-	bool bLeaderWaits = vProjectedLeaderPos != pLeader->GetAbsOrigin();
+	bool bLeaderWaits = vProjectedLeaderPos != pLeader->GetAbsOrigin() || pLeader->IsInCombat();
 	vProjectedLeaderPos += pLeader->GetAbsVelocity() * asw_follow_velocity_predict.GetFloat();
 	GetLdrAnglMatrix( vProjectedLeaderPos, angLeaderFacing, &matLeaderFacing );
 
@@ -1009,7 +1009,7 @@ void CASW_SquadFormation::UpdateGoalPosition()
 						pCur = pCur->GetNext();
 					}
 					Assert( pCur );
-					if ( pCur && pCur->GetNext() )
+					if ( pCur && pCur->GetNext() && Leader()->GetAbsOrigin().DistToSqr( pCur->GetPos() ) > Square( 100.0f ) )
 					{
 						vecBest = pCur->GetPos();
 					}

@@ -37,6 +37,7 @@ public:
 	bool AllowedToPickup( CASW_Marine *pMarine );
 	void PlayDeploySound();
 	void SetDeployer( CASW_Marine *pMarine ) { m_hDeployer = pMarine; }
+	CASW_Marine *GetDeployer() { return m_hDeployer; }
 
 	// IASW_Server_Usable_Entity implementation
 	virtual CBaseEntity* GetEntity() { return this; }
