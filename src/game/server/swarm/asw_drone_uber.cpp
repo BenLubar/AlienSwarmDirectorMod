@@ -40,7 +40,7 @@ void CASW_Drone_Uber::Spawn( void )
 	SetModel( SWARM_NEW_DRONE_MODEL );	
 	Precache();	
 
-	SetHullType(HULL_LARGE);
+	SetHullType(HULL_MEDIUMBIG);
 	SetHullSizeNormal();
 
 	UTIL_SetSize(this, Vector(-40,-40,0), Vector(40,40,130));
