@@ -20,6 +20,7 @@
 #include "asw_gamerules.h"
 #include "ai_pathfinder.h"
 #include "ai_waypoint.h"
+#include "ai_network.h"
 #include "asw_holdout_mode.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
@@ -954,15 +955,34 @@ void CASW_SquadFormation::UpdateGoalPosition()
 			{
 				Assert( Leader() && Leader()->GetPathfinder() );
 				// Make sure our objective location is somewhere we can walk to. For example, Cargo Elevator's first objective is after the puzzle needed to open the path there.
-				AI_Waypoint_t *pRoute = Leader()->GetPathfinder()->BuildRoute( GetLeaderPosition(), vecBest, NULL, 0, NAV_GROUND, bits_BUILD_GET_CLOSE );
+				Leader()->GetPathfinder()->SetIgnoreDisabledLinks();
+				AI_Waypoint_t *pRoute = Leader()->GetPathfinder()->BuildRoute( GetLeaderPosition(), vecBest, NULL, 1024.0f, NAV_GROUND, bits_BUILD_GET_CLOSE | bits_BUILD_NO_LOCAL_NAV );
 				if ( pRoute )
 				{
 					AI_Waypoint_t *pCur = pRoute;
 					while ( pCur && pCur->GetNext() )
 					{
+						if ( pCur->iNodeID != -1 && pCur->GetNext()->iNodeID != -1 )
+						{
+							Assert( g_pBigAINet );
+							CAI_Node *pNode = g_pBigAINet->GetNode( pCur->iNodeID );
+							if ( !pNode )
+							{
+								break;
+							}
+							CAI_Link *pLink = pNode->GetLink( pCur->GetNext()->iNodeID );
+							if ( !pLink )
+							{
+								break;
+							}
+							if ( !Leader()->GetPathfinder()->IsLinkUsable( pLink, pCur->iNodeID ) )
+							{
+								break;
+							}
+						}
 						pCur = pCur->GetNext();
 					}
-					Assert(pCur);
+					Assert( pCur );
 					vecBest = pCur->GetPos();
 					DeleteAll( pRoute );
 				}

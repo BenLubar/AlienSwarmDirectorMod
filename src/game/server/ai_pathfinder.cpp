@@ -683,7 +683,7 @@ bool CAI_Pathfinder::IsLinkUsable(CAI_Link *pLink, int startID)
 	// --------------------------------------------------------------------------
 	// Skip if link turned off
 	// --------------------------------------------------------------------------
-	if (pLink->m_LinkInfo & ( bits_LINK_OFF | bits_LINK_ASW_BASHABLE ) )
+	if ( !m_bIgnoreDisabledLinks && pLink->m_LinkInfo & ( bits_LINK_OFF | bits_LINK_ASW_BASHABLE ) )
 	{
 		CAI_DynamicLink *pDynamicLink = pLink->m_hDynamicLink;
 
@@ -1724,6 +1724,7 @@ AI_Waypoint_t *CAI_Pathfinder::BuildRoute( const Vector &vStart, const Vector &v
 
 
 	m_bIgnoreStaleLinks = false;
+	m_bIgnoreDisabledLinks = false;
 
 	return pResult;
 }

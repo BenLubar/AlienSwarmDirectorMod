@@ -81,6 +81,7 @@ public:
 	// --------------------------------
 
 	void SetIgnoreBadLinks()		{ m_bIgnoreStaleLinks = true; } // lasts only for the next pathfind
+	void SetIgnoreDisabledLinks()	{ SetIgnoreBadLinks(); m_bIgnoreDisabledLinks = true; }
 
 	// --------------------------------
 	
@@ -195,6 +196,7 @@ private:
 	
 	float m_flLastStaleLinkCheckTime;	// Last time I check for a stale link
 	bool m_bIgnoreStaleLinks;
+	bool m_bIgnoreDisabledLinks;
 
 	//---------------------------------
 	

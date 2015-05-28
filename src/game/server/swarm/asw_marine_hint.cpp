@@ -99,7 +99,7 @@ int CASW_Marine_Hint_Manager::FindHints(const Vector &position, CASW_Marine *pLe
 			continue;
 		}
 
-		AI_Waypoint_t *pPath = pLeader->GetPathfinder()->BuildRoute(position, pHint->m_vecPosition, NULL, 0, NAV_GROUND);
+		AI_Waypoint_t *pPath = pLeader->GetPathfinder()->BuildRoute(position, pHint->m_vecPosition, NULL, 0, NAV_GROUND, bits_BUILD_NO_LOCAL_NAV);
 		if (!pPath)
 		{
 			continue;
