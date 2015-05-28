@@ -392,11 +392,6 @@ int CASW_Marine::SelectSchedule()
 
 	if ( m_hUsingEntity.Get() )
 	{
-		if (GetSquadLeader() != NULL && !GetSquadLeader()->IsInhabited() && GetSquadLeader() != this)
-		{
-			// make the squad leader think about protecting us instead of charging ahead
-			GetSquadLeader()->SetASWOrders(ASW_ORDER_HOLD_POSITION);
-		}
 		if (asw_debug_marine_ai.GetBool())
 		{
 			DevMsg(this, "Schedule: SCHED_ASW_USING_OVER_TIME because I am using %s.\n", m_hUsingEntity->GetDebugName());
@@ -464,44 +459,6 @@ int CASW_Marine::SelectSchedule()
 	
 	if (GetSquadLeader() == this)
 	{
-		CASW_SquadFormation *pFormation = GetSquadFormation();
-		for (int i = 0; i < CASW_SquadFormation::MAX_SQUAD_SIZE; i++)
-		{
-			CASW_Marine *pSquaddie = pFormation->Squaddie(i);
-			if (pSquaddie && pSquaddie->GetUsingEntity())
-			{
-				// protect the tech!
-				pSquaddie->SetASWOrders(ASW_ORDER_HOLD_POSITION);
-				SetASWOrders(ASW_ORDER_FOLLOW);
-				pFormation->ChangeLeader(pSquaddie, true);
-
-				int iFollowSchedule = SelectFollowSchedule();
-				if (iFollowSchedule != -1)
-					return iFollowSchedule;
-				break;
-			}
-		}
-		CASW_Marine *pCandidate = this;
-		for (int i = 0; i < CASW_SquadFormation::MAX_SQUAD_SIZE; i++)
-		{
-			CASW_Marine *pSquaddie = pFormation->Squaddie(i);
-			if (pSquaddie && pSquaddie->GetHealth() > 0 && pSquaddie->GetMarineProfile()->GetMarineClass() < pCandidate->GetMarineProfile()->GetMarineClass())
-			{
-				pCandidate = pSquaddie;
-			}
-		}
-		if (pCandidate != this)
-		{
-			// officer > special weapons > medic > tech
-			pCandidate->SetASWOrders(ASW_ORDER_HOLD_POSITION);
-			SetASWOrders(ASW_ORDER_FOLLOW);
-			pFormation->ChangeLeader(pCandidate, true);
-
-			int iFollowSchedule = SelectFollowSchedule();
-			if (iFollowSchedule != -1)
-				return iFollowSchedule;
-		}
-
 		if ( IsInCombat() )
 		{
 			int iFollowSchedule = SelectFollowSchedule();
@@ -545,10 +502,12 @@ int CASW_Marine::SelectSchedule()
 			}
 		}
 
-		if (pFormation->m_vecObjective != vec3_invalid && NeedToFollowMove(true))
+		if (GetSquadFormation()->m_vecObjective != vec3_invalid && NeedToFollowMove(true))
 		{
 			return SCHED_ASW_LEAD;
 		}
+
+		Assert(!"Leader not leading");
 	}
 
 	//Msg("Marine's select schedule returning SCHED_ASW_HOLD_POSITION\n");
@@ -718,7 +677,7 @@ int CASW_Marine::SelectHackingSchedule()
 	if ( !GetMarineProfile() || (GetMarineProfile()->GetMarineClass() != MARINE_CLASS_TECH && !m_hAreaToUse.Get()) )
 		return -1;
 
-	if (GetMarineProfile()->GetMarineClass() == MARINE_CLASS_TECH && (asw_marine_auto_hack.GetBool() || (GetSquadLeader() && !GetSquadLeader()->IsInhabited())))
+	if (GetMarineProfile()->CanHack() && (asw_marine_auto_hack.GetBool() || (GetSquadLeader() && !GetSquadLeader()->IsInhabited())))
 	{
 		CASW_Use_Area *pClosestArea = NULL;
 		float flClosestDist = FLT_MAX;
@@ -4234,6 +4193,8 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 		"	Interrupts"
 		"		COND_ASW_NEW_ORDERS"
 		"		COND_ASW_TOO_FAR_FROM_SQUAD"
+		"		COND_NEW_ENEMY"
+		"		COND_SEE_ENEMY"
 		"		COND_CAN_RANGE_ATTACK1"
 		"		COND_CAN_RANGE_ATTACK2"
 	)
@@ -4382,7 +4343,7 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 		"		TASK_ASW_HEAL_MARINE				0"
 		""
 		"	Interrupts"
-		""
+		"		COND_HEAVY_DAMAGE"
 		);
 
 	DEFINE_SCHEDULE
@@ -4396,7 +4357,7 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 		"		TASK_ASW_DROP_HEAL_BEACON			0"
 		""
 		"	Interrupts"
-		""
+		"		COND_HEAVY_DAMAGE"
 		);
 
 	//=========================================================

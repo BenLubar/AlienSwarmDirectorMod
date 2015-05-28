@@ -381,7 +381,7 @@ void CASW_SquadFormation::UpdateFollowPositions()
 		{
 			if (i == CASW_SquadFormation::SQUAD_LEADER)
 			{
-				m_vFollowPositions[i] = vProjectedLeaderPos;
+				m_vFollowPositions[i] = m_vecObjective == vec3_invalid ? vProjectedLeaderPos : m_vecObjective;
 			}
 			else if ( m_nMarineHintIndex[i] != INVALID_HINT_INDEX )
 			{
@@ -923,7 +923,6 @@ void CASW_SquadFormation::UpdateGoalPosition()
 						vecBest.y = RandomFloat(mins.y, maxs.y);
 						vecBest.z = RandomFloat(mins.z, maxs.z);
 					}
-					FollowCommandUsed();
 				}
 				else if (dynamic_cast<CASW_Objective_Triggered *>(pObj))
 				{
@@ -945,11 +944,6 @@ void CASW_SquadFormation::UpdateGoalPosition()
 						vecBest.y = RandomFloat(mins.y, maxs.y);
 						vecBest.z = RandomFloat(mins.z, maxs.z);
 					}
-
-					if (RandomFloat() < 0.1f)
-					{
-						FollowCommandUsed();
-					}
 				}
 				else
 				{
@@ -958,6 +952,20 @@ void CASW_SquadFormation::UpdateGoalPosition()
 			}
 			if (flMinDist != -1)
 			{
+				Assert( Leader() && Leader()->GetPathfinder() );
+				// Make sure our objective location is somewhere we can walk to. For example, Cargo Elevator's first objective is after the puzzle needed to open the path there.
+				AI_Waypoint_t *pRoute = Leader()->GetPathfinder()->BuildRoute( GetLeaderPosition(), vecBest, NULL, 0, NAV_GROUND, bits_BUILD_GET_CLOSE );
+				if ( pRoute )
+				{
+					AI_Waypoint_t *pCur = pRoute;
+					while ( pCur && pCur->GetNext() )
+					{
+						pCur = pCur->GetNext();
+					}
+					Assert(pCur);
+					vecBest = pCur->GetPos();
+					DeleteAll( pRoute );
+				}
 				m_vecObjective = vecBest;
 				if (asw_debug_marine_ai.GetBool())
 				{
@@ -973,27 +981,16 @@ void CASW_SquadFormation::UpdateGoalPosition()
 
 Vector CASW_SquadFormation::GetLeaderPosition()
 {
-	CASW_Marine *pLeader = Leader();
-	Assert(pLeader);
-	Vector position = pLeader->GetAbsOrigin();
-	if (!pLeader->IsInhabited() && m_vecObjective != vec3_invalid)
+	Assert( Leader() );
+	for ( int i = 0; i < MAX_SQUAD_SIZE; i++ )
 	{
-		AI_Waypoint_t *pPath = pLeader->GetPathfinder()->BuildRoute(position, m_vecObjective, NULL, 0, NAV_GROUND);
-		if (pPath)
+		CASW_Marine *pMarine = Squaddie( i );
+		if ( pMarine && pMarine->GetUsingEntity() )
 		{
-			AI_Waypoint_t *pCur = pPath;
-			while (pCur && pCur->GetPos().AsVector2D().DistToSqr(position.AsVector2D()) < Square(100))
-			{
-				pCur = pCur->GetNext();
-			}
-			if (pCur)
-			{
-				position = pCur->GetPos();
-			}
-			DeleteAll(pPath);
+			return pMarine->GetAbsOrigin();
 		}
 	}
-	return position;
+	return Leader()->GetAbsOrigin();
 }
 
 bool CASW_SquadFormation::ShouldUpdateFollowPositions() const
