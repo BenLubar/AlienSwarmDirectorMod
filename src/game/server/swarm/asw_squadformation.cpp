@@ -282,7 +282,9 @@ void CASW_SquadFormation::UpdateFollowPositions()
 	QAngle angLeaderFacing = pLeader->EyeAngles();
 	angLeaderFacing[PITCH] = 0;
 	matrix3x4_t matLeaderFacing;
-	Vector vProjectedLeaderPos = GetLeaderPosition() + pLeader->GetAbsVelocity() * asw_follow_velocity_predict.GetFloat();
+	Vector vProjectedLeaderPos = GetLeaderPosition();
+	bool bLeaderWaits = vProjectedLeaderPos != pLeader->GetAbsOrigin();
+	vProjectedLeaderPos += pLeader->GetAbsVelocity() * asw_follow_velocity_predict.GetFloat();
 	GetLdrAnglMatrix( vProjectedLeaderPos, angLeaderFacing, &matLeaderFacing );
 
 	for ( int i = 0 ; i < MAX_SQUAD_SIZE ; ++i )
@@ -380,9 +382,9 @@ void CASW_SquadFormation::UpdateFollowPositions()
 		}
 		else if ( MarineHintManager()->GetHintCount() && m_flUseHintsAfter[i] < gpGlobals->curtime && asw_follow_use_hints.GetBool() && ( pLeader->IsInCombat() || asw_follow_use_hints.GetInt() == 2 ) )
 		{
-			if (i == CASW_SquadFormation::SQUAD_LEADER)
+			if ( i == CASW_SquadFormation::SQUAD_LEADER && m_vecObjective != vec3_invalid && !bLeaderWaits )
 			{
-				m_vFollowPositions[i] = m_vecObjective == vec3_invalid ? vProjectedLeaderPos : m_vecObjective;
+				m_vFollowPositions[i] = m_vecObjective;
 			}
 			else if ( m_nMarineHintIndex[i] != INVALID_HINT_INDEX )
 			{
@@ -390,7 +392,7 @@ void CASW_SquadFormation::UpdateFollowPositions()
 			}
 			else if ( pMarine )
 			{
-				VectorTransform(s_MarineFollowOffset[i], matLeaderFacing, m_vFollowPositions[i]);
+				VectorTransform( s_MarineFollowOffset[i], matLeaderFacing, m_vFollowPositions[i] );
 			}
 		}
 		else
