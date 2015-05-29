@@ -256,12 +256,18 @@ void CASW_Hud_Master::OnThink()
 				{
 					int nTotalBullets = pMarine->GetAmmoCount( m_SquadMateInfo[ nPosition ].pWeapon->GetPrimaryAmmoType() );
 					int nMaxClip = m_SquadMateInfo[ nPosition ].pWeapon->GetMaxClip1();
-					m_SquadMateInfo[ nPosition ].nClips = nTotalBullets / nMaxClip;		// TODO: Ammo bag?
+					m_SquadMateInfo[ nPosition ].nClips = nTotalBullets / nMaxClip;
 
 					int nAmmoIndex = m_SquadMateInfo[ nPosition ].pWeapon->GetPrimaryAmmoType();
 					int nGuns = pMarine->GetNumberOfWeaponsUsingAmmo( nAmmoIndex );
 					int nMaxBullets = GetAmmoDef()->MaxCarry( nAmmoIndex, pMarine ) * nGuns;
 					m_SquadMateInfo[ nPosition ].nMaxClips = nMaxBullets / nMaxClip;
+
+					if ( !m_SquadMateInfo[ nPosition ].pWeapon->IsOffensiveWeapon() || m_SquadMateInfo[ nPosition ].pWeapon->Classify() == CLASS_ASW_CHAINSAW )
+					{
+						m_SquadMateInfo[ nPosition ].nClips = 0;
+						m_SquadMateInfo[ nPosition ].nMaxClips = 0;
+					}
 
 					if ( m_SquadMateInfo[ nPosition ].pWeapon->DisplayClipsDoubled() )
 					{
