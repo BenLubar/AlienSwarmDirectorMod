@@ -535,7 +535,7 @@ int CASW_Marine::SelectSchedule()
 				return SCHED_ESTABLISH_LINE_OF_FIRE;
 			}
 
-			Assert(!"Leader not leading");
+			return SCHED_ASW_FOLLOW_WAIT;
 		}
 	}
 
