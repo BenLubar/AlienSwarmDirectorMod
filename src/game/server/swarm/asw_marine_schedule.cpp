@@ -108,6 +108,8 @@ ConVar asw_marine_melee_approach_distance("asw_marine_melee_approach_distance", 
 ConVar asw_debug_marine_ai("asw_debug_marine_ai", "0", FCVAR_CHEAT, "Print debugging messages about marine AI.", true, 0, true, 1);
 ConVar asw_marine_too_far_from_squad("asw_marine_too_far_from_squad", "1500", FCVAR_CHEAT);
 
+extern ConVar asw_follow_hint_max_range;
+
 extern ConVar ai_lead_time;
 
 #define ASW_MARINE_GOO_SCAN_TIME 0.5f
@@ -880,7 +882,7 @@ int CASW_Marine::SelectTakeAmmoSchedule()
 			m_flResetAmmoIgnoreListTime = 0.0f;
 		}
 
-		const float flAmmoScanRadiusSqr = 384.0f * 384.0f;
+		const float flAmmoScanRadiusSqr = Square( asw_follow_hint_max_range.GetFloat() );
 		int nAmmoPickupCount = IAmmoPickupAutoList::AutoList().Count();
 		for ( int i = 0; i < nAmmoPickupCount; i++ )
 		{
@@ -3563,7 +3565,7 @@ void CASW_Marine::UpdateCombatStatus()
 
 	CASW_SquadFormation *pSquad = GetSquadFormation();
 
-	if ( !IsInhabited() && GetEnemy() && GetEnemy() != GetPhysicsPropTarget() && GetEnemy()->GetAbsOrigin().DistTo( GetAbsOrigin() ) < flCombatEnemyDist )
+	if ( !IsInhabited() && GetEnemy() && GetEnemy()->MyNPCPointer() && GetEnemy()->GetAbsOrigin().DistTo( GetAbsOrigin() ) < flCombatEnemyDist )
 	{
 		m_flLastSquadEnemyTime = gpGlobals->curtime;
 	}
@@ -3574,8 +3576,7 @@ void CASW_Marine::UpdateCombatStatus()
 		{
 			CASW_Marine *pOtherMarine = pSquad->Squaddie( i );
 			if ( pOtherMarine && pOtherMarine != this && !pOtherMarine->IsInhabited() && pOtherMarine->GetEnemy()
-					&& pOtherMarine->GetEnemy() != pOtherMarine->GetPhysicsPropTarget()
-					&& pOtherMarine->GetAbsOrigin().DistTo( GetAbsOrigin() ) < flNearbyMarineDist
+					&& pOtherMarine->GetEnemy()->MyNPCPointer() && pOtherMarine->GetAbsOrigin().DistTo( GetAbsOrigin() ) < flNearbyMarineDist
 					&& pOtherMarine->GetEnemy()->GetAbsOrigin().DistTo( pOtherMarine->GetAbsOrigin() ) < flCombatEnemyDist )
 			{
 				m_flLastSquadEnemyTime = gpGlobals->curtime;
