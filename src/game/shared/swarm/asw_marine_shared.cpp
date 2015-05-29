@@ -102,7 +102,6 @@ bool CASW_Marine::Weapon_Switch( CBaseCombatWeapon *pWeapon, int viewmodelindex 
 
 #ifndef CLIENT_DLL
 		CheckAndRequestAmmo();
-		ClearSchedule("weapon swap");
 #endif
 
 		return true;

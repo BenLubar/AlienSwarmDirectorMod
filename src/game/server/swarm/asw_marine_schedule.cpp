@@ -1112,11 +1112,13 @@ void CASW_Marine::GatherConditions()
 
 void CASW_Marine::BuildScheduleTestBits()
 {
-	// ammo bag functionality needs to interrupt base class behaviors
-	SetCustomInterruptCondition(COND_SQUADMATE_WANTS_AMMO);
-	SetCustomInterruptCondition(COND_SQUADMATE_NEEDS_AMMO);
-	SetCustomInterruptCondition(COND_PATH_BLOCKED_BY_PHYSICS_PROP);
-	//SetCustomInterruptCondition(COND_COMPLETELY_OUT_OF_AMMO);
+	BaseClass::BuildScheduleTestBits();
+
+	// ammo satchel functionality needs to interrupt base class behaviors
+	SetCustomInterruptCondition( COND_SQUADMATE_WANTS_AMMO );
+	SetCustomInterruptCondition( COND_SQUADMATE_NEEDS_AMMO );
+	SetCustomInterruptCondition( COND_PATH_BLOCKED_BY_PHYSICS_PROP );
+	//SetCustomInterruptCondition( COND_COMPLETELY_OUT_OF_AMMO );
 }
 
 int CASW_Marine::SelectGiveAmmoSchedule()
@@ -2912,7 +2914,10 @@ void CASW_Marine::CheckForAIWeaponSwitch()
 	if ( !GetEnemy() )
 		return;
 
-	if (m_hHealTarget.Get())
+	if ( m_hHealTarget.Get() )
+		return;
+
+	if ( IsCurSchedule( SCHED_ASW_GIVE_AMMO, false ) )
 		return;
 
 	CASW_Weapon *pWeapon = GetActiveASWWeapon();
@@ -4395,7 +4400,7 @@ AI_BEGIN_CUSTOM_NPC( asw_marine, CASW_Marine )
 		"		TASK_ASW_DROP_AMMO			0"
 		""
 		"	Interrupts"
-		""
+		"		COND_NO_CUSTOM_INTERRUPTS"
 	);
 
 	//===============================================

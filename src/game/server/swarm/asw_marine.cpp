@@ -4326,7 +4326,7 @@ void CASW_Marine::CheckAndRequestAmmo()
 		for ( int i = 0; i < CASW_SquadFormation::MAX_SQUAD_SIZE; i++ )
 		{
 			CASW_Marine *pSquadmate = pSquad->Squaddie( i );
-			if ( !pSquadmate || ( pSquadmate == this ) )
+			if ( !pSquadmate )
 				continue;
 
 			if ( pSquadmate->HasAmmoSatchel() )
