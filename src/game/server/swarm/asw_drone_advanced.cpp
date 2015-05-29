@@ -1640,6 +1640,13 @@ int CASW_Drone_Advanced::SelectFailSchedule( int failedSchedule, int failedTask,
 		m_hBlockingDoor = NULL;
 	}
 
+	// BenLubar: drones seem to fall off the edge of the first room of cargo elevator a lot.
+	if ( ( !V_stricmp( STRING( gpGlobals->mapname ), "asi-jac1-landingbay_02" ) && GetAbsOrigin().WithinAABox( Vector( -8000, -1000, 300 ), Vector( -5500, 2000, 600 ) ) ) ||
+		 ( !V_stricmp( STRING( gpGlobals->mapname ), "asi-jac1-landingbay_pract" ) && GetAbsOrigin().WithinAABox( Vector( 4000, 1300, 300 ), Vector( 5500, 4500, 600 ) ) ) )
+	{
+		SetHealth( 0 );
+	}
+
 	return BaseClass::SelectFailSchedule( failedSchedule, failedTask, taskFailCode );
 }
 
