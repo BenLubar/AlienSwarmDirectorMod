@@ -545,6 +545,7 @@ CASW_Marine::CASW_Marine() : m_RecentMeleeHits( 16, 16 )
 	m_flNextBreadcrumbTime = 0;
 	m_flNextAmmoScanTime = 0;
 	m_flResetAmmoIgnoreListTime = 0;
+	m_flLastLeadNoPath = 0;
 
 	m_iPowerupType = -1;
 	m_flPowerupExpireTime = -1;

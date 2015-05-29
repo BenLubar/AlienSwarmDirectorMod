@@ -507,7 +507,7 @@ int CASW_Marine::SelectSchedule()
 		CASW_SquadFormation *pSquad = GetSquadFormation();
 		if ( pSquad->m_vecObjective != vec3_invalid )
 		{
-			if ( NeedToFollowMove(true) )
+			if ( NeedToFollowMove( true ) && m_flLastLeadNoPath <= gpGlobals->curtime - 1 )
 			{
 				return SCHED_ASW_LEAD;
 			}
@@ -694,6 +694,10 @@ void CASW_Marine::TaskFail( AI_TaskFailureCode_t code )
 	else if ( IsCurSchedule( SCHED_MELEE_ATTACK_PROP1, false ) )
 	{
 		m_hPhysicsPropTarget = NULL;
+	}
+	else if ( IsCurSchedule( SCHED_ASW_LEAD, false ) && code == FAIL_NO_ROUTE )
+	{
+		m_flLastLeadNoPath = gpGlobals->curtime;
 	}
 
 	BaseClass::TaskFail( code );

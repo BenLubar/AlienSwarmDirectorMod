@@ -746,7 +746,7 @@ public:
 	float m_flNextStumbleTime;
 private:
 	float m_flNextBreadcrumbTime;
-
+	float m_flLastLeadNoPath;
 };
 
 inline CASW_Marine *CASW_Marine::AsMarine( CBaseEntity *pEnt )
