@@ -12,6 +12,7 @@
 #include "tier0/memdbgon.h"
 
 LINK_ENTITY_TO_CLASS( trigger_asw_door_area, CASW_Door_Area );
+LINK_ENTITY_TO_CLASS( trigger_rd_sticktogether_area, CASW_Door_Area );
 
 
 BEGIN_DATADESC( CASW_Door_Area )
@@ -26,6 +27,11 @@ CASW_Door_Area::CASW_Door_Area()
 {	
 	AddEFlags( EFL_FORCE_CHECK_TRANSMIT );
 	m_fNextCutCheck = 0;
+
+	if ( ClassMatches( "trigger_rd_sticktogether_area" ) )
+	{
+		m_nPlayersRequired = ASW_MAX_MARINE_RESOURCES;
+	}
 }
 
 bool CASW_Door_Area::HasWelder(CASW_Marine *pMarine)

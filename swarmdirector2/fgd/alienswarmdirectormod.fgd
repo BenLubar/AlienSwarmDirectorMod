@@ -86,3 +86,8 @@
 	fade_opacity(integer) : "Fade Alpha (0-255)" : 0 : "Opacity to fade to when in third person and the marine is below the origin."
 	fade_origin(origin) : "Fade Origin (X Y Z)" : : ""
 ]
+
+@SolidClass base(Trigger) = trigger_rd_sticktogether_area :
+	"A trigger volume that will force bot marines to immediately follow leader inside this volume. Requires info_marine_hint or info_node_marine_hint entities inside the volume to work "
+[
+]
