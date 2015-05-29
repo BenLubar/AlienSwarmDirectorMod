@@ -558,6 +558,19 @@ void CASW_SquadFormation::FindFollowHintNodes()
 	CUtlVector<HintData_t *> hints;
 	int nCount = -1;
 
+	CASW_Use_Area *pLeaderArea = NULL;
+	FOR_EACH_VEC( IASW_Use_Area_List::AutoList(), i )
+	{
+		CASW_Use_Area *pArea = assert_cast<CASW_Use_Area *>( IASW_Use_Area_List::AutoList()[i] );
+		if ( pArea && pArea->m_nPlayersRequired > 1 && pArea->IsTouching( pLeader ) && pArea->CollisionProp() )
+		{
+			pLeaderArea = pArea;
+			break;
+		}
+	}
+
+	CBaseTrigger *pLeaderEscape = pLeader->IsInEscapeVolume();
+
 	// evaluate each squaddie individually to see if his node should be updated
 	for ( unsigned slotnum = 0; slotnum < MAX_SQUAD_SIZE; slotnum++ )
 	{
@@ -571,7 +584,7 @@ void CASW_SquadFormation::FindFollowHintNodes()
 
 		bool bNeedNewNode = ( m_vFollowPositions[slotnum].DistToSqr( pMarine->GetAbsOrigin() ) > Square( asw_follow_hint_min_range.GetFloat() ) ) || ( m_vFollowPositions[slotnum].DistToSqr( vecLeader ) > Square( asw_follow_hint_max_range.GetFloat() ) ) || !pMarine->FVisible( pLeader ) || m_nMarineHintIndex[slotnum] == INVALID_HINT_INDEX;
 		if ( slotnum != SQUAD_LEADER && !bNeedNewNode )
-			bNeedNewNode = ( m_vFollowPositions[slotnum].DistToSqr( vecLeader ) < Square( asw_follow_hint_min_range.GetFloat() ) );
+			bNeedNewNode = ( m_vFollowPositions[slotnum].DistToSqr( vecLeader ) < Square( asw_follow_hint_min_range.GetFloat() ) ) || ( pLeaderArea && !pLeaderArea->IsTouching( pMarine ) ) || ( pLeaderEscape && !pLeaderEscape->IsTouching( pMarine ) );
 
 		// find shield bug (if any) nearest each marine
 		const float k_flShieldbugScanRangeSqr = Square(400.0f);
