@@ -2092,6 +2092,9 @@ void CASW_Marine::ASWThinkEffects()
 			pExtra->ItemPostFrame();
 			gpGlobals->frametime = flSavedFrameTime;
 		}
+
+		// make sure we open doors even if we didn't move
+		PhysicsTouchTriggers();
 	}
 
 	if ( gpGlobals->curtime > m_flNextBreadcrumbTime )
