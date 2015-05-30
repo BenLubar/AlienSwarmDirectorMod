@@ -18,14 +18,13 @@
 #include "tier0/memdbgon.h"
 
 CASW_Trace_Filter::CASW_Trace_Filter(CBasePlayer *pPlayer, Collision_Group_t collisionGroup)
-	: BaseClass(NULL, collisionGroup)
+	: BaseClass( NULL, collisionGroup )
 {
-	CASW_Player *pASWPlayer = assert_cast<CASW_Player *>(pPlayer);
-	m_pMarine = pASWPlayer->GetSpectatingMarine() ? pASWPlayer->GetSpectatingMarine() : pASWPlayer->GetMarine();
+	m_pMarine = assert_cast<CASW_Player *>( pPlayer )->GetViewMarine();
 }
 
 CASW_Trace_Filter::CASW_Trace_Filter(CASW_Marine *pMarine, Collision_Group_t collisionGroup)
-	: BaseClass(NULL, collisionGroup), m_pMarine(pMarine)
+	: BaseClass( NULL, collisionGroup ), m_pMarine( pMarine )
 {
 }
 

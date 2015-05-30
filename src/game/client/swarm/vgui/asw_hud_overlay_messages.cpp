@@ -261,7 +261,7 @@ void CASWHudOverlayMessages::PaintOverlays()
 		m_flDeathMessageStartTime = 0.0f;
 	}
 
-	C_ASW_Marine *marine = dynamic_cast<C_ASW_Marine*>(local->GetMarine());
+	C_ASW_Marine *marine = dynamic_cast<C_ASW_Marine*>(local->GetViewMarine());
 	if ( !marine || !marine->GetMarineResource())
 		return;
 	

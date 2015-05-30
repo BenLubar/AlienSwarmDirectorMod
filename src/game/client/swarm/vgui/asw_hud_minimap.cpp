@@ -504,7 +504,7 @@ void CASWHudMinimap::OnThink()
 				m_bDrawingMapLines = false;
 			}
 		}
-		C_ASW_Marine *marine = local->GetMarine();
+		C_ASW_Marine *marine = local->GetViewMarine();
 		if (marine)
 		{			
 			if (m_pNoisePanel)
@@ -593,7 +593,7 @@ void CASWHudMinimap::PaintMapSection()
 	C_ASW_Player *local = C_ASW_Player::GetLocalASWPlayer();
 	if ( local )
 	{
-		C_ASW_Marine *marine = local->GetSpectatingMarine() ? local->GetSpectatingMarine() : local->GetMarine();
+		C_ASW_Marine *marine = local->GetViewMarine();
 		if (marine)
 		{
 			m_MapCentre = WorldToMapTexture(marine->GetAbsOrigin());
@@ -903,9 +903,9 @@ void CASWHudMinimapLinePanel::PaintScannerRing()
 								}
 								//Msg("Pitch is = %d\n", ep.m_nPitch);
 								// adjust volume by distance to tech marine
-								if (pPlayer->GetMarine())
+								if (pPlayer->GetViewMarine())
 								{
-									float dist_to_tech = pPlayer->GetMarine()->GetAbsOrigin().DistTo(marine_world_pos);
+									float dist_to_tech = pPlayer->GetViewMarine()->GetAbsOrigin().DistTo(marine_world_pos);
 									float fraction = dist_to_tech / ASW_SCANNER_MAX_SOUND_DIST;
 									if (fraction > 0.3f)	// give a buffer of max volume
 										ep.m_flVolume *= (1.0f - ((fraction-0.3f)*0.7f));
@@ -977,9 +977,9 @@ void CASWHudMinimapLinePanel::PaintScannerRing()
 						ep.m_nFlags |= SND_CHANGE_VOL;
 						ep.m_SoundLevel = SNDLVL_NORM;
 						// adjust volume by distance to tech marine					
-						if (pPlayer->GetMarine())
+						if (pPlayer->GetViewMarine())
 						{
-							float dist_to_tech = pPlayer->GetMarine()->GetAbsOrigin().DistTo(pMR->GetMarineEntity()->GetAbsOrigin());
+							float dist_to_tech = pPlayer->GetViewMarine()->GetAbsOrigin().DistTo(pMR->GetMarineEntity()->GetAbsOrigin());
 							float fraction = dist_to_tech / ASW_SCANNER_MAX_SOUND_DIST;
 							if (fraction > 0.3f)	// give a buffer of max volume
 								ep.m_flVolume *= (1.0f - ((fraction-0.3f)*0.7f));

@@ -1090,11 +1090,7 @@ void ClientModeASW::OverrideAudioState( AudioState_t *pAudioState )
 		CASW_Marine *pMarine = NULL;
 		if ( pPlayer && ( asw_hear_from_marine.GetBool() || asw_hear_height.GetFloat() != 0 ) )
 		{
-			pMarine = pPlayer->GetSpectatingMarine();
-			if ( !pMarine )
-			{
-				pMarine = pPlayer->GetMarine();
-			}
+			pMarine = pPlayer->GetViewMarine();
 		}
 		
 		if ( pMarine )
@@ -1206,7 +1202,7 @@ void ClientModeASW::OnColorCorrectionWeightsReset( void )
 
 	if ( m_CCInfestedHandle != INVALID_CLIENT_CCHANDLE && ASWGameRules() )
 	{
-		C_ASW_Marine *pMarine = C_ASW_Marine::GetLocalMarine() ? C_ASW_Marine::GetLocalMarine() : C_ASW_Player::GetLocalASWPlayer()->GetSpectatingMarine();
+		C_ASW_Marine *pMarine = pPlayer->GetViewMarine();
 		m_fInfestedCCWeight = Approach( pMarine && pMarine->IsInfested() ? 1.0f : 0.0f, m_fInfestedCCWeight, gpGlobals->frametime * ( 1.0f / INFESTED_CC_FADE_TIME ) );
 		g_pColorCorrectionMgr->SetColorCorrectionWeight( m_CCInfestedHandle, m_fInfestedCCWeight );
 

@@ -155,7 +155,15 @@ void ASWCircularProgressBar::PaintBackground()
 	if ( !crosshair.GetBool() )
 		return;
 
-	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
+	C_ASW_Player *local = C_ASW_Player::GetLocalASWPlayer();
+	if ( !local )
+		return;	
+
+	C_ASW_Marine *pMarine = local->GetMarine();
+	if ( !pMarine )
+		return;
+
+	Assert( asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2 );
 	if ( asw_controls.GetInt() != 1 )
 		return;
 
@@ -228,8 +236,16 @@ void ASWCircularProgressBar::Paint()
 	if ( !crosshair.GetBool() )
 		return;
 
-	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
-	if (asw_controls.GetInt() != 1)
+	C_ASW_Player *local = C_ASW_Player::GetLocalASWPlayer();
+	if ( !local )
+		return;	
+
+	C_ASW_Marine *pMarine = local->GetMarine();
+	if ( !pMarine )
+		return;
+
+	Assert( asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2 );
+	if ( asw_controls.GetInt() != 1 )
 		return;
 
 	int x = 0;

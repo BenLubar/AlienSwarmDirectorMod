@@ -71,7 +71,7 @@ IterationRetval_t CASW_UsableObjectsEnumerator::EnumElement( IHandleEntity *pHan
 	if ( pEnt == m_pLocal )
 		return ITERATION_CONTINUE;
 
-	C_ASW_Marine *pMarine = m_pLocal->GetMarine();
+	C_ASW_Marine *pMarine = m_pLocal->GetViewMarine();
 	if (!pMarine)
 		return ITERATION_CONTINUE;
 

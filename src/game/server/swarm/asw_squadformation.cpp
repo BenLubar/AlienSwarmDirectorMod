@@ -461,15 +461,6 @@ void CASW_SquadFormation::ChangeLeader( CASW_Marine *pNewLeader, bool bUpdateLea
 		return;
 	}
 
-	for (int i = 0; i < gpGlobals->maxClients; i++)
-	{
-		CASW_Player *pPlayer = dynamic_cast<CASW_Player *>(UTIL_PlayerByIndex(i));
-		if (pPlayer && pPlayer->GetSpectatingMarine() == pOldLeader)
-		{
-			pPlayer->SetSpectatingMarine(pNewLeader);
-		}
-	}
-
 	// if we're trying to wipe out the leader, do so if there are no followers
 	if ( !pNewLeader )
 	{

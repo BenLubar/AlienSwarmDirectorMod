@@ -415,15 +415,20 @@ void CASW_Player::PostThink()
 	}	
 
 	// clicking while ingame on mission with no marine makes us spectate the next marine
-	if ((!GetMarine() || GetMarine()->GetHealth()<=0) && ASWGameRules() && ASWGameRules()->GetGameState() == ASW_GS_INGAME)
+	if ( ( !GetMarine() || GetMarine()->GetHealth() <= 0 ) && ASWGameRules() && ASWGameRules()->GetGameState() == ASW_GS_INGAME )
 	{
-		//Msg("m_nButtons & IN_ATTACK = %d (m_Local.m_nOldButtons & IN_ATTACK) = %d\n", (m_nButtons & IN_ATTACK), (m_Local.m_nOldButtons & IN_ATTACK));
-		bool bClicked = (!m_bLastAttackButton && (m_nButtons & IN_ATTACK));
+		bool bClicked = ( !m_bLastAttackButton && ( m_nButtons & IN_ATTACK ) );
+		bool bRightClicked = ( !m_bLastAttackButton && ( m_nButtons & IN_ALT1 ) );
 
-		if ( bClicked || ( !GetSpectatingMarine() && gpGlobals->curtime > m_fLastControlledMarineTime + 6.0f ) )
+		if ( bClicked || ( !GetSpectatingMarine() && gpGlobals->curtime > m_fLastControlledMarineTime + 1.0f ) )
 		{
 			SpectateNextMarine();
-			m_fLastControlledMarineTime = gpGlobals->curtime;		// set this again so we don't spam SpectateNextMarine
+			m_fLastControlledMarineTime = gpGlobals->curtime; // set this again so we don't spam SpectateNextMarine
+		}
+		if ( bRightClicked || ( !GetSpectatingMarine() && gpGlobals->curtime > m_fLastControlledMarineTime + 1.0f ) )
+		{
+			SpectateNextMarine( true );
+			m_fLastControlledMarineTime = gpGlobals->curtime; // set this again so we don't spam SpectateNextMarine
 		}
 	}
 	else
@@ -431,7 +436,7 @@ void CASW_Player::PostThink()
 		m_fLastControlledMarineTime = gpGlobals->curtime;
 	}
 
-	m_bLastAttackButton = (m_nButtons & IN_ATTACK);
+	m_bLastAttackButton = ( m_nButtons & ( IN_ATTACK | IN_ALT1 ) ) != 0;
 
 	RagdollBlendTest();
 
@@ -1840,85 +1845,66 @@ void CASW_Player::SetMarine( CASW_Marine *pMarine )
 	}
 }
 
-CASW_Marine* CASW_Player::GetMarine()
+void CASW_Player::SpectateNextMarine( bool bReverse )
 {
-	return m_hMarine.Get();
-}
-
-CASW_Marine* CASW_Player::GetMarine() const
-{
-	return m_hMarine.Get();
-}
-
-void CASW_Player::SpectateNextMarine()
-{
-	CASW_Game_Resource* pGameResource = ASWGameResource();
-	if (!pGameResource)
+	CASW_Game_Resource *pGameResource = ASWGameResource();
+	if ( !pGameResource )
 		return;
-	CASW_Marine *pFirst = NULL;
-	//Msg("CASW_Player::SpectateNextMarine\n");
 
-	if (GetSpectatingMarine() && GetSpectatingMarine()->GetHealth() <= 0)
+	if ( GetSpectatingMarine() && GetSpectatingMarine()->GetHealth() <= 0 )
 	{
-		//Msg("clearing initial spectating marine as he's dead\n");
-		SetSpectatingMarine(NULL);
+		SetSpectatingMarine( NULL );
 	}
-	// loop through all marines
-	for (int i=0;i<pGameResource->GetMaxMarineResources();i++)
+
+	int iStart = 0;
+	int iEnd = pGameResource->GetMaxMarineResources();
+	int iIncrement = 1;
+
+	if ( bReverse )
 	{
-		//Msg("Checking pMR %d\n", i);
-		CASW_Marine_Resource* pMR = pGameResource->GetMarineResource(i);
-		if (!pMR)
+		iStart = iEnd - 1;
+		iEnd = -1;
+		iIncrement = -1;
+	}
+
+	CASW_Marine *pFirst = NULL;
+
+	// loop through all marines
+	for ( int i = iStart; i != iEnd; i += iIncrement )
+	{
+		CASW_Marine_Resource *pMR = pGameResource->GetMarineResource( i );
+		if ( !pMR )
 			continue;
 		CASW_Marine *pMarine = pMR->GetMarineEntity();
-		if (!pMarine || !pMarine->IsAlive() || pMarine->GetHealth() <= 0)
+		if ( !pMarine || !pMarine->IsAlive() || pMarine->GetHealth() <= 0 )
 		{
-			//Msg(" but he's dead\n");
 			continue;
 		}
-		if (!pFirst)
+		if ( !pFirst )
 		{
 			pFirst = pMarine;
-			//Msg("  set this guy as our first\n");
 		}
-		if (GetSpectatingMarine() == NULL)		// if we're not spectating anything yet, then spectate the first one we find
+		if ( GetSpectatingMarine() == NULL ) // if we're not spectating anything yet, then spectate the first one we find
 		{
-			//Msg("  We're not spectating anyone, so we're gonna spec this dude\n");
-			SetSpectatingMarine(pMarine);
+			SetSpectatingMarine( pMarine );
 			break;
 		}
-		if (GetSpectatingMarine() == pMarine)	// if we're spectating this one, then clear it, so the next one we find will get set
+		if ( GetSpectatingMarine() == pMarine ) // if we're spectating this one, then clear it, so the next one we find will get set
 		{
-			//Msg("  we're spectating this dude, so clearing our current spectator\n");
-			SetSpectatingMarine(NULL);
+			SetSpectatingMarine( NULL );
 		}				
 	}
-	//Msg("end\n");
+
 	// if we're still not spectating anything but we found at least marine, then that means we were spectating the last one in the list and need to set this
-	if (GetSpectatingMarine() == NULL && pFirst)
+	if ( GetSpectatingMarine() == NULL && pFirst )
 	{
-		//Msg("  but we're still not speccing anyone and we have a first set, so speccing that dude\n");
-		SetSpectatingMarine(pFirst);
+		SetSpectatingMarine( pFirst );
 	}
 }
 
 void CASW_Player::SetSpectatingMarine(CASW_Marine *pMarine)
 {
-	if (pMarine)
-	{
-		//Msg("Starting spectating marine %s\n", pMarine->GetEntityName());
-		m_hSpectatingMarine = pMarine;
-	}
-	else
-	{
-		//Msg("Clearing spectating marine\n");
-		m_hSpectatingMarine = NULL;
-	}
-}
-
-CASW_Marine* CASW_Player::GetSpectatingMarine()
-{
-	return m_hSpectatingMarine.Get();
+	m_hSpectatingMarine = pMarine;
 }
 
 void CASW_Player::SelectNextMarine(bool bReverse)
@@ -2776,17 +2762,11 @@ void CASW_Player::SetupVisibility( CBaseEntity *pViewEntity, unsigned char *pvs,
 		}
 		engine->AddOriginToPVS(m_vecFreeCamOrigin);
 	}
-	CASW_Marine *pMarine = GetSpectatingMarine();
-	bool bSpectating = true;
-	if (!pMarine)
-	{
-		pMarine = GetMarine();
-		bSpectating = false;
-	}
-	if (pMarine)
+	CASW_Marine *pMarine = GetViewMarine();
+	if ( pMarine )
 	{
 		// asw - add the marine as our PVS position (since we're using radius based, this will do the job)
-		if (pMarine->IsInVehicle())
+		if ( pMarine->IsInVehicle() )
 		{
 	#ifdef CLIENT_DLL
 			if (pMarine->GetClientsideVehicle() && pMarine->GetClientsideVehicle()->GetEntity())
@@ -3014,3 +2994,22 @@ CBaseEntity* CASW_Player::FindPickerEntity()
 	return pNearestEntity;
 }
 
+CASW_Marine *CASW_Player::GetMarine() const
+{
+	return m_hMarine.Get();
+}
+
+CASW_Marine *CASW_Player::GetSpectatingMarine() const
+{
+	return m_hSpectatingMarine.Get();
+}
+
+CASW_Marine *CASW_Player::GetViewMarine() const
+{
+	CASW_Marine *pMarine = GetSpectatingMarine();
+	if ( !pMarine )
+	{
+		pMarine = GetMarine();
+	}
+	return pMarine;
+}

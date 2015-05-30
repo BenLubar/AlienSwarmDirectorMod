@@ -149,7 +149,7 @@ void CASWHudCrosshair::Paint( void )
 	m_curViewAngles = CurrentViewAngles();
 	m_curViewOrigin = CurrentViewOrigin();
 
-	C_ASW_Marine *pMarine = pPlayer->GetSpectatingMarine() ? pPlayer->GetSpectatingMarine() : pPlayer->GetMarine();
+	C_ASW_Marine *pMarine = pPlayer->GetViewMarine();
 	bool bControllingTurret = (pMarine && pMarine->IsControllingTurret());
 	if ( bControllingTurret )
 	{
@@ -326,11 +326,11 @@ void CASWHudCrosshair::PaintTurretTextures()
 	C_ASW_Player* pPlayer = C_ASW_Player::GetLocalASWPlayer();
 	if ( pPlayer )
 	{
-		C_ASW_Marine *pMarine = pPlayer->GetSpectatingMarine() ? pPlayer->GetSpectatingMarine() : pPlayer->GetMarine();
+		C_ASW_Marine *pMarine = pPlayer->GetViewMarine();
 		bool bControllingTurret = (pMarine && pMarine->IsControllingTurret());
 		if (bControllingTurret)
 		{
-			C_ASW_Remote_Turret *pTurret = pPlayer->GetMarine()->GetRemoteTurret();
+			C_ASW_Remote_Turret *pTurret = pMarine->GetRemoteTurret();
 			if (pTurret)
 			{
 				Vector vecWeaponSrc = pTurret->GetTurretMuzzlePosition();
@@ -493,12 +493,12 @@ void CASWHudCrosshair::OnThink()
 
 	PaintReloadProgressBar();
 
-	C_ASW_Marine *pMarine = pPlayer->GetSpectatingMarine() ? pPlayer->GetSpectatingMarine() : pPlayer->GetMarine();
+	C_ASW_Marine *pMarine = pPlayer->GetViewMarine();
 	bool bControllingTurret = (pMarine && pMarine->IsControllingTurret());
 	if (!bControllingTurret)
 		return;
 
-	C_ASW_Remote_Turret *pTurret = pPlayer->GetMarine()->GetRemoteTurret();
+	C_ASW_Remote_Turret *pTurret = pMarine->GetRemoteTurret();
 	if (!pTurret)
 		return;
 
@@ -745,7 +745,7 @@ void CASWHudCrosshair::GetCurrentPos( int &x, int &y )
 	if ( !pPlayer )
 		return;
 
-	C_ASW_Marine *pMarine = pPlayer->GetSpectatingMarine() ? pPlayer->GetSpectatingMarine() : pPlayer->GetMarine();
+	C_ASW_Marine *pMarine = pPlayer->GetViewMarine();
 	bool bControllingTurret = (pMarine && pMarine->IsControllingTurret());
 
 	m_pTurretTextTopLeft->SetVisible( bControllingTurret );

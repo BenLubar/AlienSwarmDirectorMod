@@ -355,19 +355,13 @@ void CASW_Player::ItemPostFrame()
 // the player's eyes go above the marine he's spectating/controlling
 Vector CASW_Player::EyePosition( )
 {
-	CASW_Marine *pMarine = GetSpectatingMarine();
-	bool bSpectating = true;
-	if ( !pMarine )
-	{
-		pMarine = GetMarine();
-		bSpectating = false;
-	}
+	CASW_Marine *pMarine = GetViewMarine();
 	// revert to hl2 camera
 #ifdef CLIENT_DLL
-	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
-	if ( asw_controls.GetInt() != 1 && ( engine->IsPlayingDemo() || GetSpectatingMarine() ) && ( !ASWGameRules() || ASWGameRules()->GetMarineDeathCamInterp() <= 0.0f ) )
+	Assert( asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2 );
+	if ( asw_controls.GetInt() != 1 && engine->IsPlayingDemo() && ( !ASWGameRules() || ASWGameRules()->GetMarineDeathCamInterp() <= 0.0f ) )
 #else
-	Assert(m_iASWControls >= 0 && m_iASWControls <= 2);
+	Assert( m_iASWControls >= 0 && m_iASWControls <= 2 );
 	if ( m_iASWControls != 1 )
 #endif
 	{
@@ -541,9 +535,8 @@ Vector CASW_Player::EyePosition( )
 
 		return org;
 #else
-		return m_vecLastMarineOrigin + Vector(0,0,405);	// todo: make this take into account mouse location, based on the pitch coming in from player commands
+		return m_vecLastMarineOrigin + Vector(0, 0, 405); // todo: make this take into account mouse location, based on the pitch coming in from player commands
 #endif
-
 	}
 	
 	return BaseClass::EyePosition();
@@ -562,7 +555,7 @@ void CASW_Player::FindUseEntities()
 		m_hUseEntities[ i ] = NULL;
 	}
 
-	CASW_Marine* pMarine = GetMarine();
+	CASW_Marine* pMarine = GetViewMarine();
 	if (!pMarine)
 	{
 		return;
@@ -679,7 +672,7 @@ void CASW_Player::SortUsePair( CBaseEntity **pEnt1, CBaseEntity **pEnt2, int *pn
 	bool bSwap = false;
 	if ( *pnFirstPriority == *pnSecondPriority )	// if items are the same type, put the closest first
 	{
-		CASW_Marine* pMarine = GetMarine();
+		CASW_Marine* pMarine = GetViewMarine();
 		if ( pMarine != NULL )
 		{
 			float fFirstDist = pMarine->GetAbsOrigin().DistToSqr( ( *pEnt1 )->WorldSpaceCenter() );
@@ -766,7 +759,7 @@ int CASW_Player::GetUsePriority( CBaseEntity* pEnt )
 	CASW_Weapon *pWeapon = dynamic_cast< CASW_Weapon* >( pEnt );
 	if ( pWeapon )
 	{
-		if ( pWeapon->AllowedToPickup( GetMarine() ) )
+		if ( pWeapon->AllowedToPickup( GetViewMarine() ) )
 		{
 			return 1;
 		}
@@ -780,7 +773,7 @@ int CASW_Player::GetUsePriority( CBaseEntity* pEnt )
 	CASW_Pickup *pPickup = dynamic_cast< CASW_Pickup* >( pEnt );
 	if ( pPickup )
 	{
-		if ( pPickup->AllowedToPickup( GetMarine() ) )
+		if ( pPickup->AllowedToPickup( GetViewMarine() ) )
 		{
 			return 1;
 		}
@@ -794,7 +787,7 @@ int CASW_Player::GetUsePriority( CBaseEntity* pEnt )
 	CASW_Ammo_Drop *pAmmoDrop = dynamic_cast< CASW_Ammo_Drop* >( pEnt );
 	if ( pAmmoDrop )
 	{
-		if ( pAmmoDrop->AllowedToPickup( GetMarine() ) )
+		if ( pAmmoDrop->AllowedToPickup( GetViewMarine() ) )
 		{
 			return 1;
 		}
@@ -893,14 +886,14 @@ const QAngle& CASW_Player::EyeAngles( )
 	angAdjustedEyes = BaseClass::EyeAngles();
 #endif
 
-	CASW_Marine* pMarine = GetSpectatingMarine() ? GetSpectatingMarine() : GetMarine();
+	CASW_Marine* pMarine = GetViewMarine();
 
 	// revert to hl2 camera
 #ifdef CLIENT_DLL
-	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
+	Assert( asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2 );
 	if ( asw_controls.GetInt() != 1 || ( pMarine && pMarine->IsInVehicle() ) )
 #else
-	Assert(m_iASWControls >= 0 && m_iASWControls <= 2);
+	Assert( m_iASWControls >= 0 && m_iASWControls <= 2 );
 	if ( m_iASWControls != 1 || ( pMarine && pMarine->IsInVehicle() ) )
 #endif
 	{
@@ -1037,10 +1030,10 @@ void CASW_Player::PlayerUse()
 	if ( ! ((m_nButtons | m_afButtonPressed | m_afButtonReleased) & IN_USE) )
 		return;
 
-	if (!GetMarine() || GetMarine()->GetHealth()<=0)
-		return;
-
 	CASW_Marine *pMarine = GetMarine();
+
+	if ( !pMarine || pMarine->GetHealth() <= 0 )
+		return;
 
 	if ( GetNumUseEntities() > 0 )
 	{		
@@ -1086,11 +1079,11 @@ void CASW_Player::PlayerUse()
 				CASW_Pickup *pItem = dynamic_cast<CASW_Pickup*>( pActivateEnt );
 				if ( pItem && nHoldType != ASW_USE_HOLD_START )
 				{
-					bCanTake = pItem->AllowedToPickup( GetMarine() );
+					bCanTake = pItem->AllowedToPickup( pMarine );
 					if (bCanTake)
 					{
-						GetMarine()->SetStopTime( gpGlobals->curtime + 1.0f );
-						GetMarine()->DoAnimationEvent( PLAYERANIMEVENT_PICKUP );
+						pMarine->SetStopTime( gpGlobals->curtime + 1.0f );
+						pMarine->DoAnimationEvent( PLAYERANIMEVENT_PICKUP );
 					}
 				}
 				else
@@ -1098,11 +1091,11 @@ void CASW_Player::PlayerUse()
 					CASW_Weapon *pWeapon = dynamic_cast<CASW_Weapon*>( pActivateEnt );
 					if ( pWeapon && nHoldType != ASW_USE_HOLD_START )
 					{
-						bCanTake = pWeapon->AllowedToPickup( GetMarine() );
+						bCanTake = pWeapon->AllowedToPickup( pMarine );
 						if (bCanTake)
 						{
-							GetMarine()->SetStopTime( gpGlobals->curtime + 1.0f );
-							GetMarine()->DoAnimationEvent( PLAYERANIMEVENT_PICKUP );
+							pMarine->SetStopTime( gpGlobals->curtime + 1.0f );
+							pMarine->DoAnimationEvent( PLAYERANIMEVENT_PICKUP );
 						}
 					}
 					else
@@ -1110,11 +1103,11 @@ void CASW_Player::PlayerUse()
 						CASW_Ammo_Drop *pAmmoDrop = dynamic_cast<CASW_Ammo_Drop*>( pActivateEnt );
 						if ( pAmmoDrop && nHoldType != ASW_USE_HOLD_START )
 						{
-							bCanTake = pAmmoDrop->AllowedToPickup( GetMarine() );
+							bCanTake = pAmmoDrop->AllowedToPickup( pMarine );
 							if ( bCanTake )
 							{
-								GetMarine()->SetStopTime( gpGlobals->curtime + 1.0f );
-								GetMarine()->DoAnimationEvent( PLAYERANIMEVENT_PICKUP );
+								pMarine->SetStopTime( gpGlobals->curtime + 1.0f );
+								pMarine->DoAnimationEvent( PLAYERANIMEVENT_PICKUP );
 								CASW_Weapon *pWeapon = pAmmoDrop->GetAmmoUseUnits( pMarine );
 
 								if ( pWeapon )
@@ -1148,7 +1141,7 @@ void CASW_Player::PlayerUse()
 				{
 					if ( !pMarine->m_hUsingEntity.Get() || pMarine->m_hUsingEntity.Get() == pActivateEnt )		// if we're in the middle of using an entity, only allow reusing that same entity
 					{
-						pUsable->ActivateUseIcon( GetMarine(), nHoldType );
+						pUsable->ActivateUseIcon( pMarine, nHoldType );
 					}
 				}
 		#endif
@@ -1201,11 +1194,8 @@ void CASW_Player::HandleSpeedChanges( void )
 
 CBaseEntity* CASW_Player::GetSoundscapeListener()
 {
-	if (GetMarine())
-		return GetMarine();
-
-	if (GetSpectatingMarine())
-		return GetSpectatingMarine();
+	if ( GetViewMarine() )
+		return GetViewMarine();
 
 	return this;
 }

@@ -79,9 +79,10 @@ public:
 	virtual bool ASWAnim_CanMove();
 
 	// spectating
-	void SpectateNextMarine();
-	void SetSpectatingMarine(CASW_Marine *d);
-	CASW_Marine* GetSpectatingMarine();
+	void SpectateNextMarine( bool bReverse = false );
+	void SetSpectatingMarine( CASW_Marine *d );
+	inline CASW_Marine *GetSpectatingMarine() const;
+	inline CASW_Marine *GetViewMarine() const;
 	CNetworkHandle (CASW_Marine, m_hSpectatingMarine);
 	bool m_bLastAttackButton;	// used to detect left clicks for cycling through marines
 	bool m_bRequestedSpectator;	// this player requested to be a spectator since the start of a match (won't be considered for leader, campaign votes, etc.)
@@ -90,8 +91,7 @@ public:
 	void BecomeNonSolid();
 	void OnMarineCommanded( const CASW_Marine *pMarine );
 	void SetMarine( CASW_Marine *pMarine );
-	CASW_Marine* GetMarine();
-	CASW_Marine* GetMarine() const;
+	inline CASW_Marine *GetMarine() const;
 	void SelectNextMarine( bool bReverse );
 	bool CanSwitchToMarine( int num );
 	void SwitchMarine( int num );
@@ -267,6 +267,5 @@ inline CASW_Player *ToASW_Player( CBaseEntity *pEntity )
 
 	return assert_cast< CASW_Player* >( pEntity );
 }
-
 
 #endif	// ASW_PLAYER_H

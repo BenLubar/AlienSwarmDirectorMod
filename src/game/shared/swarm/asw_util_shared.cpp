@@ -337,12 +337,13 @@ void UTIL_ASW_ScreenShake( const Vector &center, float amplitude, float frequenc
 
 		// find the player's marine
 		CASW_Player *pASWPlayer = dynamic_cast<CASW_Player*>(pPlayer);
-		if (!pASWPlayer || !pASWPlayer->GetMarine())
+		CASW_Marine *pMarine = pASWPlayer ? pASWPlayer->GetViewMarine() : NULL;
+		if ( !pMarine )
 			continue;
 
-		Vector vecMarinePos = pASWPlayer->GetMarine()->WorldSpaceCenter();
-		if (pASWPlayer->GetMarine()->IsControllingTurret() && pASWPlayer->GetMarine()->GetRemoteTurret())
-			vecMarinePos = pASWPlayer->GetMarine()->GetRemoteTurret()->GetAbsOrigin();
+		Vector vecMarinePos = pMarine->WorldSpaceCenter();
+		if ( pMarine->IsControllingTurret() && pMarine->GetRemoteTurret() )
+			vecMarinePos = pMarine->GetRemoteTurret()->GetAbsOrigin();
 
 		localAmplitude = ASW_ComputeShakeAmplitude( center, vecMarinePos, amplitude, radius );
 
@@ -351,7 +352,7 @@ void UTIL_ASW_ScreenShake( const Vector &center, float amplitude, float frequenc
 		if (localAmplitude < 0)
 			continue;
 
-		ASW_TransmitShakeEvent( (CBasePlayer *)pPlayer, localAmplitude, frequency, duration, eCommand );
+		ASW_TransmitShakeEvent( pASWPlayer, localAmplitude, frequency, duration, eCommand );
 	}
 }
 
@@ -397,18 +398,19 @@ void UTIL_ASW_ScreenPunch( const Vector &center, float radius, const ScreenShake
 		}
 
 		// find the player's marine
-		CASW_Player *pASWPlayer = assert_cast<CASW_Player*>(pPlayer);
-		if (!pASWPlayer || !pASWPlayer->GetMarine())
+		CASW_Player *pASWPlayer = assert_cast<CASW_Player *>( pPlayer );
+		CASW_Marine *pMarine = pASWPlayer ? pASWPlayer->GetViewMarine() : NULL;
+		if ( !pMarine )
 			continue;
 
-		Vector vecMarinePos = pASWPlayer->GetMarine()->WorldSpaceCenter();
-		if (pASWPlayer->GetMarine()->IsControllingTurret() && pASWPlayer->GetMarine()->GetRemoteTurret())
-			vecMarinePos = pASWPlayer->GetMarine()->GetRemoteTurret()->GetAbsOrigin();
+		Vector vecMarinePos = pMarine->WorldSpaceCenter();
+		if ( pMarine->IsControllingTurret() && pMarine->GetRemoteTurret() )
+			vecMarinePos = pMarine->GetRemoteTurret()->GetAbsOrigin();
 
 		if ( vecMarinePos.DistToSqr(center) > radiusSqr )
 			continue;
 
-		ASW_TransmitShakeEvent( (CBasePlayer *)pPlayer, shake );
+		ASW_TransmitShakeEvent( pASWPlayer, shake );
 	}
 }
 

@@ -203,7 +203,7 @@ void ASW_StoreClearAll()
 bool MarineControllingTurret()
 {
 	C_ASW_Player* pPlayer = C_ASW_Player::GetLocalASWPlayer();
-	C_ASW_Marine *pMarine = pPlayer ? ( pPlayer->GetSpectatingMarine() ? pPlayer->GetSpectatingMarine() : pPlayer->GetMarine() ) : NULL;
+	C_ASW_Marine *pMarine = pPlayer ? pPlayer->GetViewMarine() : NULL;
 	return ( pMarine && pMarine->IsControllingTurret() );
 }
 
@@ -261,11 +261,7 @@ bool HUDTraceToWorld(float screenx, float screeny, Vector &HitLocation, bool bUs
 	Vector traceStart = vCameraLocation;
 	traceEnd = traceStart + TraceDirection * 3000;
 
-	C_ASW_Marine *pMarine = pPlayer->GetSpectatingMarine();
-	if (!pMarine)
-	{
-		pMarine = pPlayer->GetMarine();
-	}
+	C_ASW_Marine *pMarine = pPlayer->GetViewMarine();
 
 	if (bUseMarineHull)
 	{

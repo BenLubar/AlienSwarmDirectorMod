@@ -366,11 +366,7 @@ void CASWHudObjective::PerformLayout()
 bool CASWHudObjective::IsSpectating()
 {
 	C_ASW_Player *pPlayer = C_ASW_Player::GetLocalASWPlayer();
-	if ( !pPlayer )
-		return false;
-
-	C_ASW_Marine *pSpectating = pPlayer->GetSpectatingMarine();
-	return pSpectating != NULL;
+	return pPlayer && pPlayer->GetSpectatingMarine();
 }
 
 void CASWHudObjective::LayoutObjectives()

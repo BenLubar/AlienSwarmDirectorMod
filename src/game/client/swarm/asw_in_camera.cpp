@@ -129,14 +129,15 @@ float CASWInput::ASW_GetCameraPitch( const float *pfDeathCamInterp /*= NULL*/ )
 
 	// Check to see if we are in a camera volume.
 	C_ASW_Player *pPlayer = C_ASW_Player::GetLocalASWPlayer();
-	if (pPlayer && pPlayer->GetMarine())
+	C_ASW_Marine *pMarine = pPlayer ? pPlayer->GetViewMarine() : NULL;
+	if ( pMarine )
 	{
-		float fCameraVolumePitch = C_ASW_Camera_Volume::IsPointInCameraVolume( pPlayer->GetMarine()->GetAbsOrigin() );
+		float fCameraVolumePitch = C_ASW_Camera_Volume::IsPointInCameraVolume( pMarine->GetAbsOrigin() );
 		if ( fCameraVolumePitch != -1 )
 		{
 			flPitch = fCameraVolumePitch;
 		}
-		if (pPlayer->GetMarine()->IsInVehicle())
+		if ( pMarine->IsInVehicle() )
 		{
 			flPitch = asw_vehicle_cam_pitch.GetFloat();
 		}
@@ -308,12 +309,8 @@ void CASWInput::CAM_Think( void )
 		{
 			return;
 		}
-		C_ASW_Marine *pMarine = pPlayer->GetSpectatingMarine();
-		if (!pMarine)
-		{
-			pMarine = pPlayer->GetMarine();
-		}
-		if (!pMarine)
+		C_ASW_Marine *pMarine = pPlayer->GetViewMarine();
+		if ( !pMarine )
 		{
 			return;
 		}
@@ -517,7 +514,7 @@ void CASWInput::ASW_GetCameraLocation( C_ASW_Player *pPlayer, Vector &vecCameraL
 	pPlayer->m_angLastCamera = angCamera;
 
 	// Do we still need this???
-	pPlayer->m_hLastMarine = pPlayer->GetMarine();
+	pPlayer->m_hLastMarine = pPlayer->GetViewMarine();
 }
 
 

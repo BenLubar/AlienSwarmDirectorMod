@@ -65,7 +65,7 @@ int C_ASW_Dummy_Vehicle::GetRideIconTexture()
 bool C_ASW_Dummy_Vehicle::MarineInVehicle()
 {
 	C_ASW_Player* pPlayer = C_ASW_Player::GetLocalASWPlayer();
-	return (pPlayer && pPlayer->GetMarine() && pPlayer->GetMarine()->IsInVehicle());
+	return (pPlayer && pPlayer->GetViewMarine() && pPlayer->GetViewMarine()->IsInVehicle());
 }
 
 const char* C_ASW_Dummy_Vehicle::GetDriveIconText()

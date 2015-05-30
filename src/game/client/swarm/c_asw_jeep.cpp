@@ -363,7 +363,7 @@ int C_ASW_PropJeep::GetRideIconTexture()
 bool C_ASW_PropJeep::MarineInVehicle()
 {
 	C_ASW_Player* pPlayer = C_ASW_Player::GetLocalASWPlayer();
-	return (pPlayer && pPlayer->GetMarine() && pPlayer->GetMarine()->IsInVehicle());
+	return (pPlayer && pPlayer->GetViewMarine() && pPlayer->GetViewMarine()->IsInVehicle());
 }
 
 const char* C_ASW_PropJeep::GetDriveIconText()

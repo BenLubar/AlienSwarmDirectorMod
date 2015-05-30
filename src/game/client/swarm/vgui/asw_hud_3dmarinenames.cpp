@@ -305,7 +305,7 @@ void CASWHud3DMarineNames::PaintBoxAround(C_BaseEntity* pEnt, int padding)
 void CASWHud3DMarineNames::PaintBoxesAroundUseEntities()
 {
 	C_ASW_Player *pPlayer = C_ASW_Player::GetLocalASWPlayer();
-	if ( !pPlayer || !pPlayer->GetMarine() || pPlayer->GetMarine()->GetHealth() <= 0 )
+	if ( !pPlayer || !pPlayer->GetViewMarine() || pPlayer->GetViewMarine()->GetHealth() <= 0 )
 		return;
 
 	C_BaseEntity *pEnt = NULL;

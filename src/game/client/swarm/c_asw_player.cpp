@@ -958,24 +958,6 @@ void C_ASW_Player::CloseBriefingFrame()
 	}
 }
 
-
-
-C_ASW_Marine* C_ASW_Player::GetMarine()
-{
-	return m_hMarine.Get();
-}
-
-C_ASW_Marine* C_ASW_Player::GetMarine() const
-{
-	return m_hMarine.Get();
-}
-
-C_ASW_Marine* C_ASW_Player::GetSpectatingMarine()
-{
-	return m_hSpectatingMarine.Get();
-}
-
-
 Vector C_ASW_Player::GetAutoaimVectorForMarine( C_ASW_Marine* marine, float flDelta, float flNearMissDelta )
 {
 	// Never autoaim a predicted weapon (for now)
@@ -1058,7 +1040,7 @@ void C_ASW_Player::ClientThink()
 		if (f < asw_stim_cam_time.GetFloat())
 		{			
 			// enable the stylin' cam
-			if (GetMarine())
+			if (GetViewMarine())
 			{
 				// check if there's a mapper designed camera turned on
 				C_PointCamera *pCameraEnt = GetPointCameraList();
@@ -1086,11 +1068,10 @@ void C_ASW_Player::ClientThink()
 							GetStimCam()->SetActive( true );
 							Vector offset = Vector(asw_stim_cam_x.GetFloat(), asw_stim_cam_y.GetFloat(), asw_stim_cam_z.GetFloat());
 							Vector offset_r;
-							VectorRotate(offset, QAngle(0, GetMarine()->GetAbsAngles()[YAW] + m_fStimYaw, 0), offset_r);
-							if (GetMarine())
-								GetStimCam()->SetAbsOrigin(GetMarine()->GetAbsOrigin() + offset_r);
+							VectorRotate(offset, QAngle(0, GetViewMarine()->GetAbsAngles()[YAW] + m_fStimYaw, 0), offset_r);
+							GetStimCam()->SetAbsOrigin(GetViewMarine()->GetAbsOrigin() + offset_r);
 							// rotate it around us
-							GetStimCam()->SetAbsAngles(QAngle(asw_stim_cam_pitch.GetFloat(), m_fStimYaw + GetMarine()->GetAbsAngles()[YAW]+asw_stim_cam_yaw.GetFloat(), asw_stim_cam_roll.GetFloat()));
+							GetStimCam()->SetAbsAngles(QAngle(asw_stim_cam_pitch.GetFloat(), m_fStimYaw + GetViewMarine()->GetAbsAngles()[YAW]+asw_stim_cam_yaw.GetFloat(), asw_stim_cam_roll.GetFloat()));
 							m_fStimYaw += gpGlobals->frametime * asw_stim_cam_rotate_speed.GetFloat();
 							//Msg("Showing marine's cam\n");
 						}
@@ -1307,11 +1288,7 @@ void C_ASW_Player::UpdateRoomDetails()
 		return;
 	}
 
-	C_ASW_Marine *pMarine = GetMarine();
-	if ( !pMarine )
-	{
-		pMarine = GetSpectatingMarine();
-	}
+	C_ASW_Marine *pMarine = GetViewMarine();
 
 	Vector vecAmbientPos = vec3_origin;
 	if ( pMarine )
@@ -1466,9 +1443,7 @@ void C_ASW_Player::OnDataChanged( DataUpdateType_t updateType )
 	// update snow immediately upon changing marine
 	if (g_hSnowEmitter.IsValid() && IsLocalPlayer(this))
 	{
-		C_ASW_Marine *pMarine = GetSpectatingMarine();
-		if (!pMarine)
-			pMarine = GetMarine();
+		C_ASW_Marine *pMarine = GetViewMarine();
 		if (g_hSnowEmitter->m_hLastMarine.Get() != pMarine)
 		{
 			// update snow
@@ -2346,7 +2321,7 @@ void C_ASW_Player::CreateStimCamera()
 void C_ASW_Player::SmoothCameraZ(Vector &CameraPos)
 {
 	// no change if we have no marine or just starting out or just changed marine
-	if (!GetMarine() || GetMarine()!=m_hLastMarine.Get() || m_vecLastCameraPosition == vec3_origin)
+	if (!GetViewMarine() || GetViewMarine()!=m_hLastMarine.Get() || m_vecLastCameraPosition == vec3_origin)
 	{
 		// clear any poison effects - bad place for this!
 		g_fMarinePoisonDuration = 0;
@@ -2370,10 +2345,10 @@ void C_ASW_Player::SmoothCameraZ(Vector &CameraPos)
 // smooth the camera's overall coords when the player changes from marine to marine
 bool C_ASW_Player::SmoothMarineChangeCamera(Vector &CameraPos)
 {
-	if (GetMarine() && GetMarine() != m_hLastMarine.Get() && m_hLastMarine.Get())
+	if (GetViewMarine() && GetViewMarine() != m_hLastMarine.Get() && m_hLastMarine.Get())
 	{
 		// we changed, need to setup our smoothing vector		
-		if (m_fMarineChangeSmooth <= 0 && GetMarine()->GetAbsOrigin().DistTo(m_vecMarineChangeCameraPos) < asw_marine_switch_blend_max_dist.GetFloat())
+		if (m_fMarineChangeSmooth <= 0 && GetViewMarine()->GetAbsOrigin().DistTo(m_vecMarineChangeCameraPos) < asw_marine_switch_blend_max_dist.GetFloat())
 		{
 			// check the camera can slide between the two camera positions without going inside a solid
 			trace_t tr;
@@ -2443,12 +2418,12 @@ float C_ASW_Player::ASW_ClampYaw( float yawSpeedPerSec, float current, float tar
 // smoothly rotates the camera yaw to the desired value, to give the camera a nice springy feeling when driving
 void C_ASW_Player::SmoothCameraYaw(float &yaw)
 {
-	if (!GetMarine())
+	if (!GetViewMarine())
 		return;
 	// no change if we have no marine or just starting out or just changed marine
-	if (GetMarine()->IsInVehicle()!=m_bLastInVehicle || m_fLastVehicleYaw == 0)
+	if (GetViewMarine()->IsInVehicle() != m_bLastInVehicle || m_fLastVehicleYaw == 0)
 	{
-		m_bLastInVehicle = GetMarine()->IsInVehicle();
+		m_bLastInVehicle = GetViewMarine()->IsInVehicle();
 		m_fLastVehicleYaw = yaw;
 		return;
 	}
@@ -2457,18 +2432,18 @@ void C_ASW_Player::SmoothCameraYaw(float &yaw)
 	
 	yaw = ASW_ClampYaw( 1000.0f, m_fLastVehicleYaw, yaw, dt );
 
-	m_bLastInVehicle = GetMarine()->IsInVehicle();
-	m_fLastVehicleYaw = yaw;//GetMarine()->EyeAngles()[YAW];
+	m_bLastInVehicle = GetViewMarine()->IsInVehicle();
+	m_fLastVehicleYaw = yaw;
 }
 
-// smooth the simulated floo rused for aiming
+// smooth the simulated floor used for aiming
 #define ASW_FLOOR_Z_SPEED 100
 void C_ASW_Player::SmoothAimingFloorZ(float &FloorZ)
 {
-	if (m_fLastFloorZ == 0 || m_hLastAimingFloorZMarine.Get() != GetMarine())
+	if (m_fLastFloorZ == 0 || m_hLastAimingFloorZMarine.Get() != GetViewMarine())
 	{
 		m_fLastFloorZ = FloorZ;
-		m_hLastAimingFloorZMarine = GetMarine();
+		m_hLastAimingFloorZMarine = GetViewMarine();
 		return;
 	}
 	float fAmountToMove = abs(FloorZ - m_fLastFloorZ) / 10.0f;
@@ -2651,11 +2626,7 @@ ConVar asw_local_dlight_rotate("asw_local_dlight_rotate", "0", FCVAR_CHEAT, "Whe
 
 void C_ASW_Player::UpdateLocalMarineGlow()
 {
-	C_ASW_Marine *pMarine = GetMarine();
-	if ( !pMarine )
-	{
-		pMarine = GetSpectatingMarine();		
-	}
+	C_ASW_Marine *pMarine = GetViewMarine();
 
 	if ( !pMarine )
 	{
@@ -2846,7 +2817,7 @@ void C_ASW_Player::UpdateOnRemove()
 fogparams_t* C_ASW_Player::GetFogParams( void )
 {
 	static fogparams_t RemoteTurretFog;
-	if (GetMarine() && GetMarine()->IsControllingTurret())
+	if (GetViewMarine() && GetViewMarine()->IsControllingTurret())
 	{
 		RemoteTurretFog.enable = true;
 		RemoteTurretFog.colorPrimary.SetR(0);
@@ -2960,4 +2931,24 @@ CSteamID C_ASW_Player::GetSteamID()
 	}
 	CSteamID invalid;
 	return invalid;
+}
+
+C_ASW_Marine *C_ASW_Player::GetMarine() const
+{
+	return m_hMarine.Get();
+}
+
+C_ASW_Marine *C_ASW_Player::GetSpectatingMarine() const
+{
+	return m_hSpectatingMarine.Get();
+}
+
+C_ASW_Marine *C_ASW_Player::GetViewMarine() const
+{
+	C_ASW_Marine *pMarine = GetSpectatingMarine();
+	if ( !pMarine )
+	{
+		pMarine = GetMarine();
+	}
+	return pMarine;
 }

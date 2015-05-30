@@ -406,9 +406,9 @@ void C_ASW_Weapon::ClientThink()
 	if ( !GetOwner() )
 	{
 		C_ASW_Player *pLocalPlayer = C_ASW_Player::GetLocalASWPlayer();
-		if ( pLocalPlayer && pLocalPlayer->GetMarine() && ASWInput()->GetUseGlowEntity() != this && AllowedToPickup( pLocalPlayer->GetMarine() ) )
+		if ( pLocalPlayer && pLocalPlayer->GetViewMarine() && ASWInput()->GetUseGlowEntity() != this && AllowedToPickup( pLocalPlayer->GetViewMarine() ) )
 		{
-			flDistanceToMarineSqr = (pLocalPlayer->GetMarine()->GetAbsOrigin() - WorldSpaceCenter()).LengthSqr();
+			flDistanceToMarineSqr = (pLocalPlayer->GetViewMarine()->GetAbsOrigin() - WorldSpaceCenter()).LengthSqr();
 			if ( flDistanceToMarineSqr < flWithinDistSqr )
 				bShouldGlow = true;
 		}
@@ -671,15 +671,9 @@ bool C_ASW_Weapon::ShouldShowLaserPointer()
 		return false;
 	}
 
-	//C_ASW_Player *pPlayer = GetCommander();
 	C_ASW_Marine *pMarine = GetMarine();
-	//if ( !pPlayer || !pMarine || !pPlayer->GetMarine() )
-	//	return false;
 
 	return ( pMarine && pMarine->GetActiveWeapon() == this );
-
-	//return ( pPlayer == C_ASW_Player::GetLocalASWPlayer() && pPlayer->GetMarine() == pMarine 
-	//	&& pMarine->GetActiveWeapon() == this );
 }
 
 bool C_ASW_Weapon::ShouldAlignWeaponToLaserPointer()

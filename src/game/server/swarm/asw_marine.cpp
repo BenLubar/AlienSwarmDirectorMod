@@ -797,15 +797,10 @@ void CASW_Marine::PrecacheSpeech()
 
 void CASW_Marine::PhysicsSimulate( void )
 {
-	for ( int i = 1; i <= gpGlobals->maxClients; i++ )
+	if ( IsInhabited() )
 	{
-		CASW_Player *player = ToASW_Player( UTIL_PlayerByIndex( i ) );
-
-		if ( player && player->GetMarine() == this)
-		{
-			InhabitedPhysicsSimulate();
-			return;
-		}
+		InhabitedPhysicsSimulate();
+		return;
 	}
 	
 	BaseClass::PhysicsSimulate();

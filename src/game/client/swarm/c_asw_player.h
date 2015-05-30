@@ -144,9 +144,9 @@ public:
 
 	bool IsSniperScopeActive();
 
-	C_ASW_Marine* GetMarine();
-	C_ASW_Marine* GetMarine() const;
-	C_ASW_Marine* GetSpectatingMarine();
+	inline C_ASW_Marine *GetMarine() const;
+	inline C_ASW_Marine *GetSpectatingMarine() const;
+	inline C_ASW_Marine *GetViewMarine() const;
 	bool HasLiveMarines();
 	virtual bool IsAlive( void );
 
@@ -314,6 +314,5 @@ inline C_ASW_Player* ToASW_Player( CBaseEntity *pEntity )
 	Assert( dynamic_cast< C_ASW_Player* >( pEntity ) != NULL );
 	return static_cast< C_ASW_Player* >( pEntity );
 }
-
 
 #endif // C_ASW_PLAYER_H

@@ -1909,13 +1909,13 @@ void C_ASW_Marine::ReleaseFlashlightBeam( void )
 // EF_NODRAW isn't preventing the marine from being drawn, strangely.  So we do a visible check here before drawing.
 int C_ASW_Marine::DrawModel( int flags, const RenderableInstance_t &instance )
 {
-	if (!IsVisible())
+	if ( !IsVisible() )
 		return 0;	
 
-	if (asw_hide_local_marine.GetBool() && C_ASW_Player::GetLocalASWPlayer() && C_ASW_Player::GetLocalASWPlayer()->GetSpectatingMarine() ? C_ASW_Player::GetLocalASWPlayer()->GetSpectatingMarine() == this : C_ASW_Player::GetLocalASWPlayer()->GetMarine() == this)
+	if ( asw_hide_local_marine.GetBool() && C_ASW_Player::GetLocalASWPlayer() && C_ASW_Player::GetLocalASWPlayer()->GetViewMarine() == this )
 		return 0;
 
-	int iResult = BaseClass::DrawModel(flags, instance);
+	int iResult = BaseClass::DrawModel( flags, instance );
 
 	m_vecLastRenderedPos = GetRenderOrigin();
 

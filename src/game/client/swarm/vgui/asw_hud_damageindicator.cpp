@@ -189,7 +189,7 @@ bool CHudDamageIndicator::ShouldDraw( void )
 	if ( !pPlayer )
 		return false;
 
-	C_ASW_Marine *pMarine = pPlayer->GetMarine();
+	C_ASW_Marine *pMarine = pPlayer->GetViewMarine();
 	if ( !pMarine )
 		return false;
 
@@ -250,7 +250,7 @@ void CHudDamageIndicator::GetDamagePosition( const Vector &vecDelta, float flRad
 	if ( !pPlayer )
 		return;
 
-	C_ASW_Marine *pMarine = pPlayer->GetMarine();
+	C_ASW_Marine *pMarine = pPlayer->GetViewMarine();
 	if ( !pMarine )
 		return;
 
@@ -458,7 +458,7 @@ void CHudDamageIndicator::Paint()
 	if ( !pPlayer )
 		return;
 
-	C_ASW_Marine *pMarine = pPlayer->GetMarine();
+	C_ASW_Marine *pMarine = pPlayer->GetViewMarine();
 	if ( !pMarine )
 		return;
 
@@ -489,9 +489,9 @@ void CHudDamageIndicator::Paint()
 const Vector& CHudDamageIndicator::GetMarineOrigin()
 {
 	C_ASW_Player *pPlayer = C_ASW_Player::GetLocalASWPlayer();
-	if ( pPlayer && pPlayer->GetMarine() )
+	if ( pPlayer && pPlayer->GetViewMarine() )
 	{
-		return pPlayer->GetMarine()->GetAbsOrigin();
+		return pPlayer->GetViewMarine()->GetAbsOrigin();
 	}
 
 	ASSERT_LOCAL_PLAYER_RESOLVABLE();

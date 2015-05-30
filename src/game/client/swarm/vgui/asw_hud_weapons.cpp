@@ -139,7 +139,7 @@ void CASWHudWeapons::Paint()
 		return;
 
 	C_ASW_Marine *pMarine = pPlayer->GetMarine();
-	if (!pMarine)
+	if ( !pMarine || pPlayer->GetSpectatingMarine() )
 		return;		
 	char cbuffer[64];
 

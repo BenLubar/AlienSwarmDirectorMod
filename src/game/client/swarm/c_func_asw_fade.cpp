@@ -45,11 +45,7 @@ void C_Func_ASW_Fade::ClientThink()
 		return;
 	}
 
-	C_ASW_Marine *pMarine = pPlayer->GetSpectatingMarine();
-	if (!pMarine)
-	{
-		pMarine = pPlayer->GetMarine();
-	}
+	C_ASW_Marine *pMarine = pPlayer->GetViewMarine();
 
 	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
 	bool bFade = asw_controls.GetInt() == 1 && pMarine && pMarine->GetAbsOrigin().z <= GetAbsOrigin().z;
