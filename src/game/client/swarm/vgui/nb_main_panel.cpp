@@ -36,6 +36,8 @@
 
 #define CHAT_BUTTON_ICON "vgui/briefing/chat_icon"
 #define VOTE_BUTTON_ICON "vgui/briefing/vote_icon"
+#define ADD_BOT_BUTTON_ICON "vgui/briefing/addbot_icon"
+#define DESELECT_MARINES_ICON "vgui/briefing/deselectmarines_icon"
 
 
 CUtlVector<int> CNB_Main_Panel::s_QueuedSpendSkillPoints;
@@ -87,6 +89,12 @@ CNB_Main_Panel::CNB_Main_Panel( vgui::Panel *parent, const char *name ) : BaseCl
 	m_pVoteButton->AddActionSignalTarget( this );
 	m_pVoteButton->SetCommand( "VoteButton" );
 	m_pPromotionButton = new CNB_Button( this, "PromotionButton", "", this, "PromotionButton" );
+	m_pAddBotButton = new CBitmapButton( this, "AddBotButton", "" );
+	m_pAddBotButton->AddActionSignalTarget( this );
+	m_pAddBotButton->SetCommand( "AddBotButton" );
+	m_pDeselectMarines = new CBitmapButton( this, "DeselectMarines", "" );
+	m_pDeselectMarines->AddActionSignalTarget( this );
+	m_pDeselectMarines->SetCommand( "DeselectMarines" );
 
 	m_pHeaderFooter->SetTitle( "#nb_mission_prep" );
 
@@ -147,6 +155,14 @@ void CNB_Main_Panel::ApplySchemeSettings( vgui::IScheme *pScheme )
 	m_pVoteButton->SetImage( CBitmapButton::BUTTON_DISABLED, VOTE_BUTTON_ICON, grey );
 	m_pVoteButton->SetImage( CBitmapButton::BUTTON_PRESSED, VOTE_BUTTON_ICON, white );		
 	m_pVoteButton->SetImage( CBitmapButton::BUTTON_ENABLED_MOUSE_OVER, VOTE_BUTTON_ICON, white );
+	m_pAddBotButton->SetImage( CBitmapButton::BUTTON_ENABLED, ADD_BOT_BUTTON_ICON, grey );
+	m_pAddBotButton->SetImage( CBitmapButton::BUTTON_DISABLED, ADD_BOT_BUTTON_ICON, grey );
+	m_pAddBotButton->SetImage( CBitmapButton::BUTTON_PRESSED, ADD_BOT_BUTTON_ICON, white );		
+	m_pAddBotButton->SetImage( CBitmapButton::BUTTON_ENABLED_MOUSE_OVER, ADD_BOT_BUTTON_ICON, white );
+	m_pDeselectMarines->SetImage( CBitmapButton::BUTTON_ENABLED, DESELECT_MARINES_ICON, grey );
+	m_pDeselectMarines->SetImage( CBitmapButton::BUTTON_DISABLED, DESELECT_MARINES_ICON, grey );
+	m_pDeselectMarines->SetImage( CBitmapButton::BUTTON_PRESSED, DESELECT_MARINES_ICON, white );		
+	m_pDeselectMarines->SetImage( CBitmapButton::BUTTON_ENABLED_MOUSE_OVER, DESELECT_MARINES_ICON, white );
 }
 
 void CNB_Main_Panel::PerformLayout()
@@ -166,9 +182,9 @@ void CNB_Main_Panel::OnThink()
 	m_pVoteButton->SetVisible( gpGlobals->maxClients > 1 );
 	C_ASW_Player *pPlayer = C_ASW_Player::GetLocalASWPlayer();
 	m_pPromotionButton->SetVisible( pPlayer && pPlayer->GetExperience() >= ( ASW_XP_CAP * g_flPromotionXPScale[ pPlayer->GetPromotion() ] ) && pPlayer->GetPromotion() < ASW_PROMOTION_CAP );
+	m_pAddBotButton->SetVisible( gpGlobals->maxClients > 1 );
+	m_pDeselectMarines->SetVisible( true );
 
-	
-	
 	const char *pszLeaderName = Briefing()->GetLeaderName();
 	if ( pszLeaderName )
 	{
@@ -236,7 +252,7 @@ void CNB_Main_Panel::OnThink()
 
 void CNB_Main_Panel::ChangeMarine( int nLobbySlot )
 {
-	if ( !Briefing()->IsLobbySlotLocal( nLobbySlot ) )
+	if ( nLobbySlot != -1 && !Briefing()->IsLobbySlotLocal( nLobbySlot ) )
 		return;
 
 	if ( m_hSubScreen.Get() )
@@ -245,13 +261,10 @@ void CNB_Main_Panel::ChangeMarine( int nLobbySlot )
 	}
 
 	CNB_Select_Marine_Panel *pMarinePanel = new CNB_Select_Marine_Panel( this, "Select_Marine_Panel" );
-	CASW_Marine_Profile *pProfile = Briefing()->GetMarineProfile( nLobbySlot );
+	CASW_Marine_Profile *pProfile = nLobbySlot != -1 ? Briefing()->GetMarineProfile( nLobbySlot ) : NULL;
 	pMarinePanel->m_nInitialProfileIndex = pProfile ? pProfile->m_ProfileIndex : -1;
 
-	if ( Briefing()->IsOfflineGame() )
-	{
-		pMarinePanel->m_nPreferredLobbySlot = nLobbySlot;
-	}
+	pMarinePanel->m_nPreferredLobbySlot = nLobbySlot;
 	pMarinePanel->InitMarineList();
 	pMarinePanel->MoveToFront();
 	Briefing()->SetChangingWeaponSlot( 1 );
@@ -366,6 +379,23 @@ void CNB_Main_Panel::OnCommand( const char *command )
 	else if ( !Q_stricmp( command, "PromotionButton" ) )
 	{
 		ShowPromotionPanel();
+	}
+	else if ( !Q_stricmp( command, "AddBotButton" ) )
+	{
+		ChangeMarine( -1 );
+	}
+	else if ( !Q_stricmp( command, "DeselectMarines" ) )
+	{
+		C_ASW_Player *pPlayer = C_ASW_Player::GetLocalASWPlayer();
+		Assert( pPlayer );
+		if ( !pPlayer )
+		{
+			return;
+		}
+		for ( int i = 0; i < ASW_NUM_MARINE_PROFILES; i++ )
+		{
+			pPlayer->RosterDeselectMarine( i );
+		}
 	}
 	BaseClass::OnCommand( command );
 }

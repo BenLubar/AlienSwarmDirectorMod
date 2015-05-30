@@ -626,14 +626,7 @@ void CASW_Briefing::SelectMarine( int nOrder, int nProfileIndex, int nPreferredL
 	if ( !pPlayer )
 		return;
 
-	if ( IsOfflineGame() )
-	{
-		pPlayer->RosterSelectMarineForSlot( nProfileIndex, nPreferredLobbySlot );
-	}
-	else
-	{
-		pPlayer->RosterSelectSingleMarine( nProfileIndex );
-	}
+	pPlayer->RosterSelectMarineForSlot( nProfileIndex, nPreferredLobbySlot );
 
 	if ( gpGlobals->curtime - m_flLastSelectionChatterTime < 1.0f )
 		return;

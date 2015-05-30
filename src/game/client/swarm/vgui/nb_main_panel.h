@@ -66,6 +66,8 @@ public:
 	CNB_Vote_Panel *m_pVotePanel;
 	CBitmapButton *m_pChatButton;
 	CBitmapButton *m_pVoteButton;
+	CBitmapButton *m_pAddBotButton;
+	CBitmapButton *m_pDeselectMarines;
 
 	bool m_bLocalLeader;
 	uint64 m_FlyoutSteamID;

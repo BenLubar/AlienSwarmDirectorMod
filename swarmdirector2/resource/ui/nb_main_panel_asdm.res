@@ -65,6 +65,28 @@
 		"fgcolor_override"		"113 142 181 255"
 		"zpos"		"3"
 	}
+	"AddBotButton"
+	{
+		"fieldName"		"AddBotButton"
+		"xpos"		"c-243"
+		"ypos"		"150"
+		"wide"		"16"
+		"tall"		"16"
+		"ControlName"		"CBitmapButton"
+		"zpos"		"4"
+		"scaleImage"		"1"
+	}
+	"DeselectMarines"
+	{
+		"fieldName"		"DeselectMarines"
+		"xpos"		"c-225"
+		"ypos"		"150"
+		"wide"		"16"
+		"tall"		"16"
+		"ControlName"		"CBitmapButton"
+		"zpos"		"4"
+		"scaleImage"		"1"
+	}
 	"ReadyButton"
 	{
 		"fieldName"		"ReadyButton"

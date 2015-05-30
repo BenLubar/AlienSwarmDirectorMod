@@ -135,39 +135,6 @@ void CNB_Lobby_Row::UpdateDetails()
 
 	m_pVoiceIcon->SetVisible( Briefing()->IsCommanderSpeaking( m_nLobbySlot ) );
 
-	if ( m_nLobbySlot == -1 || !Briefing()->IsLobbySlotOccupied( m_nLobbySlot ) )
-	{
-		if ( Briefing()->IsOfflineGame() )
-		{
-			// in singleplayer, empty slots show the empty portrait button
-			const char *szEmptyFace = "vgui/briefing/face_empty";
-			const char *szEmptyFaceLit = "vgui/briefing/face_empty_lit";
-			if ( Q_strcmp( szEmptyFace, m_szLastPortraitImage ) )
-			{
-				Q_snprintf( m_szLastPortraitImage, sizeof( m_szLastPortraitImage ), "%s", szEmptyFace );
-				m_pPortraitButton->SetImage( CBitmapButton::BUTTON_ENABLED, szEmptyFace, white );
-				m_pPortraitButton->SetImage( CBitmapButton::BUTTON_PRESSED, szEmptyFace, white );
-
-				if ( Briefing()->IsLobbySlotLocal( m_nLobbySlot ) )
-				{
-					m_pPortraitButton->SetImage( CBitmapButton::BUTTON_ENABLED_MOUSE_OVER, szEmptyFaceLit, white );
-				}
-				else
-				{
-					m_pPortraitButton->SetImage( CBitmapButton::BUTTON_ENABLED_MOUSE_OVER, szEmptyFace, white );
-				}
-			}
-			m_pPortraitButton->SetVisible( true );
-		}
-		m_pXPBar->SetVisible( false );
-		m_pLevelLabel->SetVisible( false );
-		m_pPromotionIcon->SetVisible( false );
-		m_pNameDropdown->SetVisible( false );
-		m_pAvatarImage->SetVisible( false );
-		m_pClassLabel->SetVisible( false );
-		return;
-	}
-
 	color32 invisible;
 	invisible.r = 0;
 	invisible.g = 0;
@@ -249,24 +216,36 @@ void CNB_Lobby_Row::UpdateDetails()
 	ASW_Marine_Class nMarineClass = Briefing()->GetMarineClass( m_nLobbySlot );
 	switch( nMarineClass )
 	{
-	case MARINE_CLASS_NCO: m_pClassLabel->SetText( "#marine_class_officer" ); break;
-	case MARINE_CLASS_SPECIAL_WEAPONS: m_pClassLabel->SetText( "#marine_class_sw_short" ); break;
-	case MARINE_CLASS_MEDIC: m_pClassLabel->SetText( "#marine_class_medic" ); break;
-	case MARINE_CLASS_TECH: m_pClassLabel->SetText( "#marine_class_tech" ); break;
-	default: m_pClassLabel->SetText( "" ); break;
+	case MARINE_CLASS_NCO:
+		m_pClassLabel->SetText( "#marine_class_officer" );
+		m_pClassImage->SetImage( "swarm/ClassIcons/NCOClassIcon" );
+		m_pClassLabel->SetVisible( true );
+		m_pClassImage->SetVisible( true );
+		break;
+	case MARINE_CLASS_SPECIAL_WEAPONS:
+		m_pClassLabel->SetText( "#marine_class_sw_short" );
+		m_pClassImage->SetImage( "swarm/ClassIcons/SpecialWeaponsClassIcon" );
+		m_pClassLabel->SetVisible( true );
+		m_pClassImage->SetVisible( true );
+		break;
+	case MARINE_CLASS_MEDIC:
+		m_pClassLabel->SetText( "#marine_class_medic" );
+		m_pClassImage->SetImage( "swarm/ClassIcons/MedicClassIcon" );
+		m_pClassLabel->SetVisible( true );
+		m_pClassImage->SetVisible( true );
+		break;
+	case MARINE_CLASS_TECH:
+		m_pClassLabel->SetText( "#marine_class_tech" );
+		m_pClassImage->SetImage( "swarm/ClassIcons/TechClassIcon" );
+		m_pClassLabel->SetVisible( true );
+		m_pClassImage->SetVisible( true );
+		break;
+	default:
+		m_pClassLabel->SetVisible( false );
+		m_pClassImage->SetVisible( false );
+		break;
 	}
-	m_pClassLabel->SetVisible( true );
-
-	switch( nMarineClass )
-	{
-	case MARINE_CLASS_NCO: m_pClassImage->SetImage( "swarm/ClassIcons/NCOClassIcon" ); break;
-	case MARINE_CLASS_SPECIAL_WEAPONS: m_pClassImage->SetImage( "swarm/ClassIcons/SpecialWeaponsClassIcon" ); break;
-	case MARINE_CLASS_MEDIC: m_pClassImage->SetImage( "swarm/ClassIcons/MedicClassIcon" ); break;
-	case MARINE_CLASS_TECH: m_pClassImage->SetImage( "swarm/ClassIcons/TechClassIcon" ); break;
-	}
-
-	m_pClassImage->SetVisible( true );
-		
+	
 	if ( Briefing()->IsOfflineGame() && m_nLobbySlot != 0 )
 	{
 		// AI slots
@@ -368,6 +347,8 @@ void CNB_Lobby_Row::UpdateDetails()
 			{
 				Q_snprintf( m_szLastWeaponImage[i], sizeof( m_szLastWeaponImage[i] ), "%s", "vgui/white" );
 				pButton->SetImage( CBitmapButton::BUTTON_ENABLED, "vgui/white", invisible );
+				pButton->SetImage( CBitmapButton::BUTTON_ENABLED_MOUSE_OVER, "vgui/white", invisible );
+				pButton->SetImage( CBitmapButton::BUTTON_PRESSED, "vgui/white", invisible );
 			}
 			pSilhouette->SetVisible( true );
 		}
