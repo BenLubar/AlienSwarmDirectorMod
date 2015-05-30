@@ -99,11 +99,6 @@ public:
 	const HudSheetTexture_t* GetDeadIconUVs();
 	
 protected:
-	//Mod
-	int m_nModPeformanceEmptyTextureID, m_nModPeformanceFullTextureID;
-	int m_iModPlayerPerformance;
-	int m_iModPlayerPerformanceDynamicContentNotificationBlinksRemaning;
-
 	virtual void ApplySchemeSettings( vgui::IScheme *scheme );
 	virtual void Paint();
 	virtual void OnThink();
