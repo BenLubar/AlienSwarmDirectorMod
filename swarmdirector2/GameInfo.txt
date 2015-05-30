@@ -7,7 +7,7 @@ GameInfo {
 	Manual			"https://steamcommunity.com/groups/swarm-director-2"
 	Icon			"resource/logo"
 
-	SupportsDX8     "0"
+	SupportsDX8		"0"
 
 	FileSystem {
 		SteamAppId	"630"
@@ -15,6 +15,9 @@ GameInfo {
 		
 		SearchPaths {
 			Game	"|gameinfo_path|."
+			Game	"|gameinfo_path|../reactivedrop/content/paranoia"
+			Game	"|gameinfo_path|../reactivedrop/content/ex"
+			Game	"|gameinfo_path|../reactivedrop/content/ocs"
 			Game	"swarm"
 			Game	"swarm_tempcontent"
 			Game	"swarm_base"
