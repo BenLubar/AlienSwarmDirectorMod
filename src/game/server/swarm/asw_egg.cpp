@@ -127,15 +127,6 @@ void CASW_Egg::Spawn( void )
 	ChangeFaction( FACTION_ALIENS );
 	ChangeTeam( TEAM_ALIENS );
 
-	trace_t tr;
-	UTIL_TraceLine(GetAbsOrigin() + Vector(0, 0, 128), GetAbsOrigin(), MASK_SOLID_BRUSHONLY, NULL, COLLISION_GROUP_NONE, &tr);
-	if (tr.fraction != 1.0f)
-	{
-		float dist = 128 * (1 - tr.fraction);
-		SetAbsOrigin(GetAbsOrigin() + Vector(0, 0, dist));
-		Warning("%s embedded in floor! Moving to (%f, %f, %f).\n", GetDebugName(), GetAbsOrigin().x, GetAbsOrigin().y, GetAbsOrigin().z);
-	}
-
 	BaseClass::Spawn();
 
 	AddEFlags( EFL_NO_DISSOLVE | EFL_NO_MEGAPHYSCANNON_RAGDOLL | EFL_NO_PHYSCANNON_INTERACTION );
