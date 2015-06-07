@@ -3673,6 +3673,7 @@ void CASW_Marine::CheckForDisablingAICollision( CBaseEntity *pEntity )
 
 bool CASW_Marine::OverrideMove(float flInterval)
 {
+#if 0
 	if (GetCurrentMeleeAttack() || (!IsCurSchedule(SCHED_ASW_FOLLOW_MOVE) && !IsCurSchedule(SCHED_ASW_LEAD) && !IsCurSchedule(SCHED_ASW_MOVE_TO_ORDER_POS)))
 	{
 		return false;
@@ -3718,6 +3719,7 @@ bool CASW_Marine::OverrideMove(float flInterval)
 		m_bFaceMeleeYaw = true;
 		return true;
 	}
+#endif
 	return false;
 }
 
