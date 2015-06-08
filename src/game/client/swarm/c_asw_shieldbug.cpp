@@ -54,27 +54,20 @@ void C_ASW_Shieldbug::DoAlienFootstep(Vector &vecOrigin, float fvol)
 	EmitSound( filter, entindex(), ep2 );
 }
 
-const Vector& C_ASW_Shieldbug::GetAimTargetRadiusPos(const Vector &vecFiringSrc)
+const Vector& C_ASW_Shieldbug::GetAimTargetRadiusPos( const Vector &vecFiringSrc )
 {
-	// We can't get the hitboxes on the client, but it just so happens that the eyes attachment and the attach_brain attachment are in the right place for us to do some sneaky math.
 	static Vector aim_pos;
-	Vector vecEyes, vecBrain;
-	if (!GetAttachment("eyes", vecEyes))
+	if ( !GetAttachment( "attach_brain", aim_pos ) )
 	{
-		Assert(0);
+		Assert( 0 );
 		return GetAbsOrigin();
 	}
-	if (!GetAttachment("attach_brain", vecBrain))
-	{
-		Assert(0);
-		return GetAbsOrigin();
-	}
-	aim_pos = vecBrain * 2 - vecEyes;
+	aim_pos.z -= 16;
 	return aim_pos;
 }
 
 
-const Vector& C_ASW_Shieldbug::GetAimTargetPos(const Vector &vecFiringSrc, bool bWeaponPrefersFlatAiming)
+const Vector& C_ASW_Shieldbug::GetAimTargetPos( const Vector &vecFiringSrc, bool bWeaponPrefersFlatAiming )
 {
-	return GetAimTargetRadiusPos(vecFiringSrc);
+	return GetAimTargetRadiusPos( vecFiringSrc );
 }
