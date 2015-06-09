@@ -35,7 +35,6 @@ using namespace vgui;
 DECLARE_BUILD_FACTORY( ASWCircularProgressBar );
 
 extern ConVar crosshair;
-extern ConVar asw_controls;
 ConVar asw_crosshair_progress_size( "asw_crosshair_progress_size", "20", FCVAR_ARCHIVE );
 
 //-----------------------------------------------------------------------------

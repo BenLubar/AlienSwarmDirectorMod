@@ -225,9 +225,7 @@ Vector CASW_Marine::EyePosition()
 			return GetASWVehicle()->GetEntity()->GetAbsOrigin();
 	}
 
-	switch ( IsInhabited() && GetCommander() ? GetCommander()->GetASWControls() : 0 )
-	{
-	case 0:
+	if ( !IsInhabited() || !GetCommander() || GetCommander()->GetASWControls() == 0 )
 	{
 		Vector position;
 		QAngle angles;
@@ -237,17 +235,6 @@ Vector CASW_Marine::EyePosition()
 		{
 			return position;
 		}
-		break;
-	}
-
-	case 1:
-		break;
-
-	case 2:
-		break;
-
-	default:
-		Assert(iControls >= 0 && iControls <= 2);
 	}
 
 #ifdef CLIENT_DLL

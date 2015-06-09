@@ -385,7 +385,6 @@ Vector CASW_Player::EyePosition( )
 			return BaseClass::EyePosition();
 		}
 
-		Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
 		bool bIsThirdPerson = GetASWControls() == 1;
 
 		Vector org = vec3_origin;

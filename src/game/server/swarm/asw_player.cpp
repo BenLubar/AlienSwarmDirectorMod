@@ -1741,7 +1741,7 @@ bool CASW_Player::ClientCommand( const CCommand &args )
 		m_iASWControls = clamp<int>(atoi(args[1]), 0, 2);
 		return true;
 	}
-	
+
 	return BaseClass::ClientCommand( args );
 }
 

@@ -80,7 +80,7 @@ static ConVar asw_debug_air_move("asw_debug_air_move", "0", FCVAR_CHEAT | FCVAR_
 		AngleVectors(mv->m_vecViewAngles, &forward, &right, &up); \
 		break; \
 	default: \
-		AssertMsg1( false, "asw_controls = %d\n", player->GetASWControls() ); \
+		AssertMsg1( false, "asw_controls = %d\n", assert_cast<CASW_Player *>( player )->GetASWControls() ); \
 		AngleVectors(mv->m_vecViewAngles, &forward, &right, &up); \
 		break; \
 	}
