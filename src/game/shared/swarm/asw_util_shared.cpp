@@ -738,14 +738,7 @@ CASW_Marine* UTIL_ASW_MarineCanSee(CASW_Marine_Resource* pMarineResource, const 
 		vecMarinePos = pMarine->GetAbsOrigin();
 	}
 
-#ifdef CLIENT_DLL
-	extern ConVar asw_controls;
-	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
-	if (asw_controls.GetInt() == 1)
-#else
-	Assert(!pMarineResource->IsInhabited() || !pMarineResource->GetCommander() || (pMarineResource->GetCommander()->m_iASWControls >= 0 && pMarineResource->GetCommander()->m_iASWControls <= 2));
-	if (pMarineResource->IsInhabited() && pMarineResource->GetCommander() && pMarineResource->GetCommander()->m_iASWControls == 1)
-#endif
+	if  (pMarineResource->IsInhabited() && pMarineResource->GetCommander() && pMarineResource->GetCommander()->GetASWControls() == 1 )
 	{
 		trace_t tr;
 		UTIL_TraceLine( vecMarinePos, pos, MASK_VISIBLE, pMarine, COLLISION_GROUP_NONE, &tr );

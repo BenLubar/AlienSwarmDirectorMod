@@ -78,7 +78,6 @@ ConVar asw_melee_lock_distance( "asw_melee_lock_distance", "35", FCVAR_CHEAT, "D
 ConVar asw_melee_lock_slide_speed( "asw_melee_lock_slide_speed", "200", FCVAR_CHEAT, "Speed at which marine slides into place when target locked in melee" );
 extern ConVar asw_cam_marine_yaw_2;
 #endif
-extern ConVar asw_controls;
 
 mstudioevent_for_client_server_t *GetEventIndexForSequence( mstudioseqdesc_t &seqdesc );
 void SetEventIndexForSequence( mstudioseqdesc_t &seqdesc );
@@ -485,14 +484,7 @@ void CASW_Melee_System::OnJumpPressed( CASW_Marine *pMarine, CMoveData *pMoveDat
 	}
 	else
 	{
-#ifdef CLIENT_DLL
-		extern ConVar asw_controls;
-		Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
-		bool bFirstPerson = asw_controls.GetInt() != 1;
-#else
-		Assert(!pMarine->IsInhabited() || !pMarine->GetCommander() || (pMarine->GetCommander()->m_iASWControls >= 0 && pMarine->GetCommander()->m_iASWControls <= 2));
-		bool bFirstPerson = !pMarine->IsInhabited() || !pMarine->GetCommander() || pMarine->GetCommander()->m_iASWControls != 1;
-#endif
+		bool bFirstPerson = !pMarine->IsInhabited() || !pMarine->GetCommander() || pMarine->GetCommander()->GetASWControls() != 1;
 		pMarine->m_flMeleeYaw = RAD2DEG(atan2(-pMoveData->m_flSideMove, pMoveData->m_flForwardMove)) + (bFirstPerson ? pMarine->ASWEyeAngles()[YAW] : ASWGameRules()->GetTopDownMovementAxis()[YAW]);
 	}
 	pMarine->m_bFaceMeleeYaw = true;

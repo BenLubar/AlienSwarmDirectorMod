@@ -38,7 +38,6 @@ ConVar asw_crosshair_use_perspective("asw_crosshair_use_perspective", "1", FCVAR
 extern ConVar cl_observercrosshair;
 extern ConVar asw_crosshair_progress_size;
 extern ConVar asw_fast_reload_enabled;
-extern ConVar asw_controls;
 
 using namespace vgui;
 
@@ -170,8 +169,7 @@ void CASWHudCrosshair::Paint( void )
 		}
 		else
 		{
-			Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
-			if (asw_controls.GetInt() != 1)
+			if ( pPlayer->GetASWControls() != 1 )
 				return;
 			DrawDirectionalCrosshair( x, y, YRES( asw_crosshair_progress_size.GetInt() ) );
 		}

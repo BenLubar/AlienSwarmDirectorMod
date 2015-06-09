@@ -73,7 +73,6 @@ ConVar asw_hear_from_marine( "asw_hear_from_marine", "0", FCVAR_NONE, "Audio hea
 ConVar asw_hear_pos_debug("asw_hear_pos_debug", "0", FCVAR_NONE, "Shows audio hearing position" );
 ConVar asw_hear_height("asw_hear_height", "0", FCVAR_NONE, "If set, hearing audio position is this many units above the marine.  If number is negative, then hear position is number of units below the camera." );
 ConVar asw_hear_fixed("asw_hear_fixed", "0", FCVAR_NONE, "If set, hearing audio position is locked in place.  Use asw_set_hear_pos to set the fixed position to the current audio location." );
-extern ConVar asw_controls;
 
 Vector g_asw_vec_fixed_cam(-276.03076, -530.74951, -196.65625);
 QAngle g_asw_ang_fixed_cam(42.610226, 90.289375, 0);
@@ -646,8 +645,7 @@ void ClientModeASW::OverrideView( CViewSetup *pSetup )
 
 	pPlayer->OverrideView( pSetup );
 
-	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
-	if (::input->CAM_IsThirdPerson() && asw_controls.GetInt() == 1)
+	if ( ::input->CAM_IsThirdPerson() && pPlayer->GetASWControls() == 1 )
 	{
 		int omx, omy;
 		ASWInput()->ASW_GetCameraLocation(pPlayer, pSetup->origin, pSetup->angles, omx, omy, true);
@@ -764,8 +762,10 @@ void ClientModeASW::LevelInit( const char *newmap )
 	}
 	else
 	{
-		Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
-		if (asw_controls.GetInt() != 0)
+		// We can't use the player as we don't have a player entity yet.
+		extern ConVar asw_controls;
+		extern ConVar asw_force_controls;
+		if ( ( asw_force_controls.GetInt() == -1 ? asw_controls.GetInt() : asw_force_controls.GetInt() ) != 0 )
 			::input->CAM_ToThirdPerson();
 		else
 			::input->CAM_ToFirstPerson();

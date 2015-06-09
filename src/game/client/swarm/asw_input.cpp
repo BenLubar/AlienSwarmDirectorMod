@@ -53,7 +53,6 @@ ConVar joy_disable_movement_in_ui( "joy_disable_movement_in_ui", "1", 0, "Disabl
 
 extern kbutton_t in_attack;
 extern int g_asw_iPlayerListOpen;
-extern ConVar asw_controls;
 extern ConVar asw_DebugAutoAim;
 extern ConVar in_forceuser;
 extern ConVar asw_item_hotbar_hud;

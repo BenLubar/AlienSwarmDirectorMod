@@ -22,7 +22,6 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-extern ConVar asw_controls; // asw, whether to use swarm controls or not
 ConVar joy_pan_camera("joy_pan_camera", "0", FCVAR_ARCHIVE);
 ConVar asw_ground_secondary("asw_ground_secondary", "1", FCVAR_NONE, "Set to 1 to make marines aim grenades at the floor instead of firing them straight");
 
@@ -562,9 +561,8 @@ void CASWInput::CreateMove( int sequence_number, float input_sample_frametime, b
 		}
 	}
 
-	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
 	// asw - alter view angles for this move if it's one where we're firing off a ground grenade
-	if ( asw_ground_secondary.GetBool() && asw_controls.GetInt() == 1 && cmd->buttons & IN_ATTACK2 )
+	if ( asw_ground_secondary.GetBool() && pPlayer->GetASWControls() == 1 && cmd->buttons & IN_ATTACK2 )
 	{
 		ASW_AdjustViewAngleForGroundShooting(viewangles);
 	}

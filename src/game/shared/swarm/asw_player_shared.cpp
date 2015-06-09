@@ -92,7 +92,6 @@ ConVar asw_marine_nearby_angle("asw_marine_nearby_angle", "-75", FCVAR_REPLICATE
 ConVar asw_rts_controls("asw_rts_controls", "0", FCVAR_REPLICATED | FCVAR_CHEAT);
 
 #ifdef CLIENT_DLL
-	extern ConVar asw_controls;
 	extern ConVar asw_vehicle_cam_height;
 	extern ConVar asw_vehicle_cam_pitch;
 	extern ConVar asw_vehicle_cam_dist;
@@ -358,11 +357,9 @@ Vector CASW_Player::EyePosition( )
 	CASW_Marine *pMarine = GetViewMarine();
 	// revert to hl2 camera
 #ifdef CLIENT_DLL
-	Assert( asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2 );
-	if ( asw_controls.GetInt() != 1 && engine->IsPlayingDemo() && ( !ASWGameRules() || ASWGameRules()->GetMarineDeathCamInterp() <= 0.0f ) )
+	if ( GetASWControls() != 1 && engine->IsPlayingDemo() && ( !ASWGameRules() || ASWGameRules()->GetMarineDeathCamInterp() <= 0.0f ) )
 #else
-	Assert( m_iASWControls >= 0 && m_iASWControls <= 2 );
-	if ( m_iASWControls != 1 )
+	if ( GetASWControls() != 1 )
 #endif
 	{
 		if ( !asw_allow_detach.GetBool() && pMarine )
@@ -389,7 +386,7 @@ Vector CASW_Player::EyePosition( )
 		}
 
 		Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
-		bool bIsThirdPerson = asw_controls.GetInt() == 1;
+		bool bIsThirdPerson = GetASWControls() == 1;
 
 		Vector org = vec3_origin;
 		QAngle ang;
@@ -407,7 +404,7 @@ Vector CASW_Player::EyePosition( )
 			}
 			else
 			{
-				if (asw_controls.GetInt() == 0)
+				if (GetASWControls() == 0)
 				{
 					org.Init();
 				}
@@ -437,7 +434,7 @@ Vector CASW_Player::EyePosition( )
 				// Not doing the death cam!
 				Vector vCamOffset;
 
-				if (asw_controls.GetInt() == 0)
+				if (GetASWControls() == 0)
 				{
 					vCamOffset.Init();
 				}
@@ -889,13 +886,7 @@ const QAngle& CASW_Player::EyeAngles( )
 	CASW_Marine* pMarine = GetViewMarine();
 
 	// revert to hl2 camera
-#ifdef CLIENT_DLL
-	Assert( asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2 );
-	if ( asw_controls.GetInt() != 1 || ( pMarine && pMarine->IsInVehicle() ) )
-#else
-	Assert( m_iASWControls >= 0 && m_iASWControls <= 2 );
-	if ( m_iASWControls != 1 || ( pMarine && pMarine->IsInVehicle() ) )
-#endif
+	if ( GetASWControls() != 1 || ( pMarine && pMarine->IsInVehicle() ) )
 	{
 		if ( !asw_allow_detach.GetBool() && GetSpectatingMarine() )
 		{
@@ -977,17 +968,15 @@ Vector CASW_Player::EarPosition( void )
 {
 	// revert to hl2 camera
 #ifdef CLIENT_DLL
-	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
-	if (asw_controls.GetInt() != 1 && engine->IsPlayingDemo())
+	if ( GetASWControls() != 1 && engine->IsPlayingDemo() )
 #else
-	Assert(m_iASWControls >= 0 && m_iASWControls <= 2);
-	if ( m_iASWControls != 1 )
+	if ( GetASWControls() != 1 )
 #endif
 	{
 		return BaseClass::EarPosition();
 	}
 
-	CASW_Marine *pMarine = dynamic_cast<CASW_Marine*>(m_hMarine.Get());
+	CASW_Marine *pMarine = GetViewMarine();
 	if (pMarine)
 	{
 		return pMarine->EarPosition();

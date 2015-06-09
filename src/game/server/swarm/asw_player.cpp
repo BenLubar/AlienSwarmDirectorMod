@@ -359,6 +359,8 @@ CASW_Player::CASW_Player()
 			SpectateNextMarine();
 		}		
 	}
+
+	m_iASWControls = 1;
 }
 
 
@@ -2221,8 +2223,7 @@ void CASW_Player::ChangeName( const char *pszNewName )
 
 Vector CASW_Player::GetAutoaimVectorForMarine(CASW_Marine* marine, float flDelta, float flNearMissDelta)
 {
-	Assert(m_iASWControls >= 0 && m_iASWControls <= 2);
-	if (m_iASWControls == 1)
+	if ( GetASWControls() == 1 )
 	{
 		// test of no serverside autoaim
 		Vector	forward;
@@ -3012,4 +3013,14 @@ CASW_Marine *CASW_Player::GetViewMarine() const
 		pMarine = GetMarine();
 	}
 	return pMarine;
+}
+
+int CASW_Player::GetASWControls() const
+{
+	extern ConVar asw_force_controls;
+	if ( asw_force_controls.GetInt() != -1 )
+	{
+		return asw_force_controls.GetInt();
+	}
+	return m_iASWControls;
 }

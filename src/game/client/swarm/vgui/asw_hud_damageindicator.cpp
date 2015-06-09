@@ -116,7 +116,6 @@ ConVar asw_damageindicator_slash_alpha("asw_damageindicator_slash_alpha", "0.85f
 ConVar asw_damageindicator_bullets_alpha("asw_damageindicator_bullets_alpha", "0.05f", FCVAR_NONE, "Scales alpha of the bullets in the HUD damage indicator.");
 
 extern ConVar asw_cam_marine_yshift_static;
-extern ConVar asw_controls;
 
 DECLARE_HUDELEMENT( CHudDamageIndicator );
 DECLARE_HUD_MESSAGE( CHudDamageIndicator, Damage );
@@ -211,14 +210,21 @@ void CHudDamageIndicator::GetDamagePosition( const Vector &vecDelta, float flRad
 {
 	int nSlot = GetSplitScreenPlayerSlot();
 
-	// Player Data
-	Vector forward(0, 1, 0), right(1, 0, 0);
+	C_ASW_Player *pPlayer = C_ASW_Player::GetLocalASWPlayer(nSlot);
+	if ( !pPlayer )
+		return;
 
-	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
-	if (asw_controls.GetInt() != 1)
+	C_ASW_Marine *pMarine = pPlayer->GetViewMarine();
+	if ( !pMarine )
+		return;
+
+	// Player Data
+	Vector forward( 0, 1, 0 ), right( 1, 0, 0 );
+
+	if ( pPlayer->GetASWControls() != 1 )
 	{
-		forward = MainViewForward(nSlot);
-		right = MainViewRight(nSlot);
+		forward = MainViewForward( nSlot );
+		right = MainViewRight( nSlot );
 	}
 
 	float front = DotProduct(vecDelta, forward);
@@ -230,8 +236,7 @@ void CHudDamageIndicator::GetDamagePosition( const Vector &vecDelta, float flRad
 	*flRotation = atan2(*xpos, *ypos) + M_PI;
 	*flRotation *= 180 / M_PI;
 
-	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
-	if (asw_controls.GetInt() != 1)
+	if ( pPlayer->GetASWControls() != 1 )
 	{
 		int w, h;
 		GetHudSize(w, h);
@@ -243,16 +248,6 @@ void CHudDamageIndicator::GetDamagePosition( const Vector &vecDelta, float flRad
 	float yawRadians = -(*flRotation) * M_PI / 180.0f;
 	float ca = cos( yawRadians );
 	float sa = sin( yawRadians );
-
-	///////
-	// find the position of this marine
-	C_ASW_Player *pPlayer = C_ASW_Player::GetLocalASWPlayer(nSlot);
-	if ( !pPlayer )
-		return;
-
-	C_ASW_Marine *pMarine = pPlayer->GetViewMarine();
-	if ( !pMarine )
-		return;
 
 	Vector screenPos;
 	Vector MarinePos = pMarine->GetRenderOrigin();
@@ -342,6 +337,10 @@ void CHudDamageIndicator::DrawFriendlyFireIcon( int xpos, int ypos, float alpha 
 //-----------------------------------------------------------------------------
 void CHudDamageIndicator::Paint()
 {
+	C_ASW_Player *pPlayer = C_ASW_Player::GetLocalASWPlayer();
+	if ( !pPlayer )
+		return;
+
 	// Iterate backwards, because we might remove them as we go
 	int iSize = m_vecDamages.Count();
 	for (int i = iSize-1; i >= 0; i--)
@@ -350,7 +349,7 @@ void CHudDamageIndicator::Paint()
 		int clampedDamage = clamp( m_vecDamages[i].iScale, 0, m_iMaximumDamage );
 
 		float flScale = asw_damageindicator_scale.GetFloat();
-		switch (asw_controls.GetInt())
+		switch ( pPlayer->GetASWControls() )
 		{
 		case 0:
 			flScale = asw_damageindicator_scale_0.GetFloat();
@@ -361,7 +360,7 @@ void CHudDamageIndicator::Paint()
 			flScale = asw_damageindicator_scale_2.GetFloat();
 			break;
 		default:
-			Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
+			Assert( 0 );
 		}
 
 		float fMinWidth = m_flMinimumWidth * flScale;
@@ -453,10 +452,6 @@ void CHudDamageIndicator::Paint()
 			m_vecDamages.Remove(i);
 		}
 	}
-
-	C_ASW_Player *pPlayer = C_ASW_Player::GetLocalASWPlayer();
-	if ( !pPlayer )
-		return;
 
 	C_ASW_Marine *pMarine = pPlayer->GetViewMarine();
 	if ( !pMarine )

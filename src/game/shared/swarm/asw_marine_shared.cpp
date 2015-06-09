@@ -225,13 +225,7 @@ Vector CASW_Marine::EyePosition()
 			return GetASWVehicle()->GetEntity()->GetAbsOrigin();
 	}
 
-#ifdef CLIENT_DLL
-	extern ConVar asw_controls;
-	const int iControls = asw_controls.GetInt();
-#else
-	const int iControls = IsInhabited() && GetCommander() ? GetCommander()->m_iASWControls : 0;
-#endif
-	switch (iControls)
+	switch ( IsInhabited() && GetCommander() ? GetCommander()->GetASWControls() : 0 )
 	{
 	case 0:
 	{

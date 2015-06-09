@@ -45,7 +45,6 @@ ConVar asw_cam_marine_yshift_static( "asw_cam_marine_yshift_static", "75.0f", FC
 
 ConVar asw_cam_marine_shift_enable( "asw_cam_marine_shift_enable", "1", FCVAR_CHEAT, "Camera shifting enable/disable." );
 
-extern ConVar asw_controls;
 ConVar asw_cam_marine_dist_2("asw_cam_marine_dist_2", "80", FCVAR_CHEAT | FCVAR_REPLICATED, "offset of camera in asw_controls 2");
 ConVar asw_cam_marine_pitch_2("asw_cam_marine_pitch_2", "10", FCVAR_CHEAT | FCVAR_REPLICATED, "pitch offset of camera in asw_controls 2");
 ConVar asw_cam_marine_yaw_2("asw_cam_marine_yaw_2", "20", FCVAR_CHEAT | FCVAR_REPLICATED, "yaw offset of camera in asw_controls 2");
@@ -272,6 +271,13 @@ void CASWInput::CAM_Think( void )
 {
 	Assert( engine->IsLocalPlayerResolvable() );
 
+	C_ASW_Player *pPlayer = C_ASW_Player::GetLocalASWPlayer();
+	Assert( pPlayer );
+	if ( !pPlayer )
+	{
+		return;
+	}
+
 	UpdateOrderArrow();	// update the arrow direction if we're in the middle of ordering a marine (see in_main.cpp)
 
 	switch( GetPerUser().m_nCamCommand )
@@ -294,21 +300,14 @@ void CASWInput::CAM_Think( void )
 		return;
 	}
 
-	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
-	if (asw_controls.GetInt() == 1)
+	if ( pPlayer->GetASWControls() == 1 )
 	{
 		GetPerUser().m_vecCameraOffset[PITCH] = ASW_GetCameraPitch();
 		GetPerUser().m_vecCameraOffset[YAW] = ASW_GetCameraYaw();
 		GetPerUser().m_vecCameraOffset[DIST] = ASW_GetCameraDist();
 	}
-	else if (asw_controls.GetInt() == 2)
+	else if ( pPlayer->GetASWControls() == 2 )
 	{
-		C_ASW_Player *pPlayer = C_ASW_Player::GetLocalASWPlayer();
-		Assert(pPlayer);
-		if (!pPlayer)
-		{
-			return;
-		}
 		C_ASW_Marine *pMarine = pPlayer->GetViewMarine();
 		if ( !pMarine )
 		{
@@ -456,8 +455,7 @@ void CASWInput::ASW_GetCameraLocation( C_ASW_Player *pPlayer, Vector &vecCameraL
 	// Get the current camera position.
 	vecCameraLocation = pPlayer->EyePosition();
 
-	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
-	if (::input->CAM_IsThirdPerson() && asw_controls.GetInt() == 1)
+	if ( ::input->CAM_IsThirdPerson() && pPlayer->GetASWControls() == 1 )
 	{
 		// Get the camera angles and calculate the camera view directions.
 		Vector vecCameraDirection;

@@ -16,8 +16,6 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-extern ConVar asw_controls;		// asw: whether to use swarm mouse controls or not
-
 //-----------------------------------------------------------------------------
 // Purpose: make sure cursor isn't reset to 0 by the accumulation
 //-----------------------------------------------------------------------------
@@ -42,8 +40,9 @@ void CASWInput::ActivateMouse (void)
 void CASWInput::ResetMouse( void )
 {
 	HACK_GETLOCALPLAYER_GUARD( "Mouse behavior is tied to a specific player's status - splitscreen player would depend on which player (if any) is using mouse control" );
-	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
-	if ( MarineControllingTurret() || ( asw_controls.GetInt() != 1 && ( !ASWGameRules() || ASWGameRules()->GetMarineDeathCamInterp() <= 0.0f ) && ( !C_ASW_Marine::GetLocalMarine() || !C_ASW_Marine::GetLocalMarine()->IsUsingComputerOrButtonPanel() )  && !IsRadialMenuOpen(NULL, false) ) )
+	C_ASW_Player *pPlayer = C_ASW_Player::GetLocalASWPlayer();
+	Assert( pPlayer );
+	if ( pPlayer && MarineControllingTurret() || ( pPlayer->GetASWControls() != 1 && ( !ASWGameRules() || ASWGameRules()->GetMarineDeathCamInterp() <= 0.0f ) && ( !C_ASW_Marine::GetLocalMarine() || !C_ASW_Marine::GetLocalMarine()->IsUsingComputerOrButtonPanel() )  && !IsRadialMenuOpen(NULL, false) ) )
 	{
 		int x, y;
 		GetWindowCenter( x, y );
@@ -78,12 +77,17 @@ void CASWInput::ApplyMouse( int nSlot, QAngle& viewangles, CUserCmd *cmd, float 
 	int current_posx, current_posy;	
 	GetMousePos(current_posx, current_posy);
 
-
 	if ( ASWInput()->ControllerModeActive() )
 		return;
 
-	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
-	if (asw_controls.GetInt() == 1 && !MarineControllingTurret())
+	C_ASW_Player *pPlayer = C_ASW_Player::GetLocalASWPlayer();
+	Assert( pPlayer );
+	if ( !pPlayer )
+	{
+		return;
+	}
+
+	if ( pPlayer->GetASWControls() == 1 && !MarineControllingTurret() )
 	{
 		TurnTowardMouse( viewangles, cmd );
 

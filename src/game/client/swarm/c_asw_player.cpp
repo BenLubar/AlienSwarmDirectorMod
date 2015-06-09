@@ -108,7 +108,6 @@
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
 
-extern ConVar asw_controls;
 extern ConVar asw_marine_collision;
 ConVar g_DrawPlayer("asw_drawplayermesh", "0", FCVAR_ARCHIVE, "Draw the player entity or not");
 ConVar asw_clientside_avoidance("asw_clientside_avoidance", "1", FCVAR_CHEAT);
@@ -187,6 +186,8 @@ ConVar asw_fov_desired[] {
 	ConVar("fov_desired_2", "0", FCVAR_ARCHIVE, "fov_desired when setting asw_controls to 2", true, 0, true, 90),
 };
 
+extern ConVar asw_force_controls;
+
 void ASW_Controls_Changed(IConVar *var, const char *pOldValue, float flOldValue);
 ConVar asw_controls("asw_controls", "1", FCVAR_ARCHIVE, "Disable to get normal FPS controls (affects only you)", true, 0, true, 2, ASW_Controls_Changed);
 void ASW_Controls_Changed(IConVar *var, const char *pOldValue, float flOldValue)
@@ -196,7 +197,9 @@ void ASW_Controls_Changed(IConVar *var, const char *pOldValue, float flOldValue)
 
 	Assert(ASWInput());
 
-	if (asw_controls.GetInt() == 0)
+	int iControls = asw_force_controls.GetInt() == -1 ? asw_controls.GetInt() : asw_force_controls.GetInt();
+
+	if ( iControls == 0 )
 	{
 		ASWInput()->CAM_ToFirstPerson();
 	}
@@ -205,16 +208,17 @@ void ASW_Controls_Changed(IConVar *var, const char *pOldValue, float flOldValue)
 		ASWInput()->CAM_ToThirdPerson();
 	}
 
-	Assert(asw_controls.GetInt() < NELEMS(asw_fov_desired));
-	float fov = asw_fov_desired[asw_controls.GetInt()].GetFloat();
-	if (fov >= 1)
+	Assert( iControls >= 0 && iControls < NELEMS( asw_fov_desired ) );
+	float fov = asw_fov_desired[iControls].GetFloat();
+	if ( fov >= 1 )
 	{
-		engine->ClientCmd_Unrestricted(VarArgs("fov_desired %f\n", fov));
+		engine->ClientCmd_Unrestricted( VarArgs( "fov_desired %f\n", fov ) );
 	}
 
-	if (engine->IsInGame())
+	if ( engine->IsInGame() )
 	{
-		engine->ClientCmd(VarArgs("cl_asw_controls %d\n", asw_controls.GetInt()));
+		// Send the actual value of asw_controls so if asw_force_controls changes we don't need to resend.
+		engine->ClientCmd( VarArgs( "cl_asw_controls %d\n", asw_controls.GetInt() ) );
 	}
 }
 
@@ -1697,11 +1701,10 @@ void C_ASW_Player::AvoidMarines( CUserCmd *pCmd )
 
 	Vector currentdir;
 	Vector rightdir;
-	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
-	if (asw_controls.GetInt() == 1)
-		AngleVectors(ASW_MOVEMENT_AXIS, &currentdir, &rightdir, NULL);
+	if ( GetASWControls() == 1 )
+		AngleVectors( ASW_MOVEMENT_AXIS, &currentdir, &rightdir, NULL );
 	else
-		AngleVectors(pCmd->viewangles, &currentdir, &rightdir, NULL);
+		AngleVectors( pCmd->viewangles, &currentdir, &rightdir, NULL );
 
 	Vector vDirection = vecSeparationVelocity;
 	VectorNormalize( vDirection );
@@ -1830,8 +1833,7 @@ void C_ASW_Player::MarineStopMoveIfBlocked(float flFrameTime, CUserCmd *pCmd, C_
 	QAngle vAngles = pCmd->viewangles;
 	vAngles.x = 0;
 
-	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
-	if ( asw_controls.GetInt() == 1 )
+	if ( GetASWControls() == 1 )
 		AngleVectors( ASW_MOVEMENT_AXIS, &currentdir, &rightdir, NULL );
 	else
 		AngleVectors( vAngles, &currentdir, &rightdir, NULL );
@@ -2134,8 +2136,7 @@ void C_ASW_Player::MarinePerformClientSideObstacleAvoidance( float flFrameTime, 
 
 	vAngles.x = 0;
 
-	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
-	if (asw_controls.GetInt() == 1)
+	if ( GetASWControls() == 1 )
 	{
 		AngleVectors( ASW_MOVEMENT_AXIS, &currentdir, &rightdir, NULL );
 	}
@@ -2951,4 +2952,14 @@ C_ASW_Marine *C_ASW_Player::GetViewMarine() const
 		pMarine = GetMarine();
 	}
 	return pMarine;
+}
+
+int C_ASW_Player::GetASWControls() const
+{
+	extern ConVar asw_force_controls;
+	if ( asw_force_controls.GetInt() != -1 )
+	{
+		return asw_force_controls.GetInt();
+	}
+	return asw_controls.GetInt();
 }

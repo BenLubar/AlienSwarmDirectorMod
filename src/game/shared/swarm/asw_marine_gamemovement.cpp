@@ -69,15 +69,8 @@ static ConVar asw_sv_maxspeed( "asw_sv_maxspeed", "500", FCVAR_NOTIFY | FCVAR_RE
 static ConVar asw_debug_steps("asw_debug_steps", "0", FCVAR_CHEAT | FCVAR_REPLICATED, "Gives debug info on moving up/down steps");
 static ConVar asw_debug_air_move("asw_debug_air_move", "0", FCVAR_CHEAT | FCVAR_REPLICATED, "Gives debug info on air moving");
 
-#ifdef CLIENT_DLL
-extern ConVar asw_controls;
-#define ASW_CONTROLS (asw_controls.GetInt())
-#else
-#define ASW_CONTROLS (player ? ToASW_Player(player)->m_iASWControls : 1)
-#endif
-
 #define COMPUTE_MOVEMENT_AXIS \
-	switch (ASW_CONTROLS) \
+	switch ( player ? assert_cast<CASW_Player *>( player )->GetASWControls() : 1 ) \
 	{ \
 	case 1: \
 		AngleVectors(ASWGameRules()->GetTopDownMovementAxis(), &forward, &right, &up); \
@@ -87,7 +80,7 @@ extern ConVar asw_controls;
 		AngleVectors(mv->m_vecViewAngles, &forward, &right, &up); \
 		break; \
 	default: \
-		AssertMsg1(false, "asw_controls = %d\n", ASW_CONTROLS); \
+		AssertMsg1( false, "asw_controls = %d\n", player->GetASWControls() ); \
 		AngleVectors(mv->m_vecViewAngles, &forward, &right, &up); \
 		break; \
 	}

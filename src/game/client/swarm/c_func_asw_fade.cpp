@@ -10,7 +10,6 @@ IMPLEMENT_CLIENTCLASS_DT(C_Func_ASW_Fade, DT_Func_ASW_Fade, CFunc_ASW_Fade)
 END_RECV_TABLE()
 
 ConVar asw_fade_duration("asw_fade_duration", "0.5", FCVAR_ARCHIVE, "", true, 0, false, 0);
-extern ConVar asw_controls;
 
 C_Func_ASW_Fade::C_Func_ASW_Fade()
 {
@@ -47,8 +46,7 @@ void C_Func_ASW_Fade::ClientThink()
 
 	C_ASW_Marine *pMarine = pPlayer->GetViewMarine();
 
-	Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
-	bool bFade = asw_controls.GetInt() == 1 && pMarine && pMarine->GetAbsOrigin().z <= GetAbsOrigin().z;
+	bool bFade = pPlayer->GetASWControls() == 1 && pMarine && pMarine->GetAbsOrigin().z <= GetAbsOrigin().z;
 	byte target = bFade ? m_nFadeOpacity : m_nNormalOpacity;
 	byte prev = bFade ? m_nNormalOpacity : m_nFadeOpacity;
 	if (bFade != m_bFaded)
@@ -58,9 +56,9 @@ void C_Func_ASW_Fade::ClientThink()
 		m_flInterpStart = MAX(0, m_flInterpStart);
 	}
 
-	if (asw_controls.GetInt() != m_iLastControls || pMarine != m_hLastMarine.Get())
+	if ( pPlayer->GetASWControls() != m_iLastControls || pMarine != m_hLastMarine.Get() )
 	{
-		m_iLastControls = asw_controls.GetInt();
+		m_iLastControls = pPlayer->GetASWControls();
 		m_hLastMarine = pMarine;
 		m_flInterpStart = 0;
 		SetRenderAlpha(target);

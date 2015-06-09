@@ -236,6 +236,7 @@ public:
 	float m_flPendingSteamStatsStart;
 	bool m_bSentPromotedMessage;
 
+	int GetASWControls() const;
 	int m_iASWControls;
 
 #if !defined(NO_STEAM)

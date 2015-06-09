@@ -151,8 +151,12 @@ extern ConVar old_radius_damage;
 			sv_tags.SetValue( buffer );
 		}
 	}
-#else
-	extern ConVar asw_controls;
+#endif
+
+void ASW_Controls_Changed( IConVar *var, const char *pOldValue, float flOldValue );
+ConVar asw_force_controls( "asw_force_controls", "-1", FCVAR_REPLICATED, "Force asw_controls to this value.", true, -1, true, 2, ASW_Controls_Changed );
+#ifdef GAME_DLL
+void ASW_Controls_Changed( IConVar *var, const char *pOldValue, float flOldValue ) {}
 #endif
 
 ConVar asw_vote_duration("asw_vote_duration", "30", FCVAR_REPLICATED, "Time allowed to vote on a map/campaign/saved game change.");

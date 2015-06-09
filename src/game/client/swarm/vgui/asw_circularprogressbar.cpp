@@ -163,8 +163,7 @@ void ASWCircularProgressBar::PaintBackground()
 	if ( !pMarine )
 		return;
 
-	Assert( asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2 );
-	if ( asw_controls.GetInt() != 1 )
+	if ( local->GetASWControls() != 1 )
 		return;
 
 	int x = 0;
@@ -244,8 +243,7 @@ void ASWCircularProgressBar::Paint()
 	if ( !pMarine )
 		return;
 
-	Assert( asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2 );
-	if ( asw_controls.GetInt() != 1 )
+	if ( local->GetASWControls() != 1 )
 		return;
 
 	int x = 0;
@@ -254,16 +252,7 @@ void ASWCircularProgressBar::Paint()
 
 	if ( m_bIsOnCursor )
 	{
-		Assert(asw_controls.GetInt() >= 0 && asw_controls.GetInt() <= 2);
-		if (::input->CAM_IsThirdPerson() && asw_controls.GetInt() == 1)
-		{
-			ASWInput()->GetSimulatedFullscreenMousePos( &x, &y );
-		}
-		else
-		{
-			x = ScreenWidth() / 2;
-			y = ScreenHeight() / 2;
-		}
+		ASWInput()->GetSimulatedFullscreenMousePos( &x, &y );
 		w = YRES( asw_crosshair_progress_size.GetInt() ) * m_flScale;
 		h = w;
 	}
