@@ -272,7 +272,6 @@ void CASWInput::CAM_Think( void )
 	Assert( engine->IsLocalPlayerResolvable() );
 
 	C_ASW_Player *pPlayer = C_ASW_Player::GetLocalASWPlayer();
-	Assert( pPlayer );
 	if ( !pPlayer )
 	{
 		return;
