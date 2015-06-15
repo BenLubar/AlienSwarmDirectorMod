@@ -2891,7 +2891,9 @@ void CASW_Marine::RunTask( const Task_t *pTask )
 			pMove->m_flForwardMove = 1;
 			pMove->m_flSideMove = 0;
 			pMove->m_flClientMaxSpeed = MaxSpeed();
+			MoveHelper()->SetHost(this);
 			ASWGameMovement()->ProcessMovement(GetCommander(), this, pMove);
+			MoveHelper()->SetHost(NULL);
 			SetAbsVelocity(pMove->m_vecVelocity * 0.1f);
 			SetAbsOrigin(pMove->GetAbsOrigin());
 			SetAbsAngles(pMove->m_vecAngles);
