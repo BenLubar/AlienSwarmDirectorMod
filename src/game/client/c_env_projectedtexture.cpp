@@ -182,7 +182,7 @@ void C_EnvProjectedTexture::UpdateLight( void )
 		bVisible = IsBBoxVisible();		
 	}
 
-	if ( m_bState == false || !bVisible || !ShouldDraw() )
+	if ( m_bState == false || !bVisible )
 	{
 		// Spotlight's extents aren't in view
 		ShutDownLightHandle();
