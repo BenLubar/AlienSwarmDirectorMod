@@ -939,8 +939,6 @@ CBaseEntity* CASW_Spawn_Manager::SpawnAlienAt(const char* szAlienClass, const Ve
 	angles.z = 0.0;	
 	pEntity->SetAbsOrigin( vecPos );	
 	pEntity->SetAbsAngles( angles );
-	if ( nHull != HULL_TINY_CENTERED )
-		UTIL_DropToFloor( pEntity, MASK_NPCSOLID );
 
 	IASW_Spawnable_NPC* pSpawnable = dynamic_cast<IASW_Spawnable_NPC*>( pEntity );
 	Assert( pSpawnable );
@@ -987,7 +985,10 @@ CBaseEntity* CASW_Spawn_Manager::SpawnAlienAt(const char* szAlienClass, const Ve
 	}
 
 	DispatchSpawn( pEntity );	
-	pEntity->Activate();	
+	pEntity->Activate();
+
+	if ( nHull != HULL_TINY_CENTERED )
+		UTIL_DropToFloor( pEntity, MASK_NPCSOLID );
 
 	// give our aliens the orders
 	pSpawnable->SetAlienOrders(AOT_MoveToNearestMarine, vec3_origin, NULL);
